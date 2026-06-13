@@ -1,0 +1,73 @@
+{
+  "status": "ok",
+  "checked_at": "2026-06-14T00:40:27",
+  "dataset_count": 5,
+  "raw_price_file_count": 9,
+  "datasets": [
+    {
+      "name": "signal_daily",
+      "exists": true,
+      "status": "ok",
+      "rows": 1828,
+      "columns": 15,
+      "null_cells": 938,
+      "duplicate_rows": 0,
+      "latest_trade_date": "2026-06-12",
+      "updated_at": "2026-06-13T19:17:39",
+      "issues": []
+    },
+    {
+      "name": "signal_latest",
+      "exists": true,
+      "status": "ok",
+      "rows": 9,
+      "columns": 15,
+      "null_cells": 1,
+      "duplicate_rows": 0,
+      "latest_trade_date": "2026-06-12",
+      "updated_at": "2026-06-13T19:17:39",
+      "issues": []
+    },
+    {
+      "name": "factors_price_daily",
+      "exists": true,
+      "status": "ok",
+      "rows": 1828,
+      "columns": 19,
+      "null_cells": 1440,
+      "duplicate_rows": 0,
+      "latest_trade_date": "2026-06-12",
+      "updated_at": "2026-06-13T19:17:39",
+      "issues": []
+    },
+    {
+      "name": "recommended_pool",
+      "exists": true,
+      "status": "ok",
+      "rows": 30,
+      "columns": 25,
+      "null_cells": 23,
+      "duplicate_rows": 0,
+      "latest_trade_date": "2026-06-14",
+      "updated_at": "2026-06-14T00:32:16",
+      "issues": []
+    },
+    {
+      "name": "portfolio_advice",
+      "exists": true,
+      "status": "ok",
+      "rows": 5,
+      "columns": 15,
+      "null_cells": 0,
+      "duplicate_rows": 0,
+      "latest_trade_date": "2026-06-12",
+      "updated_at": "2026-06-13T19:17:43",
+      "issues": []
+    }
+  ],
+  "summary": {
+    "ok": 5,
+    "warn": 0,
+    "bad": 0
+  }
+}

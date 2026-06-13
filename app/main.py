@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import PROJECT_ROOT, settings
 from app.database import init_db
-from app.routers import auth, portfolio, system_pool, watchlist
+from app.routers import analytics, auth, backtest, portfolio, system_pool, watchlist
 
 
 app = FastAPI(title=settings.app_name)
@@ -20,6 +20,8 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(analytics.router)
+app.include_router(backtest.router)
 app.include_router(portfolio.router)
 app.include_router(system_pool.router)
 app.include_router(watchlist.router)

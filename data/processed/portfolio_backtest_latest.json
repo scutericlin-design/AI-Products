@@ -1,0 +1,33 @@
+{
+  "metrics": {
+    "mode": "portfolio_level",
+    "trade_days": 369,
+    "active_days": 50,
+    "start_date": "2024-01-03",
+    "end_date": "2026-06-12",
+    "top_n": 12,
+    "min_score": 76.0,
+    "rebalance_days": 5,
+    "max_position": 0.12,
+    "target_exposure": 0.7,
+    "actions": [
+      "buy"
+    ],
+    "fee_bps": 5.0,
+    "slippage_bps": 10.0,
+    "cumulative_return": 0.03919411622229374,
+    "annualized_return": 0.026603191723807207,
+    "annualized_volatility": 0.039546334443122826,
+    "max_drawdown": -0.039327052697676335,
+    "sharpe": 0.6727094204412046,
+    "calmar": 0.6764603472402873,
+    "daily_win_rate": 0.52,
+    "monthly_win_rate": 0.06666666666666667,
+    "average_names": 1.1,
+    "average_exposure": 0.017886178861788615,
+    "average_active_exposure": 0.132,
+    "exposure_utilization": 0.025551684088269452,
+    "average_turnover_on_rebalance": 0.025945945945945945,
+    "total_transaction_cost": 0.0028799999999999997
+  }
+}

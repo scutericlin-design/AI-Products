@@ -30,3 +30,10 @@ def init_db() -> None:
     from app import models  # noqa: F401
 
     Base.metadata.create_all(bind=engine)
+    if settings.database_url.startswith("sqlite"):
+        with engine.begin() as connection:
+            columns = {row[1] for row in connection.exec_driver_sql("PRAGMA table_info(strategy_configs)").all()}
+            if "market_scope" not in columns:
+                connection.exec_driver_sql(
+                    "ALTER TABLE strategy_configs ADD COLUMN market_scope VARCHAR(128) DEFAULT 'main,chinext,star'"
+                )

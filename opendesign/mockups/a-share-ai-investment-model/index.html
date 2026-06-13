@@ -150,6 +150,9 @@
       grid-template-columns: 1.35fr .85fr .85fr;
       gap: 16px;
     }
+    .portfolio-holdings-panel {
+      grid-column: 1 / -1;
+    }
     .panel {
       background: color-mix(in oklab, var(--paper-050), white 18%);
       border: 1px solid var(--border-subtle);
@@ -283,6 +286,34 @@
       align-items: end;
     }
     label { display: grid; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+    .check-field {
+      align-self: stretch;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      background: white;
+    }
+    .check-field span {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+    .check-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .check-options label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-primary);
+    }
+    .check-options input {
+      min-height: 0;
+      width: auto;
+      margin: 0;
+    }
     input, select {
       min-height: 40px;
       border: 1px solid var(--border-subtle);
@@ -323,7 +354,7 @@
     }
     .portfolio-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 12px;
       padding: 14px;
     }
@@ -403,8 +434,8 @@
       <div class="system-status">
         <div class="status-row"><span>Universe</span><strong>沪深京 A</strong></div>
         <div class="status-row"><span>Horizon</span><strong>2-8W</strong></div>
-        <div class="status-row"><span>Risk Mode</span><strong>High Beta</strong></div>
-        <div class="status-row"><span>Last Calc</span><strong>15:04 CST</strong></div>
+        <div class="status-row"><span>Risk Mode</span><strong id="riskModeLabel">High Beta</strong></div>
+        <div class="status-row"><span>Last Calc</span><strong id="lastCalcLabel">15:04 CST</strong></div>
       </div>
     </aside>
     <main>
@@ -433,8 +464,8 @@
           </div>
           <div class="metric"><span>Alpha Score</span><strong id="alphaMetric">82.4</strong></div>
           <div class="metric"><span>Hit Rate Target</span><strong>56%+</strong></div>
-          <div class="metric"><span>Max Position</span><strong>12%</strong></div>
-          <div class="metric"><span>Stop Rule</span><strong>-8%</strong></div>
+          <div class="metric"><span>Max Position</span><strong id="regimeMaxPosition">12%</strong></div>
+          <div class="metric"><span>Cash Floor</span><strong id="regimeCashFloor">10%</strong></div>
         </section>
 
         <div id="dashboard" class="view active">
@@ -505,6 +536,33 @@
           </div>
           <section class="panel">
             <div class="panel-head">
+              <h3>模型配置</h3>
+              <span class="tag long">quality_first_v2</span>
+            </div>
+            <form class="signal-form" id="modelConfigForm">
+              <label>推荐数量<input id="cfgPoolLimit" type="number" min="5" max="30" /></label>
+              <label>最低成交额(亿)<input id="cfgMinAmount" type="number" min="0.5" max="100" step="0.1" /></label>
+              <label>买入评分阈值<input id="cfgBuyScore" type="number" min="50" max="98" step="0.5" /></label>
+              <label>最低涨幅%<input id="cfgMinPct" type="number" min="-10" max="20" step="0.1" /></label>
+              <label>最高涨幅%<input id="cfgMaxPct" type="number" min="1" max="30" step="0.1" /></label>
+              <label>收盘位置%<input id="cfgClosePos" type="number" min="0" max="100" step="1" /></label>
+              <label>最大振幅%<input id="cfgMaxAmplitude" type="number" min="1" max="30" step="0.1" /></label>
+              <label>目标仓位%<input id="cfgTargetWeight" type="number" min="0" max="20" step="0.5" /></label>
+              <div class="check-field">
+                <span>市场范围</span>
+                <div class="check-options">
+                  <label><input type="checkbox" name="cfgMarket" value="main" />主板</label>
+                  <label><input type="checkbox" name="cfgMarket" value="chinext" />创业板</label>
+                  <label><input type="checkbox" name="cfgMarket" value="star" />科创板</label>
+                  <label><input type="checkbox" name="cfgMarket" value="beijing" />北交所</label>
+                </div>
+              </div>
+              <button class="primary" type="submit">保存配置</button>
+            </form>
+            <div class="result" id="modelConfigResult"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
               <h3>系统推荐股票池</h3>
               <div class="tabs" id="poolFilters">
                 <button class="active" data-filter="all">全部</button>
@@ -522,14 +580,29 @@
         </div>
 
         <div id="portfolio" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>新增 / 更新持仓</h3>
+              <span class="tag long">服务器账户数据</span>
+            </div>
+            <form class="signal-form" id="positionForm">
+              <label>股票代码<input id="positionSymbol" placeholder="例如 300750" maxlength="6" required /></label>
+              <label>股票名称<input id="positionName" placeholder="输入代码后自动加载" readonly /></label>
+              <label>当前仓位<input id="positionWeight" placeholder="例如 0.08 或 8" required /></label>
+              <label>成本价<input id="positionCostPrice" placeholder="例如 145.20" /></label>
+              <label>股数<input id="positionShares" placeholder="例如 100" /></label>
+              <button class="primary" id="savePositionBtn" type="submit">保存持仓</button>
+            </form>
+            <div class="result" id="positionResult"></div>
+          </section>
           <div class="grid-3">
-            <section class="panel">
+            <section class="panel portfolio-holdings-panel">
               <div class="panel-head">
                 <h3>当前持股</h3>
-                <span class="tag long">真实持仓</span>
+                <span class="tag long" id="holdingCountTag">真实持仓</span>
               </div>
               <div class="portfolio-grid" id="holdingCards"></div>
-              <p class="advice-note">持仓数据读取自本地 portfolio_advice.csv，由你的 portfolio.csv 和策略信号合并生成。</p>
+              <p class="advice-note">持仓数据保存在当前登录账户中；股票名称由系统自动识别，仓位、成本价和股数由你手动维护。</p>
             </section>
             <section class="panel">
               <div class="panel-head"><h3>组合暴露</h3><span class="tag warn">高弹性</span></div>
@@ -570,6 +643,14 @@
         </div>
 
         <div id="workflow" class="view">
+          <section class="panel">
+            <div class="panel-head"><h3>个股 AI 研究报告</h3><span class="tag long">Research memo</span></div>
+            <form class="signal-form" id="researchReportForm">
+              <label>股票代码<input id="researchSymbol" placeholder="例如 300657" maxlength="6" required /></label>
+              <button class="primary" type="submit">生成报告</button>
+            </form>
+            <div class="result" id="researchReportResult"></div>
+          </section>
           <section class="panel">
             <div class="panel-head"><h3>今天怎么用这一套系统</h3><span class="tag long">Daily routine</span></div>
             <div class="flow">
@@ -621,6 +702,22 @@
 
         <div id="data" class="view">
           <section class="panel">
+            <div class="panel-head">
+              <h3>数据健康检查</h3>
+              <button class="control" id="runDataHealthBtn" type="button">重新检查</button>
+            </div>
+            <div class="exposure-grid">
+              <div class="exposure-item"><span>状态</span><strong class="mono" id="dataHealthStatus">--</strong></div>
+              <div class="exposure-item"><span>数据表</span><strong class="mono" id="dataHealthCount">--</strong></div>
+              <div class="exposure-item"><span>原始行情文件</span><strong class="mono" id="dataHealthRaw">--</strong></div>
+              <div class="exposure-item"><span>检查时间</span><strong class="mono" id="dataHealthTime">--</strong></div>
+            </div>
+            <table>
+              <thead><tr><th>数据集</th><th>状态</th><th>行数</th><th>最新交易日</th><th>问题</th></tr></thead>
+              <tbody id="dataHealthRows"></tbody>
+            </table>
+          </section>
+          <section class="panel">
             <div class="panel-head"><h3>推荐数据源</h3><span class="tag">Searched sources</span></div>
             <div class="source-list">
               <div class="source"><strong>Ricequant</strong><span>官方文档覆盖 RQData 金融数据 API、A 股、宏观、另类数据，以及 RQFactor、RQOptimizer、RQPAttr 等投研组件。</span><a href="https://www.ricequant.com/doc/rqdata/python/" target="_blank">文档</a></div>
@@ -646,6 +743,24 @@
         </div>
 
         <div id="model" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>因子有效性检验</h3>
+              <button class="control" id="runFactorDiagnosticsBtn" type="button">重新检验</button>
+            </div>
+            <table>
+              <thead><tr><th>因子</th><th>覆盖率</th><th>IC</th><th>RankIC</th><th>IC为正比例</th></tr></thead>
+              <tbody id="factorDiagnosticsRows"></tbody>
+            </table>
+            <p class="advice-note" id="factorDiagnosticsSummary">因子检验用于判断信号是否稳定，不应只看单次推荐池。</p>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>模型版本历史</h3><span class="tag long">Config snapshots</span></div>
+            <table>
+              <thead><tr><th>版本</th><th>时间</th><th>推荐数</th><th>买入阈值</th><th>市场</th><th>操作</th></tr></thead>
+              <tbody id="modelVersionRows"></tbody>
+            </table>
+          </section>
           <div class="two-col">
             <section class="panel">
               <div class="panel-head"><h3>机构级算法框架</h3><span class="tag long">Research stack</span></div>
@@ -703,7 +818,43 @@ final_pool = rank(quality_score)
 
         <div id="backtest" class="view">
           <section class="panel">
-            <div class="panel-head"><h3>回测指标与风控</h3><span class="tag warn">Walk-forward</span></div>
+            <div class="panel-head">
+              <h3>策略参数优化器</h3>
+              <button class="control" id="runStrategyOptimizerBtn" type="button">运行优化器</button>
+            </div>
+            <table>
+              <thead><tr><th>档位</th><th>目标</th><th>年化</th><th>最大回撤</th><th>Sharpe</th><th>持仓期仓位</th><th>参数</th></tr></thead>
+              <tbody id="optimizerRows"></tbody>
+            </table>
+            <p class="advice-note" id="optimizerSummary">优化器会比较保守、平衡、进攻三档参数。结果用于研究，不是收益承诺。</p>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>组合级回测</h3>
+              <button class="control" id="runPortfolioBacktestBtn" type="button">运行组合回测</button>
+            </div>
+            <div class="exposure-grid">
+              <div class="exposure-item"><span>累计收益</span><strong class="mono" id="pbtCumReturn">--</strong></div>
+              <div class="exposure-item"><span>年化收益</span><strong class="mono" id="pbtAnnReturn">--</strong></div>
+              <div class="exposure-item"><span>最大回撤</span><strong class="mono" id="pbtMaxDrawdown">--</strong></div>
+              <div class="exposure-item"><span>Sharpe</span><strong class="mono" id="pbtSharpe">--</strong></div>
+              <div class="exposure-item"><span>平均持仓数</span><strong class="mono" id="pbtNames">--</strong></div>
+              <div class="exposure-item"><span>平均换手</span><strong class="mono" id="pbtTurnover">--</strong></div>
+            </div>
+            <p class="advice-note" id="pbtSummary">组合级回测会模拟 Top N 调仓、单票上限、手续费和滑点，比单信号回测更接近真实使用。</p>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>回测指标与风控</h3>
+              <button class="control" id="runBacktestBtn" type="button">运行回测</button>
+            </div>
+            <div class="exposure-grid">
+              <div class="exposure-item"><span>交易数</span><strong class="mono" id="btTradeCount">--</strong></div>
+              <div class="exposure-item"><span>胜率</span><strong class="mono" id="btHitRate">--</strong></div>
+              <div class="exposure-item"><span>平均收益</span><strong class="mono" id="btAvgReturn">--</strong></div>
+              <div class="exposure-item"><span>最大回撤</span><strong class="mono" id="btMaxDrawdown">--</strong></div>
+            </div>
+            <p class="advice-note" id="btSummary">回测基于现有 signal_daily.csv，不依赖新数据源；用于验证信号质量，不代表未来收益。</p>
             <table>
               <thead><tr><th>类别</th><th>指标</th><th>目标/说明</th></tr></thead>
               <tbody>
@@ -717,6 +868,13 @@ final_pool = rank(quality_score)
           </section>
           <section class="panel">
             <div class="panel-head"><h3>组合规则</h3><span class="tag risk">Risk first</span></div>
+            <div class="exposure-grid">
+              <div class="exposure-item"><span>当前市场状态</span><strong class="mono" id="regimeName">震荡上行</strong></div>
+              <div class="exposure-item"><span>回测入选阈值</span><strong class="mono" id="regimeMinScore">76</strong></div>
+              <div class="exposure-item"><span>单票上限</span><strong class="mono" id="regimeSingleCap">12%</strong></div>
+              <div class="exposure-item"><span>现金底仓</span><strong class="mono" id="regimeCashRule">10%</strong></div>
+            </div>
+            <p class="advice-note" id="regimeNote">震荡上行：允许适度进攻，优先保留趋势和流动性较强的候选。</p>
             <pre>rebalance_frequency = weekly
 holding_period = 10 to 40 trading_days
 max_names = 8 to 12
@@ -748,16 +906,38 @@ reject_trade_if:
       model: ["算法模块", "参考机构多因子流程：数据门禁、Alpha、因子检验、风险模型、组合优化和交易复盘。"],
       backtest: ["回测与风控", "重点验证 2-8 周窗口、交易可行性、风格切片稳定性和极端行情保护。"]
     };
-    const stocks = [
-      ["300750.SZ", "宁德时代", "动力电池出海 + 盈利修复", 86.7, "Long"],
-      ["688012.SH", "中微公司", "半导体设备订单验证", 84.9, "Long"],
-      ["300308.SZ", "中际旭创", "算力链景气 + 放量突破", 82.4, "Watch"],
-      ["002475.SZ", "立讯精密", "新能源材料底部修复", 79.8, "Long"],
-      ["603986.SH", "兆易创新", "存储周期弹性", 78.5, "Watch"],
-      ["601138.SH", "工业富联", "AI 服务器链确认", 76.2, "Blocked"]
-    ];
     let portfolioAdvice = [];
     let systemPool = [];
+    let modelConfig = null;
+    const marketRegimes = {
+      "震荡上行": {
+        riskMode: "High Beta",
+        minScore: 76,
+        maxPosition: 0.12,
+        targetExposure: 0.70,
+        cashFloor: 0.10,
+        topN: 12,
+        note: "震荡上行：允许适度进攻，优先保留趋势和流动性较强的候选。"
+      },
+      "高波动修复": {
+        riskMode: "Recovery",
+        minScore: 80,
+        maxPosition: 0.08,
+        targetExposure: 0.45,
+        cashFloor: 0.18,
+        topN: 8,
+        note: "高波动修复：只接受更高评分信号，降低单票上限，避免追高和剧烈波动。"
+      },
+      "缩量防御": {
+        riskMode: "Defensive",
+        minScore: 84,
+        maxPosition: 0.05,
+        targetExposure: 0.20,
+        cashFloor: 0.35,
+        topN: 5,
+        note: "缩量防御：以现金和防守为主，只保留最高置信度候选，新增仓位需要更强确认。"
+      }
+    };
     const factors = [
       ["成长加速", 88],
       ["资金确认", 81],
@@ -766,10 +946,17 @@ reject_trade_if:
       ["AI 事件分", 74]
     ];
     function renderStocks() {
-      document.getElementById("stockRows").innerHTML = stocks.map(([code, name, logic, score, status]) => {
-        const cls = status === "Long" ? "long" : status === "Blocked" ? "risk" : "warn";
-        return `<tr><td><strong>${name}</strong><br /><code>${code}</code></td><td>${logic}</td><td><span class="score">${score}</span></td><td><span class="tag ${cls}">${status}</span></td></tr>`;
+      const rows = systemPool.slice(0, 6);
+      if (!rows.length) {
+        document.getElementById("stockRows").innerHTML = `<tr><td colspan="4">正在读取系统股票池；如长时间为空，请到“系统股票池”页点击更新。</td></tr>`;
+        return;
+      }
+      document.getElementById("stockRows").innerHTML = rows.map((row) => {
+        const score = Number(row.price_factor_score || 0);
+        const logic = row.reason || `成交额 ${Number(row.amount_yi || 0).toFixed(2)} 亿；涨幅 ${Number(row.pct_change || 0).toFixed(2)}%`;
+        return `<tr><td><strong>${row.name}</strong><br /><code>${row.symbol}</code></td><td>${logic}</td><td><span class="score">${score.toFixed(1)}</span></td><td><span class="tag ${tagClassForAction(row.action)}">${actionLabel(row.action)}</span></td></tr>`;
       }).join("");
+      document.getElementById("alphaMetric").textContent = Number(rows[0]?.price_factor_score || 0).toFixed(1);
     }
     function renderFactors() {
       document.getElementById("factorStack").innerHTML = factors.map(([label, value]) => `
@@ -801,7 +988,33 @@ reject_trade_if:
       if (!Number.isFinite(number)) return "--";
       return `${(number * 100).toFixed(digits)}%`;
     }
+    function formatNumber(value, digits = 2) {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return "--";
+      return number.toFixed(digits);
+    }
+    function authHeaders(extra = {}) {
+      const token = localStorage.getItem("alpha_token");
+      return { ...extra, ...(token ? { Authorization: `Bearer ${token}` } : {}) };
+    }
+    async function apiJson(path, options = {}) {
+      const response = await fetch(path, {
+        ...options,
+        headers: authHeaders({ "Content-Type": "application/json", ...(options.headers || {}) })
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const detail = typeof payload.detail === "object" ? payload.detail.message : payload.detail;
+        throw new Error(detail || payload.error || `HTTP ${response.status}`);
+      }
+      return payload;
+    }
     function renderHoldings() {
+      document.getElementById("holdingCountTag").textContent = `真实持仓 ${portfolioAdvice.length} 只`;
+      if (!portfolioAdvice.length) {
+        document.getElementById("holdingCards").innerHTML = `<article class="holding-card"><header><h4>暂无持仓</h4><span class="tag warn">待添加</span></header><strong>0%</strong><small>请在上方输入股票代码并保存。</small></article>`;
+        return;
+      }
       document.getElementById("holdingCards").innerHTML = portfolioAdvice.map((row) => {
         const action = row.portfolio_action;
         const cls = action === "add" || action === "hold" ? "long" : action.includes("reduce") ? "risk" : "warn";
@@ -809,8 +1022,23 @@ reject_trade_if:
           <header><h4>${row.name}</h4><span class="tag ${cls}">${actionLabel(action)}</span></header>
           <strong>${formatPercent(row.weight)}</strong>
           <small><code>${row.symbol}</code> · 浮盈亏 ${formatPercent(row.pnl_pct, 2)}</small>
+          <button class="control delete-position" data-symbol="${row.symbol}">删除</button>
         </article>`;
       }).join("");
+      document.querySelectorAll(".delete-position").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const result = document.getElementById("positionResult");
+          try {
+            await apiJson(`/api/portfolio/positions/${button.dataset.symbol}`, { method: "DELETE" });
+            result.classList.add("show");
+            result.innerHTML = `已删除 <strong>${button.dataset.symbol}</strong>，持仓建议已刷新。`;
+            await loadPortfolioAdvice();
+          } catch (error) {
+            result.classList.add("show");
+            result.innerHTML = `删除失败：${error.message}`;
+          }
+        });
+      });
     }
     function renderAdvice(filter = "all") {
       const rows = portfolioAdvice.filter((row) => filter === "all" || row.portfolio_action === filter);
@@ -822,14 +1050,30 @@ reject_trade_if:
           <td><span class="tag ${tagClassForAction(row.portfolio_action)}">${actionLabel(row.portfolio_action)}</span></td>
           <td><span class="score">${Number(row.price_factor_score || 0).toFixed(1)}</span></td>
           <td>${row.advice_reason}</td>
-          <td><button class="control accept-advice" data-code="${row.symbol}" data-name="${row.name}" data-action="${actionLabel(row.portfolio_action)}">采纳</button></td>
+          <td><button class="control accept-advice" data-index="${portfolioAdvice.indexOf(row)}">采纳</button></td>
         </tr>
       `).join("");
       document.querySelectorAll(".accept-advice").forEach((button) => {
-        button.addEventListener("click", () => {
+        button.addEventListener("click", async () => {
+          const row = portfolioAdvice[Number(button.dataset.index)];
           const result = document.getElementById("adviceResult");
-          result.classList.add("show");
-          result.innerHTML = `<strong>${button.dataset.name} ${button.dataset.code}</strong> 已加入执行清单：${button.dataset.action}。下单前仍需确认盘口、滑点、涨跌停和公告风险。`;
+          try {
+            await apiJson("/api/portfolio/advice-log", {
+              method: "POST",
+              body: JSON.stringify({
+                symbol: row.symbol,
+                name: row.name,
+                action: row.portfolio_action,
+                target_weight: Number(row.suggested_target_weight || 0),
+                reason: row.advice_reason
+              })
+            });
+            result.classList.add("show");
+            result.innerHTML = `<strong>${row.name} ${row.symbol}</strong> 已写入建议日志：${actionLabel(row.portfolio_action)}。下单前仍需确认盘口、滑点、涨跌停和公告风险。`;
+          } catch (error) {
+            result.classList.add("show");
+            result.innerHTML = `写入日志失败：${error.message}`;
+          }
         });
       });
     }
@@ -851,20 +1095,271 @@ reject_trade_if:
         : "<strong>优先动作：</strong>维持观察，等待系统股票池出现更高置信度候选。";
     }
     async function loadPortfolioAdvice() {
+      let riskNotes = "";
       try {
-        const response = await fetch("/data/processed/portfolio_advice.csv", { cache: "no-store" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const text = await response.text();
-        portfolioAdvice = parseCsv(text);
+        portfolioAdvice = await apiJson("/api/portfolio/advice", { cache: "no-store" });
+        const risk = await apiJson("/api/portfolio/risk", { cache: "no-store" });
+        riskNotes = risk.notes.join(" ");
       } catch (error) {
-        portfolioAdvice = [];
-        const result = document.getElementById("adviceResult");
-        result.classList.add("show");
-        result.innerHTML = `暂时无法读取你的持仓建议：${error.message}。请确认 portfolio_advice.csv 已生成。`;
+        try {
+          const response = await fetch("/data/processed/portfolio_advice.csv", { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const text = await response.text();
+          portfolioAdvice = parseCsv(text);
+        } catch (fallbackError) {
+          portfolioAdvice = [];
+          const result = document.getElementById("adviceResult");
+          result.classList.add("show");
+          result.innerHTML = `暂时无法读取你的持仓建议：${error.message}`;
+        }
       }
       updatePortfolioMetrics();
+      if (riskNotes) document.getElementById("portfolioExposureNote").textContent = riskNotes;
       renderHoldings();
       renderAdvice();
+    }
+    function normalizeWeightInput(value) {
+      const number = Number(value);
+      if (!Number.isFinite(number) || number < 0) return NaN;
+      return number > 1 ? number / 100 : number;
+    }
+    async function lookupPositionName() {
+      const symbol = document.getElementById("positionSymbol").value.trim();
+      const result = document.getElementById("positionResult");
+      if (symbol.length !== 6) return;
+      try {
+        const payload = await apiJson(`/api/portfolio/lookup/${symbol}`, { cache: "no-store" });
+        document.getElementById("positionName").value = payload.name;
+        result.classList.add("show");
+        result.innerHTML = `已识别：<strong>${payload.name}</strong> <code>${payload.symbol}</code>`;
+      } catch (error) {
+        document.getElementById("positionName").value = "";
+        result.classList.add("show");
+        result.innerHTML = `股票名称加载失败：${error.message}`;
+      }
+    }
+    async function savePosition(event) {
+      event.preventDefault();
+      const symbol = document.getElementById("positionSymbol").value.trim();
+      const weight = normalizeWeightInput(document.getElementById("positionWeight").value);
+      const costPriceRaw = document.getElementById("positionCostPrice").value.trim();
+      const sharesRaw = document.getElementById("positionShares").value.trim();
+      const result = document.getElementById("positionResult");
+      if (symbol.length !== 6 || !Number.isFinite(weight) || weight > 1) {
+        result.classList.add("show");
+        result.innerHTML = "请填写 6 位股票代码；仓位可填 0.08 或 8，最大不能超过 100%。";
+        return;
+      }
+      const payload = {
+        symbol,
+        weight,
+        cost_price: costPriceRaw ? Number(costPriceRaw) : null,
+        shares: sharesRaw ? Number(sharesRaw) : null
+      };
+      try {
+        const saved = await apiJson("/api/portfolio/positions", {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+        document.getElementById("positionName").value = saved.name;
+        result.classList.add("show");
+        result.innerHTML = `已保存：<strong>${saved.name}</strong> <code>${saved.symbol}</code>，个人持仓建议已刷新。`;
+        await loadPortfolioAdvice();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `保存失败：${error.message}`;
+      }
+    }
+    function renderBacktest(payload) {
+      const metrics = payload?.metrics;
+      if (!metrics) return;
+      document.getElementById("btTradeCount").textContent = metrics.trade_count ?? "--";
+      document.getElementById("btHitRate").textContent = formatPercent(metrics.hit_rate, 1);
+      document.getElementById("btAvgReturn").textContent = formatPercent(metrics.average_return, 2);
+      document.getElementById("btMaxDrawdown").textContent = formatPercent(metrics.max_drawdown, 2);
+      document.getElementById("btSummary").textContent = `样本 ${metrics.start_date || "--"} 至 ${metrics.end_date || "--"}；持有 ${metrics.hold_days} 个交易日；入选阈值 ${metrics.min_score} 分。回测用于验证信号，不代表未来收益。`;
+    }
+    async function loadBacktest() {
+      try {
+        renderBacktest(await apiJson("/api/backtest/latest", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("btSummary").textContent = `暂时无法读取回测结果：${error.message}`;
+      }
+    }
+    async function runBacktest() {
+      const button = document.getElementById("runBacktestBtn");
+      button.disabled = true;
+      button.textContent = "回测中...";
+      try {
+        renderBacktest(await apiJson("/api/backtest/run?hold_days=20&min_score=78", { method: "POST" }));
+      } catch (error) {
+        document.getElementById("btSummary").textContent = `回测失败：${error.message}`;
+      } finally {
+        button.disabled = false;
+        button.textContent = "运行回测";
+      }
+    }
+    function renderPortfolioBacktest(payload) {
+      const metrics = payload?.metrics;
+      if (!metrics) return;
+      document.getElementById("pbtCumReturn").textContent = formatPercent(metrics.cumulative_return, 2);
+      document.getElementById("pbtAnnReturn").textContent = formatPercent(metrics.annualized_return, 2);
+      document.getElementById("pbtMaxDrawdown").textContent = formatPercent(metrics.max_drawdown, 2);
+      document.getElementById("pbtSharpe").textContent = formatNumber(metrics.sharpe, 2);
+      document.getElementById("pbtNames").textContent = formatNumber(metrics.average_names, 1);
+      document.getElementById("pbtTurnover").textContent = formatPercent(metrics.average_turnover_on_rebalance, 2);
+      document.getElementById("pbtSummary").textContent = `样本 ${metrics.start_date || "--"} 至 ${metrics.end_date || "--"}；实际持仓 ${metrics.active_days || 0} 天；Top ${metrics.top_n}；每 ${metrics.rebalance_days} 个交易日调仓；已计入手续费 ${metrics.fee_bps}bps 和滑点 ${metrics.slippage_bps}bps。`;
+    }
+    async function loadPortfolioBacktest() {
+      try {
+        renderPortfolioBacktest(await apiJson("/api/backtest/portfolio/latest", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("pbtSummary").textContent = `暂时无法读取组合回测：${error.message}`;
+      }
+    }
+    async function runPortfolioBacktest() {
+      const button = document.getElementById("runPortfolioBacktestBtn");
+      const regime = currentRegime();
+      button.disabled = true;
+      button.textContent = "回测中...";
+      try {
+        const query = new URLSearchParams({
+          top_n: String(regime.topN),
+          min_score: String(regime.minScore),
+          rebalance_days: "5",
+          max_position: String(regime.maxPosition),
+          target_exposure: String(regime.targetExposure)
+        });
+        renderPortfolioBacktest(await apiJson(`/api/backtest/portfolio/run?${query.toString()}`, { method: "POST" }));
+      } catch (error) {
+        document.getElementById("pbtSummary").textContent = `组合回测失败：${error.message}`;
+      } finally {
+        button.disabled = false;
+        button.textContent = "运行组合回测";
+      }
+    }
+    function renderStrategyOptimization(payload) {
+      const profiles = payload?.profiles || [];
+      document.getElementById("optimizerRows").innerHTML = profiles.map((profile) => {
+        const best = profile.best || {};
+        const metrics = best.metrics || {};
+        const params = best.params || {};
+        return `
+          <tr>
+            <td><strong>${profile.label}</strong></td>
+            <td>${formatPercent(profile.target_annual_return, 0)} / 回撤 ${formatPercent(profile.max_drawdown_limit, 0)}</td>
+            <td>${formatPercent(metrics.annualized_return, 2)}</td>
+            <td>${formatPercent(metrics.max_drawdown, 2)}</td>
+            <td>${formatNumber(metrics.sharpe, 2)}</td>
+            <td>${formatPercent(metrics.average_active_exposure, 1)}</td>
+            <td><code>Top${params.top_n ?? "--"} / 阈值${params.min_score ?? "--"} / 单票${formatPercent(params.max_position, 0)} / 目标${formatPercent(params.target_exposure, 0)}</code></td>
+          </tr>
+        `;
+      }).join("");
+      document.getElementById("optimizerSummary").textContent = payload?.warning || "优化器结果用于研究，不是收益承诺。";
+    }
+    async function loadStrategyOptimization() {
+      try {
+        renderStrategyOptimization(await apiJson("/api/backtest/optimization/latest", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("optimizerSummary").textContent = `暂时无法读取优化结果：${error.message}`;
+      }
+    }
+    async function runStrategyOptimizer() {
+      const button = document.getElementById("runStrategyOptimizerBtn");
+      button.disabled = true;
+      button.textContent = "优化中...";
+      try {
+        renderStrategyOptimization(await apiJson("/api/backtest/optimization/run", { method: "POST" }));
+      } catch (error) {
+        document.getElementById("optimizerSummary").textContent = `优化失败：${error.message}`;
+      } finally {
+        button.disabled = false;
+        button.textContent = "运行优化器";
+      }
+    }
+    function renderDataHealth(payload) {
+      document.getElementById("dataHealthStatus").textContent = payload.status || "--";
+      document.getElementById("dataHealthCount").textContent = payload.dataset_count ?? "--";
+      document.getElementById("dataHealthRaw").textContent = payload.raw_price_file_count ?? "--";
+      document.getElementById("dataHealthTime").textContent = payload.checked_at || "--";
+      document.getElementById("dataHealthRows").innerHTML = (payload.datasets || []).map((row) => `
+        <tr>
+          <td>${row.name}</td>
+          <td><span class="tag ${row.status === "ok" ? "long" : row.status === "warn" ? "warn" : "risk"}">${row.status}</span></td>
+          <td>${row.rows ?? "--"}</td>
+          <td>${row.latest_trade_date || "--"}</td>
+          <td><code>${(row.issues || []).join("|") || "none"}</code></td>
+        </tr>
+      `).join("");
+    }
+    async function loadDataHealth() {
+      try {
+        renderDataHealth(await apiJson("/api/analytics/data-health/latest", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("dataHealthRows").innerHTML = `<tr><td colspan="5">读取失败：${error.message}</td></tr>`;
+      }
+    }
+    async function runDataHealth() {
+      const button = document.getElementById("runDataHealthBtn");
+      button.disabled = true;
+      button.textContent = "检查中...";
+      try {
+        renderDataHealth(await apiJson("/api/analytics/data-health/run", { method: "POST" }));
+      } finally {
+        button.disabled = false;
+        button.textContent = "重新检查";
+      }
+    }
+    function renderFactorDiagnostics(payload) {
+      document.getElementById("factorDiagnosticsRows").innerHTML = (payload.factor_summaries || []).map((row) => `
+        <tr>
+          <td><code>${row.factor}</code></td>
+          <td>${formatPercent(row.coverage, 1)}</td>
+          <td>${formatNumber(row.ic_mean, 3)}</td>
+          <td>${formatNumber(row.rank_ic_mean, 3)}</td>
+          <td>${formatPercent(row.ic_positive_rate, 1)}</td>
+        </tr>
+      `).join("");
+      const topGroup = (payload.score_group_returns || []).slice(-1)[0];
+      document.getElementById("factorDiagnosticsSummary").textContent = `样本 ${payload.start_date || "--"} 至 ${payload.end_date || "--"}，前瞻 ${payload.forward_days || "--"} 个交易日；最高分组平均收益 ${formatPercent(topGroup?.average_forward_return, 2)}。`;
+    }
+    async function loadFactorDiagnostics() {
+      try {
+        renderFactorDiagnostics(await apiJson("/api/analytics/factors/latest", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("factorDiagnosticsSummary").textContent = `暂时无法读取因子检验：${error.message}`;
+      }
+    }
+    async function runFactorDiagnostics() {
+      const button = document.getElementById("runFactorDiagnosticsBtn");
+      button.disabled = true;
+      button.textContent = "检验中...";
+      try {
+        renderFactorDiagnostics(await apiJson("/api/analytics/factors/run", { method: "POST" }));
+      } finally {
+        button.disabled = false;
+        button.textContent = "重新检验";
+      }
+    }
+    function renderResearchReport(payload) {
+      const result = document.getElementById("researchReportResult");
+      result.classList.add("show");
+      result.innerHTML = `
+        <strong>${payload.name} ${payload.symbol}</strong> · ${payload.action} · 置信度 ${payload.confidence}<br />
+        <p><strong>核心假设：</strong>${payload.thesis}</p>
+        <p><strong>证据：</strong>${(payload.evidence || []).join("；") || "暂无结构化证据"}</p>
+        <p><strong>风险：</strong>${(payload.risks || []).join("；")}</p>
+        <p><strong>失效条件：</strong>${(payload.invalidation || []).join("；")}</p>
+        <p><strong>人工检查：</strong>${(payload.manual_checklist || []).join("；")}</p>
+      `;
+    }
+    async function generateResearchReport(event) {
+      event.preventDefault();
+      const input = document.getElementById("researchSymbol");
+      input.value = input.value.replace(/\D/g, "").slice(0, 6);
+      if (input.value.length !== 6) return;
+      renderResearchReport(await apiJson(`/api/analytics/research-report/${input.value}`, { cache: "no-store" }));
     }
     function parseCsv(text) {
       const rows = [];
@@ -917,6 +1412,7 @@ reject_trade_if:
         result.classList.add("show");
         result.innerHTML = `暂时无法读取真实推荐池：${error.message}。请点击“更新全A股票池”重新生成。`;
       }
+      renderStocks();
       renderSystemPool();
     }
     async function rebuildSystemPool() {
@@ -940,7 +1436,8 @@ reject_trade_if:
         }
         await loadSystemPool();
         result.classList.add("show");
-        result.innerHTML = `系统股票池已更新，共生成 <strong>${payload.rows}</strong> 只候选。`;
+        if (payload.config) applyModelConfig(payload.config);
+        result.innerHTML = `系统股票池已更新，共生成 <strong>${payload.rows}</strong> 只候选，已按当前网页模型配置执行。`;
       } catch (error) {
         result.classList.add("show");
         result.innerHTML = `更新失败：${error.message}。请检查本地应用服务器是否正在运行。`;
@@ -987,6 +1484,116 @@ reject_trade_if:
         });
       });
     }
+    function applyModelConfig(config) {
+      modelConfig = config;
+      document.getElementById("cfgPoolLimit").value = config.pool_limit;
+      document.getElementById("cfgMinAmount").value = config.min_amount_yi;
+      document.getElementById("cfgBuyScore").value = config.buy_score_threshold;
+      document.getElementById("cfgMinPct").value = config.min_pct_change;
+      document.getElementById("cfgMaxPct").value = config.max_pct_change;
+      document.getElementById("cfgClosePos").value = config.min_close_position_pct;
+      document.getElementById("cfgMaxAmplitude").value = config.max_amplitude_pct;
+      document.getElementById("cfgTargetWeight").value = Number(config.target_weight * 100).toFixed(1);
+      const markets = new Set(config.markets || ["main", "chinext", "star"]);
+      document.querySelectorAll("input[name='cfgMarket']").forEach((input) => {
+        input.checked = markets.has(input.value);
+      });
+      document.getElementById("poolModel").textContent = config.model_version || "quality_first_v2";
+    }
+    function readModelConfigForm() {
+      const markets = Array.from(document.querySelectorAll("input[name='cfgMarket']:checked")).map((input) => input.value);
+      return {
+        pool_limit: Number(document.getElementById("cfgPoolLimit").value),
+        min_amount_yi: Number(document.getElementById("cfgMinAmount").value),
+        buy_score_threshold: Number(document.getElementById("cfgBuyScore").value),
+        min_pct_change: Number(document.getElementById("cfgMinPct").value),
+        max_pct_change: Number(document.getElementById("cfgMaxPct").value),
+        min_close_position_pct: Number(document.getElementById("cfgClosePos").value),
+        max_amplitude_pct: Number(document.getElementById("cfgMaxAmplitude").value),
+        target_weight: Number(document.getElementById("cfgTargetWeight").value) / 100,
+        markets,
+        include_beijing: markets.includes("beijing")
+      };
+    }
+    async function loadModelConfig() {
+      try {
+        applyModelConfig(await apiJson("/api/system-pool/config", { cache: "no-store" }));
+      } catch (error) {
+        const result = document.getElementById("modelConfigResult");
+        result.classList.add("show");
+        result.innerHTML = `暂时无法读取模型配置：${error.message}`;
+      }
+    }
+    async function saveModelConfig(event) {
+      event.preventDefault();
+      const result = document.getElementById("modelConfigResult");
+      try {
+        const payload = readModelConfigForm();
+        if (payload.max_pct_change <= payload.min_pct_change) {
+          throw new Error("最高涨幅必须大于最低涨幅。");
+        }
+        if (!payload.markets.length) {
+          throw new Error("至少选择一个市场板块。");
+        }
+        applyModelConfig(await apiJson("/api/system-pool/config", {
+          method: "PUT",
+          body: JSON.stringify(payload)
+        }));
+        await loadModelVersions();
+        result.classList.add("show");
+        result.innerHTML = "模型配置已保存。下次点击“更新全A股票池”会按这些参数执行。";
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `保存失败：${error.message}`;
+      }
+    }
+    async function loadModelVersions() {
+      try {
+        const versions = await apiJson("/api/system-pool/versions", { cache: "no-store" });
+        document.getElementById("modelVersionRows").innerHTML = versions.map((version) => {
+          const params = version.params || {};
+          return `
+            <tr>
+              <td><code>${version.version_code}</code></td>
+              <td>${version.created_at}</td>
+              <td>${params.pool_limit ?? "--"}</td>
+              <td>${params.buy_score_threshold ?? "--"}</td>
+              <td>${(params.markets || []).join(",")}</td>
+              <td><button class="control restore-version" data-id="${version.id}">回滚</button></td>
+            </tr>
+          `;
+        }).join("");
+        document.querySelectorAll(".restore-version").forEach((button) => {
+          button.addEventListener("click", async () => {
+            applyModelConfig(await apiJson(`/api/system-pool/versions/${button.dataset.id}/restore`, { method: "POST" }));
+            await loadModelVersions();
+          });
+        });
+      } catch (error) {
+        document.getElementById("modelVersionRows").innerHTML = `<tr><td colspan="6">暂无版本历史：${error.message}</td></tr>`;
+      }
+    }
+    function currentRegime() {
+      const name = document.getElementById("marketRegime").value;
+      return marketRegimes[name] || marketRegimes["震荡上行"];
+    }
+    function applyMarketRegime() {
+      const select = document.getElementById("marketRegime");
+      const name = select.value;
+      const regime = currentRegime();
+      localStorage.setItem("aShareMarketRegime", name);
+      document.getElementById("riskModeLabel").textContent = regime.riskMode;
+      document.getElementById("regimeMaxPosition").textContent = formatPercent(regime.maxPosition, 0);
+      document.getElementById("regimeCashFloor").textContent = formatPercent(regime.cashFloor, 0);
+      document.getElementById("regimeName").textContent = name;
+      document.getElementById("regimeMinScore").textContent = regime.minScore;
+      document.getElementById("regimeSingleCap").textContent = formatPercent(regime.maxPosition, 0);
+      document.getElementById("regimeCashRule").textContent = formatPercent(regime.cashFloor, 0);
+      document.getElementById("regimeNote").textContent = `${regime.note} 目标总仓位 ${formatPercent(regime.targetExposure, 0)}。`;
+      document.getElementById("lastCalcLabel").textContent = new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
+      const activeView = document.querySelector(".view.active")?.id || "dashboard";
+      document.getElementById("viewSub").textContent = `${titles[activeView][1]} 当前市场状态：${name}，回测阈值 ${regime.minScore}，目标仓位 ${formatPercent(regime.targetExposure, 0)}，单票上限 ${formatPercent(regime.maxPosition, 0)}，现金底仓 ${formatPercent(regime.cashFloor, 0)}。`;
+    }
     document.querySelectorAll(".nav button").forEach((button) => {
       button.addEventListener("click", () => {
         const view = button.dataset.view;
@@ -995,6 +1602,7 @@ reject_trade_if:
         document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === view));
         document.getElementById("viewTitle").textContent = titles[view][0];
         document.getElementById("viewSub").textContent = titles[view][1];
+        applyMarketRegime();
       });
     });
     document.getElementById("signalForm").addEventListener("submit", (event) => {
@@ -1011,8 +1619,7 @@ reject_trade_if:
       document.getElementById("alphaMetric").textContent = score.toFixed(1);
     });
     document.getElementById("generateBtn").addEventListener("click", () => {
-      stocks.sort(() => Math.random() - 0.5);
-      renderStocks();
+      loadSystemPool();
     });
     document.getElementById("rebalanceBtn").addEventListener("click", () => {
       alert("再平衡完成：降低拥挤主题 4%，现金底仓提高至 12%，保留 8 个候选。");
@@ -1033,6 +1640,35 @@ reject_trade_if:
     document.getElementById("refreshPoolBtn").addEventListener("click", () => {
       rebuildSystemPool();
     });
+    document.getElementById("modelConfigForm").addEventListener("submit", saveModelConfig);
+    document.getElementById("marketRegime").addEventListener("change", applyMarketRegime);
+    document.getElementById("positionSymbol").addEventListener("input", () => {
+      const input = document.getElementById("positionSymbol");
+      input.value = input.value.replace(/\D/g, "").slice(0, 6);
+      if (input.value.length === 6) lookupPositionName();
+    });
+    document.getElementById("positionSymbol").addEventListener("blur", lookupPositionName);
+    document.getElementById("positionForm").addEventListener("submit", savePosition);
+    document.getElementById("runBacktestBtn").addEventListener("click", () => {
+      runBacktest();
+    });
+    document.getElementById("runPortfolioBacktestBtn").addEventListener("click", () => {
+      runPortfolioBacktest();
+    });
+    document.getElementById("runStrategyOptimizerBtn").addEventListener("click", () => {
+      runStrategyOptimizer();
+    });
+    document.getElementById("runDataHealthBtn").addEventListener("click", () => {
+      runDataHealth();
+    });
+    document.getElementById("runFactorDiagnosticsBtn").addEventListener("click", () => {
+      runFactorDiagnostics();
+    });
+    document.getElementById("researchSymbol").addEventListener("input", () => {
+      const input = document.getElementById("researchSymbol");
+      input.value = input.value.replace(/\D/g, "").slice(0, 6);
+    });
+    document.getElementById("researchReportForm").addEventListener("submit", generateResearchReport);
     document.getElementById("signedInUser").textContent = localStorage.getItem("alpha_email") || "已登录";
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("alpha_token");
@@ -1041,8 +1677,18 @@ reject_trade_if:
     });
     renderStocks();
     renderFactors();
+    const savedRegime = localStorage.getItem("aShareMarketRegime");
+    if (savedRegime && marketRegimes[savedRegime]) document.getElementById("marketRegime").value = savedRegime;
+    applyMarketRegime();
     loadPortfolioAdvice();
+    loadModelConfig();
+    loadModelVersions();
     loadSystemPool();
+    loadBacktest();
+    loadPortfolioBacktest();
+    loadStrategyOptimization();
+    loadDataHealth();
+    loadFactorDiagnostics();
     const saved = localStorage.getItem("aShareAlphaView");
     if (saved && document.querySelector(`[data-view="${saved}"]`)) {
       document.querySelector(`[data-view="${saved}"]`).click();

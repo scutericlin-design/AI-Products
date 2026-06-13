@@ -34,6 +34,18 @@ def normalize_code(raw_code: str) -> tuple[str, str]:
     return "", code.zfill(6)
 
 
+def classify_board(market: str, symbol: str) -> str:
+    if market == "bj" or symbol.startswith(("4", "8", "9")):
+        return "beijing"
+    if symbol.startswith(("300", "301")):
+        return "chinext"
+    if symbol.startswith(("688", "689")):
+        return "star"
+    if symbol.startswith(("000", "001", "002", "003", "600", "601", "603", "605")):
+        return "main"
+    return "other"
+
+
 def percentile(series: pd.Series, higher_is_better: bool = True) -> pd.Series:
     ranks = series.rank(pct=True)
     return ranks if higher_is_better else 1 - ranks
@@ -50,6 +62,13 @@ def build_pool(
     trade_date: str,
     min_amount: float,
     include_beijing: bool,
+    markets: set[str],
+    buy_score_threshold: float,
+    min_pct_change: float,
+    max_pct_change: float,
+    min_close_position: float,
+    max_amplitude: float,
+    target_weight: float,
 ) -> pd.DataFrame:
     df = spot.rename(
         columns={
@@ -70,6 +89,7 @@ def build_pool(
     market_and_code = df["raw_symbol"].apply(normalize_code)
     df["market"] = market_and_code.apply(lambda item: item[0])
     df["symbol"] = market_and_code.apply(lambda item: item[1])
+    df["board"] = df.apply(lambda row: classify_board(row["market"], row["symbol"]), axis=1)
 
     numeric_columns = ["close", "pct_change", "prev_close", "open", "high", "low", "volume", "amount"]
     for column in numeric_columns:
@@ -81,6 +101,7 @@ def build_pool(
     df = df[~df["name"].astype(str).str.contains("ST|退", regex=True)]
     if not include_beijing:
         df = df[df["market"].isin(["sh", "sz"])]
+    df = df[df["board"].isin(markets)]
 
     range_width = (df["high"] - df["low"]).replace(0, pd.NA)
     df["intraday_position"] = ((df["close"] - df["low"]) / range_width).fillna(0.5)
@@ -111,14 +132,14 @@ def build_pool(
 
     df["action"] = "watch"
     df.loc[
-        (df["price_factor_score"] >= 78)
-        & (df["pct_change"] > 1.0)
-        & (df["pct_change"] < 9.7)
-        & (df["intraday_position"] >= 0.55)
-        & (df["amplitude_pct"] <= 0.12),
+        (df["price_factor_score"] >= buy_score_threshold)
+        & (df["pct_change"] > min_pct_change)
+        & (df["pct_change"] < max_pct_change)
+        & (df["intraday_position"] >= min_close_position)
+        & (df["amplitude_pct"] <= max_amplitude),
         "action",
     ] = "buy"
-    df["target_weight"] = df["action"].map({"buy": 0.05, "watch": 0.0})
+    df["target_weight"] = df["action"].map({"buy": target_weight, "watch": 0.0})
 
     def flags(row: pd.Series) -> str:
         items: list[str] = []
@@ -128,7 +149,7 @@ def build_pool(
             items.append("limit_up_or_hard_to_buy")
         if row["amount"] < min_amount * 2:
             items.append("liquidity_watch")
-        if row["amplitude_pct"] > 0.12:
+        if row["amplitude_pct"] > max_amplitude:
             items.append("high_intraday_amplitude")
         if abs(row["gap_pct"]) > 0.06:
             items.append("large_gap_open")
@@ -197,10 +218,24 @@ def main() -> int:
     parser.add_argument("--trade-date", default=date.today().isoformat())
     parser.add_argument("--min-amount", type=float, default=300_000_000)
     parser.add_argument("--include-beijing", action="store_true")
+    parser.add_argument("--markets", default="main,chinext,star", help="Comma separated: main,chinext,star,beijing")
+    parser.add_argument("--buy-score-threshold", type=float, default=78.0)
+    parser.add_argument("--min-pct-change", type=float, default=1.0)
+    parser.add_argument("--max-pct-change", type=float, default=9.7)
+    parser.add_argument("--min-close-position-pct", type=float, default=55.0)
+    parser.add_argument("--max-amplitude-pct", type=float, default=12.0)
+    parser.add_argument("--target-weight", type=float, default=0.05)
     args = parser.parse_args()
 
     if args.limit < 1 or args.limit > 30:
         raise SystemExit("--limit must be between 1 and 30")
+    markets = {item.strip() for item in args.markets.split(",") if item.strip()}
+    allowed_markets = {"main", "chinext", "star", "beijing"}
+    unknown_markets = markets.difference(allowed_markets)
+    if unknown_markets:
+        raise SystemExit(f"--markets contains unsupported boards: {sorted(unknown_markets)}")
+    if not markets:
+        raise SystemExit("--markets must include at least one board")
 
     spot = ak.stock_zh_a_spot()
     pool = build_pool(
@@ -209,6 +244,13 @@ def main() -> int:
         trade_date=args.trade_date,
         min_amount=args.min_amount,
         include_beijing=args.include_beijing,
+        markets=markets,
+        buy_score_threshold=args.buy_score_threshold,
+        min_pct_change=args.min_pct_change,
+        max_pct_change=args.max_pct_change,
+        min_close_position=args.min_close_position_pct / 100,
+        max_amplitude=args.max_amplitude_pct / 100,
+        target_weight=args.target_weight,
     )
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     pool.to_csv(OUTPUT_PATH, index=False, encoding="utf-8-sig")
