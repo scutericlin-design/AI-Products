@@ -44,6 +44,8 @@ code,name
 - `data/raw/price_ingest_manifest.csv`
 - `data/processed/factors_price_daily.csv`
 - `data/processed/factors_price_latest.csv`
+- `data/processed/signal_daily.csv`
+- `data/processed/signal_latest.csv`
 
 These files are local research data, not audited production data. Before using signals for actual trading, add field validation, duplicate checks, missing-date checks, and a second data source.
 
@@ -66,3 +68,28 @@ The first factor set uses only daily price, amount, and turnover:
 - `price_factor_score`
 
 For a real 2-8 week strategy, ingest at least 1-3 years of daily data before relying on the ranking.
+
+## Build Strategy Signals
+
+After building factors:
+
+```bash
+python scripts/build_signals.py
+```
+
+The first signal engine converts `price_factor_score` into:
+
+- `buy`
+- `watch`
+- `hold_or_reduce`
+- `avoid`
+
+It also writes target weights, human-readable reasons, and risk flags such as:
+
+- `insufficient_20d_history`
+- `momentum_20d_negative`
+- `below_ma20`
+- `high_volatility`
+- `amount_contraction`
+
+Signals are research outputs only. They require manual review before any real trade.
