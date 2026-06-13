@@ -1,0 +1,5 @@
+symbol,name,start,end,adjust,ok,message
+000001,平安银行,20240101,20240131,none,True,data/raw/prices/000001.csv
+300750,宁德时代,20240101,20240131,none,True,data/raw/prices/300750.csv
+688012,中微公司,20240101,20240131,none,True,data/raw/prices/688012.csv
+603986,兆易创新,20240101,20240131,none,True,data/raw/prices/603986.csv
