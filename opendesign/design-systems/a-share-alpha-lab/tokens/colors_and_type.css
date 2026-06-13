@@ -1,0 +1,42 @@
+:root {
+  --font-display: "Space Grotesk", "Aptos Display", "Helvetica Neue", sans-serif;
+  --font-body: "IBM Plex Sans", "Aptos", "Helvetica Neue", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  --ink-950: oklch(0.155 0.01 250);
+  --ink-900: oklch(0.205 0.012 250);
+  --ink-800: oklch(0.27 0.012 250);
+  --paper-050: oklch(0.975 0.006 110);
+  --paper-100: oklch(0.94 0.008 105);
+  --paper-200: oklch(0.88 0.01 105);
+  --grid-300: oklch(0.73 0.012 115);
+  --accent-long: oklch(0.79 0.19 145);
+  --accent-warn: oklch(0.78 0.16 82);
+  --accent-risk: oklch(0.63 0.2 28);
+  --accent-info: oklch(0.68 0.12 210);
+
+  --surface-primary: var(--paper-050);
+  --surface-secondary: var(--paper-100);
+  --surface-inverse: var(--ink-950);
+  --text-primary: var(--ink-950);
+  --text-secondary: oklch(0.42 0.012 250);
+  --text-inverse: var(--paper-050);
+  --border-subtle: color-mix(in oklab, var(--grid-300), transparent 45%);
+  --border-strong: var(--ink-800);
+
+  --h1: 700 40px/0.98 var(--font-display);
+  --h2: 700 24px/1.08 var(--font-display);
+  --h3: 700 16px/1.15 var(--font-display);
+  --body: 500 14px/1.45 var(--font-body);
+  --small: 600 12px/1.35 var(--font-body);
+  --mono: 500 12px/1.45 var(--font-mono);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+}

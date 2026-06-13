@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A-Share AI Investment Model Workstation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../design-systems/a-share-alpha-lab/tokens/colors_and_type.css" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(90deg, color-mix(in oklab, var(--ink-950), transparent 94%) 1px, transparent 1px),
+        linear-gradient(0deg, color-mix(in oklab, var(--ink-950), transparent 94%) 1px, transparent 1px),
+        var(--surface-primary);
+      background-size: 28px 28px;
+      color: var(--text-primary);
+      font: var(--body);
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 256px minmax(0, 1fr);
+    }
+    .rail {
+      background: var(--surface-inverse);
+      color: var(--text-inverse);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+    .brand {
+      border-bottom: 1px solid color-mix(in oklab, var(--paper-050), transparent 82%);
+      padding-bottom: 16px;
+    }
+    .brand .kicker { font: var(--mono); color: var(--accent-long); text-transform: uppercase; letter-spacing: .04em; }
+    .brand h1 { font: 700 22px/1 var(--font-display); margin: 8px 0 4px; letter-spacing: 0; }
+    .brand p { margin: 0; color: color-mix(in oklab, var(--paper-050), transparent 28%); font-size: 12px; }
+    .nav { display: grid; gap: 6px; }
+    .nav button {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: color-mix(in oklab, var(--paper-050), transparent 28%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      transition: .16s ease;
+    }
+    .nav button:hover, .nav button.active {
+      color: var(--paper-050);
+      border-color: color-mix(in oklab, var(--accent-long), transparent 55%);
+      background: color-mix(in oklab, var(--accent-long), transparent 90%);
+    }
+    .nav code { font: var(--mono); color: var(--accent-long); }
+    .system-status {
+      margin-top: auto;
+      border: 1px solid color-mix(in oklab, var(--paper-050), transparent 82%);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+    .status-row { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
+    .status-row strong { font-family: var(--font-mono); color: var(--accent-long); }
+    main { min-width: 0; }
+    .topbar {
+      min-height: 76px;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      background: color-mix(in oklab, var(--paper-050), transparent 6%);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .topbar h2 { margin: 0; font: var(--h2); }
+    .topbar p { margin: 4px 0 0; color: var(--text-secondary); }
+    .toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .control, .primary {
+      min-height: 40px;
+      border-radius: var(--radius-sm);
+      padding: 0 12px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-primary);
+      color: var(--text-primary);
+    }
+    .primary {
+      background: var(--ink-950);
+      color: var(--paper-050);
+      border-color: var(--ink-950);
+    }
+    .primary:hover { background: var(--ink-800); }
+    .workspace {
+      padding: 22px 24px 36px;
+      display: grid;
+      gap: 16px;
+    }
+    .hero-strip {
+      background: var(--ink-950);
+      color: var(--paper-050);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: minmax(260px, 1.2fr) repeat(4, minmax(130px, .5fr));
+      gap: 14px;
+      align-items: stretch;
+      overflow: hidden;
+    }
+    .thesis h3 { font: var(--h1); margin: 0 0 12px; max-width: 760px; }
+    .thesis p { margin: 0; color: color-mix(in oklab, var(--paper-050), transparent 24%); max-width: 760px; }
+    .metric {
+      border-left: 1px solid color-mix(in oklab, var(--paper-050), transparent 82%);
+      padding-left: 14px;
+      display: grid;
+      align-content: space-between;
+      min-height: 112px;
+    }
+    .metric span { color: color-mix(in oklab, var(--paper-050), transparent 35%); font-size: 12px; }
+    .metric strong { font: 700 28px/1 var(--font-display); color: var(--accent-long); }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1.35fr .85fr .85fr;
+      gap: 16px;
+    }
+    .panel {
+      background: color-mix(in oklab, var(--paper-050), white 18%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .panel-head {
+      min-height: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .panel-head h3 { margin: 0; font: var(--h3); }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      padding: 0 8px;
+      font: var(--mono);
+      background: var(--surface-secondary);
+      white-space: nowrap;
+    }
+    .tag.long { border-color: color-mix(in oklab, var(--accent-long), transparent 30%); color: color-mix(in oklab, var(--accent-long), black 28%); }
+    .tag.warn { border-color: color-mix(in oklab, var(--accent-warn), transparent 35%); color: color-mix(in oklab, var(--accent-warn), black 35%); }
+    .tag.risk { border-color: color-mix(in oklab, var(--accent-risk), transparent 30%); color: var(--accent-risk); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+    td code, pre, .mono { font: var(--mono); }
+    tr:hover td { background: color-mix(in oklab, var(--accent-long), transparent 94%); }
+    .score {
+      font: 700 18px/1 var(--font-display);
+      color: color-mix(in oklab, var(--accent-long), black 25%);
+    }
+    .stack { display: grid; gap: 12px; padding: 14px; }
+    .factor {
+      display: grid;
+      gap: 7px;
+    }
+    .factor-line {
+      height: 8px;
+      background: var(--paper-200);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .factor-line span { display: block; height: 100%; background: var(--accent-long); }
+    .factor small { display: flex; justify-content: space-between; color: var(--text-secondary); }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      gap: 10px;
+      padding: 14px;
+    }
+    .step {
+      min-height: 112px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      background: var(--surface-secondary);
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+    .step strong { font: var(--h3); }
+    .step p { margin: 0; color: var(--text-secondary); font-size: 12px; }
+    .tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tabs button {
+      border: 1px solid var(--border-subtle);
+      background: var(--surface-primary);
+      border-radius: var(--radius-sm);
+      min-height: 36px;
+      padding: 0 10px;
+    }
+    .tabs button.active {
+      background: var(--ink-950);
+      border-color: var(--ink-950);
+      color: var(--paper-050);
+    }
+    .view { display: none; animation: fadeIn .18s ease; }
+    .view.active { display: grid; gap: 16px; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      background: var(--ink-950);
+      color: var(--paper-050);
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      overflow: auto;
+      max-height: 430px;
+    }
+    .schema-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(210px, 1fr));
+      gap: 12px;
+      padding: 14px;
+    }
+    .schema {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      background: var(--surface-secondary);
+    }
+    .schema h4 { margin: 0 0 10px; font: var(--h3); }
+    .schema ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+    .schema li { font: var(--mono); color: var(--text-secondary); }
+    .signal-form {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr)) auto;
+      gap: 10px;
+      padding: 14px;
+      align-items: end;
+    }
+    label { display: grid; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+    input, select {
+      min-height: 40px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0 10px;
+      background: white;
+      color: var(--text-primary);
+    }
+    .result {
+      margin: 0 14px 14px;
+      padding: 12px;
+      border: 1px solid color-mix(in oklab, var(--accent-long), transparent 40%);
+      background: color-mix(in oklab, var(--accent-long), transparent 91%);
+      border-radius: var(--radius-sm);
+      display: none;
+    }
+    .result.show { display: block; }
+    .source-list {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+    .source {
+      display: grid;
+      grid-template-columns: 150px 1fr auto;
+      gap: 12px;
+      align-items: start;
+      padding: 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--surface-secondary);
+    }
+    .source a { color: var(--ink-950); font-weight: 700; }
+    .note {
+      color: var(--text-secondary);
+      padding: 0 14px 14px;
+      font-size: 12px;
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 12px;
+      padding: 14px;
+    }
+    .holding-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      background: var(--surface-secondary);
+      display: grid;
+      gap: 10px;
+      min-height: 132px;
+    }
+    .holding-card header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .holding-card h4 { margin: 0; font: var(--h3); }
+    .holding-card strong { font: 700 24px/1 var(--font-display); }
+    .holding-card small { color: var(--text-secondary); }
+    .exposure-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 14px;
+    }
+    .exposure-item {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      background: color-mix(in oklab, var(--paper-050), white 20%);
+    }
+    .exposure-item span {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .advice-note {
+      margin: 0;
+      padding: 12px 14px;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 1fr; }
+      .rail { position: relative; height: auto; }
+      .hero-strip, .grid-3, .two-col, .schema-grid, .flow, .signal-form, .portfolio-grid, .exposure-grid { grid-template-columns: 1fr; }
+      .topbar { position: relative; align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="rail">
+      <div class="brand">
+        <div class="kicker">AI Quant Workstation</div>
+        <h1>A-Share Alpha Lab</h1>
+        <p>2-8 周高弹性成长策略 · 多因子 + AI 研究链路</p>
+      </div>
+      <nav class="nav" aria-label="主导航">
+        <button class="active" data-view="dashboard">信号驾驶舱 <code>01</code></button>
+        <button data-view="portfolio">个人持股 <code>02</code></button>
+        <button data-view="workflow">AI 投研链路 <code>03</code></button>
+        <button data-view="data">数据与表结构 <code>04</code></button>
+        <button data-view="model">算法模块 <code>05</code></button>
+        <button data-view="backtest">回测与风控 <code>06</code></button>
+      </nav>
+      <div class="system-status">
+        <div class="status-row"><span>Universe</span><strong>沪深京 A</strong></div>
+        <div class="status-row"><span>Horizon</span><strong>2-8W</strong></div>
+        <div class="status-row"><span>Risk Mode</span><strong>High Beta</strong></div>
+        <div class="status-row"><span>Last Calc</span><strong>15:04 CST</strong></div>
+      </div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <div>
+          <h2 id="viewTitle">信号驾驶舱</h2>
+          <p id="viewSub">从全市场股票池筛选高弹性成长候选，并解释每个交易信号的因子来源与风险约束。</p>
+        </div>
+        <div class="toolbar">
+          <select class="control" id="marketRegime">
+            <option>震荡上行</option>
+            <option>高波动修复</option>
+            <option>缩量防御</option>
+          </select>
+          <button class="control" id="rebalanceBtn">再平衡</button>
+          <button class="primary" id="generateBtn">生成今日信号</button>
+        </div>
+      </header>
+      <section class="workspace">
+        <section class="hero-strip">
+          <div class="thesis">
+            <h3>在成长景气、资金确认、价格突破同时成立时，才允许模型发出交易信号。</h3>
+            <p>核心目标不是预测单日涨跌，而是在 2-8 周窗口内识别“基本面向上 + 资金加速 + 技术确认”的非线性弹性。</p>
+          </div>
+          <div class="metric"><span>Alpha Score</span><strong id="alphaMetric">82.4</strong></div>
+          <div class="metric"><span>Hit Rate Target</span><strong>56%+</strong></div>
+          <div class="metric"><span>Max Position</span><strong>12%</strong></div>
+          <div class="metric"><span>Stop Rule</span><strong>-8%</strong></div>
+        </section>
+
+        <div id="dashboard" class="view active">
+          <div class="grid-3">
+            <section class="panel">
+              <div class="panel-head">
+                <h3>候选股票池</h3>
+                <span class="tag long">Top 6 / 4,900+</span>
+              </div>
+              <table>
+                <thead><tr><th>代码</th><th>逻辑</th><th>评分</th><th>状态</th></tr></thead>
+                <tbody id="stockRows"></tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>因子权重</h3><span class="tag">Dynamic</span></div>
+              <div class="stack" id="factorStack"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>AI 解释</h3><span class="tag warn">需要人工复核</span></div>
+              <div class="stack">
+                <p><strong>今日主线：</strong>算力设备、出海链、半导体设备出现财报预期上修与资金确认。</p>
+                <p><strong>过滤规则：</strong>剔除近 20 日换手过热、解禁压力、商誉风险、公告异常和低流动性标的。</p>
+                <p><strong>交易纪律：</strong>分两笔进入，首次仓位不超过目标仓位 60%；若 5 日内无资金延续，降级为观察。</p>
+              </div>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="panel-head"><h3>单票信号生成器</h3><span class="tag">Interactive</span></div>
+            <form class="signal-form" id="signalForm">
+              <label>股票代码<input id="tickerInput" value="300750.SZ" required /></label>
+              <label>行业景气<select id="growthInput"><option value="high">高</option><option value="mid">中</option><option value="low">低</option></select></label>
+              <label>资金强度<select id="flowInput"><option value="strong">强</option><option value="neutral">中性</option><option value="weak">弱</option></select></label>
+              <label>波动风险<select id="riskInput"><option value="normal">正常</option><option value="crowded">拥挤</option><option value="event">事件风险</option></select></label>
+              <button class="primary" type="submit">计算</button>
+            </form>
+            <div class="result" id="signalResult"></div>
+          </section>
+        </div>
+
+        <div id="portfolio" class="view">
+          <div class="grid-3">
+            <section class="panel">
+              <div class="panel-head">
+                <h3>当前持股</h3>
+                <span class="tag long">模拟组合</span>
+              </div>
+              <div class="portfolio-grid" id="holdingCards"></div>
+              <p class="advice-note">持仓数据为原型示例。生产系统应接入券商持仓、成交回报和成本价，并在本地加密保存。</p>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>组合暴露</h3><span class="tag warn">高弹性</span></div>
+              <div class="exposure-grid">
+                <div class="exposure-item"><span>成长暴露</span><strong class="mono">78%</strong></div>
+                <div class="exposure-item"><span>单行业最高</span><strong class="mono">24%</strong></div>
+                <div class="exposure-item"><span>现金比例</span><strong class="mono">11%</strong></div>
+                <div class="exposure-item"><span>组合回撤线</span><strong class="mono">-6.5%</strong></div>
+              </div>
+              <p class="advice-note">当前组合可继续进攻，但不建议把算力链和半导体设备合计暴露推过 32%。</p>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>AI 持仓诊断</h3><span class="tag risk">非投资指令</span></div>
+              <div class="stack">
+                <p><strong>核心判断：</strong>组合处于进攻状态，适合保留强趋势票，但新增仓位应给到评分更高且拥挤度更低的候选。</p>
+                <p><strong>优先动作：</strong>对已盈利且资金强度回落的标的做仓位上限控制；新开仓只接受评分 82 以上且风险状态为 Long 的股票。</p>
+                <p><strong>失效条件：</strong>指数连续两日放量下跌、候选股跌破 20 日线、或公告/业绩反证出现时，自动降级为 Reduce。</p>
+              </div>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>策略股票池投资建议</h3>
+              <div class="tabs" id="adviceFilters">
+                <button class="active" data-filter="all">全部</button>
+                <button data-filter="buy">可买</button>
+                <button data-filter="watch">观察</button>
+                <button data-filter="reduce">减仓</button>
+              </div>
+            </div>
+            <table>
+              <thead><tr><th>代码</th><th>策略动作</th><th>建议仓位</th><th>理由</th><th>触发条件</th><th>操作</th></tr></thead>
+              <tbody id="adviceRows"></tbody>
+            </table>
+            <div class="result" id="adviceResult"></div>
+          </section>
+        </div>
+
+        <div id="workflow" class="view">
+          <section class="panel">
+            <div class="panel-head"><h3>全流程 AI 投研系统</h3><span class="tag long">Human-in-the-loop</span></div>
+            <div class="flow">
+              <div class="step"><strong>1. 数据接入</strong><p>行情、财务、公告、研报、资金流、行业景气、宏观流动性。</p></div>
+              <div class="step"><strong>2. 特征生成</strong><p>标准化、行业中性化、滚动窗口、文本情绪和事件标签。</p></div>
+              <div class="step"><strong>3. 多模型打分</strong><p>基本面质量、成长加速、资金确认、技术突破、风险约束。</p></div>
+              <div class="step"><strong>4. LLM 解释</strong><p>生成投资假设、反证清单、公告摘要和风险备忘。</p></div>
+              <div class="step"><strong>5. 组合执行</strong><p>仓位约束、止损、止盈、再平衡和交易后归因。</p></div>
+            </div>
+          </section>
+          <div class="two-col">
+            <section class="panel">
+              <div class="panel-head"><h3>投资假设模板</h3><span class="tag">Prompt</span></div>
+              <pre>给定 {ticker} 的过去 60 个交易日行情、最近 8 个季度财报、公告与行业景气数据：
+1. 提炼 2-8 周核心上涨假设；
+2. 列出支持证据、反证指标、失效条件；
+3. 判断是否属于高弹性成长候选；
+4. 输出: thesis, catalyst, invalidation, risk_flags, confidence。</pre>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>人工复核清单</h3><span class="tag risk">No autopilot</span></div>
+              <table>
+                <tbody>
+                  <tr><td>公告真实性</td><td>重大合同、业绩预告、监管问询必须人工确认。</td></tr>
+                  <tr><td>交易可行性</td><td>成交额、涨跌停、停复牌、滑点和冲击成本。</td></tr>
+                  <tr><td>一致性检查</td><td>LLM 结论必须能回溯到结构化因子或原文证据。</td></tr>
+                  <tr><td>组合约束</td><td>单行业、单票、同主题拥挤度不得突破上限。</td></tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
+        </div>
+
+        <div id="data" class="view">
+          <section class="panel">
+            <div class="panel-head"><h3>推荐数据源</h3><span class="tag">Searched sources</span></div>
+            <div class="source-list">
+              <div class="source"><strong>Ricequant</strong><span>官方文档覆盖 RQData 金融数据 API、A 股、宏观、另类数据，以及 RQFactor、RQOptimizer、RQPAttr 等投研组件。</span><a href="https://www.ricequant.com/doc/rqdata/python/" target="_blank">文档</a></div>
+              <div class="source"><strong>AKShare</strong><span>开源数据接口覆盖 A 股行情、历史行情、公告、财报、资金流、板块、热度、龙虎榜、融资融券、技术指标等。</span><a href="https://akshare.akfamily.xyz/data/stock/stock.html" target="_blank">文档</a></div>
+              <div class="source"><strong>TuShare / JoinQuant</strong><span>适合补充行情、财务和回测环境；本次浏览环境中官方文档页面存在登录或 JavaScript 限制，落地时应进一步核验权限和字段。</span><a href="https://tushare.pro/" target="_blank">官网</a></div>
+            </div>
+            <p class="note">建议：专业投资者优先使用 Wind/Choice/Ricequant/JoinQuant 等稳定商业源，AKShare/TuShare 用于补充和快速验证。关键生产信号必须做字段校验、复权校验和幸存者偏差处理。</p>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>核心数据表结构</h3><span class="tag">Schema</span></div>
+            <div class="schema-grid">
+              <div class="schema"><h4>dim_security</h4><ul><li>ts_code pk</li><li>name</li><li>exchange</li><li>industry_l1/l2</li><li>list_date</li><li>status</li></ul></div>
+              <div class="schema"><h4>fact_price_daily</h4><ul><li>trade_date, ts_code</li><li>open/high/low/close</li><li>volume, amount</li><li>adj_factor</li><li>limit_status</li></ul></div>
+              <div class="schema"><h4>fact_financial_q</h4><ul><li>report_period</li><li>revenue_yoy</li><li>np_yoy</li><li>gross_margin</li><li>roe_ttm</li><li>cashflow_quality</li></ul></div>
+              <div class="schema"><h4>fact_moneyflow</h4><ul><li>northbound_net</li><li>main_net_inflow</li><li>turnover_z</li><li>volume_breakout</li><li>crowding_score</li></ul></div>
+              <div class="schema"><h4>doc_events</h4><ul><li>doc_id</li><li>ts_code</li><li>source_type</li><li>published_at</li><li>embedding</li><li>event_tags</li></ul></div>
+              <div class="schema"><h4>signal_daily</h4><ul><li>signal_date</li><li>ts_code</li><li>alpha_score</li><li>action</li><li>position_cap</li><li>explain_json</li></ul></div>
+              <div class="schema"><h4>portfolio_position</h4><ul><li>account_id, ts_code</li><li>shares</li><li>cost_price</li><li>market_value</li><li>weight</li><li>unrealized_pnl</li></ul></div>
+              <div class="schema"><h4>advice_log</h4><ul><li>advice_date</li><li>ts_code</li><li>action</li><li>target_weight</li><li>reason_json</li><li>accepted_at</li></ul></div>
+            </div>
+          </section>
+        </div>
+
+        <div id="model" class="view">
+          <div class="two-col">
+            <section class="panel">
+              <div class="panel-head"><h3>因子体系</h3><span class="tag long">2-8W Growth</span></div>
+              <table>
+                <thead><tr><th>模块</th><th>示例因子</th><th>权重</th></tr></thead>
+                <tbody>
+                  <tr><td>成长加速</td><td>收入/利润 YoY 加速度、盈利预测上修、订单/产能事件</td><td>30%</td></tr>
+                  <tr><td>质量过滤</td><td>ROE、毛利率稳定性、经营现金流、商誉/质押风险</td><td>15%</td></tr>
+                  <tr><td>资金确认</td><td>成交额突破、主力净流入、北向持仓、换手结构</td><td>25%</td></tr>
+                  <tr><td>价格行为</td><td>20/60 日相对强度、平台突破、波动收敛后放量</td><td>20%</td></tr>
+                  <tr><td>AI 事件</td><td>公告情绪、政策催化、研报一致预期、问询风险</td><td>10%</td></tr>
+                </tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>模型伪代码</h3><span class="tag">Pseudocode</span></div>
+              <pre>universe = filter_a_share(
+  exclude_st=True,
+  min_amount_20d=300_000_000,
+  listed_days_gt=250
+)
+
+features = build_features(
+  price_window=[20, 60, 120],
+  financial_quarters=8,
+  event_docs=latest_180d,
+  industry_neutral=True
+)
+
+alpha_score =
+  0.30 * growth_acceleration +
+  0.15 * quality_gate +
+  0.25 * moneyflow_confirmation +
+  0.20 * price_breakout +
+  0.10 * ai_event_score
+
+risk_block = liquidity_risk
+  or crowding_score > 0.85
+  or event_risk in ["监管问询", "大额解禁"]
+
+signal = rank(alpha_score)
+  .where(alpha_score > 75)
+  .where(not risk_block)
+  .top_n(12)</pre>
+            </section>
+          </div>
+        </div>
+
+        <div id="backtest" class="view">
+          <section class="panel">
+            <div class="panel-head"><h3>回测指标与风控</h3><span class="tag warn">Walk-forward</span></div>
+            <table>
+              <thead><tr><th>类别</th><th>指标</th><th>目标/说明</th></tr></thead>
+              <tbody>
+                <tr><td>收益</td><td>年化收益、超额收益、月度胜率</td><td>对比中证 500、创业板指、偏股基金指数。</td></tr>
+                <tr><td>风险</td><td>最大回撤、Calmar、下行波动、VaR</td><td>高弹性策略仍需控制单月回撤和连续亏损。</td></tr>
+                <tr><td>交易</td><td>换手率、滑点、冲击成本、涨跌停成交率</td><td>A 股必须模拟涨跌停、停复牌和 T+1。</td></tr>
+                <tr><td>稳健性</td><td>分年度、分行业、分市值、牛熊震荡切片</td><td>避免只在单一风格周期有效。</td></tr>
+                <tr><td>归因</td><td>因子 IC/RankIC、行业暴露、主题暴露</td><td>信号收益必须能解释，不接受黑箱孤立胜率。</td></tr>
+              </tbody>
+            </table>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>组合规则</h3><span class="tag risk">Risk first</span></div>
+            <pre>rebalance_frequency = weekly
+holding_period = 10 to 40 trading_days
+max_names = 8 to 12
+single_name_cap = 12%
+single_industry_cap = 28%
+entry = 60% initial + 40% confirmation
+stop_loss = -8% from entry or thesis invalidated
+take_profit = trailing stop after +18%
+cash_floor = 10% when market_regime == "缩量防御"
+
+reject_trade_if:
+  one_day_limit_up_unfilled
+  or suspended
+  or amount_20d below threshold
+  or disclosure_event_unreviewed</pre>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const titles = {
+      dashboard: ["信号驾驶舱", "从全市场股票池筛选高弹性成长候选，并解释每个交易信号的因子来源与风险约束。"],
+      portfolio: ["个人持股", "把个人当前持仓与策略股票池联动，输出加仓、观察、减仓和禁止买入建议。"],
+      workflow: ["AI 投研链路", "把结构化因子、公告文本、资金行为和人工复核整合成可审计的投研流程。"],
+      data: ["数据与表结构", "商业数据源优先，开源数据补充；每个信号必须能回溯到字段、文档和更新时间。"],
+      model: ["算法模块", "用多因子排序做主干，用 AI 文本事件和解释层提升研究效率，而不是替代风控。"],
+      backtest: ["回测与风控", "重点验证 2-8 周窗口、交易可行性、风格切片稳定性和极端行情保护。"]
+    };
+    const stocks = [
+      ["300750.SZ", "动力电池出海 + 盈利修复", 86.7, "Long"],
+      ["688012.SH", "半导体设备订单验证", 84.9, "Long"],
+      ["300308.SZ", "算力链景气 + 放量突破", 82.4, "Watch"],
+      ["002475.SZ", "新能源材料底部修复", 79.8, "Long"],
+      ["603986.SH", "存储周期弹性", 78.5, "Watch"],
+      ["601138.SH", "AI 服务器链确认", 76.2, "Blocked"]
+    ];
+    const holdings = [
+      ["300750.SZ", "宁德时代", "8.5%", "+6.8%", "保留"],
+      ["688012.SH", "中微公司", "7.2%", "+4.1%", "加仓"],
+      ["603986.SH", "兆易创新", "6.4%", "-1.9%", "观察"],
+      ["601138.SH", "工业富联", "5.1%", "+13.6%", "减仓"]
+    ];
+    const advice = [
+      ["300750.SZ", "buy", "补至 10%", "景气度与资金强度仍在高位，已有底仓可分批补足。", "回踩 20 日线不破且成交额维持 60 日均值以上"],
+      ["688012.SH", "buy", "新/加至 8%", "半导体设备订单验证更清晰，评分 84.9，组合内相关性可接受。", "突破近 40 日平台后首个缩量回踩"],
+      ["300308.SZ", "watch", "0-4%", "算力链弹性高，但短线拥挤度偏高，等待资金二次确认。", "5 日资金净流入转正且波动率回落"],
+      ["002475.SZ", "buy", "5-7%", "新能源材料底部修复，适合小仓位试错，不宜一次打满。", "行业指数站回 60 日线"],
+      ["603986.SH", "watch", "维持 6%", "存储周期逻辑成立，但价格确认不够强，已有仓位先不加。", "收盘价重新站上 20 日线"],
+      ["601138.SH", "reduce", "降至 3%", "已有较大浮盈且 AI 服务器链拥挤度抬升，保护收益优先。", "跌破 10 日线或放量滞涨"]
+    ];
+    const factors = [
+      ["成长加速", 88],
+      ["资金确认", 81],
+      ["价格突破", 77],
+      ["质量过滤", 69],
+      ["AI 事件分", 74]
+    ];
+    function renderStocks() {
+      document.getElementById("stockRows").innerHTML = stocks.map(([code, logic, score, status]) => {
+        const cls = status === "Long" ? "long" : status === "Blocked" ? "risk" : "warn";
+        return `<tr><td><code>${code}</code></td><td>${logic}</td><td><span class="score">${score}</span></td><td><span class="tag ${cls}">${status}</span></td></tr>`;
+      }).join("");
+    }
+    function renderFactors() {
+      document.getElementById("factorStack").innerHTML = factors.map(([label, value]) => `
+        <div class="factor">
+          <small><span>${label}</span><strong>${value}</strong></small>
+          <div class="factor-line"><span style="width:${value}%"></span></div>
+        </div>
+      `).join("");
+    }
+    function tagClassForAction(action) {
+      if (action === "buy") return "long";
+      if (action === "reduce") return "risk";
+      return "warn";
+    }
+    function actionLabel(action) {
+      return { buy: "可买/加仓", watch: "观察", reduce: "减仓" }[action] || action;
+    }
+    function renderHoldings() {
+      document.getElementById("holdingCards").innerHTML = holdings.map(([code, name, weight, pnl, action]) => {
+        const cls = action === "加仓" || action === "保留" ? "long" : action === "减仓" ? "risk" : "warn";
+        return `<article class="holding-card">
+          <header><h4>${name}</h4><span class="tag ${cls}">${action}</span></header>
+          <strong>${weight}</strong>
+          <small><code>${code}</code> · 浮盈亏 ${pnl}</small>
+        </article>`;
+      }).join("");
+    }
+    function renderAdvice(filter = "all") {
+      const rows = advice.filter((item) => filter === "all" || item[1] === filter);
+      document.getElementById("adviceRows").innerHTML = rows.map(([code, action, target, reason, trigger]) => `
+        <tr>
+          <td><code>${code}</code></td>
+          <td><span class="tag ${tagClassForAction(action)}">${actionLabel(action)}</span></td>
+          <td><strong>${target}</strong></td>
+          <td>${reason}</td>
+          <td>${trigger}</td>
+          <td><button class="control accept-advice" data-code="${code}" data-action="${actionLabel(action)}">采纳</button></td>
+        </tr>
+      `).join("");
+      document.querySelectorAll(".accept-advice").forEach((button) => {
+        button.addEventListener("click", () => {
+          const result = document.getElementById("adviceResult");
+          result.classList.add("show");
+          result.innerHTML = `<strong>${button.dataset.code}</strong> 已加入执行清单：${button.dataset.action}。下单前仍需确认盘口、滑点、涨跌停和公告风险。`;
+        });
+      });
+    }
+    document.querySelectorAll(".nav button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const view = button.dataset.view;
+        localStorage.setItem("aShareAlphaView", view);
+        document.querySelectorAll(".nav button").forEach((b) => b.classList.toggle("active", b === button));
+        document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === view));
+        document.getElementById("viewTitle").textContent = titles[view][0];
+        document.getElementById("viewSub").textContent = titles[view][1];
+      });
+    });
+    document.getElementById("signalForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const ticker = document.getElementById("tickerInput").value.trim().toUpperCase();
+      const growth = document.getElementById("growthInput").value;
+      const flow = document.getElementById("flowInput").value;
+      const risk = document.getElementById("riskInput").value;
+      const score = 62 + (growth === "high" ? 14 : growth === "mid" ? 7 : 0) + (flow === "strong" ? 12 : flow === "neutral" ? 5 : -4) - (risk === "normal" ? 0 : risk === "crowded" ? 9 : 15);
+      const action = score >= 78 && risk === "normal" ? "Long Candidate" : score >= 72 ? "Watch" : "No Trade";
+      const result = document.getElementById("signalResult");
+      result.classList.add("show");
+      result.innerHTML = `<strong>${ticker}</strong> 计算结果：<span class="mono">${score.toFixed(1)}</span> / ${action}。建议先验证公告催化、成交额承载和行业拥挤度，再决定是否进入组合。`;
+      document.getElementById("alphaMetric").textContent = score.toFixed(1);
+    });
+    document.getElementById("generateBtn").addEventListener("click", () => {
+      stocks.sort(() => Math.random() - 0.5);
+      renderStocks();
+    });
+    document.getElementById("rebalanceBtn").addEventListener("click", () => {
+      alert("再平衡完成：降低拥挤主题 4%，现金底仓提高至 12%，保留 8 个候选。");
+    });
+    document.querySelectorAll("#adviceFilters button").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("#adviceFilters button").forEach((b) => b.classList.toggle("active", b === button));
+        renderAdvice(button.dataset.filter);
+      });
+    });
+    renderStocks();
+    renderFactors();
+    renderHoldings();
+    renderAdvice();
+    const saved = localStorage.getItem("aShareAlphaView");
+    if (saved && document.querySelector(`[data-view="${saved}"]`)) {
+      document.querySelector(`[data-view="${saved}"]`).click();
+    }
+  </script>
+</body>
+</html>
