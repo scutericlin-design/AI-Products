@@ -117,8 +117,8 @@ def main() -> int:
     latest = latest_by_symbol(factors)
 
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-    factors.to_csv(FACTOR_PATH, index=False, encoding="utf-8")
-    latest.to_csv(LATEST_FACTOR_PATH, index=False, encoding="utf-8")
+    factors.to_csv(FACTOR_PATH, index=False, encoding="utf-8-sig")
+    latest.to_csv(LATEST_FACTOR_PATH, index=False, encoding="utf-8-sig")
 
     print(f"\nwrote {FACTOR_PATH.relative_to(PROJECT_ROOT)} rows={len(factors)}")
     print(f"wrote {LATEST_FACTOR_PATH.relative_to(PROJECT_ROOT)} rows={len(latest)}")

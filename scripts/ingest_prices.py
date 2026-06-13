@@ -112,7 +112,7 @@ def ingest_one(stock: Stock, start: str, end: str, adjust: str) -> tuple[bool, s
 
         RAW_PRICE_DIR.mkdir(parents=True, exist_ok=True)
         output_path = RAW_PRICE_DIR / f"{stock.code}.csv"
-        normalized.to_csv(output_path, index=False, encoding="utf-8")
+        normalized.to_csv(output_path, index=False, encoding="utf-8-sig")
         return True, str(output_path.relative_to(PROJECT_ROOT))
     except Exception as exc:
         return False, f"{type(exc).__name__}: {exc}"
@@ -120,7 +120,7 @@ def ingest_one(stock: Stock, start: str, end: str, adjust: str) -> tuple[bool, s
 
 def write_manifest(rows: list[dict[str, str]]) -> None:
     MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(rows).to_csv(MANIFEST_PATH, index=False, encoding="utf-8")
+    pd.DataFrame(rows).to_csv(MANIFEST_PATH, index=False, encoding="utf-8-sig")
 
 
 def main() -> int:

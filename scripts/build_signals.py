@@ -175,8 +175,8 @@ def main() -> int:
     latest = latest_by_symbol(signals)
 
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-    signals.to_csv(SIGNAL_DAILY_PATH, index=False, encoding="utf-8")
-    latest.to_csv(SIGNAL_LATEST_PATH, index=False, encoding="utf-8")
+    signals.to_csv(SIGNAL_DAILY_PATH, index=False, encoding="utf-8-sig")
+    latest.to_csv(SIGNAL_LATEST_PATH, index=False, encoding="utf-8-sig")
 
     print(f"wrote {SIGNAL_DAILY_PATH.relative_to(PROJECT_ROOT)} rows={len(signals)}")
     print(f"wrote {SIGNAL_LATEST_PATH.relative_to(PROJECT_ROOT)} rows={len(latest)}")

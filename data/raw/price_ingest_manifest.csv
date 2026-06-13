@@ -1,5 +1,6 @@
-symbol,name,start,end,adjust,ok,message
-000001,平安银行,20240101,20240131,none,True,data/raw/prices/000001.csv
-300750,宁德时代,20240101,20240131,none,True,data/raw/prices/300750.csv
-688012,中微公司,20240101,20240131,none,True,data/raw/prices/688012.csv
-603986,兆易创新,20240101,20240131,none,True,data/raw/prices/603986.csv
+﻿symbol,name,start,end,adjust,ok,message
+300540,蜀道装备,20250101,20260613,none,True,data/raw/prices/300540.csv
+300223,北京君正,20250101,20260613,none,True,data/raw/prices/300223.csv
+301183,东田微,20250101,20260613,none,True,data/raw/prices/301183.csv
+301232,飞沃科技,20250101,20260613,none,True,data/raw/prices/301232.csv
+002402,和而泰,20250101,20260613,none,True,data/raw/prices/002402.csv

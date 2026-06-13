@@ -46,8 +46,12 @@ code,name
 - `data/processed/factors_price_latest.csv`
 - `data/processed/signal_daily.csv`
 - `data/processed/signal_latest.csv`
+- `data/processed/portfolio_advice.csv`
+- `data/processed/recommended_pool.csv`
 
 These files are local research data, not audited production data. Before using signals for actual trading, add field validation, duplicate checks, missing-date checks, and a second data source.
+
+CSV outputs are written as `utf-8-sig` so Chinese text opens correctly in Excel and Numbers.
 
 ## Build Price Factors
 
@@ -93,3 +97,49 @@ It also writes target weights, human-readable reasons, and risk flags such as:
 - `amount_contraction`
 
 Signals are research outputs only. They require manual review before any real trade.
+
+## Build Portfolio Advice
+
+Create `data/portfolio.csv`:
+
+```csv
+symbol,name,weight,cost_price,shares
+300750,宁德时代,0.085,145.20,100
+```
+
+Then run:
+
+```bash
+python scripts/build_portfolio_advice.py
+```
+
+The default risk budget is:
+
+- single-stock maximum target: `12%`
+- watch/degraded-stock cap: `4%`
+
+The output combines current holdings and `signal_latest.csv` into:
+
+- `portfolio_action`
+- `suggested_target_weight`
+- `weight_delta`
+- `pnl_pct`
+- `advice_reason`
+
+## Build System Recommendation Pool
+
+After building signals:
+
+```bash
+python scripts/build_recommended_pool.py --limit 30
+```
+
+The system pool uses the latest trade date only, excludes `avoid`, keeps `buy` and `watch`, and caps the result at 30 stocks.
+
+For a full-A-share fast scan, use the AKShare Sina spot quote endpoint:
+
+```bash
+python scripts/build_a_share_spot_pool.py --limit 30 --min-amount 300000000
+```
+
+This writes the same `data/processed/recommended_pool.csv` consumed by the prototype UI. It is a same-day strength and liquidity screen, so use it as the first pass before deeper 20-day factor, announcement, and portfolio-risk review.
