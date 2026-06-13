@@ -42,5 +42,27 @@ code,name
 
 - `data/raw/prices/<code>.csv`
 - `data/raw/price_ingest_manifest.csv`
+- `data/processed/factors_price_daily.csv`
+- `data/processed/factors_price_latest.csv`
 
 These files are local research data, not audited production data. Before using signals for actual trading, add field validation, duplicate checks, missing-date checks, and a second data source.
+
+## Build Price Factors
+
+After ingesting prices:
+
+```bash
+python scripts/build_price_factors.py
+```
+
+The first factor set uses only daily price, amount, and turnover:
+
+- `momentum_5d`, `momentum_10d`, `momentum_20d`
+- `close_vs_ma20`
+- `amount_ratio_5_20`
+- `turnover_5d`
+- `volatility_20d`
+- `breakout_20d`
+- `price_factor_score`
+
+For a real 2-8 week strategy, ingest at least 1-3 years of daily data before relying on the ranking.
