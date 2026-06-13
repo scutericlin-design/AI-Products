@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>赤霄 Alpha</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --ink: #151716;
+      --muted: #647067;
+      --paper: #f6f3ea;
+      --panel: #fffdf7;
+      --line: #d9d6ca;
+      --gold: #c4913f;
+      --red: #b4312b;
+      --green: #315f4b;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(196, 145, 63, .22), transparent 30%),
+        linear-gradient(135deg, #191a17 0%, #29241c 48%, #173329 100%);
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+    .shell {
+      width: min(980px, 100%);
+      min-height: 600px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) 420px;
+      background: var(--paper);
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 8px;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, .32);
+      overflow: hidden;
+    }
+    .brand {
+      padding: 54px;
+      color: #fff9ea;
+      background:
+        linear-gradient(rgba(18, 18, 15, .52), rgba(18, 18, 15, .68)),
+        url("https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=1400&q=80");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+    }
+    .kicker {
+      width: fit-content;
+      border: 1px solid rgba(255, 249, 234, .38);
+      color: rgba(255, 249, 234, .82);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .04em;
+    }
+    h1 {
+      margin: 18px 0 12px;
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    .brand p {
+      max-width: 520px;
+      margin: 0;
+      color: rgba(255, 249, 234, .78);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    .mini-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .metric {
+      border-top: 1px solid rgba(255, 249, 234, .28);
+      padding-top: 12px;
+    }
+    .metric span {
+      display: block;
+      color: rgba(255, 249, 234, .62);
+      font-size: 12px;
+    }
+    .metric strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 19px;
+      color: #fff9ea;
+    }
+    .auth {
+      padding: 46px 38px;
+      background: var(--panel);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 22px;
+    }
+    .auth h2 {
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+    .auth .hint {
+      margin: -10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f2efe5;
+    }
+    .tab {
+      min-height: 42px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: var(--ink);
+      color: #fffdf7;
+    }
+    form {
+      display: grid;
+      gap: 14px;
+    }
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    input {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 0 12px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      outline: none;
+    }
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(196, 145, 63, .16);
+    }
+    .primary {
+      min-height: 48px;
+      border: 0;
+      border-radius: 7px;
+      background: var(--red);
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .primary:disabled {
+      opacity: .64;
+      cursor: wait;
+    }
+    .status {
+      min-height: 42px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #f7f4ec;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .status.error {
+      border-color: rgba(180, 49, 43, .35);
+      background: #fff1ee;
+      color: var(--red);
+    }
+    .status.success {
+      border-color: rgba(49, 95, 75, .35);
+      background: #edf8f2;
+      color: var(--green);
+    }
+    @media (max-width: 860px) {
+      body { padding: 14px; place-items: start center; }
+      .shell { grid-template-columns: 1fr; min-height: auto; }
+      .brand { min-height: 360px; padding: 34px; }
+      .auth { padding: 32px 24px; }
+      .mini-metrics { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="brand" aria-label="软件名称">
+      <div>
+        <div class="kicker">AI A-SHARE RESEARCH SYSTEM</div>
+        <h1>赤霄 Alpha</h1>
+        <p>面向个人专业投资者的 A 股 AI 投研工作台。登录后进入信号驾驶舱、系统股票池、个人持股和 AI 投研链路。</p>
+      </div>
+      <div class="mini-metrics" aria-label="系统定位">
+        <div class="metric"><span>持仓周期</span><strong>2-8 周</strong></div>
+        <div class="metric"><span>策略风格</span><strong>高弹性成长</strong></div>
+        <div class="metric"><span>核心输出</span><strong>Top 30 股票池</strong></div>
+      </div>
+    </section>
+
+    <section class="auth" aria-label="注册登录">
+      <div>
+        <h2 id="authTitle">登录账户</h2>
+        <p class="hint">请先登录。未登录状态不会展示系统内部功能。</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="登录或注册">
+        <button class="tab active" id="loginTab" type="button">登录</button>
+        <button class="tab" id="registerTab" type="button">注册</button>
+      </div>
+
+      <form id="authForm">
+        <label>邮箱
+          <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+        </label>
+        <label>密码
+          <input id="password" type="password" autocomplete="current-password" placeholder="至少 8 位" minlength="8" required />
+        </label>
+        <button class="primary" id="submitBtn" type="submit">登录并进入系统</button>
+      </form>
+
+      <div class="status" id="authStatus">如果还没有账户，请切换到“注册”。</div>
+    </section>
+  </main>
+
+  <script>
+    const PRODUCT_URL = "/opendesign/mockups/a-share-ai-investment-model/index.html";
+    const state = { mode: "login" };
+    const $ = (id) => document.getElementById(id);
+
+    function setMode(mode) {
+      state.mode = mode;
+      const isLogin = mode === "login";
+      $("loginTab").classList.toggle("active", isLogin);
+      $("registerTab").classList.toggle("active", !isLogin);
+      $("authTitle").textContent = isLogin ? "登录账户" : "创建账户";
+      $("submitBtn").textContent = isLogin ? "登录并进入系统" : "注册并进入系统";
+      $("password").autocomplete = isLogin ? "current-password" : "new-password";
+      setStatus(isLogin ? "请输入邮箱和密码登录。" : "注册成功后会自动进入系统。");
+    }
+
+    function setStatus(message, type = "") {
+      const status = $("authStatus");
+      status.textContent = message;
+      status.className = `status ${type}`.trim();
+    }
+
+    async function submitAuth(event) {
+      event.preventDefault();
+      const email = $("email").value.trim();
+      const password = $("password").value;
+      if (!email || password.length < 8) {
+        setStatus("请填写有效邮箱，并确保密码至少 8 位。", "error");
+        return;
+      }
+
+      $("submitBtn").disabled = true;
+      setStatus(state.mode === "login" ? "正在登录..." : "正在注册...");
+      try {
+        const response = await fetch(`/api/auth/${state.mode}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.detail || payload.error || `请求失败：HTTP ${response.status}`);
+        }
+        localStorage.setItem("alpha_token", payload.token);
+        localStorage.setItem("alpha_email", payload.email);
+        setStatus("成功，正在进入赤霄 Alpha...", "success");
+        window.location.href = PRODUCT_URL;
+      } catch (error) {
+        setStatus(error.message, "error");
+      } finally {
+        $("submitBtn").disabled = false;
+      }
+    }
+
+    $("loginTab").addEventListener("click", () => setMode("login"));
+    $("registerTab").addEventListener("click", () => setMode("register"));
+    $("authForm").addEventListener("submit", submitAuth);
+
+    if (localStorage.getItem("alpha_token")) {
+      window.location.href = PRODUCT_URL;
+    }
+  </script>
+</body>
+</html>

@@ -18,6 +18,7 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = PROJECT_ROOT / "data" / "processed" / "recommended_pool.csv"
+MODEL_VERSION = "quality_first_v2"
 
 
 def normalize_code(raw_code: str) -> tuple[str, str]:
@@ -36,6 +37,11 @@ def normalize_code(raw_code: str) -> tuple[str, str]:
 def percentile(series: pd.Series, higher_is_better: bool = True) -> pd.Series:
     ranks = series.rank(pct=True)
     return ranks if higher_is_better else 1 - ranks
+
+
+def clipped_score(series: pd.Series, low: float, high: float, higher_is_better: bool = True) -> pd.Series:
+    scaled = ((series - low) / (high - low)).clip(0, 1)
+    return scaled if higher_is_better else 1 - scaled
 
 
 def build_pool(
@@ -81,31 +87,51 @@ def build_pool(
     df["gap_pct"] = df["open"] / df["prev_close"] - 1
     df["amplitude_pct"] = (df["high"] - df["low"]) / df["prev_close"]
 
-    df["score_change"] = percentile(df["pct_change"])
-    df["score_amount"] = percentile(df["amount"])
-    df["score_position"] = percentile(df["intraday_position"])
-    df["score_amplitude"] = percentile(df["amplitude_pct"], higher_is_better=False)
+    df["strength_raw_score"] = clipped_score(df["pct_change"], 1.0, 8.0)
+    df["overheat_penalty"] = clipped_score(df["pct_change"], 8.0, 12.0)
+    df["strength_score"] = (df["strength_raw_score"] - 0.35 * df["overheat_penalty"]).clip(0, 1)
+    df["liquidity_score"] = percentile(df["amount"])
+    df["close_position_score"] = df["intraday_position"].clip(0, 1)
+    df["stability_score"] = clipped_score(df["amplitude_pct"], 0.02, 0.14, higher_is_better=False)
+    df["gap_quality_score"] = (1 - (df["gap_pct"].abs() / 0.06)).clip(0, 1)
+    df["tradability_score"] = 1.0
+    df.loc[df["pct_change"] >= 9.7, "tradability_score"] = 0.35
+    df.loc[df["pct_change"] >= 19.0, "tradability_score"] = 0.20
+    df.loc[df["intraday_position"] < 0.45, "tradability_score"] *= 0.65
 
-    # Prefer liquid stocks with positive strength, but penalize very high daily swings.
+    # Quality-first score: strength matters, but only if liquidity and tradability are acceptable.
     df["price_factor_score"] = (
-        42 * df["score_change"]
-        + 30 * df["score_amount"]
-        + 18 * df["score_position"]
-        + 10 * df["score_amplitude"]
+        25 * df["strength_score"]
+        + 25 * df["liquidity_score"]
+        + 20 * df["close_position_score"]
+        + 15 * df["tradability_score"]
+        + 10 * df["stability_score"]
+        + 5 * df["gap_quality_score"]
     ).round(2)
 
     df["action"] = "watch"
-    df.loc[(df["price_factor_score"] >= 82) & (df["pct_change"] > 0), "action"] = "buy"
+    df.loc[
+        (df["price_factor_score"] >= 78)
+        & (df["pct_change"] > 1.0)
+        & (df["pct_change"] < 9.7)
+        & (df["intraday_position"] >= 0.55)
+        & (df["amplitude_pct"] <= 0.12),
+        "action",
+    ] = "buy"
     df["target_weight"] = df["action"].map({"buy": 0.05, "watch": 0.0})
 
     def flags(row: pd.Series) -> str:
         items: list[str] = []
         if row["pct_change"] < 0:
             items.append("negative_intraday_return")
+        if row["pct_change"] >= 9.7:
+            items.append("limit_up_or_hard_to_buy")
         if row["amount"] < min_amount * 2:
             items.append("liquidity_watch")
         if row["amplitude_pct"] > 0.12:
             items.append("high_intraday_amplitude")
+        if abs(row["gap_pct"]) > 0.06:
+            items.append("large_gap_open")
         if row["intraday_position"] < 0.45:
             items.append("weak_close_position")
         return "|".join(items)
@@ -114,15 +140,21 @@ def build_pool(
     df["recommendation_tier"] = df["action"].map(
         {"buy": "core_candidate", "watch": "watch_candidate"}
     )
+    df["model_version"] = MODEL_VERSION
     df["trade_date"] = trade_date
     df["review_required"] = True
+    df["amount_yi"] = (df["amount"] / 100000000).round(2)
+    df["intraday_position_pct"] = (df["intraday_position"] * 100).round(1)
+    df["amplitude_pct_display"] = (df["amplitude_pct"] * 100).round(2)
+    df["gap_pct_display"] = (df["gap_pct"] * 100).round(2)
     df["reason"] = df.apply(
         lambda row: (
             f"全A实时初筛评分 {row['price_factor_score']:.1f}；"
             f"涨跌幅 {row['pct_change']:.2f}%；"
-            f"成交额 {row['amount'] / 100000000:.2f}亿；"
+            f"成交额 {row['amount_yi']:.2f}亿；"
             f"日内收盘位置 {row['intraday_position']:.0%}；"
-            f"{'核心候选' if row['action'] == 'buy' else '观察候选'}，需继续用20日趋势和公告风险复核"
+            f"振幅 {row['amplitude_pct_display']:.2f}%；"
+            f"{'核心候选' if row['action'] == 'buy' else '观察候选'}，入选原因是强势、流动性、收盘位置和可交易性综合较优"
         ),
         axis=1,
     )
@@ -139,11 +171,21 @@ def build_pool(
         "action",
         "target_weight",
         "recommendation_tier",
+        "model_version",
         "risk_flags",
         "reason",
         "review_required",
         "amount",
+        "amount_yi",
         "pct_change",
+        "intraday_position_pct",
+        "amplitude_pct_display",
+        "gap_pct_display",
+        "strength_score",
+        "liquidity_score",
+        "close_position_score",
+        "stability_score",
+        "tradability_score",
         "source_time",
     ]
     return selected[columns]
@@ -176,7 +218,7 @@ def main() -> int:
     print("\nrecommended pool")
     print(
         pool[
-            ["pool_rank", "trade_date", "symbol", "name", "price_factor_score", "action", "pct_change", "amount"]
+            ["pool_rank", "trade_date", "symbol", "name", "price_factor_score", "action", "pct_change", "amount_yi", "risk_flags"]
         ].to_string(index=False)
     )
     return 0

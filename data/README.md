@@ -143,3 +143,30 @@ python scripts/build_a_share_spot_pool.py --limit 30 --min-amount 300000000
 ```
 
 This writes the same `data/processed/recommended_pool.csv` consumed by the prototype UI. It is a same-day strength and liquidity screen, so use it as the first pass before deeper 20-day factor, announcement, and portfolio-risk review.
+
+The full-A-share scan now uses a quality-first score:
+
+- `strength_score`: prefers meaningful positive strength, but penalizes overheated one-day moves.
+- `liquidity_score`: favors higher turnover value so candidates are easier to trade.
+- `close_position_score`: favors stocks closing near the upper part of the intraday range.
+- `stability_score`: penalizes excessive intraday amplitude.
+- `gap_quality_score`: penalizes large gap opens.
+- `tradability_score`: penalizes limit-up or near-limit-up stocks that may be hard to buy.
+
+These filters improve candidate quality but do not guarantee success. Every recommendation still needs manual review.
+
+## Browser-Only Operation
+
+For normal use, start the local app server once:
+
+```bash
+python scripts/local_app_server.py --host 127.0.0.1 --port 8289
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8289/opendesign/
+```
+
+The System Pool page has an `更新全A股票池` button. It calls the local API endpoint `/api/rebuild-system-pool`, runs the full-A-share scan, rewrites `recommended_pool.csv`, and refreshes the table in the browser.

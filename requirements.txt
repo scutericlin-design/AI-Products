@@ -1,3 +1,8 @@
 akshare
 pandas
 numpy
+fastapi
+uvicorn
+sqlalchemy
+pydantic-settings
+email-validator
