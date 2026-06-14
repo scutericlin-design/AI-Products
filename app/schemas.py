@@ -56,6 +56,14 @@ class PortfolioAdviceOut(BaseModel):
     shares: float | None = None
     trade_date: str | None = None
     risk_flags: str | None = None
+    alpha_score: float | None = None
+    liquidity_capacity_score: float | None = None
+    risk_control_score: float | None = None
+    crowding_penalty: float | None = None
+    confidence: str | None = None
+    model_version: str | None = None
+    recommendation_tier: str | None = None
+    signal_source: str | None = None
     advice_reason: str
 
 

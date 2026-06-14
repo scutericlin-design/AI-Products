@@ -22,7 +22,6 @@ DATASETS = {
     "signal_latest": PROCESSED / "signal_latest.csv",
     "factors_price_daily": PROCESSED / "factors_price_daily.csv",
     "recommended_pool": PROCESSED / "recommended_pool.csv",
-    "portfolio_advice": PROCESSED / "portfolio_advice.csv",
 }
 
 

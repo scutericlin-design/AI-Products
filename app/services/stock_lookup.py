@@ -11,7 +11,6 @@ LOCAL_NAME_SOURCES = [
     PROJECT_ROOT / "data" / "processed" / "recommended_pool.csv",
     PROJECT_ROOT / "data" / "processed" / "signal_latest.csv",
     PROJECT_ROOT / "data" / "processed" / "signal_daily.csv",
-    PROJECT_ROOT / "data" / "portfolio.csv",
 ]
 
 

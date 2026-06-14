@@ -18,6 +18,7 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = PROJECT_ROOT / "data" / "processed" / "recommended_pool.csv"
+SCORED_UNIVERSE_PATH = PROJECT_ROOT / "data" / "processed" / "scored_universe_latest.csv"
 MODEL_VERSION = "institutional_score_v3"
 
 
@@ -96,6 +97,7 @@ def build_pool(
     min_close_position: float,
     max_amplitude: float,
     target_weight: float,
+    return_all: bool = False,
 ) -> pd.DataFrame:
     df = spot.rename(
         columns={
@@ -302,6 +304,11 @@ def build_pool(
         axis=1,
     )
 
+    if return_all:
+        scored = df.sort_values("price_factor_score", ascending=False).copy()
+        scored["pool_rank"] = range(1, len(scored) + 1)
+        return scored[output_columns]
+
     ranked = df.sort_values(
         ["action", "confidence", "price_factor_score", "risk_control_score"],
         ascending=[True, True, False, False],
@@ -361,11 +368,28 @@ def main() -> int:
         max_amplitude=args.max_amplitude_pct / 100,
         target_weight=args.target_weight,
     )
+    scored_universe = build_pool(
+        spot=spot,
+        limit=args.limit,
+        trade_date=args.trade_date,
+        min_amount=0,
+        include_beijing=True,
+        markets={"main", "chinext", "star", "beijing"},
+        buy_score_threshold=args.buy_score_threshold,
+        min_pct_change=args.min_pct_change,
+        max_pct_change=args.max_pct_change,
+        min_close_position=args.min_close_position_pct / 100,
+        max_amplitude=args.max_amplitude_pct / 100,
+        target_weight=args.target_weight,
+        return_all=True,
+    )
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     pool.to_csv(OUTPUT_PATH, index=False, encoding="utf-8-sig")
+    scored_universe.to_csv(SCORED_UNIVERSE_PATH, index=False, encoding="utf-8-sig")
 
     print(f"universe rows={len(spot)}")
     print(f"wrote {OUTPUT_PATH.relative_to(PROJECT_ROOT)} rows={len(pool)}")
+    print(f"wrote {SCORED_UNIVERSE_PATH.relative_to(PROJECT_ROOT)} rows={len(scored_universe)}")
     print("\nrecommended pool")
     print(
         pool[

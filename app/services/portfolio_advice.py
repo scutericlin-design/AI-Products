@@ -13,6 +13,7 @@ from scripts.build_portfolio_advice import build_advice, load_signals
 
 SIGNAL_LATEST_PATH = PROJECT_ROOT / "data" / "processed" / "signal_latest.csv"
 RECOMMENDED_POOL_PATH = PROJECT_ROOT / "data" / "processed" / "recommended_pool.csv"
+SCORED_UNIVERSE_PATH = PROJECT_ROOT / "data" / "processed" / "scored_universe_latest.csv"
 
 
 def _clean_value(value: Any) -> Any:
@@ -69,18 +70,39 @@ def _empty_signal_frame() -> pd.DataFrame:
 
 def load_personal_signal_view(
     pool_path: Path = RECOMMENDED_POOL_PATH,
+    scored_universe_path: Path = SCORED_UNIVERSE_PATH,
     fallback_path: Path = SIGNAL_LATEST_PATH,
+    held_symbols: set[str] | None = None,
 ) -> pd.DataFrame:
     frames: list[pd.DataFrame] = []
+    held_symbols = {str(symbol).zfill(6) for symbol in (held_symbols or set())}
     if pool_path.exists():
         pool = load_signals(pool_path)
         pool["signal_source"] = "system_pool"
         frames.append(pool)
 
+    used_symbols = set(frames[0]["symbol"]) if frames else set()
+    if scored_universe_path.exists() and held_symbols:
+        universe = load_signals(scored_universe_path)
+        missing_held_symbols = held_symbols.difference(used_symbols)
+        universe = universe[universe["symbol"].isin(missing_held_symbols)].copy()
+        if not universe.empty:
+            universe["signal_source"] = "portfolio_realtime_score"
+            universe["risk_flags"] = universe["risk_flags"].fillna("").astype(str)
+            universe["risk_flags"] = universe["risk_flags"].apply(
+                lambda value: "|".join([item for item in [value, "not_in_current_top_pool"] if item])
+            )
+            universe["reason"] = "未进入当前Top30系统股票池；" + universe["reason"].fillna("").astype(str)
+            universe.loc[universe["action"] == "buy", "action"] = "watch"
+            universe["target_weight"] = 0.0
+            frames.append(universe)
+            used_symbols.update(set(universe["symbol"]))
+
     if fallback_path.exists():
         fallback = load_signals(fallback_path)
-        used_symbols = set(frames[0]["symbol"]) if frames else set()
         fallback = fallback[~fallback["symbol"].isin(used_symbols)].copy()
+        if held_symbols:
+            fallback = fallback[fallback["symbol"].isin(held_symbols)].copy()
         fallback["action"] = "not_in_system_pool"
         fallback["price_factor_score"] = pd.NA
         fallback["target_weight"] = 0.0
@@ -111,7 +133,7 @@ def build_user_advice(
         return []
     portfolio = positions_to_frame(positions)
     if signals_path == RECOMMENDED_POOL_PATH:
-        signals = load_personal_signal_view(pool_path=signals_path)
+        signals = load_personal_signal_view(pool_path=signals_path, held_symbols=set(portfolio["symbol"]))
     else:
         signals = load_signals(signals_path)
     advice = build_advice(portfolio, signals, max_single=max_single, watch_cap=watch_cap)

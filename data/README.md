@@ -24,21 +24,9 @@ Ingest the default test basket:
 python scripts/ingest_prices.py --start 20240101 --end 20240131
 ```
 
-Ingest your own stock list:
+Normal product usage does not require a hand-maintained stock-list file. Use the web page buttons and API endpoints to update the system pool and account holdings.
 
-```bash
-python scripts/ingest_prices.py --stock-list data/my_stock_list.csv --start 20240101 --end 20240630
-```
-
-The custom stock list should be:
-
-```csv
-code,name
-300750,宁德时代
-688012,中微公司
-```
-
-## Output
+## System-Generated Output
 
 - `data/raw/prices/<code>.csv`
 - `data/raw/price_ingest_manifest.csv`
@@ -46,10 +34,9 @@ code,name
 - `data/processed/factors_price_latest.csv`
 - `data/processed/signal_daily.csv`
 - `data/processed/signal_latest.csv`
-- `data/processed/portfolio_advice.csv`
 - `data/processed/recommended_pool.csv`
 
-These files are local research data, not audited production data. Before using signals for actual trading, add field validation, duplicate checks, missing-date checks, and a second data source.
+These files are system-generated caches or research outputs. Normal users should not edit them. Web pages and API endpoints are the operating interface; generated files are kept only so the local research engine can cache expensive API results and rerun backtests.
 
 CSV outputs are written as `utf-8-sig` so Chinese text opens correctly in Excel and Numbers.
 
@@ -98,33 +85,29 @@ It also writes target weights, human-readable reasons, and risk flags such as:
 
 Signals are research outputs only. They require manual review before any real trade.
 
-## Build Portfolio Advice
+## Portfolio Advice
 
-Create `data/portfolio.csv`:
+Normal use is browser/API only:
 
-```csv
-symbol,name,weight,cost_price,shares
-300750,宁德时代,0.085,145.20,100
-```
-
-Then run:
-
-```bash
-python scripts/build_portfolio_advice.py
-```
+1. Log in to the app.
+2. Open `个人持股`.
+3. Add or update holdings in the web form.
+4. The `/api/portfolio/advice` endpoint reads server-side account holdings and joins them to the latest system pool.
 
 The default risk budget is:
 
 - single-stock maximum target: `12%`
 - watch/degraded-stock cap: `4%`
 
-The output combines current holdings and `signal_latest.csv` into:
+The API output combines current account holdings and `institutional_score_v3` system-pool signals into:
 
 - `portfolio_action`
 - `suggested_target_weight`
 - `weight_delta`
 - `pnl_pct`
 - `advice_reason`
+
+`scripts/build_portfolio_advice.py --portfolio-csv ...` remains only as a development/legacy import helper and is not part of the normal product workflow.
 
 ## Build System Recommendation Pool
 
@@ -142,16 +125,14 @@ For a full-A-share fast scan, use the AKShare Sina spot quote endpoint:
 python scripts/build_a_share_spot_pool.py --limit 30 --min-amount 300000000
 ```
 
-This writes the same `data/processed/recommended_pool.csv` consumed by the prototype UI. It is a same-day strength and liquidity screen, so use it as the first pass before deeper 20-day factor, announcement, and portfolio-risk review.
+This writes the same generated cache read by `/api/system-pool`. The web UI consumes the API, not the CSV file directly. It is a same-day institutional score screen, so use it as the first pass before deeper 20-day factor, announcement, and portfolio-risk review.
 
-The full-A-share scan now uses a quality-first score:
+The full-A-share scan now uses `institutional_score_v3`:
 
-- `strength_score`: prefers meaningful positive strength, but penalizes overheated one-day moves.
-- `liquidity_score`: favors higher turnover value so candidates are easier to trade.
-- `close_position_score`: favors stocks closing near the upper part of the intraday range.
-- `stability_score`: penalizes excessive intraday amplitude.
-- `gap_quality_score`: penalizes large gap opens.
-- `tradability_score`: penalizes limit-up or near-limit-up stocks that may be hard to buy.
+- `alpha_score`: strength confirmation, close position, and gap quality.
+- `liquidity_capacity_score`: market-wide amount percentile and trading capacity.
+- `risk_control_score`: stability, tradability, and reversal risk.
+- `crowding_penalty`: chase-risk and overheated move deduction.
 
 These filters improve candidate quality but do not guarantee success. Every recommendation still needs manual review.
 
@@ -169,4 +150,4 @@ Then open:
 http://127.0.0.1:8289/opendesign/
 ```
 
-The System Pool page has an `更新全A股票池` button. It calls the local API endpoint `/api/rebuild-system-pool`, runs the full-A-share scan, rewrites `recommended_pool.csv`, and refreshes the table in the browser.
+The System Pool page has an `更新全A股票池` button. It calls the local API endpoint `/api/system-pool/rebuild`, runs the full-A-share scan, updates the generated cache, and refreshes the table in the browser through `/api/system-pool`.

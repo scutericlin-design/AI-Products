@@ -1,7 +1,7 @@
 {
   "status": "ok",
-  "checked_at": "2026-06-14T00:40:27",
-  "dataset_count": 5,
+  "checked_at": "2026-06-14T17:56:29",
+  "dataset_count": 4,
   "raw_price_file_count": 9,
   "datasets": [
     {
@@ -45,28 +45,16 @@
       "exists": true,
       "status": "ok",
       "rows": 30,
-      "columns": 25,
-      "null_cells": 23,
+      "columns": 33,
+      "null_cells": 27,
       "duplicate_rows": 0,
       "latest_trade_date": "2026-06-14",
-      "updated_at": "2026-06-14T00:32:16",
-      "issues": []
-    },
-    {
-      "name": "portfolio_advice",
-      "exists": true,
-      "status": "ok",
-      "rows": 5,
-      "columns": 15,
-      "null_cells": 0,
-      "duplicate_rows": 0,
-      "latest_trade_date": "2026-06-12",
-      "updated_at": "2026-06-13T19:17:43",
+      "updated_at": "2026-06-14T17:55:16",
       "issues": []
     }
   ],
   "summary": {
-    "ok": 5,
+    "ok": 4,
     "warn": 0,
     "bad": 0
   }

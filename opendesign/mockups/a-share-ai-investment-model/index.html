@@ -635,7 +635,7 @@
               </div>
             </div>
             <table>
-              <thead><tr><th>股票</th><th>当前仓位</th><th>建议仓位</th><th>动作</th><th>评分</th><th>理由</th><th>操作</th></tr></thead>
+              <thead><tr><th>股票</th><th>当前仓位</th><th>建议仓位</th><th>动作</th><th>评分</th><th>评分拆解</th><th>理由</th><th>操作</th></tr></thead>
               <tbody id="adviceRows"></tbody>
             </table>
             <div class="result" id="adviceResult"></div>
@@ -1029,7 +1029,8 @@ reject_trade_if:
         hold: "持有",
         hold_watch_no_new: "持有观察",
         exit_or_strong_reduce: "强减/退出",
-        avoid: "回避"
+        avoid: "回避",
+        not_in_system_pool: "未入系统池"
       }[action] || action;
     }
     function confidenceLabel(confidence) {
@@ -1077,7 +1078,7 @@ reject_trade_if:
         return `<article class="holding-card">
           <header><h4>${row.name}</h4><span class="tag ${cls}">${actionLabel(action)}</span></header>
           <strong>${formatPercent(row.weight)}</strong>
-          <small><code>${row.symbol}</code> · 浮盈亏 ${formatPercent(row.pnl_pct, 2)}</small>
+          <small><code>${row.symbol}</code> · 评分 ${formatNumber(row.price_factor_score, 1)} · 浮盈亏 ${formatPercent(row.pnl_pct, 2)}</small>
           <button class="control delete-position" data-symbol="${row.symbol}">删除</button>
         </article>`;
       }).join("");
@@ -1104,7 +1105,8 @@ reject_trade_if:
           <td><strong>${formatPercent(row.weight)}</strong></td>
           <td><strong>${formatPercent(row.suggested_target_weight)}</strong></td>
           <td><span class="tag ${tagClassForAction(row.portfolio_action)}">${actionLabel(row.portfolio_action)}</span></td>
-          <td><span class="score">${Number(row.price_factor_score || 0).toFixed(1)}</span></td>
+          <td><span class="score">${formatNumber(row.price_factor_score, 1)}</span><br /><small>${confidenceLabel(row.confidence || "low")}</small></td>
+          <td><code>Alpha ${formatNumber(row.alpha_score, 1)}</code><br /><code>流动性 ${formatNumber(row.liquidity_capacity_score, 1)}</code><br /><code>风控 ${formatNumber(row.risk_control_score, 1)}</code><br /><code>拥挤扣分 ${formatNumber(row.crowding_penalty, 1)}</code></td>
           <td>${row.advice_reason}</td>
           <td><button class="control accept-advice" data-index="${portfolioAdvice.indexOf(row)}">采纳</button></td>
         </tr>
@@ -1157,17 +1159,10 @@ reject_trade_if:
         const risk = await apiJson("/api/portfolio/risk", { cache: "no-store" });
         riskNotes = risk.notes.join(" ");
       } catch (error) {
-        try {
-          const response = await fetch("/data/processed/portfolio_advice.csv", { cache: "no-store" });
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          const text = await response.text();
-          portfolioAdvice = parseCsv(text);
-        } catch (fallbackError) {
-          portfolioAdvice = [];
-          const result = document.getElementById("adviceResult");
-          result.classList.add("show");
-          result.innerHTML = `暂时无法读取你的持仓建议：${error.message}`;
-        }
+        portfolioAdvice = [];
+        const result = document.getElementById("adviceResult");
+        result.classList.add("show");
+        result.innerHTML = `暂时无法通过 API 读取你的持仓建议：${error.message}`;
       }
       updatePortfolioMetrics();
       if (riskNotes) document.getElementById("portfolioExposureNote").textContent = riskNotes;
@@ -1520,15 +1515,13 @@ reject_trade_if:
     }
     async function loadSystemPool() {
       try {
-        const response = await fetch("/data/processed/recommended_pool.csv", { cache: "no-store" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const text = await response.text();
-        systemPool = parseCsv(text).slice(0, 30);
+        const payload = await apiJson("/api/system-pool", { cache: "no-store" });
+        systemPool = (payload.rows || []).slice(0, 30);
       } catch (error) {
         systemPool = [];
         const result = document.getElementById("poolResult");
         result.classList.add("show");
-        result.innerHTML = `暂时无法读取真实推荐池：${error.message}。请点击“更新全A股票池”重新生成。`;
+        result.innerHTML = `暂时无法通过 API 读取系统股票池：${error.message}。请点击“更新全A股票池”重新生成。`;
       }
       renderStocks();
       renderSystemPool();
