@@ -31,8 +31,12 @@ def read_pool() -> list[dict[str, str]]:
 def get_or_create_config(user: User, db: Session) -> StrategyConfig:
     config = db.scalar(select(StrategyConfig).where(StrategyConfig.user_id == user.id))
     if config is None:
-        config = StrategyConfig(user_id=user.id)
+        config = StrategyConfig(user_id=user.id, model_version="institutional_score_v3")
         db.add(config)
+        db.commit()
+        db.refresh(config)
+    elif config.model_version != "institutional_score_v3":
+        config.model_version = "institutional_score_v3"
         db.commit()
         db.refresh(config)
     return config

@@ -1,0 +1,196 @@
+{
+  "source": "data/processed/signal_daily.csv",
+  "summary": {
+    "profile": "balanced",
+    "profile_label": "平衡",
+    "trade_days": 370,
+    "universe_symbol_count": 9,
+    "window_count": 6,
+    "positive_window_rate": 0.3333333333333333,
+    "average_test_annualized_return": 0.07006178415756374,
+    "median_test_annualized_return": 0.0,
+    "worst_test_drawdown": -0.028084860502180398,
+    "best_test_annualized_return": 0.29936261814704745,
+    "most_common_params": "Top5 / 阈值80.0 / 单票20% / 目标45%",
+    "stability_grade": "不稳定",
+    "stability_reason": "样本外表现不足，当前参数应继续收紧风控或扩充因子。",
+    "production_ready": false
+  },
+  "windows": [
+    {
+      "window": 1,
+      "train_start": "2024-01-02",
+      "train_end": "2025-06-03",
+      "test_start": "2025-06-04",
+      "test_end": "2025-07-29",
+      "params": {
+        "top_n": 5,
+        "min_score": 72.0,
+        "max_position": 0.1,
+        "target_exposure": 0.45,
+        "rebalance_days": 5,
+        "actions": [
+          "buy"
+        ]
+      },
+      "params_label": "Top5 / 阈值72.0 / 单票10% / 目标45%",
+      "train_objective": -0.2961781706107759,
+      "train_annualized_return": -0.022278010810007687,
+      "train_max_drawdown": -0.01283427192021136,
+      "test_cumulative_return": 0.017835382483937012,
+      "test_annualized_return": 0.12100808679833497,
+      "test_max_drawdown": -0.028084860502180398,
+      "test_sharpe": 1.311133483289291,
+      "test_average_active_exposure": 0.1166666666666667,
+      "test_execution_fill_rate": 1.0,
+      "test_blocked_buy_count": 0,
+      "test_blocked_sell_count": 0
+    },
+    {
+      "window": 2,
+      "train_start": "2025-02-05",
+      "train_end": "2025-07-29",
+      "test_start": "2025-07-30",
+      "test_end": "2025-09-23",
+      "params": {
+        "top_n": 5,
+        "min_score": 80.0,
+        "max_position": 0.2,
+        "target_exposure": 0.45,
+        "rebalance_days": 5,
+        "actions": [
+          "buy"
+        ]
+      },
+      "params_label": "Top5 / 阈值80.0 / 单票20% / 目标45%",
+      "train_objective": 0.2698018862582275,
+      "train_annualized_return": 0.15798369807028867,
+      "train_max_drawdown": -0.015173894049392955,
+      "test_cumulative_return": 0.04136056726521553,
+      "test_annualized_return": 0.29936261814704745,
+      "test_max_drawdown": -0.009875349296469937,
+      "test_sharpe": 3.7465284884815335,
+      "test_average_active_exposure": 0.2,
+      "test_execution_fill_rate": 1.0,
+      "test_blocked_buy_count": 0,
+      "test_blocked_sell_count": 0
+    },
+    {
+      "window": 3,
+      "train_start": "2025-04-02",
+      "train_end": "2025-09-23",
+      "test_start": "2025-09-24",
+      "test_end": "2025-11-26",
+      "params": {
+        "top_n": 5,
+        "min_score": 80.0,
+        "max_position": 0.2,
+        "target_exposure": 0.45,
+        "rebalance_days": 5,
+        "actions": [
+          "buy"
+        ]
+      },
+      "params_label": "Top5 / 阈值80.0 / 单票20% / 目标45%",
+      "train_objective": 0.46363041559420753,
+      "train_annualized_return": 0.29149975711607157,
+      "train_max_drawdown": -0.015173894049393177,
+      "test_cumulative_return": 0.0,
+      "test_annualized_return": 0.0,
+      "test_max_drawdown": 0.0,
+      "test_sharpe": null,
+      "test_average_active_exposure": 0.0,
+      "test_execution_fill_rate": null,
+      "test_blocked_buy_count": 0,
+      "test_blocked_sell_count": 0
+    },
+    {
+      "window": 4,
+      "train_start": "2025-06-04",
+      "train_end": "2025-11-26",
+      "test_start": "2025-11-27",
+      "test_end": "2026-01-23",
+      "params": {
+        "top_n": 5,
+        "min_score": 80.0,
+        "max_position": 0.2,
+        "target_exposure": 0.45,
+        "rebalance_days": 5,
+        "actions": [
+          "buy"
+        ]
+      },
+      "params_label": "Top5 / 阈值80.0 / 单票20% / 目标45%",
+      "train_objective": 0.46363041559420753,
+      "train_annualized_return": 0.29149975711607157,
+      "train_max_drawdown": -0.015173894049393177,
+      "test_cumulative_return": 0.0,
+      "test_annualized_return": 0.0,
+      "test_max_drawdown": 0.0,
+      "test_sharpe": null,
+      "test_average_active_exposure": 0.0,
+      "test_execution_fill_rate": null,
+      "test_blocked_buy_count": 0,
+      "test_blocked_sell_count": 0
+    },
+    {
+      "window": 5,
+      "train_start": "2025-07-30",
+      "train_end": "2026-01-23",
+      "test_start": "2026-01-26",
+      "test_end": "2026-03-30",
+      "params": {
+        "top_n": 5,
+        "min_score": 72.0,
+        "max_position": 0.2,
+        "target_exposure": 0.45,
+        "rebalance_days": 5,
+        "actions": [
+          "buy"
+        ]
+      },
+      "params_label": "Top5 / 阈值72.0 / 单票20% / 目标45%",
+      "train_objective": 0.12419102563380473,
+      "train_annualized_return": 0.08961476057592677,
+      "train_max_drawdown": -0.009875349296469937,
+      "test_cumulative_return": 0.0,
+      "test_annualized_return": 0.0,
+      "test_max_drawdown": 0.0,
+      "test_sharpe": null,
+      "test_average_active_exposure": 0.0,
+      "test_execution_fill_rate": null,
+      "test_blocked_buy_count": 0,
+      "test_blocked_sell_count": 0
+    },
+    {
+      "window": 6,
+      "train_start": "2025-09-24",
+      "train_end": "2026-03-30",
+      "test_start": "2026-03-31",
+      "test_end": "2026-05-29",
+      "params": {
+        "top_n": 5,
+        "min_score": 72.0,
+        "max_position": 0.1,
+        "target_exposure": 0.45,
+        "rebalance_days": 5,
+        "actions": [
+          "buy"
+        ]
+      },
+      "params_label": "Top5 / 阈值72.0 / 单票10% / 目标45%",
+      "train_objective": -0.08,
+      "train_annualized_return": 0.0,
+      "train_max_drawdown": 0.0,
+      "test_cumulative_return": 0.0,
+      "test_annualized_return": 0.0,
+      "test_max_drawdown": 0.0,
+      "test_sharpe": null,
+      "test_average_active_exposure": 0.0,
+      "test_execution_fill_rate": null,
+      "test_blocked_buy_count": 0,
+      "test_blocked_sell_count": 0
+    }
+  ],
+  "warning": "滚动样本外验证已计入A股执行约束。当前本地历史股票数较少，不能替代全A历史样本验证。"
+}

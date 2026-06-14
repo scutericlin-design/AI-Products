@@ -87,7 +87,7 @@ class StrategyConfig(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), unique=True, index=True)
-    model_version: Mapped[str] = mapped_column(String(64), default="quality_first_v2")
+    model_version: Mapped[str] = mapped_column(String(64), default="institutional_score_v3")
     pool_limit: Mapped[int] = mapped_column(Integer, default=30)
     min_amount_yi: Mapped[float] = mapped_column(Float, default=3.0)
     buy_score_threshold: Mapped[float] = mapped_column(Float, default=78.0)

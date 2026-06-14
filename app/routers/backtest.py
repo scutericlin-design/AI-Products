@@ -17,6 +17,7 @@ BACKTEST_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "backtest_latest.json
 BACKTEST_TRADES_PATH = PROJECT_ROOT / "data" / "processed" / "backtest_trades.csv"
 PORTFOLIO_BACKTEST_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_latest.json"
 STRATEGY_OPTIMIZATION_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "strategy_optimization_latest.json"
+WALK_FORWARD_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "walk_forward_latest.json"
 
 
 def read_latest() -> dict:
@@ -37,6 +38,12 @@ def read_optimization_latest() -> dict:
     return json.loads(STRATEGY_OPTIMIZATION_JSON_PATH.read_text(encoding="utf-8"))
 
 
+def read_walk_forward_latest() -> dict:
+    if not WALK_FORWARD_JSON_PATH.exists():
+        return {"summary": None, "windows": []}
+    return json.loads(WALK_FORWARD_JSON_PATH.read_text(encoding="utf-8"))
+
+
 @router.get("/latest")
 def latest_backtest(user: User = Depends(current_user)):
     return read_latest()
@@ -50,6 +57,11 @@ def latest_portfolio_backtest(user: User = Depends(current_user)):
 @router.get("/optimization/latest")
 def latest_strategy_optimization(user: User = Depends(current_user)):
     return read_optimization_latest()
+
+
+@router.get("/walk-forward/latest")
+def latest_walk_forward(user: User = Depends(current_user)):
+    return read_walk_forward_latest()
 
 
 @router.post("/run")
@@ -89,6 +101,9 @@ def run_portfolio_backtest(
     actions: str = Query(default="buy"),
     fee_bps: float = Query(default=5.0, ge=0, le=100),
     slippage_bps: float = Query(default=10.0, ge=0, le=200),
+    enforce_trading_rules: bool = Query(default=True),
+    stamp_tax_bps: float = Query(default=5.0, ge=0, le=100),
+    limit_buffer_pct: float = Query(default=0.003, ge=0, le=0.02),
     user: User = Depends(current_user),
 ):
     command = [
@@ -110,7 +125,13 @@ def run_portfolio_backtest(
         str(fee_bps),
         "--slippage-bps",
         str(slippage_bps),
+        "--stamp-tax-bps",
+        str(stamp_tax_bps),
+        "--limit-buffer-pct",
+        str(limit_buffer_pct),
     ]
+    if enforce_trading_rules:
+        command.append("--enforce-trading-rules")
     completed = subprocess.run(command, cwd=PROJECT_ROOT, text=True, capture_output=True, timeout=120)
     if completed.returncode != 0:
         raise HTTPException(
@@ -141,3 +162,36 @@ def run_strategy_optimization(user: User = Depends(current_user)):
             },
         )
     return read_optimization_latest()
+
+
+@router.post("/walk-forward/run")
+def run_walk_forward(
+    profile: str = Query(default="balanced", pattern="^(conservative|balanced|aggressive)$"),
+    train_days: int = Query(default=120, ge=60, le=360),
+    test_days: int = Query(default=40, ge=20, le=120),
+    step_days: int = Query(default=40, ge=10, le=120),
+    user: User = Depends(current_user),
+):
+    command = [
+        sys.executable,
+        str(PROJECT_ROOT / "scripts" / "build_walk_forward.py"),
+        "--profile",
+        profile,
+        "--train-days",
+        str(train_days),
+        "--test-days",
+        str(test_days),
+        "--step-days",
+        str(step_days),
+    ]
+    completed = subprocess.run(command, cwd=PROJECT_ROOT, text=True, capture_output=True, timeout=240)
+    if completed.returncode != 0:
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "message": "Walk-forward validation failed",
+                "stdout": completed.stdout[-4000:],
+                "stderr": completed.stderr[-4000:],
+            },
+        )
+    return read_walk_forward_latest()

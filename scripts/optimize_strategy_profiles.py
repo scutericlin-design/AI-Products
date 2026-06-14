@@ -60,10 +60,19 @@ def objective(metrics: dict[str, object], drawdown_limit: float, target_return: 
     mdd = float(metrics.get("max_drawdown") or 0)
     sharpe = float(metrics.get("sharpe") or 0)
     exposure = float(metrics.get("average_exposure") or 0)
+    fill_rate = metrics.get("execution_fill_rate")
+    fill_rate = float(fill_rate) if fill_rate is not None else 1.0
+    data_gap_days = float(metrics.get("suspended_position_days") or 0)
+    active_days = max(float(metrics.get("active_days") or 1), 1)
+    average_names = max(float(metrics.get("average_names") or 1), 1)
+    tradable_symbols = int(metrics.get("tradable_symbol_count") or 0)
     drawdown_penalty = max(0.0, abs(mdd) - abs(drawdown_limit)) * 2.5
     target_bonus = min(ann / target_return, 1.5) * 0.05 if target_return > 0 else 0
     exposure_penalty = 0.03 if exposure < 0.02 else 0
-    return ann + 0.04 * sharpe + target_bonus - drawdown_penalty - exposure_penalty
+    fill_penalty = max(0.0, 0.70 - fill_rate) * 0.10
+    data_gap_penalty = min(0.12, data_gap_days / (active_days * average_names) * 0.08)
+    sample_penalty = 0.05 if tradable_symbols < 30 else 0.0
+    return ann + 0.04 * sharpe + target_bonus - drawdown_penalty - exposure_penalty - fill_penalty - data_gap_penalty - sample_penalty
 
 
 def optimize_profile(signals: pd.DataFrame, profile_name: str, profile: dict[str, object]) -> dict[str, object]:
@@ -82,6 +91,9 @@ def optimize_profile(signals: pd.DataFrame, profile_name: str, profile: dict[str
                         actions=set(profile["actions"]),
                         fee_bps=5,
                         slippage_bps=10,
+                        enforce_trading_rules=True,
+                        stamp_tax_bps=5,
+                        limit_buffer_pct=0.003,
                     )
                     score = objective(
                         metrics,
@@ -125,7 +137,7 @@ def main() -> int:
     result = {
         "source": str(args.signals.relative_to(PROJECT_ROOT)),
         "profiles": profiles,
-        "warning": "当前优化基于本地历史样本，不能代表未来收益；全A历史样本补齐前，结果仅用于参数方向参考。",
+        "warning": "当前优化基于本地历史样本，并已计入A股涨跌停、T+1、停牌缺口、手续费、滑点和卖出印花税近似；全A历史样本补齐前，结果仅用于参数方向参考。",
     }
     OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_JSON.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -522,8 +522,8 @@
               <div class="panel-head"><h3>入池规则</h3><span class="tag">Rule set</span></div>
               <div class="stack">
                 <p><strong>基础门槛：</strong>从 AKShare 全 A 股实时行情拉取，剔除 ST/退市、低价和低成交额标的。</p>
-                <p><strong>排序依据：</strong>综合涨跌幅、成交额、日内收盘位置和波动惩罚，最多保留 30 只。</p>
-                <p><strong>人工确认：</strong>所有入池股票仍需继续检查 20 日趋势、公告、流动性、涨跌停和行业拥挤度。</p>
+                <p><strong>排序依据：</strong>拆成 Alpha 强度、资金容量、风控质量、交易可行性和拥挤扣分，最多保留 30 只。</p>
+                <p><strong>人工确认：</strong>所有入池股票仍需继续检查 20 日趋势、公告、行业催化、涨跌停和同题材拥挤度。</p>
               </div>
             </section>
             <section class="panel">
@@ -537,7 +537,7 @@
           <section class="panel">
             <div class="panel-head">
               <h3>模型配置</h3>
-              <span class="tag long">quality_first_v2</span>
+              <span class="tag long">institutional_score_v3</span>
             </div>
             <form class="signal-form" id="modelConfigForm">
               <label>推荐数量<input id="cfgPoolLimit" type="number" min="5" max="30" /></label>
@@ -572,7 +572,7 @@
               </div>
             </div>
             <table>
-              <thead><tr><th>排名</th><th>股票</th><th>评分</th><th>关键指标</th><th>动作</th><th>入选原因</th><th>风险标记</th><th>操作</th></tr></thead>
+              <thead><tr><th>排名</th><th>股票</th><th>评分</th><th>评分拆解</th><th>关键指标</th><th>动作</th><th>入选原因</th><th>风险标记</th><th>操作</th></tr></thead>
               <tbody id="poolRows"></tbody>
             </table>
             <div class="result" id="poolResult"></div>
@@ -777,26 +777,42 @@
               </table>
             </section>
             <section class="panel">
-              <div class="panel-head"><h3>优化后的评分逻辑</h3><span class="tag">Quality-first</span></div>
+              <div class="panel-head"><h3>优化后的评分逻辑</h3><span class="tag">Institutional score</span></div>
               <pre>universe = all_a_share_spot()
   .exclude(ST, delisting, low_price)
   .where(amount >= 3e8)
 
-quality_score =
-  0.25 * strength_score          # 有上涨强度，但过热扣分
-  0.25 * liquidity_score         # 成交额足，便于进出
-  0.20 * close_position_score    # 收盘接近日内高位
-  0.15 * tradability_score       # 涨停/接近涨停扣分
-  0.10 * stability_score         # 振幅过大扣分
-  0.05 * gap_quality_score       # 跳空过大扣分
+alpha_score =
+  momentum_sweet_spot            # 不是越涨越好，过热会扣分
+  + close_position               # 收盘接近日内高位
+  + gap_quality                  # 跳空过大扣分
+
+liquidity_capacity_score =
+  amount_percentile              # 全市场成交额分位
+  + capacity_band                # 成交容量是否能承载进出
+
+risk_control_score =
+  stability_score                # 振幅过大扣分
+  + tradability_score            # 涨停/跌停/弱收盘扣分
+  + reversal_risk_score          # 冲高回落和追高风险
+
+institutional_score =
+  0.42 * alpha_score
+  + 0.26 * liquidity_capacity_score
+  + 0.32 * risk_control_score
+  - crowding_penalty
 
 action = "buy" only if:
-  quality_score >= 78
+  institutional_score >= 78
+  and alpha_score >= 68
+  and liquidity_capacity_score >= 55
+  and risk_control_score >= 58
   and 1% < pct_change < 9.7%
   and close_position >= 55%
   and intraday_amplitude <= 12%
 
-final_pool = rank(quality_score)
+final_pool = rank(institutional_score)
+  .cap_by_board()
   .with_reason()
   .with_risk_flags()
   .top(30)</pre>
@@ -807,10 +823,11 @@ final_pool = rank(quality_score)
             <table>
               <thead><tr><th>问题</th><th>机构常见处理</th><th>本系统改动</th></tr></thead>
               <tbody>
-                <tr><td>涨停股霸榜但买不到</td><td>把可交易性和冲击成本纳入模型。</td><td>新增 tradability_score，接近涨停会降权。</td></tr>
-                <tr><td>只看涨幅容易追高</td><td>把收益信号和风险信号分开建模。</td><td>强势分会因过热、振幅、跳空被扣分。</td></tr>
-                <tr><td>高波动票胜率不稳定</td><td>用波动、振幅、流动性做风险门禁。</td><td>新增 stability_score 和 high_intraday_amplitude 风险标记。</td></tr>
-                <tr><td>因子可能只在某段行情有效</td><td>长期用 IC/RankIC、分组收益和 walk-forward 验证。</td><td>下一步把回测模块接入每个因子的保留/剔除决策。</td></tr>
+                <tr><td>涨停股霸榜但买不到</td><td>把可交易性和冲击成本纳入模型。</td><td>tradability_score 接近涨停会降权，硬板只进入观察。</td></tr>
+                <tr><td>只看涨幅容易追高</td><td>把收益信号和风险信号分开建模。</td><td>momentum_sweet_spot 只奖励适度强势，过热由 crowding_penalty 扣分。</td></tr>
+                <tr><td>高波动票胜率不稳定</td><td>用波动、振幅、流动性做风险门禁。</td><td>risk_control_score 低于门槛不能标记为核心候选。</td></tr>
+                <tr><td>同一板块挤满候选池</td><td>组合层做行业/风格暴露约束。</td><td>当前先做板块数量上限，避免主板、创业板或科创板单边霸榜。</td></tr>
+                <tr><td>因子可能只在某段行情有效</td><td>长期用 IC/RankIC、分组收益和 walk-forward 验证。</td><td>下一步把评分拆解接入因子诊断，保留有效因子、降低失效因子权重。</td></tr>
               </tbody>
             </table>
           </section>
@@ -830,6 +847,32 @@ final_pool = rank(quality_score)
           </section>
           <section class="panel">
             <div class="panel-head">
+              <h3>滚动样本外验证</h3>
+              <div class="toolbar">
+                <select class="control" id="walkForwardProfile">
+                  <option value="balanced">平衡</option>
+                  <option value="conservative">保守</option>
+                  <option value="aggressive">进攻</option>
+                </select>
+                <button class="control" id="runWalkForwardBtn" type="button">运行样本外验证</button>
+              </div>
+            </div>
+            <div class="exposure-grid">
+              <div class="exposure-item"><span>验证窗口</span><strong class="mono" id="wfWindowCount">--</strong></div>
+              <div class="exposure-item"><span>正收益窗口</span><strong class="mono" id="wfPositiveRate">--</strong></div>
+              <div class="exposure-item"><span>样本外年化中位</span><strong class="mono" id="wfMedianAnnual">--</strong></div>
+              <div class="exposure-item"><span>最差回撤</span><strong class="mono" id="wfWorstDrawdown">--</strong></div>
+              <div class="exposure-item"><span>稳定性评级</span><strong class="mono" id="wfStabilityGrade">--</strong></div>
+              <div class="exposure-item"><span>常见参数</span><strong class="mono" id="wfCommonParams">--</strong></div>
+            </div>
+            <table>
+              <thead><tr><th>窗口</th><th>训练区间</th><th>验证区间</th><th>样本外年化</th><th>回撤</th><th>成交填充</th><th>参数</th></tr></thead>
+              <tbody id="walkForwardRows"></tbody>
+            </table>
+            <p class="advice-note" id="walkForwardSummary">样本外验证会先在训练区间选参数，再用下一段未参与优化的数据检验，已计入 A 股执行约束。</p>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
               <h3>组合级回测</h3>
               <button class="control" id="runPortfolioBacktestBtn" type="button">运行组合回测</button>
             </div>
@@ -840,8 +883,14 @@ final_pool = rank(quality_score)
               <div class="exposure-item"><span>Sharpe</span><strong class="mono" id="pbtSharpe">--</strong></div>
               <div class="exposure-item"><span>平均持仓数</span><strong class="mono" id="pbtNames">--</strong></div>
               <div class="exposure-item"><span>平均换手</span><strong class="mono" id="pbtTurnover">--</strong></div>
+              <div class="exposure-item"><span>成交填充率</span><strong class="mono" id="pbtExecFill">--</strong></div>
+              <div class="exposure-item"><span>买入受限</span><strong class="mono" id="pbtBlockedBuy">--</strong></div>
+              <div class="exposure-item"><span>卖出受限</span><strong class="mono" id="pbtBlockedSell">--</strong></div>
+              <div class="exposure-item"><span>总交易成本</span><strong class="mono" id="pbtTotalCost">--</strong></div>
+              <div class="exposure-item"><span>可回测股票数</span><strong class="mono" id="pbtTradableSymbols">--</strong></div>
+              <div class="exposure-item"><span>研究有效性</span><strong class="mono" id="pbtDataQuality">--</strong></div>
             </div>
-            <p class="advice-note" id="pbtSummary">组合级回测会模拟 Top N 调仓、单票上限、手续费和滑点，比单信号回测更接近真实使用。</p>
+            <p class="advice-note" id="pbtSummary">组合级回测会模拟 Top N 调仓、单票上限、手续费、滑点、涨跌停、停牌缺口和 T+1，比单信号回测更接近真实使用。</p>
           </section>
           <section class="panel">
             <div class="panel-head">
@@ -982,6 +1031,13 @@ reject_trade_if:
         exit_or_strong_reduce: "强减/退出",
         avoid: "回避"
       }[action] || action;
+    }
+    function confidenceLabel(confidence) {
+      return {
+        high: "高置信",
+        medium: "中置信",
+        low: "低置信"
+      }[confidence] || "中置信";
     }
     function formatPercent(value, digits = 1) {
       const number = Number(value);
@@ -1208,7 +1264,16 @@ reject_trade_if:
       document.getElementById("pbtSharpe").textContent = formatNumber(metrics.sharpe, 2);
       document.getElementById("pbtNames").textContent = formatNumber(metrics.average_names, 1);
       document.getElementById("pbtTurnover").textContent = formatPercent(metrics.average_turnover_on_rebalance, 2);
-      document.getElementById("pbtSummary").textContent = `样本 ${metrics.start_date || "--"} 至 ${metrics.end_date || "--"}；实际持仓 ${metrics.active_days || 0} 天；Top ${metrics.top_n}；每 ${metrics.rebalance_days} 个交易日调仓；已计入手续费 ${metrics.fee_bps}bps 和滑点 ${metrics.slippage_bps}bps。`;
+      document.getElementById("pbtExecFill").textContent = formatPercent(metrics.execution_fill_rate, 1);
+      document.getElementById("pbtBlockedBuy").textContent = metrics.blocked_buy_count ?? "--";
+      document.getElementById("pbtBlockedSell").textContent = metrics.blocked_sell_count ?? "--";
+      document.getElementById("pbtTotalCost").textContent = formatPercent(metrics.total_transaction_cost, 2);
+      document.getElementById("pbtTradableSymbols").textContent = `${metrics.tradable_symbol_count ?? "--"} / ${metrics.universe_symbol_count ?? "--"}`;
+      document.getElementById("pbtDataQuality").textContent = metrics.research_ready ? "研究可用" : "仅作验证";
+      const executionText = metrics.enforce_trading_rules
+        ? `已计入 A 股执行约束、卖出税费 ${metrics.stamp_tax_bps}bps、手续费 ${metrics.fee_bps}bps 和滑点 ${metrics.slippage_bps}bps`
+        : `已计入手续费 ${metrics.fee_bps}bps 和滑点 ${metrics.slippage_bps}bps`;
+      document.getElementById("pbtSummary").textContent = `样本 ${metrics.start_date || "--"} 至 ${metrics.end_date || "--"}；实际持仓 ${metrics.active_days || 0} 天；Top ${metrics.top_n}；每 ${metrics.rebalance_days} 个交易日调仓；${executionText}。${metrics.data_quality_note || ""}`;
     }
     async function loadPortfolioBacktest() {
       try {
@@ -1228,7 +1293,10 @@ reject_trade_if:
           min_score: String(regime.minScore),
           rebalance_days: "5",
           max_position: String(regime.maxPosition),
-          target_exposure: String(regime.targetExposure)
+          target_exposure: String(regime.targetExposure),
+          enforce_trading_rules: "true",
+          stamp_tax_bps: "5",
+          limit_buffer_pct: "0.003"
         });
         renderPortfolioBacktest(await apiJson(`/api/backtest/portfolio/run?${query.toString()}`, { method: "POST" }));
       } catch (error) {
@@ -1276,6 +1344,56 @@ reject_trade_if:
       } finally {
         button.disabled = false;
         button.textContent = "运行优化器";
+      }
+    }
+    function renderWalkForward(payload) {
+      const summary = payload?.summary || {};
+      const windows = payload?.windows || [];
+      document.getElementById("wfWindowCount").textContent = summary.window_count ?? "--";
+      document.getElementById("wfPositiveRate").textContent = formatPercent(summary.positive_window_rate, 1);
+      document.getElementById("wfMedianAnnual").textContent = formatPercent(summary.median_test_annualized_return, 2);
+      document.getElementById("wfWorstDrawdown").textContent = formatPercent(summary.worst_test_drawdown, 2);
+      document.getElementById("wfStabilityGrade").textContent = summary.stability_grade || "--";
+      document.getElementById("wfCommonParams").textContent = summary.most_common_params || "--";
+      document.getElementById("walkForwardRows").innerHTML = windows.map((row) => `
+        <tr>
+          <td><strong>${row.window}</strong></td>
+          <td>${row.train_start}<br />${row.train_end}</td>
+          <td>${row.test_start}<br />${row.test_end}</td>
+          <td>${formatPercent(row.test_annualized_return, 2)}</td>
+          <td>${formatPercent(row.test_max_drawdown, 2)}</td>
+          <td>${formatPercent(row.test_execution_fill_rate, 1)}</td>
+          <td><code>${row.params_label || "--"}</code></td>
+        </tr>
+      `).join("");
+      const productionText = summary.production_ready ? "当前达到生产研究门槛。" : "当前未达到生产研究门槛。";
+      document.getElementById("walkForwardSummary").textContent = `${payload?.warning || "样本外验证结果用于研究，不是收益承诺。"} ${summary.stability_reason || ""} ${productionText}`;
+    }
+    async function loadWalkForward() {
+      try {
+        renderWalkForward(await apiJson("/api/backtest/walk-forward/latest", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("walkForwardSummary").textContent = `暂时无法读取样本外验证：${error.message}`;
+      }
+    }
+    async function runWalkForward() {
+      const button = document.getElementById("runWalkForwardBtn");
+      const profile = document.getElementById("walkForwardProfile").value;
+      button.disabled = true;
+      button.textContent = "验证中...";
+      try {
+        const query = new URLSearchParams({
+          profile,
+          train_days: "120",
+          test_days: "40",
+          step_days: "40"
+        });
+        renderWalkForward(await apiJson(`/api/backtest/walk-forward/run?${query.toString()}`, { method: "POST" }));
+      } catch (error) {
+        document.getElementById("walkForwardSummary").textContent = `样本外验证失败：${error.message}`;
+      } finally {
+        button.disabled = false;
+        button.textContent = "运行样本外验证";
       }
     }
     function renderDataHealth(payload) {
@@ -1398,7 +1516,7 @@ reject_trade_if:
       document.getElementById("poolCount").textContent = rows.length;
       document.getElementById("poolDate").textContent = rows[0]?.trade_date || "--";
       document.getElementById("poolCore").textContent = rows.filter((row) => row.action === "buy").length;
-      document.getElementById("poolModel").textContent = rows[0]?.model_version || "quality_first_v2";
+      document.getElementById("poolModel").textContent = rows[0]?.model_version || "institutional_score_v3";
     }
     async function loadSystemPool() {
       try {
@@ -1458,6 +1576,11 @@ reject_trade_if:
         const action = row.action;
         const target = `${(Number(row.target_weight || 0) * 100).toFixed(0)}%`;
         const flags = row.risk_flags || "none";
+        const confidence = row.confidence || "medium";
+        const alpha = Number(row.alpha_score || 0).toFixed(1);
+        const liquidity = Number(row.liquidity_capacity_score || 0).toFixed(1);
+        const riskScore = Number(row.risk_control_score || 0).toFixed(1);
+        const crowding = Number(row.crowding_penalty || 0).toFixed(1);
         const pctChange = Number(row.pct_change || 0).toFixed(2);
         const amountYi = Number(row.amount_yi || 0).toFixed(2);
         const closePos = Number(row.intraday_position_pct || 0).toFixed(0);
@@ -1467,7 +1590,8 @@ reject_trade_if:
         <tr>
           <td><strong>${rank}</strong></td>
           <td><strong>${name}</strong><br /><code>${code}</code></td>
-          <td><span class="score">${score.toFixed(1)}</span></td>
+          <td><span class="score">${score.toFixed(1)}</span><br /><small>${confidenceLabel(confidence)}</small></td>
+          <td><code>Alpha ${alpha}</code><br /><code>流动性 ${liquidity}</code><br /><code>风控 ${riskScore}</code><br /><code>拥挤扣分 ${crowding}</code></td>
           <td><code>涨幅 ${pctChange}%</code><br /><code>成交 ${amountYi}亿</code><br /><code>收盘位 ${closePos}% · 振幅 ${amplitude}%</code></td>
           <td><span class="tag ${tagClassForAction(action)}">${actionLabel(action)}</span><br /><small>上限 ${target}</small></td>
           <td>${reason}</td>
@@ -1498,7 +1622,7 @@ reject_trade_if:
       document.querySelectorAll("input[name='cfgMarket']").forEach((input) => {
         input.checked = markets.has(input.value);
       });
-      document.getElementById("poolModel").textContent = config.model_version || "quality_first_v2";
+      document.getElementById("poolModel").textContent = config.model_version || "institutional_score_v3";
     }
     function readModelConfigForm() {
       const markets = Array.from(document.querySelectorAll("input[name='cfgMarket']:checked")).map((input) => input.value);
@@ -1658,6 +1782,9 @@ reject_trade_if:
     document.getElementById("runStrategyOptimizerBtn").addEventListener("click", () => {
       runStrategyOptimizer();
     });
+    document.getElementById("runWalkForwardBtn").addEventListener("click", () => {
+      runWalkForward();
+    });
     document.getElementById("runDataHealthBtn").addEventListener("click", () => {
       runDataHealth();
     });
@@ -1687,6 +1814,7 @@ reject_trade_if:
     loadBacktest();
     loadPortfolioBacktest();
     loadStrategyOptimization();
+    loadWalkForward();
     loadDataHealth();
     loadFactorDiagnostics();
     const saved = localStorage.getItem("aShareAlphaView");

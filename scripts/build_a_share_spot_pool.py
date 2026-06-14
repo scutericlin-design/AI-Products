@@ -2,8 +2,8 @@
 """Build a full-A-share recommendation pool from AKShare Sina spot quotes.
 
 This is the fast daily first pass. It scores the whole A-share spot universe
-with current price action and liquidity, then writes the same
-recommended_pool.csv consumed by the UI.
+with current price action, liquidity, tradability, risk controls and pool-level
+diversification, then writes the same recommended_pool.csv consumed by the UI.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = PROJECT_ROOT / "data" / "processed" / "recommended_pool.csv"
-MODEL_VERSION = "quality_first_v2"
+MODEL_VERSION = "institutional_score_v3"
 
 
 def normalize_code(raw_code: str) -> tuple[str, str]:
@@ -54,6 +54,33 @@ def percentile(series: pd.Series, higher_is_better: bool = True) -> pd.Series:
 def clipped_score(series: pd.Series, low: float, high: float, higher_is_better: bool = True) -> pd.Series:
     scaled = ((series - low) / (high - low)).clip(0, 1)
     return scaled if higher_is_better else 1 - scaled
+
+
+def sweet_spot_score(series: pd.Series, low: float, peak: float, high: float) -> pd.Series:
+    if high <= low + 0.2:
+        return clipped_score(series, low, high)
+    peak = min(max(peak, low + 0.1), high - 0.1)
+    left = ((series - low) / (peak - low)).clip(0, 1)
+    right = ((high - series) / (high - peak)).clip(0, 1)
+    return pd.concat([left, right], axis=1).min(axis=1)
+
+
+def min_max_score(series: pd.Series, low: float, high: float) -> pd.Series:
+    return ((series - low) / (high - low)).clip(0, 1)
+
+
+def cap_by_board(frame: pd.DataFrame, limit: int, board_cap: int) -> pd.DataFrame:
+    selected: list[pd.Series] = []
+    board_counts: dict[str, int] = {}
+    for _, row in frame.iterrows():
+        board = str(row["board"])
+        if board_counts.get(board, 0) >= board_cap:
+            continue
+        selected.append(row)
+        board_counts[board] = board_counts.get(board, 0) + 1
+        if len(selected) >= limit:
+            break
+    return pd.DataFrame(selected)
 
 
 def build_pool(
@@ -102,44 +129,127 @@ def build_pool(
     if not include_beijing:
         df = df[df["market"].isin(["sh", "sz"])]
     df = df[df["board"].isin(markets)]
+    output_columns = [
+        "pool_rank",
+        "trade_date",
+        "symbol",
+        "name",
+        "close",
+        "price_factor_score",
+        "action",
+        "target_weight",
+        "recommendation_tier",
+        "confidence",
+        "model_version",
+        "risk_flags",
+        "reason",
+        "review_required",
+        "amount",
+        "amount_yi",
+        "pct_change",
+        "intraday_position_pct",
+        "amplitude_pct_display",
+        "gap_pct_display",
+        "alpha_score",
+        "liquidity_capacity_score",
+        "risk_control_score",
+        "crowding_penalty",
+        "momentum_score",
+        "liquidity_score",
+        "capacity_score",
+        "close_position_score",
+        "stability_score",
+        "tradability_score",
+        "reversal_risk_score",
+        "board",
+        "source_time",
+    ]
+    if df.empty:
+        return pd.DataFrame(columns=output_columns)
 
     range_width = (df["high"] - df["low"]).replace(0, pd.NA)
     df["intraday_position"] = ((df["close"] - df["low"]) / range_width).fillna(0.5)
     df["gap_pct"] = df["open"] / df["prev_close"] - 1
     df["amplitude_pct"] = (df["high"] - df["low"]) / df["prev_close"]
+    df["turnover_proxy"] = df["amount"] / df["close"].replace(0, pd.NA)
 
-    df["strength_raw_score"] = clipped_score(df["pct_change"], 1.0, 8.0)
-    df["overheat_penalty"] = clipped_score(df["pct_change"], 8.0, 12.0)
-    df["strength_score"] = (df["strength_raw_score"] - 0.35 * df["overheat_penalty"]).clip(0, 1)
+    # Professional-style scoring card: alpha and risk are separated first, then
+    # recombined. This avoids a single hot variable, such as one-day return,
+    # dominating the recommendation pool.
+    df["momentum_score"] = sweet_spot_score(df["pct_change"], min_pct_change, 5.5, max_pct_change)
     df["liquidity_score"] = percentile(df["amount"])
+    df["capacity_score"] = min_max_score(df["amount"] / 100000000, min_amount / 100000000, 35.0)
     df["close_position_score"] = df["intraday_position"].clip(0, 1)
-    df["stability_score"] = clipped_score(df["amplitude_pct"], 0.02, 0.14, higher_is_better=False)
-    df["gap_quality_score"] = (1 - (df["gap_pct"].abs() / 0.06)).clip(0, 1)
+    df["stability_score"] = clipped_score(df["amplitude_pct"], 0.025, max_amplitude, higher_is_better=False)
+    df["gap_quality_score"] = (1 - (df["gap_pct"].abs() / 0.055)).clip(0, 1)
+    df["reversal_risk_score"] = (
+        1
+        - (
+            0.45 * clipped_score(df["amplitude_pct"], 0.06, max_amplitude)
+            + 0.35 * clipped_score(df["pct_change"], 7.5, max_pct_change)
+            + 0.20 * (1 - df["close_position_score"])
+        )
+    ).clip(0, 1)
     df["tradability_score"] = 1.0
     df.loc[df["pct_change"] >= 9.7, "tradability_score"] = 0.35
     df.loc[df["pct_change"] >= 19.0, "tradability_score"] = 0.20
     df.loc[df["intraday_position"] < 0.45, "tradability_score"] *= 0.65
+    df.loc[df["amplitude_pct"] > max_amplitude, "tradability_score"] *= 0.60
+    df.loc[df["amount"] < min_amount * 1.5, "tradability_score"] *= 0.80
 
-    # Quality-first score: strength matters, but only if liquidity and tradability are acceptable.
+    df["alpha_score"] = (
+        45 * df["momentum_score"]
+        + 35 * df["close_position_score"]
+        + 20 * df["gap_quality_score"]
+    ).round(2)
+    df["liquidity_capacity_score"] = (
+        65 * df["liquidity_score"]
+        + 35 * df["capacity_score"]
+    ).round(2)
+    df["risk_control_score"] = (
+        40 * df["stability_score"]
+        + 35 * df["tradability_score"]
+        + 25 * df["reversal_risk_score"]
+    ).round(2)
+    df["crowding_penalty"] = (
+        14 * clipped_score(df["pct_change"], 8.2, max(max_pct_change, 8.3))
+        + 8 * clipped_score(df["amplitude_pct"], 0.10, max(max_amplitude, 0.101))
+        + 6 * (1 - df["gap_quality_score"])
+    ).clip(0, 28)
+
     df["price_factor_score"] = (
-        25 * df["strength_score"]
-        + 25 * df["liquidity_score"]
-        + 20 * df["close_position_score"]
-        + 15 * df["tradability_score"]
-        + 10 * df["stability_score"]
-        + 5 * df["gap_quality_score"]
+        0.42 * df["alpha_score"]
+        + 0.26 * df["liquidity_capacity_score"]
+        + 0.32 * df["risk_control_score"]
+        - df["crowding_penalty"]
     ).round(2)
 
     df["action"] = "watch"
     df.loc[
         (df["price_factor_score"] >= buy_score_threshold)
+        & (df["alpha_score"] >= 68)
+        & (df["liquidity_capacity_score"] >= 55)
+        & (df["risk_control_score"] >= 58)
         & (df["pct_change"] > min_pct_change)
         & (df["pct_change"] < max_pct_change)
         & (df["intraday_position"] >= min_close_position)
         & (df["amplitude_pct"] <= max_amplitude),
         "action",
     ] = "buy"
-    df["target_weight"] = df["action"].map({"buy": target_weight, "watch": 0.0})
+    df["confidence"] = "low"
+    df.loc[(df["price_factor_score"] >= 70) & (df["risk_control_score"] >= 55), "confidence"] = "medium"
+    df.loc[
+        (df["action"] == "buy")
+        & (df["price_factor_score"] >= buy_score_threshold + 4)
+        & (df["alpha_score"] >= 76)
+        & (df["risk_control_score"] >= 68),
+        "confidence",
+    ] = "high"
+    df["target_weight"] = 0.0
+    df.loc[df["action"] == "buy", "target_weight"] = target_weight
+    df.loc[(df["action"] == "buy") & (df["confidence"] == "medium"), "target_weight"] = target_weight * 0.70
+    df.loc[(df["action"] == "buy") & (df["confidence"] == "low"), "target_weight"] = target_weight * 0.40
+    df["target_weight"] = df["target_weight"].round(4)
 
     def flags(row: pd.Series) -> str:
         items: list[str] = []
@@ -155,12 +265,22 @@ def build_pool(
             items.append("large_gap_open")
         if row["intraday_position"] < 0.45:
             items.append("weak_close_position")
+        if row["risk_control_score"] < 58:
+            items.append("risk_score_gate")
+        if row["alpha_score"] < 68:
+            items.append("alpha_score_gate")
+        if row["crowding_penalty"] >= 12:
+            items.append("crowding_or_chase_risk")
+        if str(row["name"]).startswith(("N", "C")):
+            items.append("new_stock_watch")
         return "|".join(items)
 
     df["risk_flags"] = df.apply(flags, axis=1)
+    df.loc[df["risk_flags"].str.contains("new_stock_watch", na=False), "action"] = "watch"
     df["recommendation_tier"] = df["action"].map(
         {"buy": "core_candidate", "watch": "watch_candidate"}
     )
+    df.loc[df["confidence"] == "high", "recommendation_tier"] = "high_conviction"
     df["model_version"] = MODEL_VERSION
     df["trade_date"] = trade_date
     df["review_required"] = True
@@ -170,46 +290,35 @@ def build_pool(
     df["gap_pct_display"] = (df["gap_pct"] * 100).round(2)
     df["reason"] = df.apply(
         lambda row: (
-            f"全A实时初筛评分 {row['price_factor_score']:.1f}；"
+            f"机构评分 {row['price_factor_score']:.1f}；"
+            f"Alpha {row['alpha_score']:.1f} / 流动性 {row['liquidity_capacity_score']:.1f} / 风控 {row['risk_control_score']:.1f}；"
             f"涨跌幅 {row['pct_change']:.2f}%；"
             f"成交额 {row['amount_yi']:.2f}亿；"
             f"日内收盘位置 {row['intraday_position']:.0%}；"
             f"振幅 {row['amplitude_pct_display']:.2f}%；"
-            f"{'核心候选' if row['action'] == 'buy' else '观察候选'}，入选原因是强势、流动性、收盘位置和可交易性综合较优"
+            f"拥挤扣分 {row['crowding_penalty']:.1f}；"
+            f"{'核心候选' if row['action'] == 'buy' else '观察候选'}，入选原因是强势确认、资金容量、交易可行性和追高风险综合评估"
         ),
         axis=1,
     )
 
-    selected = df.sort_values("price_factor_score", ascending=False).head(limit).copy()
+    ranked = df.sort_values(
+        ["action", "confidence", "price_factor_score", "risk_control_score"],
+        ascending=[True, True, False, False],
+    )
+    ranked["action_sort"] = ranked["action"].map({"buy": 0, "watch": 1}).fillna(2)
+    ranked["confidence_sort"] = ranked["confidence"].map({"high": 0, "medium": 1, "low": 2}).fillna(3)
+    ranked = ranked.sort_values(
+        ["action_sort", "confidence_sort", "price_factor_score", "risk_control_score"],
+        ascending=[True, True, False, False],
+    )
+    selected = cap_by_board(ranked, limit=limit, board_cap=max(6, round(limit * 0.45))).copy()
+    if len(selected) < limit:
+        selected_symbols = set(selected["symbol"])
+        fill = ranked[~ranked["symbol"].isin(selected_symbols)].head(limit - len(selected))
+        selected = pd.concat([selected, fill], ignore_index=True)
     selected["pool_rank"] = range(1, len(selected) + 1)
-    columns = [
-        "pool_rank",
-        "trade_date",
-        "symbol",
-        "name",
-        "close",
-        "price_factor_score",
-        "action",
-        "target_weight",
-        "recommendation_tier",
-        "model_version",
-        "risk_flags",
-        "reason",
-        "review_required",
-        "amount",
-        "amount_yi",
-        "pct_change",
-        "intraday_position_pct",
-        "amplitude_pct_display",
-        "gap_pct_display",
-        "strength_score",
-        "liquidity_score",
-        "close_position_score",
-        "stability_score",
-        "tradability_score",
-        "source_time",
-    ]
-    return selected[columns]
+    return selected[output_columns]
 
 
 def main() -> int:

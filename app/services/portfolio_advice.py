@@ -12,6 +12,7 @@ from scripts.build_portfolio_advice import build_advice, load_signals
 
 
 SIGNAL_LATEST_PATH = PROJECT_ROOT / "data" / "processed" / "signal_latest.csv"
+RECOMMENDED_POOL_PATH = PROJECT_ROOT / "data" / "processed" / "recommended_pool.csv"
 
 
 def _clean_value(value: Any) -> Any:
@@ -42,16 +43,77 @@ def positions_to_frame(positions: list[PortfolioPosition]) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=["symbol", "name", "weight", "cost_price", "shares"])
 
 
+def _empty_signal_frame() -> pd.DataFrame:
+    return pd.DataFrame(
+        columns=[
+            "symbol",
+            "name",
+            "close",
+            "price_factor_score",
+            "action",
+            "target_weight",
+            "trade_date",
+            "risk_flags",
+            "reason",
+            "alpha_score",
+            "liquidity_capacity_score",
+            "risk_control_score",
+            "crowding_penalty",
+            "confidence",
+            "model_version",
+            "recommendation_tier",
+            "signal_source",
+        ]
+    )
+
+
+def load_personal_signal_view(
+    pool_path: Path = RECOMMENDED_POOL_PATH,
+    fallback_path: Path = SIGNAL_LATEST_PATH,
+) -> pd.DataFrame:
+    frames: list[pd.DataFrame] = []
+    if pool_path.exists():
+        pool = load_signals(pool_path)
+        pool["signal_source"] = "system_pool"
+        frames.append(pool)
+
+    if fallback_path.exists():
+        fallback = load_signals(fallback_path)
+        used_symbols = set(frames[0]["symbol"]) if frames else set()
+        fallback = fallback[~fallback["symbol"].isin(used_symbols)].copy()
+        fallback["action"] = "not_in_system_pool"
+        fallback["price_factor_score"] = pd.NA
+        fallback["target_weight"] = 0.0
+        fallback["risk_flags"] = "not_in_current_top_pool"
+        fallback["reason"] = "未进入当前 institutional_score_v3 系统股票池；仅使用本地行情估算浮盈亏。"
+        fallback["model_version"] = "institutional_score_v3"
+        fallback["confidence"] = "low"
+        fallback["signal_source"] = "fallback_price_only"
+        frames.append(fallback)
+
+    if not frames:
+        return _empty_signal_frame()
+
+    signals = pd.concat(frames, ignore_index=True, sort=False)
+    for column in _empty_signal_frame().columns:
+        if column not in signals.columns:
+            signals[column] = pd.NA
+    return signals[_empty_signal_frame().columns].drop_duplicates("symbol", keep="first")
+
+
 def build_user_advice(
     positions: list[PortfolioPosition],
-    signals_path: Path = SIGNAL_LATEST_PATH,
+    signals_path: Path = RECOMMENDED_POOL_PATH,
     max_single: float = 0.12,
     watch_cap: float = 0.04,
 ) -> list[dict[str, Any]]:
     if not positions:
         return []
     portfolio = positions_to_frame(positions)
-    signals = load_signals(signals_path)
+    if signals_path == RECOMMENDED_POOL_PATH:
+        signals = load_personal_signal_view(pool_path=signals_path)
+    else:
+        signals = load_signals(signals_path)
     advice = build_advice(portfolio, signals, max_single=max_single, watch_cap=watch_cap)
     return [_clean_record(record) for record in advice.to_dict(orient="records")]
 
