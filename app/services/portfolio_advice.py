@@ -57,9 +57,16 @@ def _empty_signal_frame() -> pd.DataFrame:
             "risk_flags",
             "reason",
             "alpha_score",
+            "fundamental_quality_score",
+            "valuation_sanity_score",
             "liquidity_capacity_score",
             "risk_control_score",
             "crowding_penalty",
+            "financial_data_score",
+            "data_completeness",
+            "raw_institutional_score",
+            "score_rank",
+            "gate_penalty_score",
             "confidence",
             "model_version",
             "recommendation_tier",
@@ -107,8 +114,8 @@ def load_personal_signal_view(
         fallback["price_factor_score"] = pd.NA
         fallback["target_weight"] = 0.0
         fallback["risk_flags"] = "not_in_current_top_pool"
-        fallback["reason"] = "未进入当前 institutional_score_v3 系统股票池；仅使用本地行情估算浮盈亏。"
-        fallback["model_version"] = "institutional_score_v3"
+        fallback["reason"] = "未进入当前 institutional_score_v4_tushare 系统股票池；仅使用本地行情估算浮盈亏。"
+        fallback["model_version"] = "institutional_score_v4_tushare"
         fallback["confidence"] = "low"
         fallback["signal_source"] = "fallback_price_only"
         frames.append(fallback)

@@ -11,6 +11,17 @@ class AuthRequest(BaseModel):
 class AuthResponse(BaseModel):
     token: str
     email: EmailStr
+    role: str = "customer"
+    is_admin: bool = False
+    feature_flags: dict[str, bool] = Field(default_factory=dict)
+
+
+class CurrentUserOut(BaseModel):
+    email: EmailStr
+    role: str
+    is_admin: bool
+    status: str
+    feature_flags: dict[str, bool]
 
 
 class PositionIn(BaseModel):
@@ -57,9 +68,16 @@ class PortfolioAdviceOut(BaseModel):
     trade_date: str | None = None
     risk_flags: str | None = None
     alpha_score: float | None = None
+    fundamental_quality_score: float | None = None
+    valuation_sanity_score: float | None = None
     liquidity_capacity_score: float | None = None
     risk_control_score: float | None = None
     crowding_penalty: float | None = None
+    financial_data_score: float | None = None
+    data_completeness: float | None = None
+    raw_institutional_score: float | None = None
+    score_rank: float | None = None
+    gate_penalty_score: float | None = None
     confidence: str | None = None
     model_version: str | None = None
     recommendation_tier: str | None = None
@@ -116,3 +134,59 @@ class StrategyVersionOut(BaseModel):
     params: dict
     note: str | None = None
     created_at: str
+
+
+class DataSourceConfigIn(BaseModel):
+    provider: str = Field(min_length=2, max_length=64)
+    api_token: str | None = Field(default=None, max_length=512)
+    base_url: str | None = Field(default=None, max_length=255)
+    priority: int = Field(default=100, ge=1, le=999)
+    notes: str | None = Field(default=None, max_length=1000)
+
+
+class DataSourceConfigOut(BaseModel):
+    id: int
+    provider: str
+    status: str
+    priority: int
+    token_mask: str | None = None
+    base_url: str | None = None
+    notes: str | None = None
+    last_checked_at: str | None = None
+    updated_at: str | None = None
+
+
+class AuditLogOut(BaseModel):
+    id: int
+    action: str
+    target: str | None = None
+    detail: dict
+    created_at: str
+
+
+class DataCachePruneIn(BaseModel):
+    dataset: str = Field(default="all", pattern="^(all|daily|daily_basic|fina_indicator)$")
+    keep_recent_days: int = Field(default=365, ge=7, le=3650)
+    dry_run: bool = True
+
+
+class AdminUserUpdateIn(BaseModel):
+    status: str = Field(default="active", pattern="^(active|disabled)$")
+    role: str = Field(default="customer", pattern="^(customer|admin)$")
+    feature_flags: dict[str, bool] = Field(default_factory=dict)
+
+
+class AdminStrategyUpdateIn(StrategyConfigIn):
+    pass
+
+
+class DataExportRequestIn(BaseModel):
+    dataset: str = Field(default="daily", pattern="^(daily|daily_basic|fina_indicator)$")
+    symbols: list[str] = Field(default_factory=list)
+    start_date: str | None = Field(default=None, max_length=8)
+    end_date: str | None = Field(default=None, max_length=8)
+
+
+class DataExportDecisionIn(BaseModel):
+    status: str = Field(pattern="^(approved|rejected)$")
+    note: str | None = Field(default=None, max_length=1000)

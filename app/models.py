@@ -14,6 +14,9 @@ class User(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255))
+    role: Mapped[str] = mapped_column(String(32), default="customer", index=True)
+    status: Mapped[str] = mapped_column(String(32), default="active", index=True)
+    feature_flags_json: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
     sessions: Mapped[list["SessionToken"]] = relationship(back_populates="user", cascade="all, delete-orphan")
@@ -22,6 +25,11 @@ class User(Base):
     advice_logs: Mapped[list["AdviceLog"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     strategy_config: Mapped["StrategyConfig | None"] = relationship(back_populates="user", cascade="all, delete-orphan")
     strategy_versions: Mapped[list["StrategyVersion"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    export_requests: Mapped[list["DataExportRequest"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        foreign_keys="DataExportRequest.user_id",
+    )
 
 
 class SessionToken(Base):
@@ -87,7 +95,7 @@ class StrategyConfig(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), unique=True, index=True)
-    model_version: Mapped[str] = mapped_column(String(64), default="institutional_score_v3")
+    model_version: Mapped[str] = mapped_column(String(64), default="institutional_score_v4_tushare")
     pool_limit: Mapped[int] = mapped_column(Integer, default=30)
     min_amount_yi: Mapped[float] = mapped_column(Float, default=3.0)
     buy_score_threshold: Mapped[float] = mapped_column(Float, default=78.0)
@@ -115,3 +123,64 @@ class StrategyVersion(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
 
     user: Mapped[User] = relationship(back_populates="strategy_versions")
+
+
+class DataSourceConfig(Base):
+    __tablename__ = "data_source_configs"
+    __table_args__ = (UniqueConstraint("user_id", "provider", name="uq_user_data_provider"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    provider: Mapped[str] = mapped_column(String(64), index=True)
+    status: Mapped[str] = mapped_column(String(32), default="not_configured")
+    priority: Mapped[int] = mapped_column(Integer, default=100)
+    api_token_cipher: Mapped[str | None] = mapped_column(Text, nullable=True)
+    token_mask: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    base_url: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    last_checked_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class DataCacheEntry(Base):
+    __tablename__ = "data_cache_entries"
+    __table_args__ = (UniqueConstraint("provider", "dataset", "cache_key", name="uq_data_cache_key"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    provider: Mapped[str] = mapped_column(String(64), index=True)
+    dataset: Mapped[str] = mapped_column(String(64), index=True)
+    cache_key: Mapped[str] = mapped_column(String(128), index=True)
+    trade_date: Mapped[str | None] = mapped_column(String(16), nullable=True, index=True)
+    row_count: Mapped[int] = mapped_column(Integer, default=0)
+    size_bytes: Mapped[int] = mapped_column(Integer, default=0)
+    payload_csv: Mapped[str | None] = mapped_column(Text, nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now(), index=True)
+
+
+class DataExportRequest(Base):
+    __tablename__ = "data_export_requests"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    dataset: Mapped[str] = mapped_column(String(64), index=True)
+    symbols_csv: Mapped[str | None] = mapped_column(Text, nullable=True)
+    start_date: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    end_date: Mapped[str | None] = mapped_column(String(16), nullable=True)
+    status: Mapped[str] = mapped_column(String(32), default="pending", index=True)
+    requested_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+    decided_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    decided_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    decision_note: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    user: Mapped[User] = relationship(back_populates="export_requests", foreign_keys=[user_id])
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    action: Mapped[str] = mapped_column(String(96), index=True)
+    target: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    detail_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)

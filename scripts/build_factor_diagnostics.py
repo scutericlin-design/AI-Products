@@ -12,6 +12,7 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FACTORS_PATH = PROJECT_ROOT / "data" / "processed" / "factors_price_daily.csv"
+INSTITUTIONAL_FACTORS_PATH = PROJECT_ROOT / "data" / "processed" / "institutional_factors_latest.csv"
 OUTPUT_JSON = PROJECT_ROOT / "data" / "processed" / "factor_diagnostics_latest.json"
 
 
@@ -22,6 +23,18 @@ FACTOR_COLUMNS = [
     "amount_ratio_5_20",
     "turnover_5d",
     "volatility_20d",
+]
+V4_CROSS_SECTIONAL_FACTORS = [
+    "price_factor_score",
+    "raw_institutional_score",
+    "alpha_score",
+    "fundamental_quality_score",
+    "valuation_sanity_score",
+    "liquidity_capacity_score",
+    "risk_control_score",
+    "crowding_penalty",
+    "gate_penalty_score",
+    "data_completeness",
 ]
 
 
@@ -100,6 +113,34 @@ def build_diagnostics(data: pd.DataFrame, forward_days: int = 20, groups: int = 
     }
 
 
+def append_v4_cross_sectional_diagnostics(diagnostics: dict[str, object], path: Path) -> dict[str, object]:
+    if not path.exists():
+        return diagnostics
+    latest = pd.read_csv(path, dtype={"symbol": str}, encoding="utf-8-sig")
+    if latest.empty:
+        return diagnostics
+    summaries = list(diagnostics.get("factor_summaries", []))
+    for column in V4_CROSS_SECTIONAL_FACTORS:
+        if column not in latest.columns:
+            continue
+        values = pd.to_numeric(latest[column], errors="coerce")
+        summaries.append(
+            {
+                "factor": f"v4:{column}",
+                "coverage": float(values.notna().mean()),
+                "ic_mean": None,
+                "rank_ic_mean": None,
+                "ic_positive_rate": None,
+                "mean": float(values.dropna().mean()) if values.notna().any() else None,
+            }
+        )
+    diagnostics["factor_summaries"] = summaries
+    diagnostics["cross_sectional_rows"] = int(len(latest))
+    diagnostics["cross_sectional_trade_date"] = str(latest.get("trade_date", pd.Series([None])).iloc[0])
+    diagnostics["cross_sectional_note"] = "v4 factors report latest cross-sectional coverage only; IC requires historical forward returns."
+    return diagnostics
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build factor diagnostics.")
     parser.add_argument("--factors", type=Path, default=FACTORS_PATH)
@@ -108,6 +149,7 @@ def main() -> int:
 
     data = pd.read_csv(args.factors, dtype={"symbol": str}, encoding="utf-8-sig")
     diagnostics = build_diagnostics(data, forward_days=args.forward_days)
+    diagnostics = append_v4_cross_sectional_diagnostics(diagnostics, INSTITUTIONAL_FACTORS_PATH)
     OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_JSON.write_text(json.dumps(diagnostics, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(diagnostics, ensure_ascii=False, indent=2))

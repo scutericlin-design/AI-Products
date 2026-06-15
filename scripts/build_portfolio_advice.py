@@ -69,9 +69,16 @@ def load_signals(path: Path) -> pd.DataFrame:
 
 OPTIONAL_SIGNAL_COLUMNS = [
     "alpha_score",
+    "fundamental_quality_score",
+    "valuation_sanity_score",
     "liquidity_capacity_score",
     "risk_control_score",
     "crowding_penalty",
+    "financial_data_score",
+    "data_completeness",
+    "raw_institutional_score",
+    "score_rank",
+    "gate_penalty_score",
     "confidence",
     "model_version",
     "recommendation_tier",
@@ -128,12 +135,20 @@ def build_reason(row: pd.Series, max_single: float, watch_cap: float) -> str:
     factor_parts = []
     if pd.notna(row.get("alpha_score")):
         factor_parts.append(f"Alpha {row['alpha_score']:.1f}")
+    if pd.notna(row.get("fundamental_quality_score")):
+        factor_parts.append(f"基本面 {row['fundamental_quality_score']:.1f}")
+    if pd.notna(row.get("valuation_sanity_score")):
+        factor_parts.append(f"估值 {row['valuation_sanity_score']:.1f}")
     if pd.notna(row.get("liquidity_capacity_score")):
         factor_parts.append(f"流动性 {row['liquidity_capacity_score']:.1f}")
     if pd.notna(row.get("risk_control_score")):
         factor_parts.append(f"风控 {row['risk_control_score']:.1f}")
     if pd.notna(row.get("crowding_penalty")):
         factor_parts.append(f"拥挤扣分 {row['crowding_penalty']:.1f}")
+    if pd.notna(row.get("data_completeness")):
+        factor_parts.append(f"数据完整度 {row['data_completeness']:.0%}")
+    if pd.notna(row.get("gate_penalty_score")):
+        factor_parts.append(f"门禁扣分 {row['gate_penalty_score']:.1f}")
     if factor_parts:
         parts.append("评分拆解 " + " / ".join(factor_parts))
 
@@ -177,7 +192,7 @@ def build_advice(portfolio: pd.DataFrame, signals: pd.DataFrame, max_single: flo
 
     merged["name"] = merged["name_portfolio"].fillna(merged.get("name_signal"))
     merged["signal_action"] = merged["action"].fillna("not_in_system_pool")
-    merged["model_version"] = merged["model_version"].fillna("institutional_score_v3")
+    merged["model_version"] = merged["model_version"].fillna("institutional_score_v4_tushare")
     merged["confidence"] = merged["confidence"].fillna("low")
     merged["signal_source"] = merged["signal_source"].fillna("no_system_signal")
     merged["latest_close"] = merged["close"]
@@ -217,9 +232,16 @@ def build_advice(portfolio: pd.DataFrame, signals: pd.DataFrame, max_single: flo
         "trade_date",
         "risk_flags",
         "alpha_score",
+        "fundamental_quality_score",
+        "valuation_sanity_score",
         "liquidity_capacity_score",
         "risk_control_score",
         "crowding_penalty",
+        "financial_data_score",
+        "data_completeness",
+        "raw_institutional_score",
+        "score_rank",
+        "gate_penalty_score",
         "confidence",
         "model_version",
         "recommendation_tier",

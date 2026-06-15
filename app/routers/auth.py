@@ -5,12 +5,24 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.deps import current_user, user_feature_flags
 from app.models import User
-from app.schemas import AuthRequest, AuthResponse
+from app.schemas import AuthRequest, AuthResponse, CurrentUserOut
 from app.security import create_session, hash_password, verify_password
 
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+def serialize_auth(user: User, token: str) -> AuthResponse:
+    role = getattr(user, "role", "customer")
+    return AuthResponse(
+        token=token,
+        email=user.email,
+        role=role,
+        is_admin=role == "admin",
+        feature_flags=user_feature_flags(user),
+    )
 
 
 @router.post("/register", response_model=AuthResponse)
@@ -24,7 +36,7 @@ def register(payload: AuthRequest, db: Session = Depends(get_db)) -> AuthRespons
     db.commit()
     db.refresh(user)
     token = create_session(db, user)
-    return AuthResponse(token=token, email=user.email)
+    return serialize_auth(user, token)
 
 
 @router.post("/login", response_model=AuthResponse)
@@ -33,4 +45,16 @@ def login(payload: AuthRequest, db: Session = Depends(get_db)) -> AuthResponse:
     if user is None or not verify_password(payload.password, user.password_hash):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
     token = create_session(db, user)
-    return AuthResponse(token=token, email=user.email)
+    return serialize_auth(user, token)
+
+
+@router.get("/me", response_model=CurrentUserOut)
+def me(user: User = Depends(current_user)) -> CurrentUserOut:
+    role = getattr(user, "role", "customer")
+    return CurrentUserOut(
+        email=user.email,
+        role=role,
+        is_admin=role == "admin",
+        status=getattr(user, "status", "active"),
+        feature_flags=user_feature_flags(user),
+    )

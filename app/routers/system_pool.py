@@ -12,13 +12,17 @@ from sqlalchemy.orm import Session
 
 from app.config import PROJECT_ROOT, settings
 from app.database import get_db
-from app.deps import current_user
-from app.models import StrategyConfig, StrategyVersion, User
+from app.deps import require_feature
+from app.models import DataSourceConfig, StrategyConfig, StrategyVersion, User
 from app.schemas import StrategyConfigIn, StrategyConfigOut, StrategyVersionOut
+from app.services.audit import write_audit_log
 
 
 router = APIRouter(prefix="/api/system-pool", tags=["system-pool"])
 ALLOWED_MARKETS = {"main", "chinext", "star", "beijing"}
+MODEL_VERSION = "institutional_score_v4_tushare"
+FALLBACK_MODEL_VERSION = "institutional_score_v3"
+TUSHARE_READY_STATUSES = {"available", "configured_manual_check"}
 
 
 def read_pool() -> list[dict[str, str]]:
@@ -31,15 +35,88 @@ def read_pool() -> list[dict[str, str]]:
 def get_or_create_config(user: User, db: Session) -> StrategyConfig:
     config = db.scalar(select(StrategyConfig).where(StrategyConfig.user_id == user.id))
     if config is None:
-        config = StrategyConfig(user_id=user.id, model_version="institutional_score_v3")
+        config = StrategyConfig(user_id=user.id, model_version=MODEL_VERSION)
         db.add(config)
         db.commit()
         db.refresh(config)
-    elif config.model_version != "institutional_score_v3":
-        config.model_version = "institutional_score_v3"
+    elif config.model_version in {FALLBACK_MODEL_VERSION, "quality_first_v2"}:
+        config.model_version = MODEL_VERSION
         db.commit()
         db.refresh(config)
     return config
+
+
+def get_ready_tushare_config(user: User, db: Session) -> DataSourceConfig | None:
+    return db.scalar(
+        select(DataSourceConfig).where(
+            DataSourceConfig.user_id == user.id,
+            DataSourceConfig.provider == "tushare",
+            DataSourceConfig.status.in_(TUSHARE_READY_STATUSES),
+            DataSourceConfig.api_token_cipher.is_not(None),
+        )
+    )
+
+
+def build_rebuild_command(config: StrategyConfig, user: User, db: Session) -> tuple[list[str], str, str]:
+    tushare_config = get_ready_tushare_config(user, db)
+    if tushare_config is not None:
+        command = [
+            sys.executable,
+            str(PROJECT_ROOT / "scripts" / "build_tushare_institutional_pool.py"),
+            "--email",
+            user.email,
+            "--limit",
+            str(config.pool_limit),
+            "--lookback-trade-days",
+            "90",
+            "--finance-limit",
+            "800",
+            "--min-amount-yi",
+            str(config.min_amount_yi),
+            "--buy-score-threshold",
+            str(config.buy_score_threshold),
+            "--min-pct-change",
+            str(config.min_pct_change),
+            "--max-pct-change",
+            str(config.max_pct_change),
+            "--min-close-position-pct",
+            str(config.min_close_position_pct),
+            "--max-amplitude-pct",
+            str(config.max_amplitude_pct),
+            "--target-weight",
+            str(config.target_weight),
+            "--markets",
+            config.market_scope or "main,chinext,star",
+            "--sleep",
+            "0.03",
+        ]
+        return command, "tushare_pro", MODEL_VERSION
+
+    command = [
+        sys.executable,
+        str(PROJECT_ROOT / "scripts" / "build_a_share_spot_pool.py"),
+        "--limit",
+        str(config.pool_limit),
+        "--min-amount",
+        str(config.min_amount_yi * 100_000_000),
+        "--buy-score-threshold",
+        str(config.buy_score_threshold),
+        "--min-pct-change",
+        str(config.min_pct_change),
+        "--max-pct-change",
+        str(config.max_pct_change),
+        "--min-close-position-pct",
+        str(config.min_close_position_pct),
+        "--max-amplitude-pct",
+        str(config.max_amplitude_pct),
+        "--target-weight",
+        str(config.target_weight),
+        "--markets",
+        config.market_scope or "main,chinext,star",
+    ]
+    if "beijing" in (config.market_scope or "").split(","):
+        command.append("--include-beijing")
+    return command, "akshare_fallback", FALLBACK_MODEL_VERSION
 
 
 def serialize_config(config: StrategyConfig) -> dict:
@@ -86,17 +163,17 @@ def serialize_version(version: StrategyVersion) -> dict:
 
 
 @router.get("")
-def list_system_pool(user: User = Depends(current_user)):
+def list_system_pool(user: User = Depends(require_feature("system_pool"))):
     return {"rows": read_pool()}
 
 
 @router.get("/config", response_model=StrategyConfigOut)
-def read_config(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def read_config(user: User = Depends(require_feature("system_pool")), db: Session = Depends(get_db)):
     return serialize_config(get_or_create_config(user, db))
 
 
 @router.put("/config", response_model=StrategyConfigOut)
-def save_config(payload: StrategyConfigIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def save_config(payload: StrategyConfigIn, user: User = Depends(require_feature("system_pool")), db: Session = Depends(get_db)):
     if payload.max_pct_change <= payload.min_pct_change:
         raise HTTPException(status_code=400, detail="最高涨幅必须大于最低涨幅")
     markets = [market for market in payload.markets if market in ALLOWED_MARKETS]
@@ -114,11 +191,12 @@ def save_config(payload: StrategyConfigIn, user: User = Depends(current_user), d
     db.commit()
     db.refresh(config)
     create_version_snapshot(config, db, note="manual_config_save")
+    write_audit_log(db, user, "model.config_save", config.model_version, serialize_config(config))
     return serialize_config(config)
 
 
 @router.get("/versions", response_model=list[StrategyVersionOut])
-def list_versions(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def list_versions(user: User = Depends(require_feature("system_pool")), db: Session = Depends(get_db)):
     versions = db.scalars(
         select(StrategyVersion)
         .where(StrategyVersion.user_id == user.id)
@@ -129,7 +207,7 @@ def list_versions(user: User = Depends(current_user), db: Session = Depends(get_
 
 
 @router.post("/versions/{version_id}/restore", response_model=StrategyConfigOut)
-def restore_version(version_id: int, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def restore_version(version_id: int, user: User = Depends(require_feature("system_pool")), db: Session = Depends(get_db)):
     version = db.scalar(
         select(StrategyVersion).where(StrategyVersion.id == version_id, StrategyVersion.user_id == user.id)
     )
@@ -155,44 +233,47 @@ def restore_version(version_id: int, user: User = Depends(current_user), db: Ses
     db.commit()
     db.refresh(config)
     create_version_snapshot(config, db, note=f"restore_from_{version.version_code}")
+    write_audit_log(
+        db,
+        user,
+        "model.config_restore",
+        version.version_code,
+        {"version_id": version.id, "version_code": version.version_code},
+    )
     return serialize_config(config)
 
 
 @router.post("/rebuild")
-def rebuild_system_pool(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def rebuild_system_pool(user: User = Depends(require_feature("system_pool")), db: Session = Depends(get_db)):
     config = get_or_create_config(user, db)
-    command = [
-        sys.executable,
-        str(PROJECT_ROOT / "scripts" / "build_a_share_spot_pool.py"),
-        "--limit",
-        str(config.pool_limit),
-        "--min-amount",
-        str(config.min_amount_yi * 100_000_000),
-        "--buy-score-threshold",
-        str(config.buy_score_threshold),
-        "--min-pct-change",
-        str(config.min_pct_change),
-        "--max-pct-change",
-        str(config.max_pct_change),
-        "--min-close-position-pct",
-        str(config.min_close_position_pct),
-        "--max-amplitude-pct",
-        str(config.max_amplitude_pct),
-        "--target-weight",
-        str(config.target_weight),
-        "--markets",
-        config.market_scope or "main,chinext,star",
-    ]
-    if "beijing" in (config.market_scope or "").split(","):
-        command.append("--include-beijing")
-    completed = subprocess.run(command, cwd=PROJECT_ROOT, text=True, capture_output=True, timeout=180)
+    command, engine, model_version = build_rebuild_command(config, user, db)
+    completed = subprocess.run(command, cwd=PROJECT_ROOT, text=True, capture_output=True, timeout=900)
     if completed.returncode != 0:
         raise HTTPException(
             status_code=500,
             detail={
                 "message": "System pool rebuild failed",
+                "engine": engine,
                 "stdout": completed.stdout[-4000:],
                 "stderr": completed.stderr[-4000:],
             },
         )
-    return {"ok": True, "rows": len(read_pool()), "config": serialize_config(config), "stdout": completed.stdout[-4000:]}
+    if config.model_version != model_version:
+        config.model_version = model_version
+        db.commit()
+        db.refresh(config)
+    write_audit_log(
+        db,
+        user,
+        "system_pool.rebuild",
+        config.model_version,
+        {"rows": len(read_pool()), "engine": engine, "model_version": model_version, "config": serialize_config(config)},
+    )
+    return {
+        "ok": True,
+        "rows": len(read_pool()),
+        "engine": engine,
+        "model_version": model_version,
+        "config": serialize_config(config),
+        "stdout": completed.stdout[-4000:],
+    }

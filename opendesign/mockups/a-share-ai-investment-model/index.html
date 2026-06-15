@@ -376,6 +376,176 @@
     .holding-card h4 { margin: 0; font: var(--h3); }
     .holding-card strong { font: 700 24px/1 var(--font-display); }
     .holding-card small { color: var(--text-secondary); }
+    .pool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+      gap: 12px;
+      padding: 14px;
+      align-items: stretch;
+    }
+    .pool-card {
+      min-height: 318px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--surface-secondary);
+      padding: 12px;
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto;
+      gap: 10px;
+    }
+    .pool-card:hover {
+      border-color: color-mix(in oklab, var(--accent-long), transparent 45%);
+      background: color-mix(in oklab, var(--accent-long), transparent 95%);
+    }
+    .pool-card header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+    }
+    .pool-title {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .pool-title strong {
+      font: var(--h3);
+      overflow-wrap: anywhere;
+    }
+    .pool-score {
+      min-width: 72px;
+      text-align: right;
+      display: grid;
+      gap: 4px;
+      justify-items: end;
+    }
+    .factor-grid, .pool-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .factor-pill, .metric-pill {
+      min-width: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: color-mix(in oklab, var(--paper-050), white 18%);
+      padding: 7px 8px;
+      display: grid;
+      gap: 3px;
+    }
+    .factor-pill span, .metric-pill span {
+      color: var(--text-secondary);
+      font-size: 11px;
+    }
+    .factor-pill strong, .metric-pill strong {
+      font: var(--mono);
+      overflow-wrap: anywhere;
+    }
+    .pool-reason {
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .risk-flags {
+      min-height: 24px;
+      font: var(--mono);
+      color: var(--text-secondary);
+      overflow-wrap: anywhere;
+    }
+    .pool-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .pool-list {
+      display: grid;
+      gap: 8px;
+      padding: 12px;
+    }
+    .pool-row {
+      min-height: 76px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: var(--surface-secondary);
+      display: grid;
+      grid-template-columns: 58px minmax(120px, 1.1fr) 92px minmax(260px, 1.8fr) minmax(180px, 1.1fr) 104px;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+    }
+    .pool-row:hover {
+      border-color: color-mix(in oklab, var(--accent-long), transparent 45%);
+      background: color-mix(in oklab, var(--accent-long), transparent 95%);
+    }
+    .pool-rank {
+      font: 700 20px/1 var(--font-display);
+      color: color-mix(in oklab, var(--accent-long), black 25%);
+    }
+    .pool-stock, .pool-scoreline, .pool-factorline, .pool-reasonline {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .pool-stock strong { font: var(--h3); overflow-wrap: anywhere; }
+    .pool-factorline {
+      grid-template-columns: repeat(4, minmax(70px, 1fr));
+      gap: 6px;
+    }
+    .mini-factor {
+      min-width: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 5px 6px;
+      background: color-mix(in oklab, var(--paper-050), white 18%);
+    }
+    .mini-factor span {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 10px;
+    }
+    .mini-factor strong { font: var(--mono); }
+    .pool-reasonline p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pool-reasonline code {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .advice-table th:nth-child(6), .advice-table td:nth-child(6) { width: 31%; }
+    .advice-table th:nth-child(7), .advice-table td:nth-child(7) { width: 28%; }
+    .advice-factor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(86px, 1fr));
+      gap: 6px;
+    }
+    .advice-reason {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cache-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+      gap: 10px;
+      padding: 14px;
+    }
     .exposure-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -404,7 +574,10 @@
     @media (max-width: 1100px) {
       .app { grid-template-columns: 1fr; }
       .rail { position: relative; height: auto; }
-      .hero-strip, .grid-3, .two-col, .schema-grid, .flow, .signal-form, .portfolio-grid, .exposure-grid { grid-template-columns: 1fr; }
+      .hero-strip, .grid-3, .two-col, .schema-grid, .flow, .signal-form, .portfolio-grid, .exposure-grid, .cache-summary-grid { grid-template-columns: 1fr; }
+      .pool-row { grid-template-columns: 48px 1fr; align-items: start; }
+      .pool-scoreline, .pool-factorline, .pool-reasonline, .pool-row .add-pool { grid-column: 2; }
+      .pool-factorline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .topbar { position: relative; align-items: flex-start; flex-direction: column; }
     }
   </style>
@@ -424,12 +597,14 @@
       </div>
       <nav class="nav" aria-label="主导航">
         <button class="active" data-view="dashboard">信号驾驶舱 <code>01</code></button>
-        <button data-view="systemPool">系统股票池 <code>02</code></button>
-        <button data-view="portfolio">个人持股 <code>03</code></button>
+        <button data-view="systemPool" data-feature="system_pool">系统股票池 <code>02</code></button>
+        <button data-view="portfolio" data-feature="portfolio">个人持股 <code>03</code></button>
         <button data-view="workflow">AI 投研链路 <code>04</code></button>
         <button data-view="data">数据与表结构 <code>05</code></button>
         <button data-view="model">算法模块 <code>06</code></button>
-        <button data-view="backtest">回测与风控 <code>07</code></button>
+        <button data-view="backtest" data-feature="backtest">回测与风控 <code>07</code></button>
+        <button data-view="institutional">专业化中心 <code>08</code></button>
+        <button data-view="admin" id="adminNavBtn" style="display:none">Admin 维护端 <code>09</code></button>
       </nav>
       <div class="system-status">
         <div class="status-row"><span>Universe</span><strong>沪深京 A</strong></div>
@@ -521,9 +696,9 @@
             <section class="panel">
               <div class="panel-head"><h3>入池规则</h3><span class="tag">Rule set</span></div>
               <div class="stack">
-                <p><strong>基础门槛：</strong>从 AKShare 全 A 股实时行情拉取，剔除 ST/退市、低价和低成交额标的。</p>
-                <p><strong>排序依据：</strong>拆成 Alpha 强度、资金容量、风控质量、交易可行性和拥挤扣分，最多保留 30 只。</p>
-                <p><strong>人工确认：</strong>所有入池股票仍需继续检查 20 日趋势、公告、行业催化、涨跌停和同题材拥挤度。</p>
+                <p><strong>基础门槛：</strong>优先使用 TuShare Pro 行情、估值、财务和证券主数据，剔除 ST/退市、低价、低成交额和不可交易标的。</p>
+                <p><strong>排序依据：</strong>拆成价格 Alpha、基本面质量、估值合理性、资金容量、风控质量、数据完整度和拥挤扣分，最多保留 30 只。</p>
+                <p><strong>人工确认：</strong>所有入池股票仍需继续检查 20/60 日趋势、公告、行业催化、涨跌停、财报异常和同题材拥挤度。</p>
               </div>
             </section>
             <section class="panel">
@@ -537,7 +712,7 @@
           <section class="panel">
             <div class="panel-head">
               <h3>模型配置</h3>
-              <span class="tag long">institutional_score_v3</span>
+              <span class="tag long">institutional_score_v4_tushare</span>
             </div>
             <form class="signal-form" id="modelConfigForm">
               <label>推荐数量<input id="cfgPoolLimit" type="number" min="5" max="30" /></label>
@@ -571,11 +746,19 @@
                 <button id="refreshPoolBtn" type="button">更新全A股票池</button>
               </div>
             </div>
-            <table>
-              <thead><tr><th>排名</th><th>股票</th><th>评分</th><th>评分拆解</th><th>关键指标</th><th>动作</th><th>入选原因</th><th>风险标记</th><th>操作</th></tr></thead>
-              <tbody id="poolRows"></tbody>
-            </table>
+            <div class="pool-list" id="poolRows"></div>
             <div class="result" id="poolResult"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>个人观察池</h3>
+              <span class="tag warn" id="watchlistCountTag">0 只</span>
+            </div>
+            <table>
+              <thead><tr><th>股票</th><th>备注</th><th>来源</th><th>操作</th></tr></thead>
+              <tbody id="watchlistRows"></tbody>
+            </table>
+            <div class="result" id="watchlistResult"></div>
           </section>
         </div>
 
@@ -634,7 +817,7 @@
                 <button data-filter="exit_or_strong_reduce">强减/退出</button>
               </div>
             </div>
-            <table>
+            <table class="advice-table">
               <thead><tr><th>股票</th><th>当前仓位</th><th>建议仓位</th><th>动作</th><th>评分</th><th>评分拆解</th><th>理由</th><th>操作</th></tr></thead>
               <tbody id="adviceRows"></tbody>
             </table>
@@ -718,6 +901,61 @@
             </table>
           </section>
           <section class="panel">
+            <div class="panel-head">
+              <h3>TuShare 缓存管理</h3>
+              <button class="control" id="refreshDataCacheBtn" type="button">刷新缓存</button>
+            </div>
+            <div class="cache-summary-grid">
+              <div class="exposure-item"><span>保存模式</span><strong class="mono" id="cacheBackend">--</strong></div>
+              <div class="exposure-item"><span>占用空间</span><strong class="mono" id="cacheSize">--</strong></div>
+              <div class="exposure-item"><span>缓存目录/表</span><strong class="mono" id="cacheRoot">--</strong></div>
+              <div class="exposure-item"><span>可清理</span><strong class="mono" id="cachePrune">--</strong></div>
+            </div>
+            <table>
+              <thead><tr><th>数据集</th><th>文件/记录</th><th>大小</th><th>最早交易日</th><th>最新交易日</th><th>最近更新</th></tr></thead>
+              <tbody id="dataCacheRows"></tbody>
+            </table>
+            <form class="signal-form" id="dataCachePruneForm">
+              <label>清理范围
+                <select id="dataCacheDataset">
+                  <option value="all">日线/估值/财务全部</option>
+                  <option value="daily">日线 daily</option>
+                  <option value="daily_basic">估值 daily_basic</option>
+                  <option value="fina_indicator">财务 fina_indicator</option>
+                </select>
+              </label>
+              <label>保留最近天数<input id="dataCacheKeepDays" type="number" min="7" max="3650" value="365" /></label>
+              <button class="control" id="previewDataPruneBtn" type="button">预估清理</button>
+              <button class="primary admin-only" id="deleteDataPruneBtn" type="button" style="display:none">确认删除旧缓存</button>
+            </form>
+            <div class="result" id="dataCacheResult"></div>
+            <p class="advice-note">本地版优先保留文件缓存；部署到云端数据库时，缓存接口会切换到数据库后端，页面仍使用同一套操作。</p>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>数据导出申请</h3>
+              <span class="tag warn">Admin 审批</span>
+            </div>
+            <form class="signal-form" id="dataExportForm">
+              <label>数据集
+                <select id="exportDataset">
+                  <option value="daily">日线 daily</option>
+                  <option value="daily_basic">估值 daily_basic</option>
+                  <option value="fina_indicator">财务 fina_indicator</option>
+                </select>
+              </label>
+              <label>股票代码<input id="exportSymbols" placeholder="可选：300037,000630" /></label>
+              <label>开始日期<input id="exportStartDate" placeholder="YYYYMMDD" maxlength="8" /></label>
+              <label>结束日期<input id="exportEndDate" placeholder="YYYYMMDD" maxlength="8" /></label>
+              <button class="primary" type="submit">提交导出申请</button>
+            </form>
+            <table>
+              <thead><tr><th>申请</th><th>数据集</th><th>筛选</th><th>状态</th><th>审批备注</th><th>操作</th></tr></thead>
+              <tbody id="exportRequestRows"></tbody>
+            </table>
+            <div class="result" id="dataExportResult"></div>
+          </section>
+          <section class="panel">
             <div class="panel-head"><h3>推荐数据源</h3><span class="tag">Searched sources</span></div>
             <div class="source-list">
               <div class="source"><strong>Ricequant</strong><span>官方文档覆盖 RQData 金融数据 API、A 股、宏观、另类数据，以及 RQFactor、RQOptimizer、RQPAttr 等投研组件。</span><a href="https://www.ricequant.com/doc/rqdata/python/" target="_blank">文档</a></div>
@@ -767,12 +1005,12 @@
               <table>
                 <thead><tr><th>层级</th><th>作用</th><th>当前实现 / 下一步</th></tr></thead>
                 <tbody>
-                  <tr><td>1. 数据门禁</td><td>剔除 ST、退市、低价、低成交额、停牌和极端不可交易标的。</td><td>已做 ST/低价/成交额过滤；下一步加入停复牌和涨跌停可交易检查。</td></tr>
-                  <tr><td>2. Alpha 因子</td><td>用价格、量能、趋势、质量、成长、事件构成多因子评分。</td><td>已做实时强势、流动性、收盘位置、振幅、跳空、可交易性；下一步加入20/60日趋势和财务质量。</td></tr>
-                  <tr><td>3. 有效性检验</td><td>用 IC、RankIC、分组收益、换手和分市场状态验证因子是否稳定。</td><td>待做回测验证；没有通过检验的因子不得进入正式评分。</td></tr>
-                  <tr><td>4. 风险模型</td><td>控制行业、主题、规模、波动、流动性和个股集中度暴露。</td><td>已做单票建议仓位；下一步加入行业上限和主题拥挤度。</td></tr>
-                  <tr><td>5. 组合优化</td><td>从 Top 30 里选最终 5-12 只，最大化预期收益/风险比。</td><td>下一步做约束优化：单票上限、行业上限、现金底仓、交易成本。</td></tr>
-                  <tr><td>6. 交易复盘</td><td>记录建议、采纳、盈亏、失效原因，反向校准模型。</td><td>已有 advice_log 设计；下一步把网页操作写入日志。</td></tr>
+                  <tr><td>1. 数据门禁</td><td>剔除 ST、退市、低价、低成交额、新股和极端不可交易标的。</td><td>已接入 TuShare Pro 主数据、行情和估值；保留 AKShare 兜底。</td></tr>
+                  <tr><td>2. Alpha 因子</td><td>用价格、量能、趋势、质量、成长和估值构成多因子评分。</td><td>已加入 20/60 日趋势、成交容量、财务质量、估值合理性和分位校准。</td></tr>
+                  <tr><td>3. 有效性检验</td><td>用 IC、RankIC、分组收益、换手和分市场状态验证因子是否稳定。</td><td>已有因子诊断入口；正式投入前仍需扩展 5-10 年样本外验证。</td></tr>
+                  <tr><td>4. 风险模型</td><td>控制行业、主题、规模、波动、流动性和个股集中度暴露。</td><td>已做个股风控、板块分散和仓位上限；下一步可接入行业暴露优化器。</td></tr>
+                  <tr><td>5. 组合优化</td><td>从 Top 30 里选最终 5-12 只，最大化预期收益/风险比。</td><td>当前输出 Top 30 与建议仓位；下一步加入交易成本和换手惩罚。</td></tr>
+                  <tr><td>6. 交易复盘</td><td>记录建议、采纳、盈亏、失效原因，反向校准模型。</td><td>网页采纳建议会写入日志，可继续扩展为完整复盘闭环。</td></tr>
                 </tbody>
               </table>
             </section>
@@ -783,35 +1021,50 @@
   .where(amount >= 3e8)
 
 alpha_score =
-  momentum_sweet_spot            # 不是越涨越好，过热会扣分
-  + close_position               # 收盘接近日内高位
-  + gap_quality                  # 跳空过大扣分
+  20/60日趋势与突破质量          # 不是越涨越好，过热会扣分
+  + 量能确认                     # 放量但不过度拥挤
+  + 价格相对均线结构             # 2-8周持仓周期
 
 liquidity_capacity_score =
   amount_percentile              # 全市场成交额分位
   + capacity_band                # 成交容量是否能承载进出
 
-risk_control_score =
-  stability_score                # 振幅过大扣分
-  + tradability_score            # 涨停/跌停/弱收盘扣分
-  + reversal_risk_score          # 冲高回落和追高风险
+fundamental_quality_score =
+  ROE + 净利增速 + 收入增速
+  + 毛利率 + 经营现金流质量
+  - 高负债惩罚
 
-institutional_score =
-  0.42 * alpha_score
-  + 0.26 * liquidity_capacity_score
-  + 0.32 * risk_control_score
+valuation_sanity_score =
+  PE_TTM + PB + PS_TTM + 股息率
+  # 好公司也要避免估值过热
+
+risk_control_score =
+  波动率 + 回撤控制
+  + 可交易性                     # 涨停/跌停/弱收盘扣分
+  + 新股与杠杆风险
+
+raw_institutional_score =
+  0.30 * alpha_score
+  + 0.22 * fundamental_quality_score
+  + 0.14 * valuation_sanity_score
+  + 0.19 * liquidity_capacity_score
+  + 0.15 * risk_control_score
   - crowding_penalty
 
-action = "buy" only if:
-  institutional_score >= 78
-  and alpha_score >= 68
-  and liquidity_capacity_score >= 55
-  and risk_control_score >= 58
-  and 1% < pct_change < 9.7%
-  and close_position >= 55%
-  and intraday_amplitude <= 12%
+final_score =
+  raw_institutional_score + 全市场分位校准
+  - gate_penalty_score
+  # 避免不同市场环境下分数整体偏低
 
-final_pool = rank(institutional_score)
+action = "buy" only if:
+  final_score >= 网页买入阈值
+  and alpha_score >= 62
+  and liquidity_capacity_score >= 55
+  and risk_control_score >= 55
+  and data_completeness >= 55%
+  and 网页涨幅/收盘位置/振幅门禁全部通过
+
+final_pool = rank(final_score)
   .cap_by_board()
   .with_reason()
   .with_risk_flags()
@@ -941,6 +1194,149 @@ reject_trade_if:
   or disclosure_event_unreviewed</pre>
           </section>
         </div>
+
+        <div id="institutional" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>数据源配置</h3>
+              <span class="tag long">Data governance</span>
+            </div>
+            <form class="signal-form" id="dataSourceForm">
+              <label>数据源
+                <select id="dataProvider">
+                  <option value="akshare">AKShare</option>
+                  <option value="tushare">TuShare Pro</option>
+                  <option value="joinquant">聚宽</option>
+                  <option value="ricequant">米筐</option>
+                  <option value="wind_choice">Wind / Choice</option>
+                </select>
+              </label>
+              <label>API Token / 账号密钥<input id="dataToken" type="password" placeholder="AKShare 可留空；商业源请填 token" /></label>
+              <label>接口地址<input id="dataBaseUrl" placeholder="可选，供应商自定义地址" /></label>
+              <label>优先级<input id="dataPriority" type="number" min="1" max="999" value="100" /></label>
+              <label>备注<input id="dataNotes" placeholder="例如：正式行情源 / 财务字段源 / 仅测试" /></label>
+              <button class="primary" type="submit">保存数据源</button>
+            </form>
+            <div class="result" id="dataSourceResult"></div>
+            <table>
+              <thead><tr><th>数据源</th><th>状态</th><th>用途</th><th>Token</th><th>优先级</th><th>最近检查</th><th>操作</th></tr></thead>
+              <tbody id="dataSourceRows"></tbody>
+            </table>
+          </section>
+          <div class="grid-3">
+            <section class="panel">
+              <div class="panel-head"><h3>机构化就绪度</h3><span class="tag warn" id="readinessStatus">Research</span></div>
+              <div class="exposure-grid">
+                <div class="exposure-item"><span>就绪评分</span><strong class="mono" id="readinessScore">--</strong></div>
+                <div class="exposure-item"><span>模型版本</span><strong class="mono" id="governanceModelVersion">--</strong></div>
+                <div class="exposure-item"><span>未通过门禁</span><strong class="mono" id="governanceFailCount">--</strong></div>
+                <div class="exposure-item"><span>下一阶段</span><strong class="mono" id="governanceStage">--</strong></div>
+              </div>
+              <p class="advice-note" id="governanceSummary">正在读取模型治理状态。</p>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>组合风险总览</h3><span class="tag risk" id="institutionalRiskLevel">--</span></div>
+              <div class="exposure-grid">
+                <div class="exposure-item"><span>总仓位</span><strong class="mono" id="instTotalWeight">--</strong></div>
+                <div class="exposure-item"><span>现金底仓</span><strong class="mono" id="instCashWeight">--</strong></div>
+                <div class="exposure-item"><span>最大单票</span><strong class="mono" id="instMaxSingle">--</strong></div>
+                <div class="exposure-item"><span>集中度 HHI</span><strong class="mono" id="instHHI">--</strong></div>
+              </div>
+              <p class="advice-note">风险暴露来自当前登录账户持仓和最新模型评分。</p>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>机构控制目标</h3><span class="tag long">Controls</span></div>
+              <div class="stack">
+                <p><strong>数据：</strong>商业源优先，AKShare 做快速校验；所有关键字段要有来源、时间戳和缺失率。</p>
+                <p><strong>模型：</strong>上线前必须通过数据覆盖、样本外、因子有效性和交易约束门禁。</p>
+                <p><strong>风控：</strong>高弹性策略也必须控制单票、板块、低评分持仓和现金缓冲。</p>
+              </div>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="panel-head"><h3>模型上线门禁</h3><button class="control" id="refreshGovernanceBtn" type="button">刷新</button></div>
+            <table>
+              <thead><tr><th>门禁</th><th>状态</th><th>说明</th></tr></thead>
+              <tbody id="governanceGateRows"></tbody>
+            </table>
+          </section>
+          <div class="two-col">
+            <section class="panel">
+              <div class="panel-head"><h3>板块暴露</h3><span class="tag">Exposure</span></div>
+              <table>
+                <thead><tr><th>板块</th><th>仓位</th></tr></thead>
+                <tbody id="institutionalBoardRows"></tbody>
+              </table>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>风险突破</h3><span class="tag risk">Breach</span></div>
+              <table>
+                <thead><tr><th>级别</th><th>项目</th><th>说明</th></tr></thead>
+                <tbody id="institutionalBreachRows"></tbody>
+              </table>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="panel-head"><h3>审计日志</h3><button class="control" id="refreshAuditBtn" type="button">刷新日志</button></div>
+            <table>
+              <thead><tr><th>时间</th><th>动作</th><th>对象</th><th>详情</th></tr></thead>
+              <tbody id="auditRows"></tbody>
+            </table>
+          </section>
+        </div>
+
+        <div id="admin" class="view">
+          <div class="hero-strip">
+            <div class="thesis">
+              <h3>Admin 维护端</h3>
+              <p>用户权限、策略配置、数据导出审批和缓存治理集中在这里。普通用户不会看到这个入口。</p>
+            </div>
+            <div class="metric"><span>注册用户</span><strong id="adminUserCount">--</strong></div>
+            <div class="metric"><span>活跃用户</span><strong id="adminActiveCount">--</strong></div>
+            <div class="metric"><span>管理员</span><strong id="adminCount">--</strong></div>
+            <div class="metric"><span>待审导出</span><strong id="adminPendingExports">--</strong></div>
+          </div>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>客户权限与策略</h3>
+              <button class="control" id="refreshAdminBtn" type="button">刷新维护端</button>
+            </div>
+            <table>
+              <thead><tr><th>客户</th><th>状态</th><th>功能权限</th><th>策略</th><th>持仓</th><th>操作</th></tr></thead>
+              <tbody id="adminUserRows"></tbody>
+            </table>
+            <div class="result" id="adminResult"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>当前选中客户策略</h3><span class="tag long" id="adminSelectedUser">未选择</span></div>
+            <form class="signal-form" id="adminStrategyForm">
+              <input id="adminStrategyUserId" type="hidden" />
+              <label>推荐数量<input id="adminPoolLimit" type="number" min="5" max="30" /></label>
+              <label>最低成交额(亿)<input id="adminMinAmount" type="number" min="0.5" max="100" step="0.1" /></label>
+              <label>买入评分阈值<input id="adminBuyScore" type="number" min="50" max="98" step="0.5" /></label>
+              <label>最低涨幅%<input id="adminMinPct" type="number" min="-10" max="20" step="0.1" /></label>
+              <label>最高涨幅%<input id="adminMaxPct" type="number" min="1" max="30" step="0.1" /></label>
+              <label>目标仓位%<input id="adminTargetWeight" type="number" min="0" max="20" step="0.5" /></label>
+              <div class="check-field">
+                <span>市场范围</span>
+                <div class="check-options">
+                  <label><input type="checkbox" name="adminMarket" value="main" />主板</label>
+                  <label><input type="checkbox" name="adminMarket" value="chinext" />创业板</label>
+                  <label><input type="checkbox" name="adminMarket" value="star" />科创板</label>
+                  <label><input type="checkbox" name="adminMarket" value="beijing" />北交所</label>
+                </div>
+              </div>
+              <button class="primary" type="submit">保存客户策略</button>
+            </form>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>数据导出审批</h3><span class="tag warn">Approval queue</span></div>
+            <table>
+              <thead><tr><th>客户</th><th>数据集</th><th>范围</th><th>状态</th><th>申请时间</th><th>操作</th></tr></thead>
+              <tbody id="adminExportRows"></tbody>
+            </table>
+          </section>
+        </div>
       </section>
     </main>
   </div>
@@ -953,11 +1349,16 @@ reject_trade_if:
       workflow: ["AI 投研链路", "按每日操作顺序解释：先更新股票池，再看理由和风险，最后形成观察/交易计划。"],
       data: ["数据与表结构", "商业数据源优先，开源数据补充；每个信号必须能回溯到字段、文档和更新时间。"],
       model: ["算法模块", "参考机构多因子流程：数据门禁、Alpha、因子检验、风险模型、组合优化和交易复盘。"],
-      backtest: ["回测与风控", "重点验证 2-8 周窗口、交易可行性、风格切片稳定性和极端行情保护。"]
+      backtest: ["回测与风控", "重点验证 2-8 周窗口、交易可行性、风格切片稳定性和极端行情保护。"],
+      institutional: ["专业化中心", "把数据源、模型治理、组合风险和审计日志集中起来，向机构化投研流程靠拢。"],
+      admin: ["Admin 维护端", "管理客户权限、策略配置、数据导出审批和数据缓存治理。"]
     };
     let portfolioAdvice = [];
     let systemPool = [];
+    let watchlist = [];
     let modelConfig = null;
+    let currentUser = { is_admin: false, feature_flags: {} };
+    let adminUsers = [];
     const marketRegimes = {
       "震荡上行": {
         riskMode: "High Beta",
@@ -1050,6 +1451,14 @@ reject_trade_if:
       if (!Number.isFinite(number)) return "--";
       return number.toFixed(digits);
     }
+    function formatBytes(value) {
+      const bytes = Number(value);
+      if (!Number.isFinite(bytes)) return "--";
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+      return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+    }
     function authHeaders(extra = {}) {
       const token = localStorage.getItem("alpha_token");
       return { ...extra, ...(token ? { Authorization: `Bearer ${token}` } : {}) };
@@ -1065,6 +1474,353 @@ reject_trade_if:
         throw new Error(detail || payload.error || `HTTP ${response.status}`);
       }
       return payload;
+    }
+    async function loadCurrentUser() {
+      currentUser = await apiJson("/api/auth/me", { cache: "no-store" });
+      document.getElementById("signedInUser").textContent = `${currentUser.email} · ${currentUser.is_admin ? "Admin" : "客户"}`;
+      document.getElementById("adminNavBtn").style.display = currentUser.is_admin ? "" : "none";
+      document.querySelectorAll(".admin-only").forEach((node) => {
+        node.style.display = currentUser.is_admin ? "" : "none";
+      });
+      document.querySelectorAll(".nav button[data-feature]").forEach((node) => {
+        const enabled = currentUser.is_admin || Boolean(currentUser.feature_flags?.[node.dataset.feature]);
+        node.style.display = enabled ? "" : "none";
+      });
+      const exportEnabled = Boolean(currentUser.feature_flags?.data_export || currentUser.is_admin);
+      document.querySelectorAll("#dataExportForm input, #dataExportForm select, #dataExportForm button").forEach((node) => {
+        node.disabled = !exportEnabled;
+      });
+      if (!exportEnabled) {
+        const result = document.getElementById("dataExportResult");
+        result.classList.add("show");
+        result.innerHTML = "数据导出功能尚未开通，请联系 Admin 开启后再提交导出申请。";
+      }
+      if (currentUser.is_admin) {
+        await loadAdminCenter();
+      }
+      const activeButton = document.querySelector(".nav button.active");
+      if (activeButton && activeButton.style.display === "none") {
+        document.querySelector('[data-view="dashboard"]').click();
+      }
+    }
+    function statusTagClass(status) {
+      if (["available", "configured", "pass", "production_candidate", "production_watch"].includes(status)) return "long";
+      if (["fail", "high", "missing_package", "missing_token", "invalid_token", "connection_failed"].includes(status)) return "risk";
+      return "warn";
+    }
+    function statusLabel(status) {
+      return {
+        available: "可用",
+        configured: "已配置",
+        configured_manual_check: "需人工核验",
+        not_configured: "未配置",
+        missing_package: "缺少SDK",
+        missing_token: "缺少Token",
+        invalid_token: "Token无效",
+        connection_failed: "连接失败",
+        empty_response: "返回为空",
+        pass: "通过",
+        warn: "警告",
+        fail: "未通过",
+        controlled: "受控",
+        medium: "中等",
+        high: "高风险",
+        research: "研究阶段",
+        production_watch: "准生产观察",
+        production_candidate: "生产候选"
+      }[status] || status || "--";
+    }
+    function renderDataSources(payload) {
+      const providers = payload.providers || [];
+      document.getElementById("dataSourceRows").innerHTML = providers.map((item) => `
+        <tr>
+          <td><strong>${item.label}</strong><br /><code>${item.provider}</code></td>
+          <td><span class="tag ${statusTagClass(item.status)}">${statusLabel(item.status)}</span></td>
+          <td>${item.role}</td>
+          <td><code>${item.token_mask || (item.needs_token ? "未配置" : "无需Token")}</code></td>
+          <td><strong>${item.priority}</strong></td>
+          <td>${item.last_checked_at ? new Date(item.last_checked_at).toLocaleString("zh-CN") : "--"}</td>
+          <td><button class="control check-source" data-provider="${item.provider}">检查</button></td>
+        </tr>
+      `).join("");
+      document.querySelectorAll(".check-source").forEach((button) => {
+        button.addEventListener("click", () => checkDataSource(button.dataset.provider));
+      });
+    }
+    async function loadDataSources() {
+      try {
+        renderDataSources(await apiJson("/api/institutional/data-sources", { cache: "no-store" }));
+      } catch (error) {
+        const result = document.getElementById("dataSourceResult");
+        result.classList.add("show");
+        result.innerHTML = `读取数据源失败：${error.message}`;
+      }
+    }
+    async function saveDataSource(event) {
+      event.preventDefault();
+      const result = document.getElementById("dataSourceResult");
+      const payload = {
+        provider: document.getElementById("dataProvider").value,
+        api_token: document.getElementById("dataToken").value || null,
+        base_url: document.getElementById("dataBaseUrl").value || null,
+        priority: Number(document.getElementById("dataPriority").value || 100),
+        notes: document.getElementById("dataNotes").value || null
+      };
+      try {
+        const saved = await apiJson("/api/institutional/data-sources", {
+          method: "PUT",
+          body: JSON.stringify(payload)
+        });
+        document.getElementById("dataToken").value = "";
+        result.classList.add("show");
+        result.innerHTML = `${saved.label} 已保存，状态：<strong>${statusLabel(saved.status)}</strong>。`;
+        await loadDataSources();
+        await loadModelGovernance();
+        await loadAuditLogs();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `保存失败：${error.message}`;
+      }
+    }
+    async function checkDataSource(provider) {
+      const result = document.getElementById("dataSourceResult");
+      try {
+        const checked = await apiJson(`/api/institutional/data-sources/${provider}/check`, { method: "POST" });
+        result.classList.add("show");
+        result.innerHTML = `${checked.label} 检查完成：<strong>${statusLabel(checked.status)}</strong>。${checked.message || ""}`;
+        await loadDataSources();
+        await loadAuditLogs();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `检查失败：${error.message}`;
+      }
+    }
+    function renderModelGovernance(payload) {
+      const failCount = (payload.gates || []).filter((gate) => gate.status === "fail").length;
+      document.getElementById("readinessScore").textContent = `${payload.readiness_score ?? "--"}`;
+      document.getElementById("governanceModelVersion").textContent = payload.model_version || "--";
+      document.getElementById("governanceFailCount").textContent = failCount;
+      document.getElementById("governanceStage").textContent = statusLabel(payload.readiness);
+      const status = document.getElementById("readinessStatus");
+      status.textContent = statusLabel(payload.readiness);
+      status.className = `tag ${statusTagClass(payload.readiness)}`;
+      document.getElementById("governanceSummary").textContent = (payload.required_next_steps || []).join(" ");
+      document.getElementById("governanceGateRows").innerHTML = (payload.gates || []).map((gate) => `
+        <tr>
+          <td><strong>${gate.name}</strong></td>
+          <td><span class="tag ${statusTagClass(gate.status)}">${statusLabel(gate.status)}</span></td>
+          <td>${gate.detail}</td>
+        </tr>
+      `).join("");
+    }
+    async function loadModelGovernance() {
+      try {
+        renderModelGovernance(await apiJson("/api/institutional/model-governance", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("governanceSummary").textContent = `读取模型治理失败：${error.message}`;
+      }
+    }
+    function renderInstitutionalRisk(payload) {
+      const level = document.getElementById("institutionalRiskLevel");
+      level.textContent = statusLabel(payload.risk_level);
+      level.className = `tag ${statusTagClass(payload.risk_level)}`;
+      document.getElementById("instTotalWeight").textContent = formatPercent(payload.total_weight);
+      document.getElementById("instCashWeight").textContent = formatPercent(payload.cash_weight);
+      document.getElementById("instMaxSingle").textContent = formatPercent(payload.max_single_weight);
+      document.getElementById("instHHI").textContent = formatNumber(payload.concentration_hhi, 3);
+      const boardExposure = payload.board_exposure || {};
+      document.getElementById("institutionalBoardRows").innerHTML = Object.keys(boardExposure).length
+        ? Object.entries(boardExposure).map(([board, weight]) => `<tr><td>${board}</td><td><strong>${formatPercent(weight)}</strong></td></tr>`).join("")
+        : `<tr><td colspan="2">暂无持仓暴露。</td></tr>`;
+      const breaches = payload.breaches || [];
+      document.getElementById("institutionalBreachRows").innerHTML = breaches.length
+        ? breaches.map((item) => `<tr><td><span class="tag ${statusTagClass(item.level)}">${statusLabel(item.level)}</span></td><td>${item.item}</td><td>${item.message}</td></tr>`).join("")
+        : `<tr><td colspan="3">未触发硬性风险突破。</td></tr>`;
+    }
+    async function loadInstitutionalRisk() {
+      try {
+        renderInstitutionalRisk(await apiJson("/api/institutional/portfolio-risk", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("institutionalBreachRows").innerHTML = `<tr><td colspan="3">读取组合风险失败：${error.message}</td></tr>`;
+      }
+    }
+    function renderAuditLogs(payload) {
+      const rows = payload.rows || [];
+      document.getElementById("auditRows").innerHTML = rows.length
+        ? rows.map((row) => `
+          <tr>
+            <td>${new Date(row.created_at).toLocaleString("zh-CN")}</td>
+            <td><code>${row.action}</code></td>
+            <td>${row.target || "--"}</td>
+            <td><code>${JSON.stringify(row.detail || {})}</code></td>
+          </tr>
+        `).join("")
+        : `<tr><td colspan="4">暂无审计记录。保存持仓、加入观察、运行回测或配置数据源后会自动出现。</td></tr>`;
+    }
+    async function loadAuditLogs() {
+      try {
+        renderAuditLogs(await apiJson("/api/institutional/audit-logs", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("auditRows").innerHTML = `<tr><td colspan="4">读取审计日志失败：${error.message}</td></tr>`;
+      }
+    }
+    async function loadInstitutionalCenter() {
+      await Promise.all([loadDataSources(), loadModelGovernance(), loadInstitutionalRisk(), loadAuditLogs()]);
+    }
+    function renderAdminSummary(payload) {
+      document.getElementById("adminUserCount").textContent = payload.user_count ?? "--";
+      document.getElementById("adminActiveCount").textContent = payload.active_count ?? "--";
+      document.getElementById("adminCount").textContent = payload.admin_count ?? "--";
+      document.getElementById("adminPendingExports").textContent = payload.pending_exports ?? "--";
+    }
+    function featureCheckbox(user, key, label) {
+      const checked = user.feature_flags?.[key] ? "checked" : "";
+      return `<label><input type="checkbox" class="admin-feature" data-user-id="${user.id}" data-feature="${key}" ${checked} />${label}</label>`;
+    }
+    function renderAdminUsers(payload) {
+      adminUsers = payload.rows || [];
+      document.getElementById("adminUserRows").innerHTML = adminUsers.map((user) => {
+        const strategy = user.strategy || {};
+        return `
+          <tr>
+            <td><strong>${user.email}</strong><br /><code>#${user.id} · ${user.role}</code></td>
+            <td>
+              <select class="control admin-status" data-user-id="${user.id}">
+                <option value="active" ${user.status === "active" ? "selected" : ""}>active</option>
+                <option value="disabled" ${user.status === "disabled" ? "selected" : ""}>disabled</option>
+              </select>
+              <select class="control admin-role" data-user-id="${user.id}">
+                <option value="customer" ${user.role === "customer" ? "selected" : ""}>customer</option>
+                <option value="admin" ${user.role === "admin" ? "selected" : ""}>admin</option>
+              </select>
+            </td>
+            <td><div class="check-options">${featureCheckbox(user, "system_pool", "股票池")}${featureCheckbox(user, "portfolio", "持股")}${featureCheckbox(user, "backtest", "回测")}${featureCheckbox(user, "data_export", "导出")}</div></td>
+            <td><code>${strategy.model_version || "--"}</code><br /><small>阈值 ${strategy.buy_score_threshold ?? "--"} · 市场 ${(strategy.markets || []).join(",") || "--"}</small></td>
+            <td>${user.position_count}</td>
+            <td><button class="control admin-save-user" data-user-id="${user.id}">保存权限</button><button class="control admin-edit-strategy" data-user-id="${user.id}">配置策略</button></td>
+          </tr>
+        `;
+      }).join("");
+      document.querySelectorAll(".admin-save-user").forEach((button) => {
+        button.addEventListener("click", () => saveAdminUser(Number(button.dataset.userId)));
+      });
+      document.querySelectorAll(".admin-edit-strategy").forEach((button) => {
+        button.addEventListener("click", () => selectAdminStrategyUser(Number(button.dataset.userId)));
+      });
+    }
+    function readAdminUserPayload(userId) {
+      const featureFlags = {};
+      document.querySelectorAll(`.admin-feature[data-user-id="${userId}"]`).forEach((input) => {
+        featureFlags[input.dataset.feature] = input.checked;
+      });
+      return {
+        status: document.querySelector(`.admin-status[data-user-id="${userId}"]`).value,
+        role: document.querySelector(`.admin-role[data-user-id="${userId}"]`).value,
+        feature_flags: featureFlags
+      };
+    }
+    async function saveAdminUser(userId) {
+      const result = document.getElementById("adminResult");
+      try {
+        await apiJson(`/api/admin/users/${userId}`, {
+          method: "PUT",
+          body: JSON.stringify(readAdminUserPayload(userId))
+        });
+        result.classList.add("show");
+        result.innerHTML = `用户 #${userId} 权限已保存。`;
+        await loadAdminUsers();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `保存失败：${error.message}`;
+      }
+    }
+    async function selectAdminStrategyUser(userId) {
+      const user = adminUsers.find((item) => item.id === userId);
+      const config = await apiJson(`/api/admin/users/${userId}/strategy`, { cache: "no-store" });
+      document.getElementById("adminStrategyUserId").value = userId;
+      document.getElementById("adminSelectedUser").textContent = user?.email || `#${userId}`;
+      document.getElementById("adminPoolLimit").value = config.pool_limit;
+      document.getElementById("adminMinAmount").value = config.min_amount_yi;
+      document.getElementById("adminBuyScore").value = config.buy_score_threshold;
+      document.getElementById("adminMinPct").value = config.min_pct_change;
+      document.getElementById("adminMaxPct").value = config.max_pct_change;
+      document.getElementById("adminTargetWeight").value = Number(config.target_weight * 100).toFixed(1);
+      const markets = new Set(config.markets || ["main", "chinext", "star"]);
+      document.querySelectorAll("input[name='adminMarket']").forEach((input) => {
+        input.checked = markets.has(input.value);
+      });
+    }
+    async function saveAdminStrategy(event) {
+      event.preventDefault();
+      const userId = document.getElementById("adminStrategyUserId").value;
+      const result = document.getElementById("adminResult");
+      if (!userId) {
+        result.classList.add("show");
+        result.innerHTML = "请先在客户列表里选择一个客户。";
+        return;
+      }
+      const markets = Array.from(document.querySelectorAll("input[name='adminMarket']:checked")).map((input) => input.value);
+      try {
+        await apiJson(`/api/admin/users/${userId}/strategy`, {
+          method: "PUT",
+          body: JSON.stringify({
+            pool_limit: Number(document.getElementById("adminPoolLimit").value),
+            min_amount_yi: Number(document.getElementById("adminMinAmount").value),
+            buy_score_threshold: Number(document.getElementById("adminBuyScore").value),
+            min_pct_change: Number(document.getElementById("adminMinPct").value),
+            max_pct_change: Number(document.getElementById("adminMaxPct").value),
+            min_close_position_pct: 55,
+            max_amplitude_pct: 12,
+            target_weight: Number(document.getElementById("adminTargetWeight").value) / 100,
+            markets,
+            include_beijing: markets.includes("beijing")
+          })
+        });
+        result.classList.add("show");
+        result.innerHTML = "客户策略已保存。";
+        await loadAdminUsers();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `策略保存失败：${error.message}`;
+      }
+    }
+    function renderAdminExports(payload) {
+      const rows = payload.rows || [];
+      document.getElementById("adminExportRows").innerHTML = rows.length ? rows.map((row) => `
+        <tr>
+          <td>${row.email}<br /><code>#${row.id}</code></td>
+          <td><code>${row.dataset}</code></td>
+          <td><code>${(row.symbols || []).join(",") || "全部"}</code><br /><small>${row.start_date || "--"} 至 ${row.end_date || "--"}</small></td>
+          <td><span class="tag ${row.status === "approved" ? "long" : row.status === "rejected" ? "risk" : "warn"}">${row.status}</span></td>
+          <td>${row.requested_at || "--"}</td>
+          <td>${row.status === "pending" ? `<button class="control admin-export-decision" data-id="${row.id}" data-status="approved">批准</button><button class="control admin-export-decision" data-id="${row.id}" data-status="rejected">拒绝</button>` : row.decision_note || "--"}</td>
+        </tr>
+      `).join("") : `<tr><td colspan="6">暂无导出申请。</td></tr>`;
+      document.querySelectorAll(".admin-export-decision").forEach((button) => {
+        button.addEventListener("click", () => decideAdminExport(button.dataset.id, button.dataset.status));
+      });
+    }
+    async function decideAdminExport(id, status) {
+      await apiJson(`/api/admin/export-requests/${id}/decision`, {
+        method: "POST",
+        body: JSON.stringify({ status, note: status === "approved" ? "Admin approved" : "Admin rejected" })
+      });
+      await Promise.all([loadAdminExports(), loadExportRequests()]);
+    }
+    async function loadAdminUsers() {
+      renderAdminUsers(await apiJson("/api/admin/users", { cache: "no-store" }));
+    }
+    async function loadAdminExports() {
+      renderAdminExports(await apiJson("/api/admin/export-requests", { cache: "no-store" }));
+    }
+    async function loadAdminCenter() {
+      if (!currentUser.is_admin) return;
+      const [summary] = await Promise.all([
+        apiJson("/api/admin/summary", { cache: "no-store" }),
+        loadAdminUsers(),
+        loadAdminExports()
+      ]);
+      renderAdminSummary(summary);
     }
     function renderHoldings() {
       document.getElementById("holdingCountTag").textContent = `真实持仓 ${portfolioAdvice.length} 只`;
@@ -1106,8 +1862,8 @@ reject_trade_if:
           <td><strong>${formatPercent(row.suggested_target_weight)}</strong></td>
           <td><span class="tag ${tagClassForAction(row.portfolio_action)}">${actionLabel(row.portfolio_action)}</span></td>
           <td><span class="score">${formatNumber(row.price_factor_score, 1)}</span><br /><small>${confidenceLabel(row.confidence || "low")}</small></td>
-          <td><code>Alpha ${formatNumber(row.alpha_score, 1)}</code><br /><code>流动性 ${formatNumber(row.liquidity_capacity_score, 1)}</code><br /><code>风控 ${formatNumber(row.risk_control_score, 1)}</code><br /><code>拥挤扣分 ${formatNumber(row.crowding_penalty, 1)}</code></td>
-          <td>${row.advice_reason}</td>
+          <td><div class="advice-factor-grid"><div class="mini-factor"><span>Alpha</span><strong>${formatNumber(row.alpha_score, 1)}</strong></div><div class="mini-factor"><span>基本面</span><strong>${formatNumber(row.fundamental_quality_score, 1)}</strong></div><div class="mini-factor"><span>估值</span><strong>${formatNumber(row.valuation_sanity_score, 1)}</strong></div><div class="mini-factor"><span>流动性</span><strong>${formatNumber(row.liquidity_capacity_score, 1)}</strong></div><div class="mini-factor"><span>风控</span><strong>${formatNumber(row.risk_control_score, 1)}</strong></div><div class="mini-factor"><span>数据/门禁</span><strong>${formatPercent(row.data_completeness, 0)} / -${formatNumber(row.gate_penalty_score, 1)}</strong></div></div></td>
+          <td><p class="advice-reason">${row.advice_reason}</p></td>
           <td><button class="control accept-advice" data-index="${portfolioAdvice.indexOf(row)}">采纳</button></td>
         </tr>
       `).join("");
@@ -1168,6 +1924,7 @@ reject_trade_if:
       if (riskNotes) document.getElementById("portfolioExposureNote").textContent = riskNotes;
       renderHoldings();
       renderAdvice();
+      loadInstitutionalRisk();
     }
     function normalizeWeightInput(value) {
       const number = Number(value);
@@ -1394,7 +2151,10 @@ reject_trade_if:
     function renderDataHealth(payload) {
       document.getElementById("dataHealthStatus").textContent = payload.status || "--";
       document.getElementById("dataHealthCount").textContent = payload.dataset_count ?? "--";
-      document.getElementById("dataHealthRaw").textContent = payload.raw_price_file_count ?? "--";
+      const tushareFiles = Number(payload.tushare_daily_file_count || 0)
+        + Number(payload.tushare_daily_basic_file_count || 0)
+        + Number(payload.tushare_fundamental_file_count || 0);
+      document.getElementById("dataHealthRaw").textContent = `${payload.raw_price_file_count ?? 0} / TuShare ${tushareFiles}`;
       document.getElementById("dataHealthTime").textContent = payload.checked_at || "--";
       document.getElementById("dataHealthRows").innerHTML = (payload.datasets || []).map((row) => `
         <tr>
@@ -1419,9 +2179,138 @@ reject_trade_if:
       button.textContent = "检查中...";
       try {
         renderDataHealth(await apiJson("/api/analytics/data-health/run", { method: "POST" }));
+        await loadDataCache();
       } finally {
         button.disabled = false;
         button.textContent = "重新检查";
+      }
+    }
+    function renderDataCache(payload) {
+      document.getElementById("cacheBackend").textContent = payload.storage_mode || payload.backend || "--";
+      document.getElementById("cacheSize").textContent = formatBytes(payload.total_size_bytes);
+      document.getElementById("cacheRoot").textContent = payload.root || "--";
+      document.getElementById("cachePrune").textContent = payload.supports_prune ? "支持" : "不可用";
+      document.getElementById("dataCacheRows").innerHTML = (payload.datasets || []).map((row) => `
+        <tr>
+          <td><code>${row.dataset}</code></td>
+          <td>${row.file_count ?? 0}${row.empty_count ? ` · 空 ${row.empty_count}` : ""}</td>
+          <td>${formatBytes(row.size_bytes)}</td>
+          <td>${row.oldest_trade_date || "--"}</td>
+          <td>${row.latest_trade_date || "--"}</td>
+          <td>${row.latest_updated_at || "--"}</td>
+        </tr>
+      `).join("");
+    }
+    async function loadDataCache() {
+      const result = document.getElementById("dataCacheResult");
+      try {
+        renderDataCache(await apiJson("/api/analytics/data-cache", { cache: "no-store" }));
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `读取缓存统计失败：${error.message}`;
+      }
+    }
+    async function pruneDataCache(dryRun) {
+      const result = document.getElementById("dataCacheResult");
+      const dataset = document.getElementById("dataCacheDataset").value;
+      const keepRecentDays = Number(document.getElementById("dataCacheKeepDays").value);
+      if (!dryRun && !window.confirm("确认删除符合条件的旧缓存？删除后需要重新从 TuShare 拉取。")) return;
+      const button = document.getElementById(dryRun ? "previewDataPruneBtn" : "deleteDataPruneBtn");
+      button.disabled = true;
+      button.textContent = dryRun ? "预估中..." : "删除中...";
+      try {
+        const payload = await apiJson("/api/analytics/data-cache/prune", {
+          method: "POST",
+          body: JSON.stringify({
+            dataset,
+            keep_recent_days: keepRecentDays,
+            dry_run: dryRun
+          })
+        });
+        renderDataCache(payload.summary);
+        result.classList.add("show");
+        result.innerHTML = dryRun
+          ? `预计可清理 <strong>${payload.matched_items}</strong> 个缓存项，约 <strong>${formatBytes(payload.candidate_bytes)}</strong>。`
+          : `已删除 <strong>${payload.deleted_items}</strong> 个旧缓存项，释放 <strong>${formatBytes(payload.deleted_bytes)}</strong>。`;
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `缓存操作失败：${error.message}`;
+      } finally {
+        button.disabled = false;
+        button.textContent = dryRun ? "预估清理" : "确认删除旧缓存";
+      }
+    }
+    function renderExportRequests(payload) {
+      const rows = payload.rows || [];
+      document.getElementById("exportRequestRows").innerHTML = rows.length ? rows.map((row) => `
+        <tr>
+          <td><code>#${row.id}</code><br /><small>${row.requested_at || "--"}</small></td>
+          <td><code>${row.dataset}</code></td>
+          <td><code>${(row.symbols || []).join(",") || "全部"}</code><br /><small>${row.start_date || "--"} 至 ${row.end_date || "--"}</small></td>
+          <td><span class="tag ${row.status === "approved" ? "long" : row.status === "rejected" ? "risk" : "warn"}">${row.status}</span></td>
+          <td>${row.decision_note || "--"}</td>
+          <td>${row.status === "approved" ? `<button class="control download-export" data-id="${row.id}">下载</button>` : "等待审批"}</td>
+        </tr>
+      `).join("") : `<tr><td colspan="6">暂无导出申请。</td></tr>`;
+      document.querySelectorAll(".download-export").forEach((button) => {
+        button.addEventListener("click", () => downloadExportRequest(button.dataset.id));
+      });
+    }
+    async function loadExportRequests() {
+      try {
+        renderExportRequests(await apiJson("/api/analytics/data-export/requests", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("exportRequestRows").innerHTML = `<tr><td colspan="6">读取失败：${error.message}</td></tr>`;
+      }
+    }
+    async function createExportRequest(event) {
+      event.preventDefault();
+      const result = document.getElementById("dataExportResult");
+      try {
+        const symbols = document.getElementById("exportSymbols").value
+          .split(/[,\s，]+/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+        const payload = await apiJson("/api/analytics/data-export/requests", {
+          method: "POST",
+          body: JSON.stringify({
+            dataset: document.getElementById("exportDataset").value,
+            symbols,
+            start_date: document.getElementById("exportStartDate").value.trim() || null,
+            end_date: document.getElementById("exportEndDate").value.trim() || null
+          })
+        });
+        result.classList.add("show");
+        result.innerHTML = `导出申请 <strong>#${payload.id}</strong> 已提交，等待 Admin 审批。`;
+        await loadExportRequests();
+        if (currentUser.is_admin) await loadAdminExports();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `提交失败：${error.message}`;
+      }
+    }
+    async function downloadExportRequest(id) {
+      const result = document.getElementById("dataExportResult");
+      try {
+        const response = await fetch(`/api/analytics/data-export/requests/${id}/download`, {
+          headers: authHeaders()
+        });
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload.detail || `HTTP ${response.status}`);
+        }
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `tushare_export_${id}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `下载失败：${error.message}`;
       }
     }
     function renderFactorDiagnostics(payload) {
@@ -1435,7 +2324,10 @@ reject_trade_if:
         </tr>
       `).join("");
       const topGroup = (payload.score_group_returns || []).slice(-1)[0];
-      document.getElementById("factorDiagnosticsSummary").textContent = `样本 ${payload.start_date || "--"} 至 ${payload.end_date || "--"}，前瞻 ${payload.forward_days || "--"} 个交易日；最高分组平均收益 ${formatPercent(topGroup?.average_forward_return, 2)}。`;
+      const crossSection = payload.cross_sectional_rows
+        ? ` v4最新横截面 ${payload.cross_sectional_trade_date || "--"}，覆盖 ${payload.cross_sectional_rows} 只；v4因子当前展示覆盖率，长期IC需继续积累历史样本。`
+        : "";
+      document.getElementById("factorDiagnosticsSummary").textContent = `样本 ${payload.start_date || "--"} 至 ${payload.end_date || "--"}，前瞻 ${payload.forward_days || "--"} 个交易日；最高分组平均收益 ${formatPercent(topGroup?.average_forward_return, 2)}。${crossSection}`;
     }
     async function loadFactorDiagnostics() {
       try {
@@ -1511,7 +2403,7 @@ reject_trade_if:
       document.getElementById("poolCount").textContent = rows.length;
       document.getElementById("poolDate").textContent = rows[0]?.trade_date || "--";
       document.getElementById("poolCore").textContent = rows.filter((row) => row.action === "buy").length;
-      document.getElementById("poolModel").textContent = rows[0]?.model_version || "institutional_score_v3";
+      document.getElementById("poolModel").textContent = rows[0]?.model_version || "institutional_score_v4_tushare";
     }
     async function loadSystemPool() {
       try {
@@ -1532,7 +2424,7 @@ reject_trade_if:
       button.disabled = true;
       button.textContent = "更新中...";
       result.classList.add("show");
-      result.innerHTML = "正在扫描全 A 股实时行情并生成 Top 30 推荐池，通常需要 20-40 秒。";
+      result.innerHTML = "正在用 TuShare Pro 扫描全 A 股行情、估值和财务指标并生成 Top 30 推荐池。首轮通常需要 2-6 分钟，后续缓存后会明显加快。";
       try {
         const token = localStorage.getItem("alpha_token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -1548,7 +2440,8 @@ reject_trade_if:
         await loadSystemPool();
         result.classList.add("show");
         if (payload.config) applyModelConfig(payload.config);
-        result.innerHTML = `系统股票池已更新，共生成 <strong>${payload.rows}</strong> 只候选，已按当前网页模型配置执行。`;
+        const engine = payload.engine === "tushare_pro" ? "TuShare Pro v4" : "AKShare 兜底";
+        result.innerHTML = `系统股票池已更新，共生成 <strong>${payload.rows}</strong> 只候选，执行引擎：<strong>${engine}</strong>，模型：<code>${payload.model_version || "institutional_score_v4_tushare"}</code>。`;
       } catch (error) {
         result.classList.add("show");
         result.innerHTML = `更新失败：${error.message}。请检查本地应用服务器是否正在运行。`;
@@ -1557,10 +2450,75 @@ reject_trade_if:
         button.textContent = "更新全A股票池";
       }
     }
+    function renderWatchlist() {
+      const tag = document.getElementById("watchlistCountTag");
+      const rows = document.getElementById("watchlistRows");
+      tag.textContent = `${watchlist.length} 只`;
+      if (!watchlist.length) {
+        rows.innerHTML = `<tr><td colspan="4">暂无观察股票。可在系统推荐股票池点击“加入观察”。</td></tr>`;
+        return;
+      }
+      rows.innerHTML = watchlist.map((item) => `
+        <tr>
+          <td><strong>${item.name}</strong><br /><code>${item.symbol}</code></td>
+          <td>${item.note || "等待二次研究"}</td>
+          <td><span class="tag warn">个人观察</span></td>
+          <td><button class="control remove-watchlist" data-symbol="${item.symbol}">移出</button></td>
+        </tr>
+      `).join("");
+      document.querySelectorAll(".remove-watchlist").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const result = document.getElementById("watchlistResult");
+          try {
+            await apiJson(`/api/watchlist/${button.dataset.symbol}`, { method: "DELETE" });
+            result.classList.add("show");
+            result.innerHTML = `已从个人观察池移出 <strong>${button.dataset.symbol}</strong>。`;
+            await loadWatchlist();
+          } catch (error) {
+            result.classList.add("show");
+            result.innerHTML = `移出失败：${error.message}`;
+          }
+        });
+      });
+    }
+    async function loadWatchlist() {
+      const result = document.getElementById("watchlistResult");
+      try {
+        watchlist = await apiJson("/api/watchlist", { cache: "no-store" });
+      } catch (error) {
+        watchlist = [];
+        result.classList.add("show");
+        result.innerHTML = `暂时无法读取个人观察池：${error.message}`;
+      }
+      renderWatchlist();
+    }
+    async function addToWatchlist(symbol, name) {
+      const result = document.getElementById("poolResult");
+      try {
+        await apiJson("/api/watchlist", {
+          method: "POST",
+          body: JSON.stringify({
+            symbol,
+            name,
+            note: "来自系统推荐股票池，等待二次研究确认"
+          })
+        });
+        await loadWatchlist();
+        result.classList.add("show");
+        result.innerHTML = `<strong>${name} ${symbol}</strong> 已加入个人观察池，下方列表已刷新。下一步应核验公告、流动性和日内成交条件。`;
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `加入观察失败：${error.message}`;
+      }
+    }
     function renderSystemPool(filter = "all") {
       const rows = systemPool.filter((item) => filter === "all" || item.action === filter).slice(0, 30);
       updatePoolMetrics(rows);
       document.getElementById("poolCount").textContent = rows.length;
+      if (!rows.length) {
+        document.getElementById("poolRows").innerHTML = `<article class="pool-row"><div class="pool-rank">--</div><div class="pool-stock"><strong>暂无候选</strong><code>等待更新</code></div><div class="pool-reasonline"><p>点击“更新全A股票池”生成系统推荐池。</p></div></article>`;
+        return;
+      }
       document.getElementById("poolRows").innerHTML = rows.map((row) => {
         const rank = row.pool_rank;
         const code = row.symbol;
@@ -1574,30 +2532,45 @@ reject_trade_if:
         const liquidity = Number(row.liquidity_capacity_score || 0).toFixed(1);
         const riskScore = Number(row.risk_control_score || 0).toFixed(1);
         const crowding = Number(row.crowding_penalty || 0).toFixed(1);
+        const fundamental = Number(row.fundamental_quality_score || 0).toFixed(1);
+        const valuation = Number(row.valuation_sanity_score || 0).toFixed(1);
+        const completeness = `${(Number(row.data_completeness || 0) * 100).toFixed(0)}%`;
+        const rawScore = Number(row.raw_institutional_score || 0).toFixed(1);
+        const scoreRank = `${(Number(row.score_rank || 0) * 100).toFixed(0)}%`;
+        const gatePenalty = Number(row.gate_penalty_score || 0).toFixed(1);
         const pctChange = Number(row.pct_change || 0).toFixed(2);
         const amountYi = Number(row.amount_yi || 0).toFixed(2);
         const closePos = Number(row.intraday_position_pct || 0).toFixed(0);
         const amplitude = Number(row.amplitude_pct_display || 0).toFixed(2);
         const reason = row.reason || "等待系统生成入选原因";
         return `
-        <tr>
-          <td><strong>${rank}</strong></td>
-          <td><strong>${name}</strong><br /><code>${code}</code></td>
-          <td><span class="score">${score.toFixed(1)}</span><br /><small>${confidenceLabel(confidence)}</small></td>
-          <td><code>Alpha ${alpha}</code><br /><code>流动性 ${liquidity}</code><br /><code>风控 ${riskScore}</code><br /><code>拥挤扣分 ${crowding}</code></td>
-          <td><code>涨幅 ${pctChange}%</code><br /><code>成交 ${amountYi}亿</code><br /><code>收盘位 ${closePos}% · 振幅 ${amplitude}%</code></td>
-          <td><span class="tag ${tagClassForAction(action)}">${actionLabel(action)}</span><br /><small>上限 ${target}</small></td>
-          <td>${reason}</td>
-          <td><code>${flags || "none"}</code></td>
-          <td><button class="control add-pool" data-code="${code}" data-name="${name}">加入观察</button></td>
-        </tr>
+        <article class="pool-row">
+          <div class="pool-rank">${rank}</div>
+          <div class="pool-stock">
+            <strong>${name}</strong>
+            <code>${code} · ${actionLabel(action)} · 上限 ${target}</code>
+          </div>
+          <div class="pool-scoreline">
+            <span class="score">${score.toFixed(1)}</span>
+            <small>${confidenceLabel(confidence)}</small>
+          </div>
+          <div class="pool-factorline">
+            <div class="mini-factor"><span>Alpha</span><strong>${alpha}</strong></div>
+            <div class="mini-factor"><span>基本面/估值</span><strong>${fundamental}/${valuation}</strong></div>
+            <div class="mini-factor"><span>流动性/风控</span><strong>${liquidity}/${riskScore}</strong></div>
+            <div class="mini-factor"><span>数据/门禁</span><strong>${completeness}/-${gatePenalty}</strong></div>
+          </div>
+          <div class="pool-reasonline">
+            <p>${reason}</p>
+            <code>涨幅 ${pctChange}% · 成交 ${amountYi}亿 · 收盘 ${closePos}% · 振幅 ${amplitude}% · ${flags || "none"}</code>
+          </div>
+          <button class="control add-pool" data-code="${code}" data-name="${name}">加入观察</button>
+        </article>
       `;
       }).join("");
       document.querySelectorAll(".add-pool").forEach((button) => {
-        button.addEventListener("click", () => {
-          const result = document.getElementById("poolResult");
-          result.classList.add("show");
-          result.innerHTML = `<strong>${button.dataset.name} ${button.dataset.code}</strong> 已加入个人观察清单。下一步应核验公告、流动性和日内成交条件。`;
+        button.addEventListener("click", async () => {
+          await addToWatchlist(button.dataset.code, button.dataset.name);
         });
       });
     }
@@ -1615,7 +2588,7 @@ reject_trade_if:
       document.querySelectorAll("input[name='cfgMarket']").forEach((input) => {
         input.checked = markets.has(input.value);
       });
-      document.getElementById("poolModel").textContent = config.model_version || "institutional_score_v3";
+      document.getElementById("poolModel").textContent = config.model_version || "institutional_score_v4_tushare";
     }
     function readModelConfigForm() {
       const markets = Array.from(document.querySelectorAll("input[name='cfgMarket']:checked")).map((input) => input.value);
@@ -1714,6 +2687,7 @@ reject_trade_if:
     document.querySelectorAll(".nav button").forEach((button) => {
       button.addEventListener("click", () => {
         const view = button.dataset.view;
+        if (view === "admin" && !currentUser?.is_admin) return;
         localStorage.setItem("aShareAlphaView", view);
         document.querySelectorAll(".nav button").forEach((b) => b.classList.toggle("active", b === button));
         document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === view));
@@ -1758,6 +2732,12 @@ reject_trade_if:
       rebuildSystemPool();
     });
     document.getElementById("modelConfigForm").addEventListener("submit", saveModelConfig);
+    document.getElementById("dataSourceForm").addEventListener("submit", saveDataSource);
+    document.getElementById("refreshGovernanceBtn").addEventListener("click", () => {
+      loadModelGovernance();
+      loadInstitutionalRisk();
+    });
+    document.getElementById("refreshAuditBtn").addEventListener("click", loadAuditLogs);
     document.getElementById("marketRegime").addEventListener("change", applyMarketRegime);
     document.getElementById("positionSymbol").addEventListener("input", () => {
       const input = document.getElementById("positionSymbol");
@@ -1781,6 +2761,18 @@ reject_trade_if:
     document.getElementById("runDataHealthBtn").addEventListener("click", () => {
       runDataHealth();
     });
+    document.getElementById("refreshDataCacheBtn").addEventListener("click", () => {
+      loadDataCache();
+    });
+    document.getElementById("previewDataPruneBtn").addEventListener("click", () => {
+      pruneDataCache(true);
+    });
+    document.getElementById("deleteDataPruneBtn").addEventListener("click", () => {
+      pruneDataCache(false);
+    });
+    document.getElementById("dataExportForm").addEventListener("submit", createExportRequest);
+    document.getElementById("refreshAdminBtn").addEventListener("click", loadAdminCenter);
+    document.getElementById("adminStrategyForm").addEventListener("submit", saveAdminStrategy);
     document.getElementById("runFactorDiagnosticsBtn").addEventListener("click", () => {
       runFactorDiagnostics();
     });
@@ -1789,31 +2781,54 @@ reject_trade_if:
       input.value = input.value.replace(/\D/g, "").slice(0, 6);
     });
     document.getElementById("researchReportForm").addEventListener("submit", generateResearchReport);
-    document.getElementById("signedInUser").textContent = localStorage.getItem("alpha_email") || "已登录";
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("alpha_token");
       localStorage.removeItem("alpha_email");
       window.location.href = "/";
     });
-    renderStocks();
-    renderFactors();
-    const savedRegime = localStorage.getItem("aShareMarketRegime");
-    if (savedRegime && marketRegimes[savedRegime]) document.getElementById("marketRegime").value = savedRegime;
-    applyMarketRegime();
-    loadPortfolioAdvice();
-    loadModelConfig();
-    loadModelVersions();
-    loadSystemPool();
-    loadBacktest();
-    loadPortfolioBacktest();
-    loadStrategyOptimization();
-    loadWalkForward();
-    loadDataHealth();
-    loadFactorDiagnostics();
-    const saved = localStorage.getItem("aShareAlphaView");
-    if (saved && document.querySelector(`[data-view="${saved}"]`)) {
-      document.querySelector(`[data-view="${saved}"]`).click();
+
+    async function initializeApp() {
+      try {
+        await loadCurrentUser();
+      } catch (error) {
+        localStorage.removeItem("alpha_token");
+        localStorage.removeItem("alpha_email");
+        window.location.href = "/";
+        return;
+      }
+      renderStocks();
+      renderFactors();
+      const savedRegime = localStorage.getItem("aShareMarketRegime");
+      if (savedRegime && marketRegimes[savedRegime]) document.getElementById("marketRegime").value = savedRegime;
+      applyMarketRegime();
+      const canUse = (feature) => currentUser.is_admin || Boolean(currentUser.feature_flags?.[feature]);
+      if (canUse("portfolio")) {
+        loadPortfolioAdvice();
+        loadWatchlist();
+      }
+      if (canUse("system_pool")) {
+        loadModelConfig();
+        loadModelVersions();
+        loadSystemPool();
+      }
+      if (canUse("backtest")) {
+        loadBacktest();
+        loadPortfolioBacktest();
+        loadStrategyOptimization();
+        loadWalkForward();
+      }
+      loadDataHealth();
+      loadDataCache();
+      loadExportRequests();
+      loadFactorDiagnostics();
+      loadInstitutionalCenter();
+      const saved = localStorage.getItem("aShareAlphaView");
+      const savedButton = saved ? document.querySelector(`[data-view="${saved}"]`) : null;
+      if (savedButton && savedButton.style.display !== "none" && (saved !== "admin" || currentUser.is_admin)) {
+        savedButton.click();
+      }
     }
+    initializeApp();
   </script>
 </body>
 </html>

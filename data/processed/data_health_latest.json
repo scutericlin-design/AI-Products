@@ -1,8 +1,11 @@
 {
   "status": "ok",
-  "checked_at": "2026-06-14T17:56:29",
-  "dataset_count": 4,
+  "checked_at": "2026-06-16T00:09:16",
+  "dataset_count": 8,
   "raw_price_file_count": 9,
+  "tushare_daily_file_count": 90,
+  "tushare_daily_basic_file_count": 90,
+  "tushare_fundamental_file_count": 800,
   "datasets": [
     {
       "name": "signal_daily",
@@ -45,16 +48,64 @@
       "exists": true,
       "status": "ok",
       "rows": 30,
-      "columns": 33,
-      "null_cells": 27,
+      "columns": 57,
+      "null_cells": 18,
       "duplicate_rows": 0,
-      "latest_trade_date": "2026-06-14",
-      "updated_at": "2026-06-14T17:55:16",
+      "latest_trade_date": "2026-06-15",
+      "updated_at": "2026-06-16T00:09:02",
+      "issues": []
+    },
+    {
+      "name": "scored_universe_latest",
+      "exists": true,
+      "status": "ok",
+      "rows": 1783,
+      "columns": 57,
+      "null_cells": 7910,
+      "duplicate_rows": 0,
+      "latest_trade_date": "2026-06-15",
+      "updated_at": "2026-06-16T00:09:02",
+      "issues": []
+    },
+    {
+      "name": "institutional_factors_latest",
+      "exists": true,
+      "status": "ok",
+      "rows": 1783,
+      "columns": 57,
+      "null_cells": 7910,
+      "duplicate_rows": 0,
+      "latest_trade_date": "2026-06-15",
+      "updated_at": "2026-06-16T00:09:02",
+      "issues": []
+    },
+    {
+      "name": "tushare_stock_basic",
+      "exists": true,
+      "status": "ok",
+      "rows": 5531,
+      "columns": 7,
+      "null_cells": 22,
+      "duplicate_rows": 0,
+      "latest_trade_date": null,
+      "updated_at": "2026-06-15T23:25:18",
+      "issues": []
+    },
+    {
+      "name": "tushare_trade_cal",
+      "exists": true,
+      "status": "ok",
+      "rows": 421,
+      "columns": 3,
+      "null_cells": 0,
+      "duplicate_rows": 0,
+      "latest_trade_date": null,
+      "updated_at": "2026-06-15T23:25:16",
       "issues": []
     }
   ],
   "summary": {
-    "ok": 4,
+    "ok": 8,
     "warn": 0,
     "bad": 0
   }

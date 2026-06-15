@@ -45,6 +45,86 @@
       "ic_mean": 0.070911441096742,
       "rank_ic_mean": 0.12672955974842764,
       "ic_positive_rate": 0.550314465408805
+    },
+    {
+      "factor": "v4:price_factor_score",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 30.442293886707795
+    },
+    {
+      "factor": "v4:raw_institutional_score",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 38.903965227145264
+    },
+    {
+      "factor": "v4:alpha_score",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 22.509826135726303
+    },
+    {
+      "factor": "v4:fundamental_quality_score",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 50.02243409983174
+    },
+    {
+      "factor": "v4:valuation_sanity_score",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 49.983174425126194
+    },
+    {
+      "factor": "v4:liquidity_capacity_score",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 50.59449242849131
+    },
+    {
+      "factor": "v4:risk_control_score",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 62.061351654514866
+    },
+    {
+      "factor": "v4:crowding_penalty",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 4.107044307347167
+    },
+    {
+      "factor": "v4:gate_penalty_score",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 14.427930454290522
+    },
+    {
+      "factor": "v4:data_completeness",
+      "coverage": 1.0,
+      "ic_mean": null,
+      "rank_ic_mean": null,
+      "ic_positive_rate": null,
+      "mean": 0.8170527201346045
     }
   ],
   "score_group_returns": [
@@ -118,5 +198,8 @@
       "turnover_5d": 0.692,
       "volatility_20d": 1.0
     }
-  }
+  },
+  "cross_sectional_rows": 1783,
+  "cross_sectional_trade_date": "2026-06-15",
+  "cross_sectional_note": "v4 factors report latest cross-sectional coverage only; IC requires historical forward returns."
 }

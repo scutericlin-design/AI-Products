@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.deps import current_user
+from app.deps import require_feature
 from app.models import AdviceLog, PortfolioPosition, User
 from app.schemas import (
     AdviceLogIn,
@@ -16,6 +16,7 @@ from app.schemas import (
     RiskSummaryOut,
     StockLookupOut,
 )
+from app.services.audit import write_audit_log
 from app.services.portfolio_advice import build_user_advice, summarize_risk
 from app.services.stock_lookup import lookup_stock_name
 
@@ -28,7 +29,7 @@ def normalize_symbol(symbol: str) -> str:
 
 
 @router.get("/positions", response_model=list[PositionOut])
-def list_positions(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def list_positions(user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
     return db.scalars(
         select(PortfolioPosition).where(PortfolioPosition.user_id == user.id).order_by(PortfolioPosition.weight.desc())
     ).all()
@@ -41,18 +42,18 @@ def _user_positions(user: User, db: Session) -> list[PortfolioPosition]:
 
 
 @router.get("/advice", response_model=list[PortfolioAdviceOut])
-def portfolio_advice(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def portfolio_advice(user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
     return build_user_advice(_user_positions(user, db))
 
 
 @router.get("/risk", response_model=RiskSummaryOut)
-def portfolio_risk(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def portfolio_risk(user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
     advice_rows = build_user_advice(_user_positions(user, db))
     return summarize_risk(advice_rows)
 
 
 @router.get("/lookup/{symbol}", response_model=StockLookupOut)
-def lookup_symbol(symbol: str, user: User = Depends(current_user)):
+def lookup_symbol(symbol: str, user: User = Depends(require_feature("portfolio"))):
     normalized = normalize_symbol(symbol)
     name, source = lookup_stock_name(normalized)
     return {"symbol": normalized, "name": name, "source": source}
@@ -61,7 +62,7 @@ def lookup_symbol(symbol: str, user: User = Depends(current_user)):
 @router.post("/positions", response_model=PositionOut)
 def upsert_position(
     payload: PositionIn,
-    user: User = Depends(current_user),
+    user: User = Depends(require_feature("portfolio")),
     db: Session = Depends(get_db),
 ):
     symbol = normalize_symbol(payload.symbol)
@@ -84,11 +85,18 @@ def upsert_position(
     position.shares = payload.shares
     db.commit()
     db.refresh(position)
+    write_audit_log(
+        db,
+        user,
+        "portfolio.position_upsert",
+        symbol,
+        {"name": name, "weight": position.weight, "cost_price": position.cost_price, "shares": position.shares},
+    )
     return position
 
 
 @router.delete("/positions/{symbol}")
-def delete_position(symbol: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def delete_position(symbol: str, user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
     position = db.scalar(
         select(PortfolioPosition).where(
             PortfolioPosition.user_id == user.id,
@@ -97,13 +105,15 @@ def delete_position(symbol: str, user: User = Depends(current_user), db: Session
     )
     if position is None:
         raise HTTPException(status_code=404, detail="Position not found")
+    normalized = position.symbol
     db.delete(position)
     db.commit()
+    write_audit_log(db, user, "portfolio.position_delete", normalized, {"symbol": normalized})
     return {"ok": True}
 
 
 @router.post("/advice-log", response_model=AdviceLogOut)
-def accept_advice(payload: AdviceLogIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def accept_advice(payload: AdviceLogIn, user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
     log = AdviceLog(
         user_id=user.id,
         symbol=normalize_symbol(payload.symbol),
@@ -115,6 +125,13 @@ def accept_advice(payload: AdviceLogIn, user: User = Depends(current_user), db: 
     db.add(log)
     db.commit()
     db.refresh(log)
+    write_audit_log(
+        db,
+        user,
+        "portfolio.advice_accept",
+        log.symbol,
+        {"name": log.name, "action": log.action, "target_weight": log.target_weight},
+    )
     return {
         "id": log.id,
         "symbol": log.symbol,
@@ -128,7 +145,7 @@ def accept_advice(payload: AdviceLogIn, user: User = Depends(current_user), db: 
 
 
 @router.get("/advice-log", response_model=list[AdviceLogOut])
-def list_advice_logs(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def list_advice_logs(user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
     logs = db.scalars(
         select(AdviceLog).where(AdviceLog.user_id == user.id).order_by(AdviceLog.created_at.desc()).limit(100)
     ).all()

@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     database_url: str = f"sqlite:///{PROJECT_ROOT / 'data' / 'app.db'}"
     session_ttl_hours: int = 24 * 14
     recommended_pool_path: Path = PROJECT_ROOT / "data" / "processed" / "recommended_pool.csv"
+    app_secret: str = "local-dev-change-me-before-cloud-deploy"
+    market_data_cache_backend: str = "database"
+    market_data_cache_dir: Path = PROJECT_ROOT / "data" / "tushare"
 
 
 settings = Settings()

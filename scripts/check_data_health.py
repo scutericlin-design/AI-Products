@@ -14,6 +14,7 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PROCESSED = PROJECT_ROOT / "data" / "processed"
 RAW_PRICES = PROJECT_ROOT / "data" / "raw" / "prices"
+RAW_TUSHARE = PROJECT_ROOT / "data" / "tushare"
 OUTPUT_JSON = PROCESSED / "data_health_latest.json"
 
 
@@ -22,6 +23,10 @@ DATASETS = {
     "signal_latest": PROCESSED / "signal_latest.csv",
     "factors_price_daily": PROCESSED / "factors_price_daily.csv",
     "recommended_pool": PROCESSED / "recommended_pool.csv",
+    "scored_universe_latest": PROCESSED / "scored_universe_latest.csv",
+    "institutional_factors_latest": PROCESSED / "institutional_factors_latest.csv",
+    "tushare_stock_basic": RAW_TUSHARE / "stock_basic.csv",
+    "tushare_trade_cal": RAW_TUSHARE / "trade_cal.csv",
 }
 
 
@@ -66,6 +71,9 @@ def main() -> int:
     parser.parse_args()
     datasets = [inspect_csv(name, path) for name, path in DATASETS.items()]
     raw_price_files = sorted(RAW_PRICES.glob("*.csv"))
+    tushare_daily_files = sorted((RAW_TUSHARE / "daily").glob("*.csv"))
+    tushare_daily_basic_files = sorted((RAW_TUSHARE / "daily_basic").glob("*.csv"))
+    tushare_fundamental_files = sorted((RAW_TUSHARE / "fina_indicator").glob("*.csv"))
     bad = sum(1 for item in datasets if item["status"] == "bad")
     warn = sum(1 for item in datasets if item["status"] == "warn")
     status = "bad" if bad else "warn" if warn else "ok"
@@ -74,6 +82,9 @@ def main() -> int:
         "checked_at": datetime.now().isoformat(timespec="seconds"),
         "dataset_count": len(datasets),
         "raw_price_file_count": len(raw_price_files),
+        "tushare_daily_file_count": len(tushare_daily_files),
+        "tushare_daily_basic_file_count": len(tushare_daily_basic_files),
+        "tushare_fundamental_file_count": len(tushare_fundamental_files),
         "datasets": datasets,
         "summary": {
             "ok": sum(1 for item in datasets if item["status"] == "ok"),
