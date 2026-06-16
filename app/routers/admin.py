@@ -1,24 +1,32 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.deps import current_admin, user_feature_flags
-from app.models import DataExportRequest, PortfolioPosition, StrategyConfig, User
+from app.deps import PLAN_FEATURES, current_admin, user_feature_flags
+from app.models import DataExportRequest, PlanUpgradeRequest, PortfolioPosition, StrategyConfig, UsageLog, User
 from app.routers.system_pool import create_version_snapshot, get_or_create_config, serialize_config
-from app.schemas import AdminStrategyUpdateIn, AdminUserUpdateIn, DataExportDecisionIn
+from app.schemas import (
+    AdminPlatformSettingsIn,
+    AdminStrategyUpdateIn,
+    AdminUserUpdateIn,
+    DataExportDecisionIn,
+    PlanUpgradeDecisionIn,
+)
 from app.services.audit import write_audit_log
+from app.services.platform_settings import is_billing_enabled, set_setting
 
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
 
-def _serialize_user(user: User, db: Session) -> dict:
+def _serialize_user(user: User, db: Session, billing_enabled: bool | None = None) -> dict:
+    billing_enabled = is_billing_enabled(db) if billing_enabled is None else billing_enabled
     position_count = db.scalar(
         select(func.count(PortfolioPosition.id)).where(PortfolioPosition.user_id == user.id)
     )
@@ -29,7 +37,9 @@ def _serialize_user(user: User, db: Session) -> dict:
         "role": getattr(user, "role", "customer"),
         "is_admin": getattr(user, "role", "customer") == "admin",
         "status": getattr(user, "status", "active"),
-        "feature_flags": user_feature_flags(user),
+        "plan": getattr(user, "plan", "free") or "free",
+        "billing_enabled": billing_enabled,
+        "feature_flags": user_feature_flags(user, billing_enabled=billing_enabled),
         "position_count": int(position_count or 0),
         "strategy": serialize_config(config) if config else None,
         "created_at": user.created_at.isoformat() if user.created_at else None,
@@ -56,24 +66,114 @@ def _serialize_export_request(item: DataExportRequest, db: Session) -> dict:
     }
 
 
+def _serialize_upgrade_request(item: PlanUpgradeRequest, db: Session) -> dict:
+    user = db.get(User, item.user_id)
+    approver = db.get(User, item.decided_by_user_id) if item.decided_by_user_id else None
+    return {
+        "id": item.id,
+        "user_id": item.user_id,
+        "email": user.email if user else "",
+        "target_plan": item.target_plan,
+        "billing_cycle": item.billing_cycle,
+        "amount_cny": item.amount_cny,
+        "status": item.status,
+        "requested_at": item.requested_at.isoformat() if item.requested_at else None,
+        "decided_at": item.decided_at.isoformat() if item.decided_at else None,
+        "decided_by": approver.email if approver else None,
+        "decision_note": item.decision_note,
+    }
+
+
 @router.get("/summary")
 def summary(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    billing_enabled = is_billing_enabled(db)
     user_count = db.scalar(select(func.count(User.id)))
     active_count = db.scalar(select(func.count(User.id)).where(User.status == "active"))
     pending_exports = db.scalar(select(func.count(DataExportRequest.id)).where(DataExportRequest.status == "pending"))
+    pending_upgrades = db.scalar(select(func.count(PlanUpgradeRequest.id)).where(PlanUpgradeRequest.status == "pending"))
     admin_count = db.scalar(select(func.count(User.id)).where(User.role == "admin"))
+    pro_count = db.scalar(select(func.count(User.id)).where(User.plan == "pro"))
+    usage_24h = db.scalar(
+        select(func.count(UsageLog.id)).where(UsageLog.created_at >= datetime.utcnow() - timedelta(days=1))
+    )
     return {
         "user_count": int(user_count or 0),
         "active_count": int(active_count or 0),
         "admin_count": int(admin_count or 0),
+        "pro_count": int(pro_count or 0),
         "pending_exports": int(pending_exports or 0),
+        "pending_upgrades": int(pending_upgrades or 0),
+        "usage_24h": int(usage_24h or 0),
+        "billing_enabled": billing_enabled,
+    }
+
+
+@router.get("/settings")
+def read_settings(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    return {"billing_enabled": is_billing_enabled(db)}
+
+
+@router.put("/settings")
+def update_settings(
+    payload: AdminPlatformSettingsIn,
+    admin: User = Depends(current_admin),
+    db: Session = Depends(get_db),
+):
+    set_setting(db, "billing_enabled", "true" if payload.billing_enabled else "false")
+    write_audit_log(
+        db,
+        admin,
+        "admin.platform_settings_update",
+        "billing_enabled",
+        {"billing_enabled": payload.billing_enabled},
+    )
+    return {"billing_enabled": payload.billing_enabled}
+
+
+@router.get("/usage")
+def usage(days: int = 7, admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    days = max(1, min(days, 90))
+    since = datetime.utcnow() - timedelta(days=days)
+    rows = db.scalars(select(UsageLog).where(UsageLog.created_at >= since).order_by(UsageLog.created_at.desc())).all()
+    users = {user.id: user.email for user in db.scalars(select(User)).all()}
+    by_day: dict[str, dict] = {}
+    by_path: dict[str, dict] = {}
+    by_user: dict[str, dict] = {}
+    total_bytes = 0
+    total_duration = 0.0
+    error_count = 0
+    for row in rows:
+        day = row.created_at.strftime("%Y-%m-%d") if row.created_at else "--"
+        email = users.get(row.user_id, "anonymous")
+        total_bytes += int(row.response_bytes or 0)
+        total_duration += float(row.duration_ms or 0)
+        error_count += 1 if int(row.status_code or 0) >= 400 else 0
+        day_bucket = by_day.setdefault(day, {"date": day, "requests": 0, "errors": 0, "bytes": 0})
+        path_bucket = by_path.setdefault(row.path, {"path": row.path, "requests": 0, "errors": 0, "bytes": 0})
+        user_bucket = by_user.setdefault(email, {"email": email, "requests": 0, "errors": 0, "bytes": 0})
+        for bucket in (day_bucket, path_bucket, user_bucket):
+            bucket["requests"] += 1
+            bucket["errors"] += 1 if int(row.status_code or 0) >= 400 else 0
+            bucket["bytes"] += int(row.response_bytes or 0)
+    request_count = len(rows)
+    return {
+        "days": days,
+        "request_count": request_count,
+        "error_count": error_count,
+        "active_users": len([key for key in by_user if key != "anonymous"]),
+        "response_bytes": total_bytes,
+        "avg_duration_ms": round(total_duration / request_count, 1) if request_count else 0,
+        "by_day": sorted(by_day.values(), key=lambda item: item["date"]),
+        "top_paths": sorted(by_path.values(), key=lambda item: item["requests"], reverse=True)[:10],
+        "top_users": sorted(by_user.values(), key=lambda item: item["requests"], reverse=True)[:10],
     }
 
 
 @router.get("/users")
 def list_users(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    billing_enabled = is_billing_enabled(db)
     users = db.scalars(select(User).order_by(User.created_at.desc(), User.id.desc()).limit(200)).all()
-    return {"rows": [_serialize_user(user, db) for user in users]}
+    return {"rows": [_serialize_user(user, db, billing_enabled=billing_enabled) for user in users]}
 
 
 @router.put("/users/{user_id}")
@@ -90,6 +190,7 @@ def update_user(
         raise HTTPException(status_code=400, detail="不能取消自己的 Admin 权限")
     user.status = payload.status
     user.role = payload.role
+    user.plan = payload.plan
     user.feature_flags_json = json.dumps(payload.feature_flags, ensure_ascii=False, sort_keys=True)
     db.commit()
     db.refresh(user)
@@ -98,7 +199,13 @@ def update_user(
         admin,
         "admin.user_update",
         user.email,
-        {"user_id": user.id, "role": user.role, "status": user.status, "feature_flags": payload.feature_flags},
+        {
+            "user_id": user.id,
+            "role": user.role,
+            "status": user.status,
+            "plan": user.plan,
+            "feature_flags": payload.feature_flags,
+        },
     )
     return _serialize_user(user, db)
 
@@ -144,6 +251,44 @@ def update_user_strategy(
 def list_export_requests(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
     rows = db.scalars(select(DataExportRequest).order_by(DataExportRequest.requested_at.desc()).limit(200)).all()
     return {"rows": [_serialize_export_request(item, db) for item in rows]}
+
+
+@router.get("/upgrade-requests")
+def list_upgrade_requests(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    rows = db.scalars(select(PlanUpgradeRequest).order_by(PlanUpgradeRequest.requested_at.desc()).limit(200)).all()
+    return {"rows": [_serialize_upgrade_request(item, db) for item in rows]}
+
+
+@router.post("/upgrade-requests/{request_id}/decision")
+def decide_upgrade_request(
+    request_id: int,
+    payload: PlanUpgradeDecisionIn,
+    admin: User = Depends(current_admin),
+    db: Session = Depends(get_db),
+):
+    item = db.get(PlanUpgradeRequest, request_id)
+    if item is None:
+        raise HTTPException(status_code=404, detail="升级申请不存在")
+    user = db.get(User, item.user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    item.status = payload.status
+    item.decided_at = datetime.utcnow()
+    item.decided_by_user_id = admin.id
+    item.decision_note = payload.note
+    if payload.status == "approved":
+        user.plan = item.target_plan
+        user.feature_flags_json = json.dumps(PLAN_FEATURES.get(item.target_plan, PLAN_FEATURES["free"]), ensure_ascii=False)
+    db.commit()
+    db.refresh(item)
+    write_audit_log(
+        db,
+        admin,
+        f"admin.upgrade_{payload.status}",
+        user.email,
+        {"request_id": item.id, "user_id": user.id, "target_plan": item.target_plan, "note": payload.note},
+    )
+    return _serialize_upgrade_request(item, db)
 
 
 @router.post("/export-requests/{request_id}/decision")

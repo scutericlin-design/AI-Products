@@ -2,6 +2,12 @@
 
 This app is designed to run locally first and move later to a cloud VM on Alibaba Cloud or Tencent Cloud.
 
+For the Tencent Cloud Lighthouse deployment workflow, use:
+
+```text
+deployment/tencent-cloud.md
+```
+
 ## Local Python
 
 ```bash

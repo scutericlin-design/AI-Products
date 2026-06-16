@@ -12,6 +12,8 @@ class AuthResponse(BaseModel):
     token: str
     email: EmailStr
     role: str = "customer"
+    plan: str = "free"
+    billing_enabled: bool = False
     is_admin: bool = False
     feature_flags: dict[str, bool] = Field(default_factory=dict)
 
@@ -19,6 +21,8 @@ class AuthResponse(BaseModel):
 class CurrentUserOut(BaseModel):
     email: EmailStr
     role: str
+    plan: str
+    billing_enabled: bool = False
     is_admin: bool
     status: str
     feature_flags: dict[str, bool]
@@ -173,6 +177,7 @@ class DataCachePruneIn(BaseModel):
 class AdminUserUpdateIn(BaseModel):
     status: str = Field(default="active", pattern="^(active|disabled)$")
     role: str = Field(default="customer", pattern="^(customer|admin)$")
+    plan: str = Field(default="free", pattern="^(free|pro)$")
     feature_flags: dict[str, bool] = Field(default_factory=dict)
 
 
@@ -190,3 +195,17 @@ class DataExportRequestIn(BaseModel):
 class DataExportDecisionIn(BaseModel):
     status: str = Field(pattern="^(approved|rejected)$")
     note: str | None = Field(default=None, max_length=1000)
+
+
+class PlanUpgradeRequestIn(BaseModel):
+    target_plan: str = Field(default="pro", pattern="^pro$")
+    billing_cycle: str = Field(default="monthly", pattern="^(monthly|yearly)$")
+
+
+class PlanUpgradeDecisionIn(BaseModel):
+    status: str = Field(pattern="^(approved|rejected)$")
+    note: str | None = Field(default=None, max_length=1000)
+
+
+class AdminPlatformSettingsIn(BaseModel):
+    billing_enabled: bool = False

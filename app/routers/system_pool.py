@@ -164,7 +164,11 @@ def serialize_version(version: StrategyVersion) -> dict:
 
 @router.get("")
 def list_system_pool(user: User = Depends(require_feature("system_pool"))):
-    return {"rows": read_pool()}
+    rows = read_pool()
+    billing_enabled = getattr(user, "_billing_enabled", False)
+    if billing_enabled and getattr(user, "role", "customer") != "admin" and getattr(user, "plan", "free") != "pro":
+        rows = rows[:10]
+    return {"rows": rows}
 
 
 @router.get("/config", response_model=StrategyConfigOut)

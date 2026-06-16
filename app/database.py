@@ -37,6 +37,10 @@ def init_db() -> None:
                 connection.exec_driver_sql("ALTER TABLE users ADD COLUMN role VARCHAR(32) DEFAULT 'customer'")
             if "status" not in user_columns:
                 connection.exec_driver_sql("ALTER TABLE users ADD COLUMN status VARCHAR(32) DEFAULT 'active'")
+            if "plan" not in user_columns:
+                connection.exec_driver_sql("ALTER TABLE users ADD COLUMN plan VARCHAR(32) DEFAULT 'free'")
+            if "plan_expires_at" not in user_columns:
+                connection.exec_driver_sql("ALTER TABLE users ADD COLUMN plan_expires_at DATETIME")
             if "feature_flags_json" not in user_columns:
                 connection.exec_driver_sql("ALTER TABLE users ADD COLUMN feature_flags_json TEXT")
             columns = {row[1] for row in connection.exec_driver_sql("PRAGMA table_info(strategy_configs)").all()}

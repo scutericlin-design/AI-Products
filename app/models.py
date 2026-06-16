@@ -16,6 +16,8 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(String(255))
     role: Mapped[str] = mapped_column(String(32), default="customer", index=True)
     status: Mapped[str] = mapped_column(String(32), default="active", index=True)
+    plan: Mapped[str] = mapped_column(String(32), default="free", index=True)
+    plan_expires_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     feature_flags_json: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
@@ -29,6 +31,11 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan",
         foreign_keys="DataExportRequest.user_id",
+    )
+    upgrade_requests: Mapped[list["PlanUpgradeRequest"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        foreign_keys="PlanUpgradeRequest.user_id",
     )
 
 
@@ -173,6 +180,46 @@ class DataExportRequest(Base):
     decision_note: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     user: Mapped[User] = relationship(back_populates="export_requests", foreign_keys=[user_id])
+
+
+class PlanUpgradeRequest(Base):
+    __tablename__ = "plan_upgrade_requests"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    target_plan: Mapped[str] = mapped_column(String(32), default="pro", index=True)
+    billing_cycle: Mapped[str] = mapped_column(String(32), default="monthly")
+    amount_cny: Mapped[float] = mapped_column(Float, default=99)
+    status: Mapped[str] = mapped_column(String(32), default="pending", index=True)
+    requested_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+    decided_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    decided_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    decision_note: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    user: Mapped[User] = relationship(back_populates="upgrade_requests", foreign_keys=[user_id])
+
+
+class UsageLog(Base):
+    __tablename__ = "usage_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    method: Mapped[str] = mapped_column(String(16))
+    path: Mapped[str] = mapped_column(String(255), index=True)
+    status_code: Mapped[int] = mapped_column(Integer, index=True)
+    duration_ms: Mapped[float] = mapped_column(Float, default=0)
+    response_bytes: Mapped[int] = mapped_column(Integer, default=0)
+    client_host: Mapped[str | None] = mapped_column(String(96), nullable=True)
+    user_agent: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+
+
+class PlatformSetting(Base):
+    __tablename__ = "platform_settings"
+
+    key: Mapped[str] = mapped_column(String(96), primary_key=True)
+    value: Mapped[str] = mapped_column(Text)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
 
 
 class AuditLog(Base):

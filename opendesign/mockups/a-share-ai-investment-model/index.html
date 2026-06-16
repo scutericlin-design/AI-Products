@@ -145,6 +145,32 @@
     }
     .metric span { color: color-mix(in oklab, var(--paper-050), transparent 35%); font-size: 12px; }
     .metric strong { font: 700 28px/1 var(--font-display); color: var(--accent-long); }
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .plan-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      background: var(--surface-alt);
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+    .plan-card.current {
+      border-color: color-mix(in oklab, var(--accent-long), transparent 28%);
+      box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent-long), transparent 55%);
+    }
+    .plan-card h4 { margin: 0; font: 700 18px/1.2 var(--font-display); }
+    .plan-price { font: 700 28px/1 var(--font-display); }
+    .plan-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
     .grid-3 {
       display: grid;
       grid-template-columns: 1.35fr .85fr .85fr;
@@ -604,7 +630,8 @@
         <button data-view="model">算法模块 <code>06</code></button>
         <button data-view="backtest" data-feature="backtest">回测与风控 <code>07</code></button>
         <button data-view="institutional">专业化中心 <code>08</code></button>
-        <button data-view="admin" id="adminNavBtn" style="display:none">Admin 维护端 <code>09</code></button>
+        <button data-view="billing" id="billingNavBtn" style="display:none">订阅套餐 <code>09</code></button>
+        <button data-view="admin" id="adminNavBtn" style="display:none">Admin 维护端 <code>10</code></button>
       </nav>
       <div class="system-status">
         <div class="status-row"><span>Universe</span><strong>沪深京 A</strong></div>
@@ -1285,27 +1312,101 @@ reject_trade_if:
           </section>
         </div>
 
+        <div id="billing" class="view">
+          <div class="hero-strip">
+            <div class="thesis">
+              <h3>订阅套餐</h3>
+              <p>基础版适合轻量观察，高级版开放 Top 30 股票池、回测风控、数据导出和更完整的投研工作流。</p>
+            </div>
+            <div class="metric"><span>当前套餐</span><strong id="billingCurrentPlan">--</strong></div>
+            <div class="metric"><span>股票池上限</span><strong id="billingPoolLimit">--</strong></div>
+            <div class="metric"><span>回测权限</span><strong id="billingBacktest">--</strong></div>
+            <div class="metric"><span>导出权限</span><strong id="billingExport">--</strong></div>
+          </div>
+          <section class="panel">
+            <div class="panel-head"><h3>版本权益</h3><span class="tag long">Plan</span></div>
+            <div class="plan-grid" id="planCards"></div>
+            <div class="result" id="billingResult"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>升级申请记录</h3><button class="control" id="refreshBillingBtn" type="button">刷新</button></div>
+            <table>
+              <thead><tr><th>申请</th><th>周期</th><th>金额</th><th>状态</th><th>时间</th><th>备注</th></tr></thead>
+              <tbody id="billingRequestRows"></tbody>
+            </table>
+          </section>
+        </div>
+
         <div id="admin" class="view">
           <div class="hero-strip">
             <div class="thesis">
               <h3>Admin 维护端</h3>
-              <p>用户权限、策略配置、数据导出审批和缓存治理集中在这里。普通用户不会看到这个入口。</p>
+              <p>用户权限、套餐开通、策略配置、数据导出审批、使用情况和缓存治理集中在这里。普通用户不会看到这个入口。</p>
             </div>
             <div class="metric"><span>注册用户</span><strong id="adminUserCount">--</strong></div>
             <div class="metric"><span>活跃用户</span><strong id="adminActiveCount">--</strong></div>
-            <div class="metric"><span>管理员</span><strong id="adminCount">--</strong></div>
+            <div class="metric"><span>高级版用户</span><strong id="adminProCount">--</strong></div>
             <div class="metric"><span>待审导出</span><strong id="adminPendingExports">--</strong></div>
+            <div class="metric"><span>24h API</span><strong id="adminUsage24h">--</strong></div>
           </div>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>商业化开关</h3>
+              <span class="tag warn" id="billingModeTag">免费无限制</span>
+            </div>
+            <form class="signal-form" id="adminPlatformSettingsForm">
+              <div class="check-field">
+                <span>收费功能</span>
+                <div class="check-options">
+                  <label><input id="adminBillingEnabled" type="checkbox" />启用基础版 / 高级版付费开通</label>
+                </div>
+              </div>
+              <button class="primary" type="submit">保存商业化设置</button>
+            </form>
+            <p class="advice-note">关闭时：订阅套餐页隐藏，所有用户默认高级无限制，不收费。开启后：基础版受限，高级版需 Admin 审批开通。</p>
+            <div class="result" id="adminSettingsResult"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Dashboard：用户数据与流量</h3>
+              <button class="control" id="refreshAdminUsageBtn" type="button">刷新流量</button>
+            </div>
+            <div class="exposure-grid">
+              <div class="exposure-item"><span>7日请求</span><strong class="mono" id="usageRequestCount">--</strong></div>
+              <div class="exposure-item"><span>活跃用户</span><strong class="mono" id="usageActiveUsers">--</strong></div>
+              <div class="exposure-item"><span>错误请求</span><strong class="mono" id="usageErrorCount">--</strong></div>
+              <div class="exposure-item"><span>响应流量</span><strong class="mono" id="usageBytes">--</strong></div>
+              <div class="exposure-item"><span>平均耗时</span><strong class="mono" id="usageAvgMs">--</strong></div>
+              <div class="exposure-item"><span>待审升级</span><strong class="mono" id="adminPendingUpgrades">--</strong></div>
+            </div>
+            <div class="two-col">
+              <table>
+                <thead><tr><th>接口</th><th>请求</th><th>错误</th><th>流量</th></tr></thead>
+                <tbody id="usagePathRows"></tbody>
+              </table>
+              <table>
+                <thead><tr><th>用户</th><th>请求</th><th>错误</th><th>流量</th></tr></thead>
+                <tbody id="usageUserRows"></tbody>
+              </table>
+            </div>
+          </section>
           <section class="panel">
             <div class="panel-head">
               <h3>客户权限与策略</h3>
               <button class="control" id="refreshAdminBtn" type="button">刷新维护端</button>
             </div>
             <table>
-              <thead><tr><th>客户</th><th>状态</th><th>功能权限</th><th>策略</th><th>持仓</th><th>操作</th></tr></thead>
+              <thead><tr><th>客户</th><th>状态/套餐</th><th>功能权限</th><th>策略</th><th>持仓</th><th>操作</th></tr></thead>
               <tbody id="adminUserRows"></tbody>
             </table>
             <div class="result" id="adminResult"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>高级版开通审批</h3><span class="tag warn">Paid upgrade</span></div>
+            <table>
+              <thead><tr><th>客户</th><th>套餐</th><th>周期</th><th>金额</th><th>状态</th><th>申请时间</th><th>操作</th></tr></thead>
+              <tbody id="adminUpgradeRows"></tbody>
+            </table>
           </section>
           <section class="panel">
             <div class="panel-head"><h3>当前选中客户策略</h3><span class="tag long" id="adminSelectedUser">未选择</span></div>
@@ -1351,13 +1452,14 @@ reject_trade_if:
       model: ["算法模块", "参考机构多因子流程：数据门禁、Alpha、因子检验、风险模型、组合优化和交易复盘。"],
       backtest: ["回测与风控", "重点验证 2-8 周窗口、交易可行性、风格切片稳定性和极端行情保护。"],
       institutional: ["专业化中心", "把数据源、模型治理、组合风险和审计日志集中起来，向机构化投研流程靠拢。"],
+      billing: ["订阅套餐", "基础版保留核心选股体验，高级版开放完整投研、回测、导出和更高股票池上限。"],
       admin: ["Admin 维护端", "管理客户权限、策略配置、数据导出审批和数据缓存治理。"]
     };
     let portfolioAdvice = [];
     let systemPool = [];
     let watchlist = [];
     let modelConfig = null;
-    let currentUser = { is_admin: false, feature_flags: {} };
+    let currentUser = { is_admin: false, plan: "free", billing_enabled: false, feature_flags: {} };
     let adminUsers = [];
     const marketRegimes = {
       "震荡上行": {
@@ -1459,6 +1561,10 @@ reject_trade_if:
       if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
       return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
     }
+    function planLabel(plan) {
+      if (!currentUser.billing_enabled) return "高级无限制版";
+      return plan === "pro" ? "高级版" : "基础版";
+    }
     function authHeaders(extra = {}) {
       const token = localStorage.getItem("alpha_token");
       return { ...extra, ...(token ? { Authorization: `Bearer ${token}` } : {}) };
@@ -1477,8 +1583,9 @@ reject_trade_if:
     }
     async function loadCurrentUser() {
       currentUser = await apiJson("/api/auth/me", { cache: "no-store" });
-      document.getElementById("signedInUser").textContent = `${currentUser.email} · ${currentUser.is_admin ? "Admin" : "客户"}`;
+      document.getElementById("signedInUser").textContent = `${currentUser.email} · ${currentUser.is_admin ? "Admin" : planLabel(currentUser.plan)}`;
       document.getElementById("adminNavBtn").style.display = currentUser.is_admin ? "" : "none";
+      document.getElementById("billingNavBtn").style.display = currentUser.billing_enabled ? "" : "none";
       document.querySelectorAll(".admin-only").forEach((node) => {
         node.style.display = currentUser.is_admin ? "" : "none";
       });
@@ -1667,11 +1774,145 @@ reject_trade_if:
     async function loadInstitutionalCenter() {
       await Promise.all([loadDataSources(), loadModelGovernance(), loadInstitutionalRisk(), loadAuditLogs()]);
     }
+    function renderBilling(payload, state) {
+      if (!payload.billing_enabled) {
+        document.getElementById("billingCurrentPlan").textContent = "高级无限制版";
+        document.getElementById("billingPoolLimit").textContent = "30";
+        document.getElementById("billingBacktest").textContent = "已开通";
+        document.getElementById("billingExport").textContent = "已开通";
+        document.getElementById("planCards").innerHTML = `
+          <article class="plan-card current">
+            <h4>当前免费期</h4>
+            <div class="plan-price">¥0<small>/不限期</small></div>
+            <ul><li>所有用户默认高级无限制</li><li>Top 30 系统股票池</li><li>回测、导出和专业化功能全部开放</li></ul>
+          </article>
+        `;
+        document.getElementById("billingRequestRows").innerHTML = `<tr><td colspan="6">收费功能未启用，无需提交升级申请。</td></tr>`;
+        return;
+      }
+      const currentPlan = payload.current_plan || state.plan || "free";
+      const flags = payload.feature_flags || state.feature_flags || {};
+      const pro = (payload.plans || []).find((plan) => plan.code === "pro") || {};
+      document.getElementById("billingCurrentPlan").textContent = planLabel(currentPlan);
+      document.getElementById("billingPoolLimit").textContent = currentPlan === "pro" || currentUser.is_admin ? "30" : "10";
+      document.getElementById("billingBacktest").textContent = flags.backtest ? "已开通" : "未开通";
+      document.getElementById("billingExport").textContent = flags.data_export ? "已开通" : "未开通";
+      document.getElementById("planCards").innerHTML = (payload.plans || []).map((plan) => {
+        const isCurrent = plan.code === currentPlan || (currentUser.is_admin && plan.code === "pro");
+        const disabled = isCurrent || currentUser.is_admin;
+        const button = plan.code === "pro"
+          ? `<button class="primary upgrade-plan" data-cycle="monthly" ${disabled ? "disabled" : ""}>申请开通 ¥${plan.price_monthly_cny}/月</button>
+             <button class="control upgrade-plan" data-cycle="yearly" ${disabled ? "disabled" : ""}>申请年付 ¥${plan.price_yearly_cny}/年</button>`
+          : `<button class="control" disabled>当前基础权益</button>`;
+        return `
+          <article class="plan-card ${isCurrent ? "current" : ""}">
+            <h4>${plan.name}</h4>
+            <div class="plan-price">¥${plan.price_monthly_cny}<small>/月</small></div>
+            <ul>${(plan.features || []).map((item) => `<li>${item}</li>`).join("")}</ul>
+            ${button}
+          </article>
+        `;
+      }).join("");
+      document.querySelectorAll(".upgrade-plan").forEach((button) => {
+        button.addEventListener("click", () => createUpgradeRequest(button.dataset.cycle));
+      });
+      const requests = state.requests || [];
+      document.getElementById("billingRequestRows").innerHTML = requests.length
+        ? requests.map((row) => `
+          <tr>
+            <td><code>#${row.id}</code> ${planLabel(row.target_plan)}</td>
+            <td>${row.billing_cycle === "yearly" ? "年付" : "月付"}</td>
+            <td>¥${row.amount_cny}</td>
+            <td><span class="tag ${row.status === "approved" ? "long" : row.status === "rejected" ? "risk" : "warn"}">${row.status}</span></td>
+            <td>${row.requested_at || "--"}</td>
+            <td>${row.decision_note || "--"}</td>
+          </tr>
+        `).join("")
+        : `<tr><td colspan="6">暂无升级申请。</td></tr>`;
+    }
+    async function loadBillingCenter() {
+      if (!currentUser.billing_enabled && !currentUser.is_admin) return;
+      try {
+        const [plans, state] = await Promise.all([
+          apiJson("/api/billing/plans", { cache: "no-store" }),
+          apiJson("/api/billing/me", { cache: "no-store" })
+        ]);
+        renderBilling(plans, state);
+      } catch (error) {
+        const result = document.getElementById("billingResult");
+        result.classList.add("show");
+        result.innerHTML = `读取套餐失败：${error.message}`;
+      }
+    }
+    async function createUpgradeRequest(cycle) {
+      const result = document.getElementById("billingResult");
+      try {
+        const payload = await apiJson("/api/billing/upgrade-requests", {
+          method: "POST",
+          body: JSON.stringify({ target_plan: "pro", billing_cycle: cycle })
+        });
+        result.classList.add("show");
+        result.innerHTML = `高级版申请 #${payload.id} 已提交，金额 ¥${payload.amount_cny}，等待 Admin 确认收款后开通。`;
+        await loadBillingCenter();
+        if (currentUser.is_admin) await loadAdminUpgrades();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `申请失败：${error.message}`;
+      }
+    }
     function renderAdminSummary(payload) {
       document.getElementById("adminUserCount").textContent = payload.user_count ?? "--";
       document.getElementById("adminActiveCount").textContent = payload.active_count ?? "--";
-      document.getElementById("adminCount").textContent = payload.admin_count ?? "--";
+      document.getElementById("adminProCount").textContent = payload.pro_count ?? "--";
       document.getElementById("adminPendingExports").textContent = payload.pending_exports ?? "--";
+      document.getElementById("adminPendingUpgrades").textContent = payload.pending_upgrades ?? "--";
+      document.getElementById("adminUsage24h").textContent = payload.usage_24h ?? "--";
+    }
+    function renderAdminUsage(payload) {
+      document.getElementById("usageRequestCount").textContent = payload.request_count ?? "--";
+      document.getElementById("usageActiveUsers").textContent = payload.active_users ?? "--";
+      document.getElementById("usageErrorCount").textContent = payload.error_count ?? "--";
+      document.getElementById("usageBytes").textContent = formatBytes(payload.response_bytes);
+      document.getElementById("usageAvgMs").textContent = `${payload.avg_duration_ms ?? "--"}ms`;
+      document.getElementById("usagePathRows").innerHTML = (payload.top_paths || []).length
+        ? payload.top_paths.map((row) => `<tr><td><code>${row.path}</code></td><td>${row.requests}</td><td>${row.errors}</td><td>${formatBytes(row.bytes)}</td></tr>`).join("")
+        : `<tr><td colspan="4">暂无接口流量。</td></tr>`;
+      document.getElementById("usageUserRows").innerHTML = (payload.top_users || []).length
+        ? payload.top_users.map((row) => `<tr><td>${row.email}</td><td>${row.requests}</td><td>${row.errors}</td><td>${formatBytes(row.bytes)}</td></tr>`).join("")
+        : `<tr><td colspan="4">暂无用户流量。</td></tr>`;
+    }
+    async function loadAdminUsage() {
+      renderAdminUsage(await apiJson("/api/admin/usage?days=7", { cache: "no-store" }));
+    }
+    function renderAdminSettings(payload) {
+      const enabled = Boolean(payload.billing_enabled);
+      document.getElementById("adminBillingEnabled").checked = enabled;
+      const tag = document.getElementById("billingModeTag");
+      tag.textContent = enabled ? "收费已启用" : "免费无限制";
+      tag.className = `tag ${enabled ? "risk" : "long"}`;
+    }
+    async function loadAdminSettings() {
+      renderAdminSettings(await apiJson("/api/admin/settings", { cache: "no-store" }));
+    }
+    async function saveAdminSettings(event) {
+      event.preventDefault();
+      const result = document.getElementById("adminSettingsResult");
+      try {
+        const payload = await apiJson("/api/admin/settings", {
+          method: "PUT",
+          body: JSON.stringify({ billing_enabled: document.getElementById("adminBillingEnabled").checked })
+        });
+        renderAdminSettings(payload);
+        await loadCurrentUser();
+        await loadBillingCenter();
+        result.classList.add("show");
+        result.innerHTML = payload.billing_enabled
+          ? "收费功能已启用：客户将按基础版/高级版权限使用。"
+          : "收费功能已关闭：所有客户恢复高级无限制，订阅入口已隐藏。";
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `保存失败：${error.message}`;
+      }
     }
     function featureCheckbox(user, key, label) {
       const checked = user.feature_flags?.[key] ? "checked" : "";
@@ -1693,6 +1934,11 @@ reject_trade_if:
                 <option value="customer" ${user.role === "customer" ? "selected" : ""}>customer</option>
                 <option value="admin" ${user.role === "admin" ? "selected" : ""}>admin</option>
               </select>
+              <select class="control admin-plan" data-user-id="${user.id}">
+                <option value="free" ${user.plan !== "pro" ? "selected" : ""}>基础版</option>
+                <option value="pro" ${user.plan === "pro" ? "selected" : ""}>高级版</option>
+              </select>
+              <small>${user.billing_enabled ? "按套餐生效" : "当前免费无限制"}</small>
             </td>
             <td><div class="check-options">${featureCheckbox(user, "system_pool", "股票池")}${featureCheckbox(user, "portfolio", "持股")}${featureCheckbox(user, "backtest", "回测")}${featureCheckbox(user, "data_export", "导出")}</div></td>
             <td><code>${strategy.model_version || "--"}</code><br /><small>阈值 ${strategy.buy_score_threshold ?? "--"} · 市场 ${(strategy.markets || []).join(",") || "--"}</small></td>
@@ -1716,6 +1962,7 @@ reject_trade_if:
       return {
         status: document.querySelector(`.admin-status[data-user-id="${userId}"]`).value,
         role: document.querySelector(`.admin-role[data-user-id="${userId}"]`).value,
+        plan: document.querySelector(`.admin-plan[data-user-id="${userId}"]`).value,
         feature_flags: featureFlags
       };
     }
@@ -1807,18 +2054,48 @@ reject_trade_if:
       });
       await Promise.all([loadAdminExports(), loadExportRequests()]);
     }
+    function renderAdminUpgrades(payload) {
+      const rows = payload.rows || [];
+      document.getElementById("adminUpgradeRows").innerHTML = rows.length ? rows.map((row) => `
+        <tr>
+          <td>${row.email}<br /><code>#${row.id}</code></td>
+          <td>${planLabel(row.target_plan)}</td>
+          <td>${row.billing_cycle === "yearly" ? "年付" : "月付"}</td>
+          <td>¥${row.amount_cny}</td>
+          <td><span class="tag ${row.status === "approved" ? "long" : row.status === "rejected" ? "risk" : "warn"}">${row.status}</span></td>
+          <td>${row.requested_at || "--"}</td>
+          <td>${row.status === "pending" ? `<button class="control admin-upgrade-decision" data-id="${row.id}" data-status="approved">确认收款并开通</button><button class="control admin-upgrade-decision" data-id="${row.id}" data-status="rejected">拒绝</button>` : row.decision_note || "--"}</td>
+        </tr>
+      `).join("") : `<tr><td colspan="7">暂无高级版开通申请。</td></tr>`;
+      document.querySelectorAll(".admin-upgrade-decision").forEach((button) => {
+        button.addEventListener("click", () => decideAdminUpgrade(button.dataset.id, button.dataset.status));
+      });
+    }
+    async function decideAdminUpgrade(id, status) {
+      await apiJson(`/api/admin/upgrade-requests/${id}/decision`, {
+        method: "POST",
+        body: JSON.stringify({ status, note: status === "approved" ? "Admin confirmed payment" : "Admin rejected payment" })
+      });
+      await Promise.all([loadAdminUpgrades(), loadAdminUsers(), loadBillingCenter()]);
+    }
     async function loadAdminUsers() {
       renderAdminUsers(await apiJson("/api/admin/users", { cache: "no-store" }));
     }
     async function loadAdminExports() {
       renderAdminExports(await apiJson("/api/admin/export-requests", { cache: "no-store" }));
     }
+    async function loadAdminUpgrades() {
+      renderAdminUpgrades(await apiJson("/api/admin/upgrade-requests", { cache: "no-store" }));
+    }
     async function loadAdminCenter() {
       if (!currentUser.is_admin) return;
       const [summary] = await Promise.all([
         apiJson("/api/admin/summary", { cache: "no-store" }),
+        loadAdminSettings(),
         loadAdminUsers(),
-        loadAdminExports()
+        loadAdminExports(),
+        loadAdminUpgrades(),
+        loadAdminUsage()
       ]);
       renderAdminSummary(summary);
     }
@@ -2771,7 +3048,10 @@ reject_trade_if:
       pruneDataCache(false);
     });
     document.getElementById("dataExportForm").addEventListener("submit", createExportRequest);
+    document.getElementById("refreshBillingBtn").addEventListener("click", loadBillingCenter);
     document.getElementById("refreshAdminBtn").addEventListener("click", loadAdminCenter);
+    document.getElementById("refreshAdminUsageBtn").addEventListener("click", loadAdminUsage);
+    document.getElementById("adminPlatformSettingsForm").addEventListener("submit", saveAdminSettings);
     document.getElementById("adminStrategyForm").addEventListener("submit", saveAdminStrategy);
     document.getElementById("runFactorDiagnosticsBtn").addEventListener("click", () => {
       runFactorDiagnostics();
@@ -2820,6 +3100,7 @@ reject_trade_if:
       loadDataHealth();
       loadDataCache();
       loadExportRequests();
+      if (currentUser.billing_enabled || currentUser.is_admin) loadBillingCenter();
       loadFactorDiagnostics();
       loadInstitutionalCenter();
       const saved = localStorage.getItem("aShareAlphaView");

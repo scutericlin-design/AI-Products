@@ -6,3 +6,5 @@ uvicorn
 sqlalchemy
 pydantic-settings
 email-validator
+requests
+tushare
