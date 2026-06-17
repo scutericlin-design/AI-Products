@@ -494,24 +494,34 @@
       padding: 12px;
     }
     .pool-row {
-      min-height: 76px;
+      min-height: 108px;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       background: var(--surface-secondary);
       display: grid;
-      grid-template-columns: 58px minmax(120px, 1.1fr) 92px minmax(260px, 1.8fr) minmax(180px, 1.1fr) 104px;
-      gap: 10px;
+      grid-template-columns: 58px minmax(132px, 1fr) 92px minmax(360px, 2.2fr) 104px;
+      grid-template-areas:
+        "rank stock score factors action"
+        "reason reason reason reason reason";
+      column-gap: 10px;
+      row-gap: 9px;
       align-items: center;
-      padding: 10px 12px;
+      padding: 12px 14px;
     }
     .pool-row:hover {
       border-color: color-mix(in oklab, var(--accent-long), transparent 45%);
       background: color-mix(in oklab, var(--accent-long), transparent 95%);
     }
     .pool-rank {
+      grid-area: rank;
       font: 700 20px/1 var(--font-display);
       color: color-mix(in oklab, var(--accent-long), black 25%);
     }
+    .pool-stock { grid-area: stock; }
+    .pool-scoreline { grid-area: score; }
+    .pool-factorline { grid-area: factors; }
+    .pool-reasonline { grid-area: reason; }
+    .pool-row .add-pool { grid-area: action; justify-self: end; }
     .pool-stock, .pool-scoreline, .pool-factorline, .pool-reasonline {
       min-width: 0;
       display: grid;
@@ -538,16 +548,20 @@
     .pool-reasonline p {
       margin: 0;
       color: var(--text-secondary);
-      font-size: 12px;
-      line-height: 1.45;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 12.5px;
+      line-height: 1.55;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      overflow-wrap: anywhere;
     }
     .pool-reasonline code {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      display: block;
+      margin-top: 2px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      overflow-wrap: anywhere;
     }
     .advice-table th:nth-child(6), .advice-table td:nth-child(6) { width: 31%; }
     .advice-table th:nth-child(7), .advice-table td:nth-child(7) { width: 28%; }
@@ -601,8 +615,17 @@
       .app { grid-template-columns: 1fr; }
       .rail { position: relative; height: auto; }
       .hero-strip, .grid-3, .two-col, .schema-grid, .flow, .signal-form, .portfolio-grid, .exposure-grid, .cache-summary-grid { grid-template-columns: 1fr; }
-      .pool-row { grid-template-columns: 48px 1fr; align-items: start; }
-      .pool-scoreline, .pool-factorline, .pool-reasonline, .pool-row .add-pool { grid-column: 2; }
+      .pool-row {
+        grid-template-columns: 48px minmax(0, 1fr);
+        grid-template-areas:
+          "rank stock"
+          "rank score"
+          "rank factors"
+          "reason reason"
+          "action action";
+        align-items: start;
+      }
+      .pool-row .add-pool { justify-self: start; }
       .pool-factorline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .topbar { position: relative; align-items: flex-start; flex-direction: column; }
     }
@@ -782,7 +805,7 @@
               <span class="tag warn" id="watchlistCountTag">0 只</span>
             </div>
             <table>
-              <thead><tr><th>股票</th><th>备注</th><th>来源</th><th>操作</th></tr></thead>
+              <thead><tr><th>股票</th><th>评分</th><th>最新数据</th><th>模型理由</th><th>操作</th></tr></thead>
               <tbody id="watchlistRows"></tbody>
             </table>
             <div class="result" id="watchlistResult"></div>
@@ -1456,8 +1479,10 @@ reject_trade_if:
       admin: ["Admin 维护端", "管理客户权限、策略配置、数据导出审批和数据缓存治理。"]
     };
     let portfolioAdvice = [];
+    let portfolioRefreshPromise = null;
     let systemPool = [];
     let watchlist = [];
+    let watchlistRefreshPromise = null;
     let modelConfig = null;
     let currentUser = { is_admin: false, plan: "free", billing_enabled: false, feature_flags: {} };
     let adminUsers = [];
@@ -2186,22 +2211,40 @@ reject_trade_if:
         : "<strong>优先动作：</strong>维持观察，等待系统股票池出现更高置信度候选。";
     }
     async function loadPortfolioAdvice() {
+      if (portfolioRefreshPromise) return portfolioRefreshPromise;
+      portfolioRefreshPromise = (async () => {
       let riskNotes = "";
+      const result = document.getElementById("adviceResult");
+      result.classList.add("show");
+      result.innerHTML = "正在调用 API 刷新个人持股评分、最新行情和模型分析...";
       try {
-        portfolioAdvice = await apiJson("/api/portfolio/advice", { cache: "no-store" });
-        const risk = await apiJson("/api/portfolio/risk", { cache: "no-store" });
+        const payload = await apiJson("/api/portfolio/advice/refresh", { method: "POST" });
+        portfolioAdvice = payload.rows || [];
+        const risk = payload.risk || await apiJson("/api/portfolio/risk", { cache: "no-store" });
         riskNotes = risk.notes.join(" ");
+        result.innerHTML = `${payload.message || "个人持股评分已刷新。"} 模型：<code>${payload.model_version || "--"}</code>，时间：${payload.refreshed_at || "--"}。`;
       } catch (error) {
-        portfolioAdvice = [];
-        const result = document.getElementById("adviceResult");
-        result.classList.add("show");
-        result.innerHTML = `暂时无法通过 API 读取你的持仓建议：${error.message}`;
+        try {
+          portfolioAdvice = await apiJson("/api/portfolio/advice", { cache: "no-store" });
+          const risk = await apiJson("/api/portfolio/risk", { cache: "no-store" });
+          riskNotes = risk.notes.join(" ");
+          result.innerHTML = `实时刷新失败，已使用现有最新评分：${error.message}`;
+        } catch (fallbackError) {
+          portfolioAdvice = [];
+          result.innerHTML = `暂时无法通过 API 读取你的持仓建议：${fallbackError.message}`;
+        }
       }
       updatePortfolioMetrics();
       if (riskNotes) document.getElementById("portfolioExposureNote").textContent = riskNotes;
       renderHoldings();
       renderAdvice();
       loadInstitutionalRisk();
+      })();
+      try {
+        return await portfolioRefreshPromise;
+      } finally {
+        portfolioRefreshPromise = null;
+      }
     }
     function normalizeWeightInput(value) {
       const number = Number(value);
@@ -2628,7 +2671,9 @@ reject_trade_if:
       const result = document.getElementById("researchReportResult");
       result.classList.add("show");
       result.innerHTML = `
-        <strong>${payload.name} ${payload.symbol}</strong> · ${payload.action} · 置信度 ${payload.confidence}<br />
+        <strong>${payload.name} ${payload.symbol}</strong> · 评分 <span class="score">${formatNumber(payload.score, 1)}</span> · ${actionLabel(payload.action)} · 置信度 ${confidenceLabel(payload.confidence)}<br />
+        <p><strong>评分口径：</strong>${payload.trade_date || "--"} · <code>${payload.score_source || "--"}</code> · <code>${payload.model_version || "--"}</code></p>
+        <p><strong>评分拆解：</strong>Alpha ${formatNumber(payload.alpha_score, 1)}；基本面 ${formatNumber(payload.fundamental_quality_score, 1)}；估值 ${formatNumber(payload.valuation_sanity_score, 1)}；流动性 ${formatNumber(payload.liquidity_capacity_score, 1)}；风控 ${formatNumber(payload.risk_control_score, 1)}；门禁扣分 ${formatNumber(payload.gate_penalty_score, 1)}</p>
         <p><strong>核心假设：</strong>${payload.thesis}</p>
         <p><strong>证据：</strong>${(payload.evidence || []).join("；") || "暂无结构化证据"}</p>
         <p><strong>风险：</strong>${(payload.risks || []).join("；")}</p>
@@ -2732,14 +2777,15 @@ reject_trade_if:
       const rows = document.getElementById("watchlistRows");
       tag.textContent = `${watchlist.length} 只`;
       if (!watchlist.length) {
-        rows.innerHTML = `<tr><td colspan="4">暂无观察股票。可在系统推荐股票池点击“加入观察”。</td></tr>`;
+        rows.innerHTML = `<tr><td colspan="5">暂无观察股票。可在系统推荐股票池点击“加入观察”。</td></tr>`;
         return;
       }
       rows.innerHTML = watchlist.map((item) => `
         <tr>
           <td><strong>${item.name}</strong><br /><code>${item.symbol}</code></td>
-          <td>${item.note || "等待二次研究"}</td>
-          <td><span class="tag warn">个人观察</span></td>
+          <td><span class="score">${formatNumber(item.price_factor_score, 1)}</span><br /><small>${confidenceLabel(item.confidence || "low")}</small></td>
+          <td><span class="tag ${tagClassForAction(item.action)}">${actionLabel(item.action)}</span><br /><small>收盘 ${formatNumber(item.latest_close, 2)} · ${item.trade_date || "--"}</small></td>
+          <td><strong>${item.note || "等待二次研究"}</strong><br /><small>${item.reason || "等待模型刷新后生成理由。"}</small></td>
           <td><button class="control remove-watchlist" data-symbol="${item.symbol}">移出</button></td>
         </tr>
       `).join("");
@@ -2759,15 +2805,31 @@ reject_trade_if:
       });
     }
     async function loadWatchlist() {
+      if (watchlistRefreshPromise) return watchlistRefreshPromise;
+      watchlistRefreshPromise = (async () => {
       const result = document.getElementById("watchlistResult");
+      result.classList.add("show");
+      result.innerHTML = "正在调用 API 刷新个人观察池评分、最新行情和模型分析...";
       try {
-        watchlist = await apiJson("/api/watchlist", { cache: "no-store" });
+        const payload = await apiJson("/api/watchlist/refresh", { method: "POST" });
+        watchlist = payload.rows || [];
+        result.innerHTML = `${payload.message || "个人观察池评分已刷新。"} 模型：<code>${payload.model_version || "--"}</code>，时间：${payload.refreshed_at || "--"}。`;
       } catch (error) {
-        watchlist = [];
-        result.classList.add("show");
-        result.innerHTML = `暂时无法读取个人观察池：${error.message}`;
+        try {
+          watchlist = await apiJson("/api/watchlist", { cache: "no-store" });
+          result.innerHTML = `实时刷新失败，已显示现有观察池：${error.message}`;
+        } catch (fallbackError) {
+          watchlist = [];
+          result.innerHTML = `暂时无法读取个人观察池：${fallbackError.message}`;
+        }
       }
       renderWatchlist();
+      })();
+      try {
+        return await watchlistRefreshPromise;
+      } finally {
+        watchlistRefreshPromise = null;
+      }
     }
     async function addToWatchlist(symbol, name) {
       const result = document.getElementById("poolResult");
@@ -2971,6 +3033,12 @@ reject_trade_if:
         document.getElementById("viewTitle").textContent = titles[view][0];
         document.getElementById("viewSub").textContent = titles[view][1];
         applyMarketRegime();
+        if (view === "portfolio" && (currentUser.is_admin || currentUser.feature_flags?.portfolio)) {
+          loadPortfolioAdvice();
+        }
+        if (view === "systemPool" && (currentUser.is_admin || currentUser.feature_flags?.portfolio)) {
+          loadWatchlist();
+        }
       });
     });
     document.getElementById("signalForm").addEventListener("submit", (event) => {

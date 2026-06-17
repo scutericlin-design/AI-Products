@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 import subprocess
 import sys
 from io import StringIO
@@ -28,6 +29,7 @@ router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 DATA_HEALTH_PATH = PROJECT_ROOT / "data" / "processed" / "data_health_latest.json"
 FACTOR_DIAGNOSTICS_PATH = PROJECT_ROOT / "data" / "processed" / "factor_diagnostics_latest.json"
 RECOMMENDED_POOL_PATH = PROJECT_ROOT / "data" / "processed" / "recommended_pool.csv"
+SCORED_UNIVERSE_PATH = PROJECT_ROOT / "data" / "processed" / "scored_universe_latest.csv"
 SIGNAL_LATEST_PATH = PROJECT_ROOT / "data" / "processed" / "signal_latest.csv"
 EXPORTABLE_DATASETS = {"daily", "daily_basic", "fina_indicator"}
 
@@ -62,6 +64,20 @@ def read_csv_rows(path: Path) -> list[dict[str, str]]:
         return []
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
         return list(csv.DictReader(handle))
+
+
+def _find_symbol_row(rows: list[dict[str, str]], code: str) -> dict[str, str] | None:
+    return next((row for row in rows if normalize_symbol(row.get("symbol", "")) == code), None)
+
+
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    try:
+        if value in {None, ""}:
+            return default
+        number = float(value)
+        return number if math.isfinite(number) else default
+    except (TypeError, ValueError):
+        return default
 
 
 @router.get("/data-health/latest")
@@ -247,20 +263,26 @@ def research_report(symbol: str, user: User = Depends(current_user), db: Session
     code = normalize_symbol(symbol)
     name, source = lookup_stock_name(code)
     pool_rows = read_csv_rows(RECOMMENDED_POOL_PATH)
+    universe_rows = read_csv_rows(SCORED_UNIVERSE_PATH)
     signal_rows = read_csv_rows(SIGNAL_LATEST_PATH)
-    pool = next((row for row in pool_rows if normalize_symbol(row.get("symbol", "")) == code), None)
-    signal = next((row for row in signal_rows if normalize_symbol(row.get("symbol", "")) == code), None)
+    pool = _find_symbol_row(pool_rows, code)
+    universe = _find_symbol_row(universe_rows, code)
+    signal = _find_symbol_row(signal_rows, code)
     position = db.scalar(
         select(PortfolioPosition).where(PortfolioPosition.user_id == user.id, PortfolioPosition.symbol == code)
     )
 
-    row = pool or signal or {}
-    score = float(row.get("price_factor_score") or 0)
+    row = pool or universe or signal or {}
+    score_source = "system_pool_top30" if pool else "scored_universe_latest" if universe else "legacy_signal_latest" if signal else "missing"
+    score = _safe_float(row.get("price_factor_score"))
     action = row.get("action") or "no_signal"
     risk_flags = [flag for flag in (row.get("risk_flags") or "").split("|") if flag]
     reasons = []
     if score:
         reasons.append(f"模型评分 {score:.1f}")
+    if row.get("trade_date"):
+        reasons.append(f"评分日期 {row['trade_date']}")
+    reasons.append(f"评分来源 {score_source}")
     if row.get("reason"):
         reasons.append(row["reason"])
     if position:
@@ -295,6 +317,17 @@ def research_report(symbol: str, user: User = Depends(current_user), db: Session
         "name_source": source,
         "action": action,
         "score": score,
+        "score_source": score_source,
+        "trade_date": row.get("trade_date"),
+        "latest_close": _safe_float(row.get("close"), default=0.0) or None,
+        "model_version": row.get("model_version") or "institutional_score_v4_tushare",
+        "raw_institutional_score": _safe_float(row.get("raw_institutional_score"), default=0.0) or None,
+        "gate_penalty_score": _safe_float(row.get("gate_penalty_score"), default=0.0) or None,
+        "alpha_score": _safe_float(row.get("alpha_score"), default=0.0) or None,
+        "fundamental_quality_score": _safe_float(row.get("fundamental_quality_score"), default=0.0) or None,
+        "valuation_sanity_score": _safe_float(row.get("valuation_sanity_score"), default=0.0) or None,
+        "liquidity_capacity_score": _safe_float(row.get("liquidity_capacity_score"), default=0.0) or None,
+        "risk_control_score": _safe_float(row.get("risk_control_score"), default=0.0) or None,
         "confidence": confidence,
         "thesis": thesis,
         "evidence": reasons,

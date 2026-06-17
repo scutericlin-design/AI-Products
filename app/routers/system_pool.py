@@ -16,6 +16,7 @@ from app.deps import require_feature
 from app.models import DataSourceConfig, StrategyConfig, StrategyVersion, User
 from app.schemas import StrategyConfigIn, StrategyConfigOut, StrategyVersionOut
 from app.services.audit import write_audit_log
+from app.services.score_refresh import ready_tushare_owner
 
 
 router = APIRouter(prefix="/api/system-pool", tags=["system-pool"])
@@ -58,13 +59,13 @@ def get_ready_tushare_config(user: User, db: Session) -> DataSourceConfig | None
 
 
 def build_rebuild_command(config: StrategyConfig, user: User, db: Session) -> tuple[list[str], str, str]:
-    tushare_config = get_ready_tushare_config(user, db)
-    if tushare_config is not None:
+    credential_owner = ready_tushare_owner(user, db)
+    if credential_owner is not None:
         command = [
             sys.executable,
             str(PROJECT_ROOT / "scripts" / "build_tushare_institutional_pool.py"),
             "--email",
-            user.email,
+            credential_owner.email,
             "--limit",
             str(config.pool_limit),
             "--lookback-trade-days",

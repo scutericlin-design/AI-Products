@@ -1,0 +1,30 @@
+{
+    email admin@chixiaoalpha.cn
+    servers {
+        protocols h1 h2
+    }
+}
+
+http://chixiaoalpha.cn, http://www.chixiaoalpha.cn {
+    redir http://app.chixiaoalpha.cn{uri} permanent
+}
+
+http://app.chixiaoalpha.cn, http://182.254.227.131 {
+    encode gzip
+    request_body {
+        max_size 50MB
+    }
+    reverse_proxy web:8000
+}
+
+https://chixiaoalpha.cn, https://www.chixiaoalpha.cn {
+    redir https://app.chixiaoalpha.cn{uri} permanent
+}
+
+https://app.chixiaoalpha.cn {
+    encode gzip
+    request_body {
+        max_size 50MB
+    }
+    reverse_proxy web:8000
+}

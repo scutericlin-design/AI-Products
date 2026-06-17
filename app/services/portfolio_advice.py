@@ -7,7 +7,7 @@ from typing import Any
 import pandas as pd
 
 from app.config import PROJECT_ROOT
-from app.models import PortfolioPosition
+from app.models import PortfolioPosition, WatchlistItem
 from scripts.build_portfolio_advice import build_advice, load_signals
 
 
@@ -56,6 +56,10 @@ def _empty_signal_frame() -> pd.DataFrame:
             "trade_date",
             "risk_flags",
             "reason",
+            "pct_change",
+            "amount_yi",
+            "intraday_position_pct",
+            "amplitude_pct_display",
             "alpha_score",
             "fundamental_quality_score",
             "valuation_sanity_score",
@@ -145,6 +149,67 @@ def build_user_advice(
         signals = load_signals(signals_path)
     advice = build_advice(portfolio, signals, max_single=max_single, watch_cap=watch_cap)
     return [_clean_record(record) for record in advice.to_dict(orient="records")]
+
+
+def build_watchlist_scores(items: list[WatchlistItem]) -> list[dict[str, Any]]:
+    if not items:
+        return []
+
+    symbols = {str(item.symbol).zfill(6) for item in items}
+    signals = load_personal_signal_view(held_symbols=symbols)
+    if not signals.empty:
+        signals = signals[signals["symbol"].isin(symbols)].drop_duplicates("symbol", keep="first")
+    signals_by_symbol = {
+        str(record.get("symbol") or "").zfill(6): _clean_record(record)
+        for record in signals.to_dict(orient="records")
+    }
+
+    rows: list[dict[str, Any]] = []
+    for item in items:
+        symbol = str(item.symbol).zfill(6)
+        signal = signals_by_symbol.get(symbol, {})
+        action = signal.get("action") or "not_in_system_pool"
+        score = signal.get("price_factor_score")
+        reason = signal.get("reason") or "暂未进入当前评分文件；建议先等待下一轮数据刷新后再判断。"
+        if action == "not_in_system_pool":
+            reason = "未进入当前Top30系统股票池；" + reason
+        rows.append(
+            _clean_record(
+                {
+                    "id": item.id,
+                    "symbol": symbol,
+                    "name": item.name or signal.get("name") or symbol,
+                    "note": item.note,
+                    "action": action,
+                    "signal_action": action,
+                    "price_factor_score": score,
+                    "latest_close": signal.get("close"),
+                    "trade_date": signal.get("trade_date"),
+                    "risk_flags": signal.get("risk_flags"),
+                    "reason": reason,
+                    "pct_change": signal.get("pct_change"),
+                    "amount_yi": signal.get("amount_yi"),
+                    "intraday_position_pct": signal.get("intraday_position_pct"),
+                    "amplitude_pct_display": signal.get("amplitude_pct_display"),
+                    "alpha_score": signal.get("alpha_score"),
+                    "fundamental_quality_score": signal.get("fundamental_quality_score"),
+                    "valuation_sanity_score": signal.get("valuation_sanity_score"),
+                    "liquidity_capacity_score": signal.get("liquidity_capacity_score"),
+                    "risk_control_score": signal.get("risk_control_score"),
+                    "crowding_penalty": signal.get("crowding_penalty"),
+                    "financial_data_score": signal.get("financial_data_score"),
+                    "data_completeness": signal.get("data_completeness"),
+                    "raw_institutional_score": signal.get("raw_institutional_score"),
+                    "score_rank": signal.get("score_rank"),
+                    "gate_penalty_score": signal.get("gate_penalty_score"),
+                    "confidence": signal.get("confidence") or "low",
+                    "model_version": signal.get("model_version"),
+                    "recommendation_tier": signal.get("recommendation_tier"),
+                    "signal_source": signal.get("signal_source") or "watchlist_refresh",
+                }
+            )
+        )
+    return rows
 
 
 def summarize_risk(advice_rows: list[dict[str, Any]], max_single: float = 0.12) -> dict[str, Any]:

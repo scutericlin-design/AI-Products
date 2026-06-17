@@ -4,7 +4,7 @@
 
 ## 1. 腾讯云控制台
 
-1. 服务器系统建议选择 Ubuntu 22.04 LTS 或 Ubuntu 24.04 LTS。
+1. 服务器系统建议选择 Ubuntu 22.04 LTS、Ubuntu 24.04 LTS，或腾讯云默认的 OpenCloudOS 9。部署脚本会自动识别 `apt-get` / `dnf` / `yum`。
 2. 防火墙/安全组放行：
    - `22`：SSH 登录。
    - `80`：网页访问。
@@ -36,6 +36,12 @@ scp deployment/dist/chixiao-alpha-tencent-*.tar.gz root@SERVER_IP:/opt/
 ```
 
 如果你不是 root 用户，把 `root` 换成实际登录用户名。
+
+如果使用专用 SSH key：
+
+```bash
+SSH_KEY=~/.ssh/chixiao_alpha_tencent bash deployment/deploy_to_tencent.sh SERVER_IP root /opt/chixiao-alpha
+```
 
 ## 4. 服务器初始化
 
@@ -131,7 +137,18 @@ tar -xzf /opt/chixiao-alpha-tencent-*.tar.gz -C /opt/chixiao-alpha
 docker compose -f docker-compose.prod.yml up -d --build
 ```
 
-`data/` 是持久化目录，不会因为重建镜像丢失。
+如果使用 `deployment/deploy_to_tencent.sh` 自动部署，脚本会在发现服务器已有 `data/app.db` 时先备份服务器 `data/`，解压代码后再恢复服务器数据，避免升级代码时覆盖云端用户、持股、观察池和 TuShare token。
+
+如果你手动解压升级，建议先备份服务器数据：
+
+```bash
+cd /opt/chixiao-alpha
+cp -a data /tmp/chixiao-alpha-data-$(date +%Y%m%d_%H%M%S)
+tar -xzf /opt/chixiao-alpha-tencent-*.tar.gz -C /opt/chixiao-alpha
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+`data/` 是持久化目录，不会因为重建 Docker 镜像丢失，但手动解压包含 `data/` 的部署包时仍需要先备份。
 
 ## 8. 备份
 

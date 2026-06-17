@@ -65,6 +65,7 @@ DATA_HEALTH_PATH = PROJECT_ROOT / "data" / "processed" / "data_health_latest.jso
 PORTFOLIO_BACKTEST_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_latest.json"
 WALK_FORWARD_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "walk_forward_latest.json"
 FACTOR_DIAGNOSTICS_PATH = PROJECT_ROOT / "data" / "processed" / "factor_diagnostics_latest.json"
+TUSHARE_READY_STATUSES = {"available", "configured_manual_check"}
 
 
 def read_json(path: Path, default: dict[str, Any]) -> dict[str, Any]:
@@ -80,6 +81,18 @@ def package_available(package_name: str | None) -> bool | None:
     if not package_name:
         return None
     return importlib.util.find_spec(package_name) is not None
+
+
+def get_platform_tushare_config(db: Session) -> DataSourceConfig | None:
+    return db.scalar(
+        select(DataSourceConfig)
+        .where(
+            DataSourceConfig.provider == "tushare",
+            DataSourceConfig.status.in_(TUSHARE_READY_STATUSES),
+            DataSourceConfig.api_token_cipher.is_not(None),
+        )
+        .order_by(DataSourceConfig.priority.asc(), DataSourceConfig.user_id.asc())
+    )
 
 
 def validate_tushare_token(token: str, base_url: str | None = None) -> tuple[str, str]:
@@ -167,6 +180,37 @@ def serialize_source(config: DataSourceConfig | None, provider: str) -> dict[str
     }
 
 
+def serialize_source_with_platform(
+    config: DataSourceConfig | None,
+    provider: str,
+    platform_config: DataSourceConfig | None,
+) -> dict[str, Any]:
+    result = serialize_source(config, provider)
+    if (
+        provider == "tushare"
+        and platform_config is not None
+        and not (config and config.api_token_cipher)
+    ):
+        result.update(
+            {
+                "status": platform_config.status,
+                "configured": True,
+                "token_mask": "平台统一配置",
+                "base_url": platform_config.base_url,
+                "priority": platform_config.priority,
+                "notes": "当前账号使用平台级 TuShare Pro 数据源，无需单独配置 Token。",
+                "last_checked_at": platform_config.last_checked_at.isoformat()
+                if platform_config.last_checked_at
+                else None,
+                "updated_at": platform_config.updated_at.isoformat() if platform_config.updated_at else None,
+                "using_platform_credential": True,
+            }
+        )
+    else:
+        result["using_platform_credential"] = False
+    return result
+
+
 def classify_board(symbol: str) -> str:
     code = str(symbol).zfill(6)
     if code.startswith(("4", "8", "9")):
@@ -184,7 +228,13 @@ def list_data_sources(user: User = Depends(current_user), db: Session = Depends(
         item.provider: item
         for item in db.scalars(select(DataSourceConfig).where(DataSourceConfig.user_id == user.id)).all()
     }
-    return {"providers": [serialize_source(configs.get(provider), provider) for provider in PROVIDERS]}
+    platform_tushare_config = get_platform_tushare_config(db)
+    return {
+        "providers": [
+            serialize_source_with_platform(configs.get(provider), provider, platform_tushare_config)
+            for provider in PROVIDERS
+        ]
+    }
 
 
 @router.put("/data-sources")
@@ -229,6 +279,13 @@ def check_data_source(provider: str, user: User = Depends(current_user), db: Ses
     )
     package_state = package_available(meta["package"])
     token = decrypt_secret(config.api_token_cipher) if config else None
+    base_url = config.base_url if config else None
+    platform_tushare_config = get_platform_tushare_config(db) if normalized == "tushare" else None
+    using_platform_credential = False
+    if normalized == "tushare" and not token and platform_tushare_config is not None:
+        token = decrypt_secret(platform_tushare_config.api_token_cipher)
+        base_url = platform_tushare_config.base_url
+        using_platform_credential = True
     if package_state is False:
         status = "missing_package"
         message = f"{meta['label']} SDK 尚未安装。"
@@ -236,22 +293,27 @@ def check_data_source(provider: str, user: User = Depends(current_user), db: Ses
         status = "missing_token"
         message = f"{meta['label']} 需要在网页配置 API Token。"
     elif normalized == "tushare":
-        status, message = validate_tushare_token(token, config.base_url if config else None)
+        status, message = validate_tushare_token(token, base_url)
+        if using_platform_credential:
+            message = f"平台级 TuShare Pro 数据源可用；{message}"
     elif meta["package"] is None and meta["needs_token"]:
         status = "configured_manual_check"
         message = f"{meta['label']} 已保存凭证信息；正式连通性需要供应商 SDK 或终端环境。"
     else:
         status = "available"
         message = f"{meta['label']} 本地环境可用。"
-    if config is None:
+    if config is None and not using_platform_credential:
         config = DataSourceConfig(user_id=user.id, provider=normalized)
         db.add(config)
-    config.status = status
-    config.last_checked_at = datetime.utcnow()
-    db.commit()
-    db.refresh(config)
+    if config is not None:
+        config.status = status
+        config.last_checked_at = datetime.utcnow()
+        db.commit()
+        db.refresh(config)
     write_audit_log(db, user, "data_source.check", normalized, {"status": status, "message": message})
-    result = serialize_source(config, normalized)
+    result = serialize_source_with_platform(config, normalized, platform_tushare_config)
+    if using_platform_credential:
+        result["status"] = status
     result["message"] = message
     return result
 

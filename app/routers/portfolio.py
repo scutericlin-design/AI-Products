@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -7,6 +9,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.deps import require_feature
 from app.models import AdviceLog, PortfolioPosition, User
+from app.routers.system_pool import MODEL_VERSION, get_or_create_config, serialize_config
 from app.schemas import (
     AdviceLogIn,
     AdviceLogOut,
@@ -18,6 +21,7 @@ from app.schemas import (
 )
 from app.services.audit import write_audit_log
 from app.services.portfolio_advice import build_user_advice, summarize_risk
+from app.services.score_refresh import ready_tushare_owner, run_tushare_pool_refresh
 from app.services.stock_lookup import lookup_stock_name
 
 
@@ -44,6 +48,73 @@ def _user_positions(user: User, db: Session) -> list[PortfolioPosition]:
 @router.get("/advice", response_model=list[PortfolioAdviceOut])
 def portfolio_advice(user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
     return build_user_advice(_user_positions(user, db))
+
+
+@router.post("/advice/refresh")
+def refresh_portfolio_advice(user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
+    positions = _user_positions(user, db)
+    if not positions:
+        return {
+            "ok": True,
+            "refreshed": False,
+            "message": "暂无持仓，不需要刷新评分。",
+            "rows": [],
+            "risk": summarize_risk([]),
+            "refreshed_at": datetime.utcnow().isoformat(),
+        }
+    config = get_or_create_config(user, db)
+    credential_owner = ready_tushare_owner(user, db)
+    refreshed = False
+    engine = "cached_scores"
+    message = "已使用最新缓存评分生成个人持股建议。"
+    stdout = ""
+    if credential_owner is not None:
+        refresh_result = run_tushare_pool_refresh(config, credential_owner)
+        stdout = refresh_result.stdout
+        if not refresh_result.ok:
+            message = "TuShare 刷新失败，已回退到现有评分文件。"
+            write_audit_log(
+                db,
+                user,
+                "portfolio.score_refresh_failed",
+                MODEL_VERSION,
+                {
+                    "credential_owner": credential_owner.email,
+                    "stdout": refresh_result.stdout[-1200:],
+                    "stderr": refresh_result.stderr[-1200:],
+                },
+            )
+        else:
+            refreshed = True
+            engine = "tushare_pro"
+            message = "已复用刚刚完成的 TuShare Pro 刷新结果，生成个人持股建议。" if refresh_result.reused_recent_result else "已调用 TuShare Pro 更新最新行情、评分和个人持股建议。"
+            write_audit_log(
+                db,
+                user,
+                "portfolio.score_refresh",
+                MODEL_VERSION,
+                {
+                    "credential_owner": credential_owner.email,
+                    "position_count": len(positions),
+                    "reused_recent_result": refresh_result.reused_recent_result,
+                    "config": serialize_config(config),
+                },
+            )
+    else:
+        message = "未找到可用 TuShare Pro 数据源，已使用现有评分文件生成建议。"
+
+    rows = build_user_advice(positions)
+    return {
+        "ok": True,
+        "refreshed": refreshed,
+        "engine": engine,
+        "model_version": MODEL_VERSION,
+        "message": message,
+        "rows": rows,
+        "risk": summarize_risk(rows),
+        "refreshed_at": datetime.utcnow().isoformat(),
+        "stdout": stdout,
+    }
 
 
 @router.get("/risk", response_model=RiskSummaryOut)

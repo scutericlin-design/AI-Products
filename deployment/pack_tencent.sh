@@ -8,12 +8,13 @@ OUT_FILE="$OUT_DIR/chixiao-alpha-tencent-$STAMP.tar.gz"
 
 mkdir -p "$OUT_DIR"
 
-tar \
+COPYFILE_DISABLE=1 tar \
   --exclude=".git" \
   --exclude=".venv" \
   --exclude="__pycache__" \
   --exclude="*.pyc" \
   --exclude=".DS_Store" \
+  --exclude="._*" \
   --exclude=".env" \
   --exclude="deployment/dist" \
   -czf "$OUT_FILE" \
