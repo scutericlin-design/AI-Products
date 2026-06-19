@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
@@ -10,7 +11,13 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.deps import PLAN_FEATURES, current_admin, user_feature_flags
 from app.models import DataExportRequest, PlanUpgradeRequest, PortfolioPosition, StrategyConfig, UsageLog, User
-from app.routers.system_pool import create_version_snapshot, get_or_create_config, serialize_config
+from app.routers.system_pool import (
+    DEFAULT_STRATEGY_TYPE,
+    STRATEGY_MODEL_VERSIONS,
+    create_version_snapshot,
+    get_or_create_config,
+    serialize_config,
+)
 from app.schemas import (
     AdminPlatformSettingsIn,
     AdminStrategyUpdateIn,
@@ -23,6 +30,13 @@ from app.services.platform_settings import is_billing_enabled, set_setting
 
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
+CN_TZ = ZoneInfo("Asia/Shanghai")
+
+
+def _china_today_utc_start() -> datetime:
+    now_cn = datetime.now(CN_TZ)
+    start_cn = now_cn.replace(hour=0, minute=0, second=0, microsecond=0)
+    return start_cn.astimezone(ZoneInfo("UTC")).replace(tzinfo=None)
 
 
 def _serialize_user(user: User, db: Session, billing_enabled: bool | None = None) -> dict:
@@ -96,6 +110,20 @@ def summary(admin: User = Depends(current_admin), db: Session = Depends(get_db))
     usage_24h = db.scalar(
         select(func.count(UsageLog.id)).where(UsageLog.created_at >= datetime.utcnow() - timedelta(days=1))
     )
+    today_start = _china_today_utc_start()
+    usage_today = db.scalar(select(func.count(UsageLog.id)).where(UsageLog.created_at >= today_start))
+    usage_today_errors = db.scalar(
+        select(func.count(UsageLog.id)).where(UsageLog.created_at >= today_start, UsageLog.status_code >= 400)
+    )
+    usage_today_bytes = db.scalar(
+        select(func.coalesce(func.sum(UsageLog.response_bytes), 0)).where(UsageLog.created_at >= today_start)
+    )
+    usage_today_active_users = db.scalar(
+        select(func.count(func.distinct(UsageLog.user_id))).where(
+            UsageLog.created_at >= today_start,
+            UsageLog.user_id.is_not(None),
+        )
+    )
     return {
         "user_count": int(user_count or 0),
         "active_count": int(active_count or 0),
@@ -104,6 +132,10 @@ def summary(admin: User = Depends(current_admin), db: Session = Depends(get_db))
         "pending_exports": int(pending_exports or 0),
         "pending_upgrades": int(pending_upgrades or 0),
         "usage_24h": int(usage_24h or 0),
+        "usage_today": int(usage_today or 0),
+        "usage_today_errors": int(usage_today_errors or 0),
+        "usage_today_bytes": int(usage_today_bytes or 0),
+        "usage_today_active_users": int(usage_today_active_users or 0),
         "billing_enabled": billing_enabled,
     }
 
@@ -142,12 +174,21 @@ def usage(days: int = 7, admin: User = Depends(current_admin), db: Session = Dep
     total_bytes = 0
     total_duration = 0.0
     error_count = 0
+    today_start = _china_today_utc_start()
+    today_active_users: set[str] = set()
+    today_stats = {"requests": 0, "errors": 0, "bytes": 0, "active_users": 0}
     for row in rows:
         day = row.created_at.strftime("%Y-%m-%d") if row.created_at else "--"
         email = users.get(row.user_id, "anonymous")
         total_bytes += int(row.response_bytes or 0)
         total_duration += float(row.duration_ms or 0)
         error_count += 1 if int(row.status_code or 0) >= 400 else 0
+        if row.created_at and row.created_at >= today_start:
+            today_stats["requests"] += 1
+            today_stats["errors"] += 1 if int(row.status_code or 0) >= 400 else 0
+            today_stats["bytes"] += int(row.response_bytes or 0)
+            if row.user_id is not None:
+                today_active_users.add(email)
         day_bucket = by_day.setdefault(day, {"date": day, "requests": 0, "errors": 0, "bytes": 0})
         path_bucket = by_path.setdefault(row.path, {"path": row.path, "requests": 0, "errors": 0, "bytes": 0})
         user_bucket = by_user.setdefault(email, {"email": email, "requests": 0, "errors": 0, "bytes": 0})
@@ -156,6 +197,7 @@ def usage(days: int = 7, admin: User = Depends(current_admin), db: Session = Dep
             bucket["errors"] += 1 if int(row.status_code or 0) >= 400 else 0
             bucket["bytes"] += int(row.response_bytes or 0)
     request_count = len(rows)
+    today_stats["active_users"] = len(today_active_users)
     return {
         "days": days,
         "request_count": request_count,
@@ -166,6 +208,7 @@ def usage(days: int = 7, admin: User = Depends(current_admin), db: Session = Dep
         "by_day": sorted(by_day.values(), key=lambda item: item["date"]),
         "top_paths": sorted(by_path.values(), key=lambda item: item["requests"], reverse=True)[:10],
         "top_users": sorted(by_user.values(), key=lambda item: item["requests"], reverse=True)[:10],
+        "today": today_stats,
     }
 
 
@@ -240,6 +283,10 @@ def update_user_strategy(
             config.include_beijing = 1 if value else 0
         else:
             setattr(config, field, value)
+    config.model_version = STRATEGY_MODEL_VERSIONS.get(
+        getattr(config, "strategy_type", DEFAULT_STRATEGY_TYPE),
+        STRATEGY_MODEL_VERSIONS[DEFAULT_STRATEGY_TYPE],
+    )
     db.commit()
     db.refresh(config)
     create_version_snapshot(config, db, note=f"admin_config_save:{admin.email}")

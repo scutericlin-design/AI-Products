@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="赤霄 Alpha 公众号封面图">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121716"/>
+      <stop offset="0.55" stop-color="#1f2b28"/>
+      <stop offset="1" stop-color="#43331f"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d9b56d"/>
+      <stop offset="1" stop-color="#61b884"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect x="70" y="58" width="1060" height="558" rx="24" fill="#f7f3e8" opacity="0.08" stroke="#e8dec1" stroke-opacity="0.18"/>
+  <path d="M104 492 C238 406 363 438 496 330 C635 216 763 236 916 161 C995 122 1065 110 1110 118" fill="none" stroke="url(#line)" stroke-width="8" stroke-linecap="round"/>
+  <g opacity="0.85">
+    <rect x="740" y="244" width="310" height="52" rx="12" fill="#0f1413" stroke="#d9b56d" stroke-opacity="0.45"/>
+    <rect x="740" y="314" width="250" height="52" rx="12" fill="#0f1413" stroke="#61b884" stroke-opacity="0.45"/>
+    <rect x="740" y="384" width="280" height="52" rx="12" fill="#0f1413" stroke="#d77a61" stroke-opacity="0.45"/>
+    <text x="766" y="278" fill="#f7f3e8" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22">全市场扫描</text>
+    <text x="766" y="348" fill="#f7f3e8" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22">AI 多因子评分</text>
+    <text x="766" y="418" fill="#f7f3e8" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22">持仓与风控建议</text>
+  </g>
+  <text x="108" y="165" fill="#f7f3e8" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="34" font-weight="700">免费开放体验</text>
+  <text x="106" y="260" fill="#ffffff" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="82" font-weight="800">赤霄 Alpha</text>
+  <text x="112" y="324" fill="#e8dec1" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="34">把 AI 装进你的 A 股投研桌面</text>
+  <text x="112" y="392" fill="#cbd5cf" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="26">系统股票池 · 个人持仓诊断 · 长短策略回测 · 风险门禁</text>
+  <rect x="112" y="462" width="238" height="50" rx="25" fill="#d9b56d"/>
+  <text x="144" y="496" fill="#171512" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700">研究更快一步</text>
+  <text x="112" y="566" fill="#9fb0aa" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="18">非荐股承诺 · 仅作投资研究辅助</text>
+</svg>

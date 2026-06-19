@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-label="赤霄 Alpha 核心功能图">
+  <rect width="1200" height="680" fill="#111715"/>
+  <text x="76" y="82" fill="#ffffff" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="42" font-weight="800">免费也能用上的 6 个高价值功能</text>
+  <text x="76" y="125" fill="#aab8b2" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22">不是把复杂度丢给你，而是把研究路径整理清楚。</text>
+  <g font-family="PingFang SC, Microsoft YaHei, sans-serif">
+    <rect x="76" y="174" width="320" height="160" rx="16" fill="#f7f3e8"/>
+    <text x="104" y="224" fill="#171512" font-size="26" font-weight="800">01 系统股票池</text>
+    <text x="104" y="270" fill="#60706a" font-size="19">从 A 股里压缩到 30 只以内，</text>
+    <text x="104" y="300" fill="#60706a" font-size="19">每只都有评分、动作和理由。</text>
+    <rect x="440" y="174" width="320" height="160" rx="16" fill="#f7f3e8"/>
+    <text x="468" y="224" fill="#171512" font-size="26" font-weight="800">02 长短策略</text>
+    <text x="468" y="270" fill="#60706a" font-size="19">短期看弹性与资金确认，</text>
+    <text x="468" y="300" fill="#60706a" font-size="19">长期看质量成长与安全边际。</text>
+    <rect x="804" y="174" width="320" height="160" rx="16" fill="#f7f3e8"/>
+    <text x="832" y="224" fill="#171512" font-size="26" font-weight="800">03 个人持股诊断</text>
+    <text x="832" y="270" fill="#60706a" font-size="19">输入持仓后自动拉取股票名称，</text>
+    <text x="832" y="300" fill="#60706a" font-size="19">给出评分拆解和风险提示。</text>
+    <rect x="76" y="378" width="320" height="160" rx="16" fill="#f7f3e8"/>
+    <text x="104" y="428" fill="#171512" font-size="26" font-weight="800">04 观察池</text>
+    <text x="104" y="474" fill="#60706a" font-size="19">把感兴趣的股票加入观察，</text>
+    <text x="104" y="504" fill="#60706a" font-size="19">打开页面自动更新评分。</text>
+    <rect x="440" y="378" width="320" height="160" rx="16" fill="#f7f3e8"/>
+    <text x="468" y="428" fill="#171512" font-size="26" font-weight="800">05 回测与风控</text>
+    <text x="468" y="474" fill="#60706a" font-size="19">分别验证短期与长期策略，</text>
+    <text x="468" y="504" fill="#60706a" font-size="19">看收益、回撤、换手和约束。</text>
+    <rect x="804" y="378" width="320" height="160" rx="16" fill="#f7f3e8"/>
+    <text x="832" y="428" fill="#171512" font-size="26" font-weight="800">06 专业数据链路</text>
+    <text x="832" y="474" fill="#60706a" font-size="19">接入 TuShare Pro 数据源，</text>
+    <text x="832" y="504" fill="#60706a" font-size="19">缓存历史数据，减少重复等待。</text>
+  </g>
+  <text x="76" y="610" fill="#d9b56d" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="24" font-weight="700">赤霄 Alpha：让个人投资者也能拥有一张更专业的 AI 投研工作台。</text>
+</svg>

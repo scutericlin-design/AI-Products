@@ -322,6 +322,9 @@ def main() -> int:
     parser.add_argument("--enforce-trading-rules", action="store_true")
     parser.add_argument("--stamp-tax-bps", type=float, default=5.0)
     parser.add_argument("--limit-buffer-pct", type=float, default=0.003)
+    parser.add_argument("--output-json", type=Path, default=OUTPUT_JSON)
+    parser.add_argument("--output-curve", type=Path, default=OUTPUT_CURVE)
+    parser.add_argument("--output-rebalances", type=Path, default=OUTPUT_REBALANCES)
     args = parser.parse_args()
 
     signals = pd.read_csv(args.signals, dtype={"symbol": str}, encoding="utf-8-sig")
@@ -340,10 +343,10 @@ def main() -> int:
         limit_buffer_pct=args.limit_buffer_pct,
     )
 
-    OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_JSON.write_text(json.dumps({"metrics": metrics}, ensure_ascii=False, indent=2), encoding="utf-8")
-    curve.to_csv(OUTPUT_CURVE, index=False, encoding="utf-8-sig")
-    rebalances.to_csv(OUTPUT_REBALANCES, index=False, encoding="utf-8-sig")
+    args.output_json.parent.mkdir(parents=True, exist_ok=True)
+    args.output_json.write_text(json.dumps({"metrics": metrics}, ensure_ascii=False, indent=2), encoding="utf-8")
+    curve.to_csv(args.output_curve, index=False, encoding="utf-8-sig")
+    rebalances.to_csv(args.output_rebalances, index=False, encoding="utf-8-sig")
     print(json.dumps({"metrics": metrics}, ensure_ascii=False, indent=2))
     return 0
 

@@ -102,16 +102,23 @@
       justify-content: center;
       gap: 22px;
     }
+    .auth-copy {
+      display: grid;
+      gap: 10px;
+    }
     .auth h2 {
       margin: 0;
       font-size: 24px;
+      line-height: 1.18;
       letter-spacing: 0;
+      overflow-wrap: anywhere;
     }
     .auth .hint {
-      margin: -10px 0 0;
+      margin: 0;
       color: var(--muted);
-      line-height: 1.6;
+      line-height: 1.65;
       font-size: 14px;
+      overflow-wrap: anywhere;
     }
     .tabs {
       display: grid;
@@ -217,7 +224,7 @@
     </section>
 
     <section class="auth" aria-label="注册登录">
-      <div>
+      <div class="auth-copy">
         <h2 id="authTitle">登录账户</h2>
         <p class="hint">请先登录。未登录状态不会展示系统内部功能。</p>
       </div>
@@ -242,7 +249,7 @@
   </main>
 
   <script>
-    const PRODUCT_URL = "/opendesign/mockups/a-share-ai-investment-model/index.html";
+    const PRODUCT_URL = "/opendesign/mockups/a-share-ai-investment-model/index.html?v=20260619-compact-pool-dashboard";
     const state = { mode: "login" };
     const $ = (id) => document.getElementById(id);
 

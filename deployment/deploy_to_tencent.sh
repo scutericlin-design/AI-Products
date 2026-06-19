@@ -40,7 +40,9 @@ ssh "${SSH_ARGS[@]}" "$SERVER_USER@$SERVER_IP" "
     cp -a \"\$DATA_BACKUP_DIR/data\" data
     echo \"Existing server data restored after code update.\"
   fi
-  cp -n .env.example .env
+  if [ ! -f .env ]; then
+    cp .env.example .env
+  fi
   if [ \"\$(id -u)\" -eq 0 ]; then
     bash deployment/server_setup_ubuntu.sh
   else

@@ -81,8 +81,23 @@ OPTIONAL_SIGNAL_COLUMNS = [
     "gate_penalty_score",
     "confidence",
     "model_version",
+    "market_regime_key",
+    "market_regime_label",
+    "market_breadth_20d",
+    "market_breadth_60d",
+    "market_avg_momentum_20d",
+    "market_amount_trend",
+    "market_volatility_20d",
+    "adaptive_note",
+    "effective_buy_score_threshold",
+    "score_weight_alpha",
+    "score_weight_fundamental",
+    "score_weight_valuation",
+    "score_weight_liquidity",
+    "score_weight_risk",
     "recommendation_tier",
     "signal_source",
+    "turnover_rate",
 ]
 
 
@@ -122,6 +137,55 @@ def advice_action(signal_action: str, current_weight: float, target_weight: floa
     return "hold"
 
 
+def _factor_value(row: pd.Series, column: str) -> float | None:
+    value = row.get(column)
+    if pd.isna(value):
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def build_factor_summary(row: pd.Series) -> str:
+    strengths: list[str] = []
+    risks: list[str] = []
+    alpha = _factor_value(row, "alpha_score")
+    quality = _factor_value(row, "fundamental_quality_score")
+    valuation = _factor_value(row, "valuation_sanity_score")
+    liquidity = _factor_value(row, "liquidity_capacity_score")
+    risk = _factor_value(row, "risk_control_score")
+    completeness = _factor_value(row, "data_completeness")
+    crowding = _factor_value(row, "crowding_penalty")
+    gate = _factor_value(row, "gate_penalty_score")
+
+    if alpha is not None and alpha >= 70:
+        strengths.append("趋势/Alpha强")
+    if quality is not None and quality >= 65:
+        strengths.append("基本面较好")
+    if valuation is not None and valuation >= 60:
+        strengths.append("估值相对合理")
+    if liquidity is not None and liquidity >= 70:
+        strengths.append("成交承接好")
+    if risk is not None and risk >= 65:
+        strengths.append("波动风险可控")
+
+    if gate is not None and gate > 0:
+        risks.append(f"门禁扣 {gate:.1f}")
+    if crowding is not None and crowding >= 8:
+        risks.append("拥挤/追高风险")
+    if completeness is not None and completeness < 0.75:
+        risks.append("数据覆盖待补齐")
+    if risk is not None and risk < 55:
+        risks.append("风控分偏低")
+    if liquidity is not None and liquidity < 55:
+        risks.append("流动性不足")
+
+    strength_text = "、".join(strengths[:3]) if strengths else "暂无突出优势"
+    risk_text = "、".join(risks[:3]) if risks else "硬性风险暂未突出"
+    return f"优势：{strength_text}；风险：{risk_text}"
+
+
 def build_reason(row: pd.Series, max_single: float, watch_cap: float) -> str:
     parts: list[str] = []
     parts.append(f"当前仓位 {row['weight']:.2%}")
@@ -131,26 +195,13 @@ def build_reason(row: pd.Series, max_single: float, watch_cap: float) -> str:
 
     if pd.notna(row.get("price_factor_score")):
         parts.append(f"机构评分 {row['price_factor_score']:.1f}")
+    if pd.notna(row.get("turnover_rate")):
+        turnover_rate = float(row["turnover_rate"])
+        parts.append(f"换手率 {turnover_rate:.2f}%")
 
-    factor_parts = []
-    if pd.notna(row.get("alpha_score")):
-        factor_parts.append(f"Alpha {row['alpha_score']:.1f}")
-    if pd.notna(row.get("fundamental_quality_score")):
-        factor_parts.append(f"基本面 {row['fundamental_quality_score']:.1f}")
-    if pd.notna(row.get("valuation_sanity_score")):
-        factor_parts.append(f"估值 {row['valuation_sanity_score']:.1f}")
-    if pd.notna(row.get("liquidity_capacity_score")):
-        factor_parts.append(f"流动性 {row['liquidity_capacity_score']:.1f}")
-    if pd.notna(row.get("risk_control_score")):
-        factor_parts.append(f"风控 {row['risk_control_score']:.1f}")
-    if pd.notna(row.get("crowding_penalty")):
-        factor_parts.append(f"拥挤扣分 {row['crowding_penalty']:.1f}")
-    if pd.notna(row.get("data_completeness")):
-        factor_parts.append(f"数据完整度 {row['data_completeness']:.0%}")
-    if pd.notna(row.get("gate_penalty_score")):
-        factor_parts.append(f"门禁扣分 {row['gate_penalty_score']:.1f}")
-    if factor_parts:
-        parts.append("评分拆解 " + " / ".join(factor_parts))
+    if pd.notna(row.get("market_regime_label")):
+        parts.append(f"市场风格 {row['market_regime_label']}")
+    parts.append(build_factor_summary(row))
 
     signal_action = row.get("signal_action", "no_signal")
     parts.append(f"模型信号 {signal_action}")
@@ -192,7 +243,7 @@ def build_advice(portfolio: pd.DataFrame, signals: pd.DataFrame, max_single: flo
 
     merged["name"] = merged["name_portfolio"].fillna(merged.get("name_signal"))
     merged["signal_action"] = merged["action"].fillna("not_in_system_pool")
-    merged["model_version"] = merged["model_version"].fillna("institutional_score_v4_tushare")
+    merged["model_version"] = merged["model_version"].fillna("institutional_score_v6_adaptive_tushare")
     merged["confidence"] = merged["confidence"].fillna("low")
     merged["signal_source"] = merged["signal_source"].fillna("no_system_signal")
     merged["latest_close"] = merged["close"]
@@ -231,6 +282,7 @@ def build_advice(portfolio: pd.DataFrame, signals: pd.DataFrame, max_single: flo
         "shares",
         "trade_date",
         "risk_flags",
+        "turnover_rate",
         "alpha_score",
         "fundamental_quality_score",
         "valuation_sanity_score",
@@ -244,11 +296,29 @@ def build_advice(portfolio: pd.DataFrame, signals: pd.DataFrame, max_single: flo
         "gate_penalty_score",
         "confidence",
         "model_version",
+        "market_regime_key",
+        "market_regime_label",
+        "market_breadth_20d",
+        "market_breadth_60d",
+        "market_avg_momentum_20d",
+        "market_amount_trend",
+        "market_volatility_20d",
+        "adaptive_note",
+        "effective_buy_score_threshold",
+        "score_weight_alpha",
+        "score_weight_fundamental",
+        "score_weight_valuation",
+        "score_weight_liquidity",
+        "score_weight_risk",
         "recommendation_tier",
         "signal_source",
         "advice_reason",
     ]
-    return merged[output_columns].sort_values("weight", ascending=False)
+    return merged[output_columns].sort_values(
+        ["price_factor_score", "weight"],
+        ascending=[False, False],
+        na_position="last",
+    )
 
 
 def main() -> int:

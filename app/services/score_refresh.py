@@ -14,6 +14,11 @@ from app.models import DataSourceConfig, StrategyConfig, User
 
 
 TUSHARE_READY_STATUSES = {"available", "configured_manual_check"}
+DEFAULT_STRATEGY_TYPE = "short_elastic_2_8w"
+STRATEGY_REBUILD_PRESETS = {
+    "short_elastic_2_8w": {"lookback_trade_days": "90", "finance_limit": "800"},
+    "mid_long_quality_3_12m": {"lookback_trade_days": "180", "finance_limit": "800"},
+}
 _REFRESH_LOCK = threading.Lock()
 _LAST_REFRESH_BY_KEY: dict[tuple, tuple[float, "PoolRefreshResult"]] = {}
 
@@ -55,17 +60,21 @@ def ready_tushare_owner(user: User, db: Session) -> User | None:
 
 
 def build_tushare_pool_refresh_command(config: StrategyConfig, credential_owner: User) -> list[str]:
+    strategy_type = getattr(config, "strategy_type", None) or DEFAULT_STRATEGY_TYPE
+    preset = STRATEGY_REBUILD_PRESETS.get(strategy_type, STRATEGY_REBUILD_PRESETS[DEFAULT_STRATEGY_TYPE])
     return [
         sys.executable,
         str(PROJECT_ROOT / "scripts" / "build_tushare_institutional_pool.py"),
         "--email",
         credential_owner.email,
+        "--strategy-type",
+        strategy_type,
         "--limit",
         str(config.pool_limit),
         "--lookback-trade-days",
-        "90",
+        preset["lookback_trade_days"],
         "--finance-limit",
-        "800",
+        preset["finance_limit"],
         "--min-amount-yi",
         str(config.min_amount_yi),
         "--buy-score-threshold",
@@ -98,6 +107,7 @@ def _refresh_key(config: StrategyConfig, credential_owner: User) -> tuple:
         config.min_close_position_pct,
         config.max_amplitude_pct,
         config.target_weight,
+        getattr(config, "strategy_type", None) or DEFAULT_STRATEGY_TYPE,
         config.market_scope or "main,chinext,star",
     )
 

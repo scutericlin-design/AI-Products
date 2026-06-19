@@ -102,7 +102,8 @@ class StrategyConfig(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), unique=True, index=True)
-    model_version: Mapped[str] = mapped_column(String(64), default="institutional_score_v4_tushare")
+    model_version: Mapped[str] = mapped_column(String(64), default="institutional_score_v6_short_adaptive_tushare")
+    strategy_type: Mapped[str] = mapped_column(String(64), default="short_elastic_2_8w")
     pool_limit: Mapped[int] = mapped_column(Integer, default=30)
     min_amount_yi: Mapped[float] = mapped_column(Float, default=3.0)
     buy_score_threshold: Mapped[float] = mapped_column(Float, default=78.0)
@@ -113,6 +114,7 @@ class StrategyConfig(Base):
     target_weight: Mapped[float] = mapped_column(Float, default=0.05)
     market_scope: Mapped[str] = mapped_column(String(128), default="main,chinext,star")
     include_beijing: Mapped[int] = mapped_column(Integer, default=0)
+    strategy_profiles_json: Mapped[str | None] = mapped_column(Text, nullable=True)
     updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
 
     user: Mapped[User] = relationship(back_populates="strategy_config")

@@ -21,18 +21,67 @@ BACKTEST_TRADES_PATH = PROJECT_ROOT / "data" / "processed" / "backtest_trades.cs
 PORTFOLIO_BACKTEST_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_latest.json"
 STRATEGY_OPTIMIZATION_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "strategy_optimization_latest.json"
 WALK_FORWARD_JSON_PATH = PROJECT_ROOT / "data" / "processed" / "walk_forward_latest.json"
+SIGNAL_DAILY_PATH = PROJECT_ROOT / "data" / "processed" / "signal_daily.csv"
+
+STRATEGY_BACKTEST_SETTINGS = {
+    "short": {
+        "label": "短期策略",
+        "signal_path": SIGNAL_DAILY_PATH,
+        "event_json": PROJECT_ROOT / "data" / "processed" / "backtest_short_latest.json",
+        "event_trades": PROJECT_ROOT / "data" / "processed" / "backtest_trades_short.csv",
+        "portfolio_json": PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_short_latest.json",
+        "portfolio_curve": PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_curve_short.csv",
+        "portfolio_rebalances": PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_rebalances_short.csv",
+    },
+    "mid_long": {
+        "label": "长期策略",
+        "signal_path": SIGNAL_DAILY_PATH,
+        "event_json": PROJECT_ROOT / "data" / "processed" / "backtest_mid_long_latest.json",
+        "event_trades": PROJECT_ROOT / "data" / "processed" / "backtest_trades_mid_long.csv",
+        "portfolio_json": PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_mid_long_latest.json",
+        "portfolio_curve": PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_curve_mid_long.csv",
+        "portfolio_rebalances": PROJECT_ROOT / "data" / "processed" / "portfolio_backtest_rebalances_mid_long.csv",
+    },
+}
 
 
-def read_latest() -> dict:
-    if not BACKTEST_JSON_PATH.exists():
-        return {"metrics": None}
-    return json.loads(BACKTEST_JSON_PATH.read_text(encoding="utf-8"))
+def strategy_settings(strategy_key: str) -> dict:
+    try:
+        return STRATEGY_BACKTEST_SETTINGS[strategy_key]
+    except KeyError as exc:
+        raise HTTPException(status_code=400, detail="Unsupported strategy_key") from exc
 
 
-def read_portfolio_latest() -> dict:
-    if not PORTFOLIO_BACKTEST_JSON_PATH.exists():
-        return {"metrics": None}
-    return json.loads(PORTFOLIO_BACKTEST_JSON_PATH.read_text(encoding="utf-8"))
+def attach_strategy(payload: dict, strategy_key: str) -> dict:
+    settings = strategy_settings(strategy_key)
+    payload = dict(payload)
+    payload["strategy_key"] = strategy_key
+    payload["strategy_label"] = settings["label"]
+    metrics = payload.get("metrics")
+    if isinstance(metrics, dict):
+        metrics.setdefault("strategy_key", strategy_key)
+        metrics.setdefault("strategy_label", settings["label"])
+    return payload
+
+
+def read_latest(strategy_key: str = "short") -> dict:
+    settings = strategy_settings(strategy_key)
+    path = settings["event_json"]
+    if strategy_key == "short" and not path.exists():
+        path = BACKTEST_JSON_PATH
+    if not path.exists():
+        return attach_strategy({"metrics": None}, strategy_key)
+    return attach_strategy(json.loads(path.read_text(encoding="utf-8")), strategy_key)
+
+
+def read_portfolio_latest(strategy_key: str = "short") -> dict:
+    settings = strategy_settings(strategy_key)
+    path = settings["portfolio_json"]
+    if strategy_key == "short" and not path.exists():
+        path = PORTFOLIO_BACKTEST_JSON_PATH
+    if not path.exists():
+        return attach_strategy({"metrics": None}, strategy_key)
+    return attach_strategy(json.loads(path.read_text(encoding="utf-8")), strategy_key)
 
 
 def read_optimization_latest() -> dict:
@@ -48,13 +97,19 @@ def read_walk_forward_latest() -> dict:
 
 
 @router.get("/latest")
-def latest_backtest(user: User = Depends(require_feature("backtest"))):
-    return read_latest()
+def latest_backtest(
+    strategy_key: str = Query(default="short", pattern="^(short|mid_long)$"),
+    user: User = Depends(require_feature("backtest")),
+):
+    return read_latest(strategy_key)
 
 
 @router.get("/portfolio/latest")
-def latest_portfolio_backtest(user: User = Depends(require_feature("backtest"))):
-    return read_portfolio_latest()
+def latest_portfolio_backtest(
+    strategy_key: str = Query(default="short", pattern="^(short|mid_long)$"),
+    user: User = Depends(require_feature("backtest")),
+):
+    return read_portfolio_latest(strategy_key)
 
 
 @router.get("/optimization/latest")
@@ -71,16 +126,24 @@ def latest_walk_forward(user: User = Depends(require_feature("backtest"))):
 def run_backtest(
     hold_days: int = Query(default=20, ge=5, le=60),
     min_score: float = Query(default=78, ge=0, le=100),
+    strategy_key: str = Query(default="short", pattern="^(short|mid_long)$"),
     user: User = Depends(require_feature("backtest")),
     db: Session = Depends(get_db),
 ):
+    settings = strategy_settings(strategy_key)
     command = [
         sys.executable,
         str(PROJECT_ROOT / "scripts" / "build_backtest.py"),
+        "--signals",
+        str(settings["signal_path"]),
         "--hold-days",
         str(hold_days),
         "--min-score",
         str(min_score),
+        "--output-json",
+        str(settings["event_json"]),
+        "--output-trades",
+        str(settings["event_trades"]),
     ]
     completed = subprocess.run(command, cwd=PROJECT_ROOT, text=True, capture_output=True, timeout=120)
     if completed.returncode != 0:
@@ -92,8 +155,14 @@ def run_backtest(
                 "stderr": completed.stderr[-4000:],
             },
         )
-    write_audit_log(db, user, "backtest.event_run", "signal_daily", {"hold_days": hold_days, "min_score": min_score})
-    return read_latest()
+    write_audit_log(
+        db,
+        user,
+        "backtest.event_run",
+        strategy_key,
+        {"hold_days": hold_days, "min_score": min_score, "strategy_key": strategy_key},
+    )
+    return read_latest(strategy_key)
 
 
 @router.post("/portfolio/run")
@@ -109,12 +178,16 @@ def run_portfolio_backtest(
     enforce_trading_rules: bool = Query(default=True),
     stamp_tax_bps: float = Query(default=5.0, ge=0, le=100),
     limit_buffer_pct: float = Query(default=0.003, ge=0, le=0.02),
+    strategy_key: str = Query(default="short", pattern="^(short|mid_long)$"),
     user: User = Depends(require_feature("backtest")),
     db: Session = Depends(get_db),
 ):
+    settings = strategy_settings(strategy_key)
     command = [
         sys.executable,
         str(PROJECT_ROOT / "scripts" / "build_portfolio_backtest.py"),
+        "--signals",
+        str(settings["signal_path"]),
         "--top-n",
         str(top_n),
         "--min-score",
@@ -135,6 +208,12 @@ def run_portfolio_backtest(
         str(stamp_tax_bps),
         "--limit-buffer-pct",
         str(limit_buffer_pct),
+        "--output-json",
+        str(settings["portfolio_json"]),
+        "--output-curve",
+        str(settings["portfolio_curve"]),
+        "--output-rebalances",
+        str(settings["portfolio_rebalances"]),
     ]
     if enforce_trading_rules:
         command.append("--enforce-trading-rules")
@@ -152,16 +231,17 @@ def run_portfolio_backtest(
         db,
         user,
         "backtest.portfolio_run",
-        "portfolio_level",
+        strategy_key,
         {
             "top_n": top_n,
             "min_score": min_score,
             "rebalance_days": rebalance_days,
             "max_position": max_position,
             "target_exposure": target_exposure,
+            "strategy_key": strategy_key,
         },
     )
-    return read_portfolio_latest()
+    return read_portfolio_latest(strategy_key)
 
 
 @router.post("/optimization/run")

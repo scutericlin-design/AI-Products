@@ -1,0 +1,16 @@
+{
+  "metrics": {
+    "trade_count": 48,
+    "hit_rate": 0.7708333333333334,
+    "average_return": 0.15066025753653065,
+    "median_return": 0.11115592339497848,
+    "best_return": 0.6201272871917263,
+    "worst_return": -0.25950782997762867,
+    "max_drawdown": -0.7645492102054988,
+    "hold_days": 20,
+    "min_score": 78.0,
+    "action": "buy",
+    "start_date": "2025-02-21",
+    "end_date": "2026-03-05"
+  }
+}

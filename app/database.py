@@ -48,3 +48,11 @@ def init_db() -> None:
                 connection.exec_driver_sql(
                     "ALTER TABLE strategy_configs ADD COLUMN market_scope VARCHAR(128) DEFAULT 'main,chinext,star'"
                 )
+            if "strategy_type" not in columns:
+                connection.exec_driver_sql(
+                    "ALTER TABLE strategy_configs ADD COLUMN strategy_type VARCHAR(64) DEFAULT 'short_elastic_2_8w'"
+                )
+            if "include_beijing" not in columns:
+                connection.exec_driver_sql("ALTER TABLE strategy_configs ADD COLUMN include_beijing INTEGER DEFAULT 0")
+            if "strategy_profiles_json" not in columns:
+                connection.exec_driver_sql("ALTER TABLE strategy_configs ADD COLUMN strategy_profiles_json TEXT")

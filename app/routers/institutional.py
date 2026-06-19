@@ -438,7 +438,7 @@ def model_governance(user: User = Depends(current_user), db: Session = Depends(g
     readiness_score = round(pass_count / len(gates) * 100)
     readiness = "research" if fail_count else "production_watch" if readiness_score < 90 else "production_candidate"
     return {
-        "model_version": "institutional_score_v4_tushare",
+        "model_version": "institutional_score_v6_adaptive_tushare",
         "readiness": readiness,
         "readiness_score": readiness_score,
         "gates": gates,

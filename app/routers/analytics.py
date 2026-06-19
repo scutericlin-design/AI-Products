@@ -21,6 +21,7 @@ from app.models import DataCacheEntry, DataExportRequest, PortfolioPosition, Use
 from app.schemas import DataCachePruneIn, DataExportRequestIn
 from app.services.audit import write_audit_log
 from app.services.data_cache import cache_summary, prune_cache
+from app.services.portfolio_advice import build_strategy_score_bundle
 from app.services.stock_lookup import lookup_stock_name, normalize_symbol
 
 
@@ -268,12 +269,25 @@ def research_report(symbol: str, user: User = Depends(current_user), db: Session
     pool = _find_symbol_row(pool_rows, code)
     universe = _find_symbol_row(universe_rows, code)
     signal = _find_symbol_row(signal_rows, code)
+    strategy_scores = build_strategy_score_bundle({code}).get(code, {})
     position = db.scalar(
         select(PortfolioPosition).where(PortfolioPosition.user_id == user.id, PortfolioPosition.symbol == code)
     )
 
     row = pool or universe or signal or {}
     score_source = "system_pool_top30" if pool else "scored_universe_latest" if universe else "legacy_signal_latest" if signal else "missing"
+    if not row:
+        primary_strategy = next(
+            (
+                item
+                for item in [strategy_scores.get("short"), strategy_scores.get("mid_long")]
+                if item and item.get("status") == "available"
+            ),
+            None,
+        )
+        if primary_strategy:
+            row = primary_strategy
+            score_source = f"{primary_strategy.get('strategy_key')}_strategy_cache"
     score = _safe_float(row.get("price_factor_score"))
     action = row.get("action") or "no_signal"
     risk_flags = [flag for flag in (row.get("risk_flags") or "").split("|") if flag]
@@ -320,7 +334,8 @@ def research_report(symbol: str, user: User = Depends(current_user), db: Session
         "score_source": score_source,
         "trade_date": row.get("trade_date"),
         "latest_close": _safe_float(row.get("close"), default=0.0) or None,
-        "model_version": row.get("model_version") or "institutional_score_v4_tushare",
+        "turnover_rate": _safe_float(row.get("turnover_rate"), default=0.0) or None,
+        "model_version": row.get("model_version") or "institutional_score_v6_adaptive_tushare",
         "raw_institutional_score": _safe_float(row.get("raw_institutional_score"), default=0.0) or None,
         "gate_penalty_score": _safe_float(row.get("gate_penalty_score"), default=0.0) or None,
         "alpha_score": _safe_float(row.get("alpha_score"), default=0.0) or None,
@@ -334,6 +349,7 @@ def research_report(symbol: str, user: User = Depends(current_user), db: Session
         "risks": risks,
         "invalidation": invalidation,
         "manual_checklist": checklist,
+        "strategy_scores": strategy_scores,
         "position": {
             "weight": position.weight,
             "cost_price": position.cost_price,

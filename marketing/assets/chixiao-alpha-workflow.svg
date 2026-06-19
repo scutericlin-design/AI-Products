@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="赤霄 Alpha 投研流程图">
+  <rect width="1200" height="520" fill="#f7f3e8"/>
+  <text x="72" y="78" fill="#171512" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="38" font-weight="800">从海量股票到可研究清单，只保留关键步骤</text>
+  <text x="72" y="118" fill="#60706a" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="20">赤霄 Alpha 把数据、评分、股票池、持仓建议和回测风控串成一条日常投研链路。</text>
+  <g font-family="PingFang SC, Microsoft YaHei, sans-serif">
+    <rect x="74" y="190" width="178" height="160" rx="14" fill="#ffffff" stroke="#ddd4c1"/>
+    <text x="104" y="240" fill="#171512" font-size="25" font-weight="700">全市场数据</text>
+    <text x="104" y="285" fill="#60706a" font-size="18">行情、估值、财务</text>
+    <text x="104" y="316" fill="#60706a" font-size="18">流动性与质量门禁</text>
+    <path d="M272 270 H344" stroke="#b7aa91" stroke-width="4" stroke-linecap="round"/>
+    <path d="M344 270 l-14 -10 v20 z" fill="#b7aa91"/>
+    <rect x="364" y="190" width="178" height="160" rx="14" fill="#ffffff" stroke="#ddd4c1"/>
+    <text x="394" y="240" fill="#171512" font-size="25" font-weight="700">双策略评分</text>
+    <text x="394" y="285" fill="#60706a" font-size="18">短期弹性</text>
+    <text x="394" y="316" fill="#60706a" font-size="18">长期质量成长</text>
+    <path d="M562 270 H634" stroke="#b7aa91" stroke-width="4" stroke-linecap="round"/>
+    <path d="M634 270 l-14 -10 v20 z" fill="#b7aa91"/>
+    <rect x="654" y="190" width="178" height="160" rx="14" fill="#ffffff" stroke="#ddd4c1"/>
+    <text x="684" y="240" fill="#171512" font-size="25" font-weight="700">系统股票池</text>
+    <text x="684" y="285" fill="#60706a" font-size="18">30 只以内</text>
+    <text x="684" y="316" fill="#60706a" font-size="18">代码、名称、理由</text>
+    <path d="M852 270 H924" stroke="#b7aa91" stroke-width="4" stroke-linecap="round"/>
+    <path d="M924 270 l-14 -10 v20 z" fill="#b7aa91"/>
+    <rect x="944" y="190" width="178" height="160" rx="14" fill="#ffffff" stroke="#ddd4c1"/>
+    <text x="974" y="240" fill="#171512" font-size="25" font-weight="700">个人决策</text>
+    <text x="974" y="285" fill="#60706a" font-size="18">持仓诊断</text>
+    <text x="974" y="316" fill="#60706a" font-size="18">观察池与风控</text>
+  </g>
+  <rect x="74" y="406" width="1048" height="54" rx="12" fill="#17211e"/>
+  <text x="104" y="441" fill="#f7f3e8" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="22">核心原则：AI 负责筛选、解释和预警；最终买卖仍由投资者结合公告、行业、仓位和风险承受能力判断。</text>
+</svg>

@@ -30,6 +30,11 @@ def list_watchlist(user: User = Depends(require_feature("portfolio")), db: Sessi
     return _user_watchlist(user, db)
 
 
+@router.get("/scores")
+def list_watchlist_scores(user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
+    return build_watchlist_scores(_user_watchlist(user, db))
+
+
 @router.post("/refresh")
 def refresh_watchlist(user: User = Depends(require_feature("portfolio")), db: Session = Depends(get_db)):
     items = _user_watchlist(user, db)

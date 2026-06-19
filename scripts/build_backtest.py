@@ -102,19 +102,21 @@ def main() -> int:
     parser.add_argument("--hold-days", type=int, default=20)
     parser.add_argument("--min-score", type=float, default=78)
     parser.add_argument("--action", default="buy", choices=["buy", "watch", "hold_or_reduce"])
+    parser.add_argument("--output-json", type=Path, default=BACKTEST_JSON_PATH)
+    parser.add_argument("--output-trades", type=Path, default=BACKTEST_TRADES_PATH)
     args = parser.parse_args()
 
     signals = pd.read_csv(args.signals, dtype={"symbol": str}, encoding="utf-8-sig")
     metrics, trades = run_backtest(signals, hold_days=args.hold_days, min_score=args.min_score, action=args.action)
 
-    BACKTEST_JSON_PATH.parent.mkdir(parents=True, exist_ok=True)
-    BACKTEST_JSON_PATH.write_text(
+    args.output_json.parent.mkdir(parents=True, exist_ok=True)
+    args.output_json.write_text(
         json.dumps({"metrics": metrics}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    trades.to_csv(BACKTEST_TRADES_PATH, index=False, encoding="utf-8-sig")
+    trades.to_csv(args.output_trades, index=False, encoding="utf-8-sig")
 
-    print(json.dumps({"metrics": metrics, "trades_path": str(BACKTEST_TRADES_PATH)}, ensure_ascii=False, indent=2))
+    print(json.dumps({"metrics": metrics, "trades_path": str(args.output_trades)}, ensure_ascii=False, indent=2))
     return 0
 
 
