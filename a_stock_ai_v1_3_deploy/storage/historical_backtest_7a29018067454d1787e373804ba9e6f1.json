@@ -1,0 +1,2951 @@
+{
+  "metrics": {
+    "trade_count": 63,
+    "buy_order_count": 63,
+    "trading_days": 116,
+    "initial_cash": 1000000.0,
+    "final_equity": 1005692.2898,
+    "total_return_pct": 0.5692,
+    "annualized_return_pct": 1.2407,
+    "max_drawdown_pct": 2.4853,
+    "max_drawdown_start": "20260513",
+    "max_drawdown_trough": "20260623",
+    "win_rate": 0.3492,
+    "avg_trade_return_pct": 0.3714,
+    "median_trade_return_pct": -3.5965,
+    "best_trade_return_pct": 24.107,
+    "worst_trade_return_pct": -3.5965,
+    "profit_factor": 1.1873,
+    "stop_rate": 0.5079,
+    "sharpe_proxy": 0.3918,
+    "symbol_count_with_data": 86
+  },
+  "curve": [
+    {
+      "date": "20251226",
+      "equity": 1000000.0,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20251229",
+      "equity": 1000000.0,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20251230",
+      "equity": 1000000.0,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20251231",
+      "equity": 1000000.0,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260105",
+      "equity": 1000000.0,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260106",
+      "equity": 1003414.5857,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260107",
+      "equity": 1002457.5857,
+      "drawdown_pct": -0.0954
+    },
+    {
+      "date": "20260108",
+      "equity": 1002988.5857,
+      "drawdown_pct": -0.0425
+    },
+    {
+      "date": "20260109",
+      "equity": 1016221.6935,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260112",
+      "equity": 1022079.3752,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260113",
+      "equity": 1020671.9362,
+      "drawdown_pct": -0.1377
+    },
+    {
+      "date": "20260114",
+      "equity": 1021348.9086,
+      "drawdown_pct": -0.0715
+    },
+    {
+      "date": "20260115",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260116",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260119",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260120",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260121",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260122",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260123",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260126",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260127",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260128",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260129",
+      "equity": 1022699.0056,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260130",
+      "equity": 1018546.1456,
+      "drawdown_pct": -0.4061
+    },
+    {
+      "date": "20260202",
+      "equity": 1018444.4813,
+      "drawdown_pct": -0.416
+    },
+    {
+      "date": "20260203",
+      "equity": 1018444.4813,
+      "drawdown_pct": -0.416
+    },
+    {
+      "date": "20260204",
+      "equity": 1016737.5561,
+      "drawdown_pct": -0.5829
+    },
+    {
+      "date": "20260205",
+      "equity": 1015603.8796,
+      "drawdown_pct": -0.6938
+    },
+    {
+      "date": "20260206",
+      "equity": 1015156.8796,
+      "drawdown_pct": -0.7375
+    },
+    {
+      "date": "20260209",
+      "equity": 1015687.8796,
+      "drawdown_pct": -0.6856
+    },
+    {
+      "date": "20260210",
+      "equity": 1013394.783,
+      "drawdown_pct": -0.9098
+    },
+    {
+      "date": "20260211",
+      "equity": 1012587.783,
+      "drawdown_pct": -0.9887
+    },
+    {
+      "date": "20260212",
+      "equity": 1011755.4604,
+      "drawdown_pct": -1.0701
+    },
+    {
+      "date": "20260213",
+      "equity": 1011401.0443,
+      "drawdown_pct": -1.1047
+    },
+    {
+      "date": "20260224",
+      "equity": 1011401.0443,
+      "drawdown_pct": -1.1047
+    },
+    {
+      "date": "20260225",
+      "equity": 1012174.5049,
+      "drawdown_pct": -1.0291
+    },
+    {
+      "date": "20260226",
+      "equity": 1012460.5049,
+      "drawdown_pct": -1.0011
+    },
+    {
+      "date": "20260227",
+      "equity": 1011319.6039,
+      "drawdown_pct": -1.1127
+    },
+    {
+      "date": "20260302",
+      "equity": 1013056.296,
+      "drawdown_pct": -0.9429
+    },
+    {
+      "date": "20260303",
+      "equity": 1013056.296,
+      "drawdown_pct": -0.9429
+    },
+    {
+      "date": "20260304",
+      "equity": 1013056.296,
+      "drawdown_pct": -0.9429
+    },
+    {
+      "date": "20260305",
+      "equity": 1013056.296,
+      "drawdown_pct": -0.9429
+    },
+    {
+      "date": "20260306",
+      "equity": 1013277.9067,
+      "drawdown_pct": -0.9212
+    },
+    {
+      "date": "20260309",
+      "equity": 1014693.3773,
+      "drawdown_pct": -0.7828
+    },
+    {
+      "date": "20260310",
+      "equity": 1011813.3773,
+      "drawdown_pct": -1.0644
+    },
+    {
+      "date": "20260311",
+      "equity": 1016192.0181,
+      "drawdown_pct": -0.6363
+    },
+    {
+      "date": "20260312",
+      "equity": 1017441.9496,
+      "drawdown_pct": -0.514
+    },
+    {
+      "date": "20260313",
+      "equity": 1017342.1873,
+      "drawdown_pct": -0.5238
+    },
+    {
+      "date": "20260316",
+      "equity": 1018737.2239,
+      "drawdown_pct": -0.3874
+    },
+    {
+      "date": "20260317",
+      "equity": 1018012.2071,
+      "drawdown_pct": -0.4583
+    },
+    {
+      "date": "20260318",
+      "equity": 1018012.2071,
+      "drawdown_pct": -0.4583
+    },
+    {
+      "date": "20260319",
+      "equity": 1018012.2071,
+      "drawdown_pct": -0.4583
+    },
+    {
+      "date": "20260320",
+      "equity": 1018012.2071,
+      "drawdown_pct": -0.4583
+    },
+    {
+      "date": "20260323",
+      "equity": 1018012.2071,
+      "drawdown_pct": -0.4583
+    },
+    {
+      "date": "20260324",
+      "equity": 1018012.2071,
+      "drawdown_pct": -0.4583
+    },
+    {
+      "date": "20260325",
+      "equity": 1018012.2071,
+      "drawdown_pct": -0.4583
+    },
+    {
+      "date": "20260326",
+      "equity": 1017862.4519,
+      "drawdown_pct": -0.4729
+    },
+    {
+      "date": "20260327",
+      "equity": 1018989.4519,
+      "drawdown_pct": -0.3627
+    },
+    {
+      "date": "20260330",
+      "equity": 1016870.6891,
+      "drawdown_pct": -0.5699
+    },
+    {
+      "date": "20260331",
+      "equity": 1018577.0756,
+      "drawdown_pct": -0.403
+    },
+    {
+      "date": "20260401",
+      "equity": 1020861.0756,
+      "drawdown_pct": -0.1797
+    },
+    {
+      "date": "20260402",
+      "equity": 1020248.395,
+      "drawdown_pct": -0.2396
+    },
+    {
+      "date": "20260403",
+      "equity": 1018262.5013,
+      "drawdown_pct": -0.4338
+    },
+    {
+      "date": "20260407",
+      "equity": 1019326.5798,
+      "drawdown_pct": -0.3298
+    },
+    {
+      "date": "20260408",
+      "equity": 1019334.0977,
+      "drawdown_pct": -0.329
+    },
+    {
+      "date": "20260409",
+      "equity": 1020720.4267,
+      "drawdown_pct": -0.1935
+    },
+    {
+      "date": "20260410",
+      "equity": 1021209.4267,
+      "drawdown_pct": -0.1457
+    },
+    {
+      "date": "20260413",
+      "equity": 1023246.1769,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260414",
+      "equity": 1022924.8593,
+      "drawdown_pct": -0.0314
+    },
+    {
+      "date": "20260415",
+      "equity": 1021027.6018,
+      "drawdown_pct": -0.2168
+    },
+    {
+      "date": "20260416",
+      "equity": 1021935.7242,
+      "drawdown_pct": -0.1281
+    },
+    {
+      "date": "20260417",
+      "equity": 1021668.7242,
+      "drawdown_pct": -0.1542
+    },
+    {
+      "date": "20260420",
+      "equity": 1023641.2425,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260421",
+      "equity": 1023666.0558,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260422",
+      "equity": 1023732.0558,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260423",
+      "equity": 1025910.0558,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260424",
+      "equity": 1025810.6449,
+      "drawdown_pct": -0.0097
+    },
+    {
+      "date": "20260427",
+      "equity": 1025810.6449,
+      "drawdown_pct": -0.0097
+    },
+    {
+      "date": "20260428",
+      "equity": 1025810.6449,
+      "drawdown_pct": -0.0097
+    },
+    {
+      "date": "20260429",
+      "equity": 1025810.6449,
+      "drawdown_pct": -0.0097
+    },
+    {
+      "date": "20260430",
+      "equity": 1025458.1389,
+      "drawdown_pct": -0.0441
+    },
+    {
+      "date": "20260506",
+      "equity": 1026214.1389,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260507",
+      "equity": 1025557.2291,
+      "drawdown_pct": -0.064
+    },
+    {
+      "date": "20260508",
+      "equity": 1024184.1778,
+      "drawdown_pct": -0.1978
+    },
+    {
+      "date": "20260511",
+      "equity": 1024184.1778,
+      "drawdown_pct": -0.1978
+    },
+    {
+      "date": "20260512",
+      "equity": 1026068.5585,
+      "drawdown_pct": -0.0142
+    },
+    {
+      "date": "20260513",
+      "equity": 1028263.5585,
+      "drawdown_pct": 0.0
+    },
+    {
+      "date": "20260514",
+      "equity": 1025476.5585,
+      "drawdown_pct": -0.271
+    },
+    {
+      "date": "20260515",
+      "equity": 1022280.3624,
+      "drawdown_pct": -0.5819
+    },
+    {
+      "date": "20260518",
+      "equity": 1022280.3624,
+      "drawdown_pct": -0.5819
+    },
+    {
+      "date": "20260519",
+      "equity": 1022280.3624,
+      "drawdown_pct": -0.5819
+    },
+    {
+      "date": "20260520",
+      "equity": 1020094.1948,
+      "drawdown_pct": -0.7945
+    },
+    {
+      "date": "20260521",
+      "equity": 1017839.2994,
+      "drawdown_pct": -1.0138
+    },
+    {
+      "date": "20260522",
+      "equity": 1017839.2994,
+      "drawdown_pct": -1.0138
+    },
+    {
+      "date": "20260525",
+      "equity": 1017839.2994,
+      "drawdown_pct": -1.0138
+    },
+    {
+      "date": "20260526",
+      "equity": 1019715.429,
+      "drawdown_pct": -0.8313
+    },
+    {
+      "date": "20260527",
+      "equity": 1019373.1471,
+      "drawdown_pct": -0.8646
+    },
+    {
+      "date": "20260528",
+      "equity": 1019065.1471,
+      "drawdown_pct": -0.8946
+    },
+    {
+      "date": "20260529",
+      "equity": 1014607.3193,
+      "drawdown_pct": -1.3281
+    },
+    {
+      "date": "20260601",
+      "equity": 1014607.3193,
+      "drawdown_pct": -1.3281
+    },
+    {
+      "date": "20260602",
+      "equity": 1014607.3193,
+      "drawdown_pct": -1.3281
+    },
+    {
+      "date": "20260603",
+      "equity": 1014607.3193,
+      "drawdown_pct": -1.3281
+    },
+    {
+      "date": "20260604",
+      "equity": 1014607.3193,
+      "drawdown_pct": -1.3281
+    },
+    {
+      "date": "20260605",
+      "equity": 1014607.3193,
+      "drawdown_pct": -1.3281
+    },
+    {
+      "date": "20260608",
+      "equity": 1014607.3193,
+      "drawdown_pct": -1.3281
+    },
+    {
+      "date": "20260609",
+      "equity": 1014607.3193,
+      "drawdown_pct": -1.3281
+    },
+    {
+      "date": "20260610",
+      "equity": 1008332.062,
+      "drawdown_pct": -1.9384
+    },
+    {
+      "date": "20260611",
+      "equity": 1010193.1742,
+      "drawdown_pct": -1.7574
+    },
+    {
+      "date": "20260612",
+      "equity": 1010193.1742,
+      "drawdown_pct": -1.7574
+    },
+    {
+      "date": "20260615",
+      "equity": 1009038.7141,
+      "drawdown_pct": -1.8696
+    },
+    {
+      "date": "20260616",
+      "equity": 1008379.0081,
+      "drawdown_pct": -1.9338
+    },
+    {
+      "date": "20260617",
+      "equity": 1007914.5911,
+      "drawdown_pct": -1.979
+    },
+    {
+      "date": "20260618",
+      "equity": 1006146.1954,
+      "drawdown_pct": -2.1509
+    },
+    {
+      "date": "20260622",
+      "equity": 1006146.1954,
+      "drawdown_pct": -2.1509
+    },
+    {
+      "date": "20260623",
+      "equity": 1002707.9092,
+      "drawdown_pct": -2.4853
+    },
+    {
+      "date": "20260624",
+      "equity": 1005692.2898,
+      "drawdown_pct": -2.1951
+    }
+  ],
+  "trades": [
+    {
+      "symbol": "300418.SZ",
+      "side": "BUY",
+      "trade_date": "20260106",
+      "price": 43.4834,
+      "quantity": 900,
+      "amount": 39135.096,
+      "fee": 9.7838,
+      "rank_score": 92.8596,
+      "sentiment_score": 88.934
+    },
+    {
+      "symbol": "688981.SH",
+      "side": "BUY",
+      "trade_date": "20260106",
+      "price": 129.129,
+      "quantity": 300,
+      "amount": 38738.7,
+      "fee": 9.6847,
+      "rank_score": 92.4249,
+      "sentiment_score": 88.934
+    },
+    {
+      "symbol": "300433.SZ",
+      "side": "BUY",
+      "trade_date": "20260106",
+      "price": 32.7928,
+      "quantity": 1200,
+      "amount": 39351.312,
+      "fee": 9.8378,
+      "rank_score": 92.3944,
+      "sentiment_score": 88.934
+    },
+    {
+      "symbol": "300418.SZ",
+      "side": "SELL",
+      "trade_date": "20260109",
+      "price": 53.966,
+      "quantity": 900,
+      "amount": 48569.382,
+      "fee": 12.1423,
+      "tax": 24.2847,
+      "realized_pnl": 9397.859,
+      "return_pct": 24.107,
+      "exit_reason": "time_exit",
+      "entry_date": "20260106",
+      "entry_price": 43.4834
+    },
+    {
+      "symbol": "688981.SH",
+      "side": "SELL",
+      "trade_date": "20260109",
+      "price": 128.7511,
+      "quantity": 300,
+      "amount": 38625.336,
+      "fee": 9.6563,
+      "tax": 19.3127,
+      "realized_pnl": -142.333,
+      "return_pct": -0.2926,
+      "exit_reason": "time_exit",
+      "entry_date": "20260106",
+      "entry_price": 129.129
+    },
+    {
+      "symbol": "300433.SZ",
+      "side": "SELL",
+      "trade_date": "20260109",
+      "price": 38.6513,
+      "quantity": 1200,
+      "amount": 46381.572,
+      "fee": 11.5954,
+      "tax": 23.1908,
+      "realized_pnl": 6995.4738,
+      "return_pct": 17.8654,
+      "exit_reason": "time_exit",
+      "entry_date": "20260106",
+      "entry_price": 32.7928
+    },
+    {
+      "symbol": "688111.SH",
+      "side": "BUY",
+      "trade_date": "20260112",
+      "price": 350.35,
+      "quantity": 100,
+      "amount": 35035.0,
+      "fee": 8.7588,
+      "rank_score": 85.7907,
+      "sentiment_score": 61.9698
+    },
+    {
+      "symbol": "600584.SH",
+      "side": "BUY",
+      "trade_date": "20260112",
+      "price": 42.022,
+      "quantity": 900,
+      "amount": 37819.782,
+      "fee": 9.4549,
+      "rank_score": 85.5058,
+      "sentiment_score": 61.9698
+    },
+    {
+      "symbol": "002230.SZ",
+      "side": "BUY",
+      "trade_date": "20260112",
+      "price": 57.5575,
+      "quantity": 700,
+      "amount": 40290.25,
+      "fee": 10.0726,
+      "rank_score": 84.8126,
+      "sentiment_score": 61.9698
+    },
+    {
+      "symbol": "600570.SH",
+      "side": "BUY",
+      "trade_date": "20260113",
+      "price": 34.4244,
+      "quantity": 100,
+      "amount": 3442.439,
+      "fee": 5.0,
+      "rank_score": 88.5851,
+      "sentiment_score": 76.7344
+    },
+    {
+      "symbol": "600570.SH",
+      "side": "SELL",
+      "trade_date": "20260114",
+      "price": 33.1863,
+      "quantity": 100,
+      "amount": 3318.6317,
+      "fee": 5.0,
+      "tax": 1.6593,
+      "realized_pnl": -130.4666,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260113",
+      "entry_price": 34.4244
+    },
+    {
+      "symbol": "688111.SH",
+      "side": "SELL",
+      "trade_date": "20260115",
+      "price": 359.9597,
+      "quantity": 100,
+      "amount": 35995.968,
+      "fee": 8.999,
+      "tax": 17.998,
+      "realized_pnl": 933.971,
+      "return_pct": 2.7429,
+      "exit_reason": "time_exit",
+      "entry_date": "20260112",
+      "entry_price": 350.35
+    },
+    {
+      "symbol": "600584.SH",
+      "side": "SELL",
+      "trade_date": "20260115",
+      "price": 43.946,
+      "quantity": 900,
+      "amount": 39551.409,
+      "fee": 9.8879,
+      "tax": 19.7757,
+      "realized_pnl": 1701.9634,
+      "return_pct": 4.5786,
+      "exit_reason": "time_exit",
+      "entry_date": "20260112",
+      "entry_price": 42.022
+    },
+    {
+      "symbol": "002230.SZ",
+      "side": "SELL",
+      "trade_date": "20260115",
+      "price": 63.3266,
+      "quantity": 700,
+      "amount": 44328.627,
+      "fee": 11.0822,
+      "tax": 22.1643,
+      "realized_pnl": 4005.1305,
+      "return_pct": 10.0232,
+      "exit_reason": "time_exit",
+      "entry_date": "20260112",
+      "entry_price": 57.5575
+    },
+    {
+      "symbol": "600048.SH",
+      "side": "BUY",
+      "trade_date": "20260130",
+      "price": 7.057,
+      "quantity": 5700,
+      "amount": 40225.185,
+      "fee": 10.0563,
+      "rank_score": 86.649,
+      "sentiment_score": 66.9171
+    },
+    {
+      "symbol": "600111.SH",
+      "side": "BUY",
+      "trade_date": "20260130",
+      "price": 54.054,
+      "quantity": 700,
+      "amount": 37837.8,
+      "fee": 9.4594,
+      "rank_score": 86.5256,
+      "sentiment_score": 66.9171
+    },
+    {
+      "symbol": "601899.SH",
+      "side": "BUY",
+      "trade_date": "20260130",
+      "price": 41.2412,
+      "quantity": 900,
+      "amount": 37117.08,
+      "fee": 9.2793,
+      "rank_score": 84.4409,
+      "sentiment_score": 66.9171
+    },
+    {
+      "symbol": "600048.SH",
+      "side": "SELL",
+      "trade_date": "20260202",
+      "price": 6.8032,
+      "quantity": 5700,
+      "amount": 38778.4862,
+      "fee": 9.6946,
+      "tax": 19.3892,
+      "realized_pnl": -1475.7826,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260130",
+      "entry_price": 7.057
+    },
+    {
+      "symbol": "600111.SH",
+      "side": "SELL",
+      "trade_date": "20260202",
+      "price": 52.1099,
+      "quantity": 700,
+      "amount": 36476.9635,
+      "fee": 9.1192,
+      "tax": 18.2385,
+      "realized_pnl": -1388.1942,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260130",
+      "entry_price": 54.054
+    },
+    {
+      "symbol": "601899.SH",
+      "side": "SELL",
+      "trade_date": "20260202",
+      "price": 39.758,
+      "quantity": 900,
+      "amount": 35782.1642,
+      "fee": 8.9455,
+      "tax": 17.8911,
+      "realized_pnl": -1361.7524,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260130",
+      "entry_price": 41.2412
+    },
+    {
+      "symbol": "300418.SZ",
+      "side": "BUY",
+      "trade_date": "20260204",
+      "price": 60.07,
+      "quantity": 600,
+      "amount": 36042.006,
+      "fee": 9.0105,
+      "rank_score": 77.4149,
+      "sentiment_score": 75.7749
+    },
+    {
+      "symbol": "688008.SH",
+      "side": "BUY",
+      "trade_date": "20260204",
+      "price": 175.7756,
+      "quantity": 200,
+      "amount": 35155.12,
+      "fee": 8.7888,
+      "rank_score": 73.0287,
+      "sentiment_score": 75.7749
+    },
+    {
+      "symbol": "300418.SZ",
+      "side": "SELL",
+      "trade_date": "20260205",
+      "price": 57.9096,
+      "quantity": 600,
+      "amount": 34745.7553,
+      "fee": 8.6864,
+      "tax": 17.3729,
+      "realized_pnl": -1322.3101,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260204",
+      "entry_price": 60.07
+    },
+    {
+      "symbol": "688008.SH",
+      "side": "SELL",
+      "trade_date": "20260205",
+      "price": 169.4538,
+      "quantity": 200,
+      "amount": 33890.7661,
+      "fee": 8.4727,
+      "tax": 16.9454,
+      "realized_pnl": -1289.772,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260204",
+      "entry_price": 175.7756
+    },
+    {
+      "symbol": "600048.SH",
+      "side": "BUY",
+      "trade_date": "20260205",
+      "price": 7.1471,
+      "quantity": 5600,
+      "amount": 40023.984,
+      "fee": 10.006,
+      "rank_score": 87.807,
+      "sentiment_score": 76.9679
+    },
+    {
+      "symbol": "300750.SZ",
+      "side": "BUY",
+      "trade_date": "20260205",
+      "price": 366.1358,
+      "quantity": 100,
+      "amount": 36613.577,
+      "fee": 9.1534,
+      "rank_score": 87.638,
+      "sentiment_score": 76.9679
+    },
+    {
+      "symbol": "600048.SH",
+      "side": "SELL",
+      "trade_date": "20260210",
+      "price": 6.8901,
+      "quantity": 5600,
+      "amount": 38584.5214,
+      "fee": 9.6461,
+      "tax": 19.2923,
+      "realized_pnl": -1468.401,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260205",
+      "entry_price": 7.1471
+    },
+    {
+      "symbol": "300750.SZ",
+      "side": "SELL",
+      "trade_date": "20260210",
+      "price": 364.605,
+      "quantity": 100,
+      "amount": 36460.503,
+      "fee": 9.1151,
+      "tax": 18.2303,
+      "realized_pnl": -180.4194,
+      "return_pct": -0.4181,
+      "exit_reason": "time_exit",
+      "entry_date": "20260205",
+      "entry_price": 366.1358
+    },
+    {
+      "symbol": "601012.SH",
+      "side": "BUY",
+      "trade_date": "20260210",
+      "price": 19.019,
+      "quantity": 2100,
+      "amount": 39939.9,
+      "fee": 9.985,
+      "rank_score": 86.1176,
+      "sentiment_score": 86.6308
+    },
+    {
+      "symbol": "601318.SH",
+      "side": "BUY",
+      "trade_date": "20260210",
+      "price": 68.7787,
+      "quantity": 500,
+      "amount": 34389.355,
+      "fee": 8.5973,
+      "rank_score": 84.2885,
+      "sentiment_score": 86.6308
+    },
+    {
+      "symbol": "601318.SH",
+      "side": "SELL",
+      "trade_date": "20260212",
+      "price": 66.3051,
+      "quantity": 500,
+      "amount": 33152.5418,
+      "fee": 8.2881,
+      "tax": 16.5763,
+      "realized_pnl": -1261.6776,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260210",
+      "entry_price": 68.7787
+    },
+    {
+      "symbol": "601012.SH",
+      "side": "SELL",
+      "trade_date": "20260213",
+      "price": 18.335,
+      "quantity": 2100,
+      "amount": 38503.4615,
+      "fee": 9.6259,
+      "tax": 19.2517,
+      "realized_pnl": -1465.3161,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260210",
+      "entry_price": 19.019
+    },
+    {
+      "symbol": "603986.SH",
+      "side": "BUY",
+      "trade_date": "20260225",
+      "price": 316.316,
+      "quantity": 100,
+      "amount": 31631.6,
+      "fee": 7.9079,
+      "rank_score": 85.6434,
+      "sentiment_score": 64.3963
+    },
+    {
+      "symbol": "600150.SH",
+      "side": "BUY",
+      "trade_date": "20260225",
+      "price": 37.1771,
+      "quantity": 1000,
+      "amount": 37177.14,
+      "fee": 9.2943,
+      "rank_score": 83.7252,
+      "sentiment_score": 64.3963
+    },
+    {
+      "symbol": "600089.SH",
+      "side": "BUY",
+      "trade_date": "20260225",
+      "price": 29.9299,
+      "quantity": 1300,
+      "amount": 38908.87,
+      "fee": 9.7272,
+      "rank_score": 81.9959,
+      "sentiment_score": 64.3963
+    },
+    {
+      "symbol": "603986.SH",
+      "side": "SELL",
+      "trade_date": "20260227",
+      "price": 304.9397,
+      "quantity": 100,
+      "amount": 30493.9695,
+      "fee": 7.6235,
+      "tax": 15.247,
+      "realized_pnl": -1160.501,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260225",
+      "entry_price": 316.316
+    },
+    {
+      "symbol": "600150.SH",
+      "side": "SELL",
+      "trade_date": "20260302",
+      "price": 38.0919,
+      "quantity": 1000,
+      "amount": 38091.87,
+      "fee": 9.523,
+      "tax": 19.0459,
+      "realized_pnl": 886.1611,
+      "return_pct": 2.4605,
+      "exit_reason": "time_exit",
+      "entry_date": "20260225",
+      "entry_price": 37.1771
+    },
+    {
+      "symbol": "600089.SH",
+      "side": "SELL",
+      "trade_date": "20260302",
+      "price": 31.4585,
+      "quantity": 1300,
+      "amount": 40896.063,
+      "fee": 10.224,
+      "tax": 20.448,
+      "realized_pnl": 1956.521,
+      "return_pct": 5.1073,
+      "exit_reason": "time_exit",
+      "entry_date": "20260225",
+      "entry_price": 29.9299
+    },
+    {
+      "symbol": "600089.SH",
+      "side": "BUY",
+      "trade_date": "20260306",
+      "price": 32.4324,
+      "quantity": 1200,
+      "amount": 38918.88,
+      "fee": 9.7297,
+      "rank_score": 87.6,
+      "sentiment_score": 71.2783
+    },
+    {
+      "symbol": "600406.SH",
+      "side": "BUY",
+      "trade_date": "20260306",
+      "price": 29.2492,
+      "quantity": 1300,
+      "amount": 38023.986,
+      "fee": 9.506,
+      "rank_score": 86.1305,
+      "sentiment_score": 71.2783
+    },
+    {
+      "symbol": "000725.SZ",
+      "side": "BUY",
+      "trade_date": "20260306",
+      "price": 4.4244,
+      "quantity": 9100,
+      "amount": 40262.222,
+      "fee": 10.0656,
+      "rank_score": 77.3764,
+      "sentiment_score": 71.2783
+    },
+    {
+      "symbol": "000725.SZ",
+      "side": "SELL",
+      "trade_date": "20260309",
+      "price": 4.2653,
+      "quantity": 9100,
+      "amount": 38814.1912,
+      "fee": 9.7035,
+      "tax": 19.4071,
+      "realized_pnl": -1477.1415,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260306",
+      "entry_price": 4.4244
+    },
+    {
+      "symbol": "002714.SZ",
+      "side": "BUY",
+      "trade_date": "20260309",
+      "price": 49.6496,
+      "quantity": 800,
+      "amount": 39719.68,
+      "fee": 9.9299,
+      "rank_score": 84.9978,
+      "sentiment_score": 65.995
+    },
+    {
+      "symbol": "600089.SH",
+      "side": "SELL",
+      "trade_date": "20260311",
+      "price": 31.266,
+      "quantity": 1200,
+      "amount": 37519.1625,
+      "fee": 9.3798,
+      "tax": 18.7596,
+      "realized_pnl": -1427.8569,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260306",
+      "entry_price": 32.4324
+    },
+    {
+      "symbol": "600406.SH",
+      "side": "SELL",
+      "trade_date": "20260311",
+      "price": 30.6693,
+      "quantity": 1300,
+      "amount": 39870.09,
+      "fee": 9.9675,
+      "tax": 19.935,
+      "realized_pnl": 1816.2014,
+      "return_pct": 4.8551,
+      "exit_reason": "time_exit",
+      "entry_date": "20260306",
+      "entry_price": 29.2492
+    },
+    {
+      "symbol": "300750.SZ",
+      "side": "BUY",
+      "trade_date": "20260311",
+      "price": 379.9596,
+      "quantity": 100,
+      "amount": 37995.958,
+      "fee": 9.499,
+      "rank_score": 88.834,
+      "sentiment_score": 73.8817
+    },
+    {
+      "symbol": "300274.SZ",
+      "side": "BUY",
+      "trade_date": "20260311",
+      "price": 156.5764,
+      "quantity": 200,
+      "amount": 31315.284,
+      "fee": 7.8288,
+      "rank_score": 75.1955,
+      "sentiment_score": 73.8817
+    },
+    {
+      "symbol": "002714.SZ",
+      "side": "SELL",
+      "trade_date": "20260312",
+      "price": 50.5394,
+      "quantity": 800,
+      "amount": 40431.528,
+      "fee": 10.1079,
+      "tax": 20.2158,
+      "realized_pnl": 681.5244,
+      "return_pct": 1.7922,
+      "exit_reason": "time_exit",
+      "entry_date": "20260309",
+      "entry_price": 49.6496
+    },
+    {
+      "symbol": "300014.SZ",
+      "side": "BUY",
+      "trade_date": "20260312",
+      "price": 68.6386,
+      "quantity": 500,
+      "amount": 34319.285,
+      "fee": 8.5798,
+      "rank_score": 84.3827,
+      "sentiment_score": 62.91
+    },
+    {
+      "symbol": "688223.SH",
+      "side": "BUY",
+      "trade_date": "20260312",
+      "price": 8.3884,
+      "quantity": 1600,
+      "amount": 13421.408,
+      "fee": 5.0,
+      "rank_score": 79.3831,
+      "sentiment_score": 62.91
+    },
+    {
+      "symbol": "688223.SH",
+      "side": "SELL",
+      "trade_date": "20260313",
+      "price": 8.0867,
+      "quantity": 1600,
+      "amount": 12938.7071,
+      "fee": 5.0,
+      "tax": 6.4694,
+      "realized_pnl": -494.1703,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260312",
+      "entry_price": 8.3884
+    },
+    {
+      "symbol": "300750.SZ",
+      "side": "SELL",
+      "trade_date": "20260316",
+      "price": 407.9916,
+      "quantity": 100,
+      "amount": 40799.16,
+      "fee": 10.1998,
+      "tax": 20.3996,
+      "realized_pnl": 2772.6026,
+      "return_pct": 7.3776,
+      "exit_reason": "time_exit",
+      "entry_date": "20260311",
+      "entry_price": 379.9596
+    },
+    {
+      "symbol": "300274.SZ",
+      "side": "SELL",
+      "trade_date": "20260316",
+      "price": 172.827,
+      "quantity": 200,
+      "amount": 34565.4,
+      "fee": 8.6414,
+      "tax": 17.2827,
+      "realized_pnl": 3224.192,
+      "return_pct": 10.3787,
+      "exit_reason": "time_exit",
+      "entry_date": "20260311",
+      "entry_price": 156.5764
+    },
+    {
+      "symbol": "300014.SZ",
+      "side": "SELL",
+      "trade_date": "20260317",
+      "price": 68.5514,
+      "quantity": 500,
+      "amount": 34275.69,
+      "fee": 8.5689,
+      "tax": 17.1378,
+      "realized_pnl": -69.3018,
+      "return_pct": -0.127,
+      "exit_reason": "time_exit",
+      "entry_date": "20260312",
+      "entry_price": 68.6386
+    },
+    {
+      "symbol": "300014.SZ",
+      "side": "BUY",
+      "trade_date": "20260326",
+      "price": 70.9108,
+      "quantity": 500,
+      "amount": 35455.42,
+      "fee": 8.8639,
+      "rank_score": 78.0982,
+      "sentiment_score": 83.3652
+    },
+    {
+      "symbol": "601988.SH",
+      "side": "BUY",
+      "trade_date": "20260326",
+      "price": 5.5355,
+      "quantity": 7300,
+      "amount": 40409.369,
+      "fee": 10.1023,
+      "rank_score": 70.9282,
+      "sentiment_score": 83.3652
+    },
+    {
+      "symbol": "300014.SZ",
+      "side": "SELL",
+      "trade_date": "20260330",
+      "price": 68.3605,
+      "quantity": 500,
+      "amount": 34180.2658,
+      "fee": 8.5451,
+      "tax": 17.0901,
+      "realized_pnl": -1300.7894,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260326",
+      "entry_price": 70.9108
+    },
+    {
+      "symbol": "603259.SH",
+      "side": "BUY",
+      "trade_date": "20260330",
+      "price": 95.9959,
+      "quantity": 400,
+      "amount": 38398.36,
+      "fee": 9.5996,
+      "rank_score": 81.523,
+      "sentiment_score": 65.0304
+    },
+    {
+      "symbol": "300014.SZ",
+      "side": "BUY",
+      "trade_date": "20260330",
+      "price": 71.1511,
+      "quantity": 500,
+      "amount": 35575.54,
+      "fee": 8.8939,
+      "rank_score": 76.5926,
+      "sentiment_score": 65.0304
+    },
+    {
+      "symbol": "601988.SH",
+      "side": "SELL",
+      "trade_date": "20260331",
+      "price": 5.8641,
+      "quantity": 7300,
+      "amount": 42808.149,
+      "fee": 10.702,
+      "tax": 21.4041,
+      "realized_pnl": 2366.6739,
+      "return_pct": 5.9362,
+      "exit_reason": "time_exit",
+      "entry_date": "20260326",
+      "entry_price": 5.5355
+    },
+    {
+      "symbol": "300014.SZ",
+      "side": "SELL",
+      "trade_date": "20260331",
+      "price": 68.5921,
+      "quantity": 500,
+      "amount": 34296.0657,
+      "fee": 8.574,
+      "tax": 17.148,
+      "realized_pnl": -1305.1963,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260330",
+      "entry_price": 71.1511
+    },
+    {
+      "symbol": "603259.SH",
+      "side": "SELL",
+      "trade_date": "20260402",
+      "price": 103.0868,
+      "quantity": 400,
+      "amount": 41234.724,
+      "fee": 10.3087,
+      "tax": 20.6174,
+      "realized_pnl": 2805.438,
+      "return_pct": 7.3867,
+      "exit_reason": "time_exit",
+      "entry_date": "20260330",
+      "entry_price": 95.9959
+    },
+    {
+      "symbol": "603259.SH",
+      "side": "BUY",
+      "trade_date": "20260402",
+      "price": 103.103,
+      "quantity": 300,
+      "amount": 30930.9,
+      "fee": 7.7327,
+      "rank_score": 91.7156,
+      "sentiment_score": 86.2614
+    },
+    {
+      "symbol": "600309.SH",
+      "side": "BUY",
+      "trade_date": "20260402",
+      "price": 82.6926,
+      "quantity": 400,
+      "amount": 33077.044,
+      "fee": 8.2693,
+      "rank_score": 85.6797,
+      "sentiment_score": 86.2614
+    },
+    {
+      "symbol": "600276.SH",
+      "side": "BUY",
+      "trade_date": "20260402",
+      "price": 57.7977,
+      "quantity": 700,
+      "amount": 40458.418,
+      "fee": 10.1146,
+      "rank_score": 85.3923,
+      "sentiment_score": 86.2614
+    },
+    {
+      "symbol": "603259.SH",
+      "side": "SELL",
+      "trade_date": "20260403",
+      "price": 99.3949,
+      "quantity": 300,
+      "amount": 29818.4702,
+      "fee": 7.4546,
+      "tax": 14.9092,
+      "realized_pnl": -1134.7937,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260402",
+      "entry_price": 103.103
+    },
+    {
+      "symbol": "600276.SH",
+      "side": "SELL",
+      "trade_date": "20260407",
+      "price": 55.719,
+      "quantity": 700,
+      "amount": 39003.331,
+      "fee": 9.7508,
+      "tax": 19.5017,
+      "realized_pnl": -1484.3395,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260402",
+      "entry_price": 57.7977
+    },
+    {
+      "symbol": "600309.SH",
+      "side": "SELL",
+      "trade_date": "20260408",
+      "price": 86.3536,
+      "quantity": 400,
+      "amount": 34541.424,
+      "fee": 8.6354,
+      "tax": 17.2707,
+      "realized_pnl": 1438.4739,
+      "return_pct": 4.4272,
+      "exit_reason": "time_exit",
+      "entry_date": "20260402",
+      "entry_price": 82.6926
+    },
+    {
+      "symbol": "688041.SH",
+      "side": "BUY",
+      "trade_date": "20260409",
+      "price": 225.225,
+      "quantity": 100,
+      "amount": 22522.5,
+      "fee": 5.6306,
+      "rank_score": 95.7571,
+      "sentiment_score": 100
+    },
+    {
+      "symbol": "600111.SH",
+      "side": "BUY",
+      "trade_date": "20260409",
+      "price": 51.051,
+      "quantity": 700,
+      "amount": 35735.7,
+      "fee": 8.9339,
+      "rank_score": 94.1336,
+      "sentiment_score": 100
+    },
+    {
+      "symbol": "603259.SH",
+      "side": "BUY",
+      "trade_date": "20260409",
+      "price": 103.8337,
+      "quantity": 300,
+      "amount": 31150.119,
+      "fee": 7.7875,
+      "rank_score": 92.1621,
+      "sentiment_score": 100
+    },
+    {
+      "symbol": "300450.SZ",
+      "side": "BUY",
+      "trade_date": "20260413",
+      "price": 52.3423,
+      "quantity": 500,
+      "amount": 26171.145,
+      "fee": 6.5428,
+      "rank_score": 88.3912,
+      "sentiment_score": 76.0243
+    },
+    {
+      "symbol": "600030.SH",
+      "side": "BUY",
+      "trade_date": "20260413",
+      "price": 25.6456,
+      "quantity": 100,
+      "amount": 2564.562,
+      "fee": 5.0,
+      "rank_score": 87.7054,
+      "sentiment_score": 76.0243
+    },
+    {
+      "symbol": "688041.SH",
+      "side": "SELL",
+      "trade_date": "20260414",
+      "price": 248.5312,
+      "quantity": 100,
+      "amount": 24853.122,
+      "fee": 6.2133,
+      "tax": 12.4266,
+      "realized_pnl": 2311.9822,
+      "return_pct": 10.348,
+      "exit_reason": "time_exit",
+      "entry_date": "20260409",
+      "entry_price": 225.225
+    },
+    {
+      "symbol": "600111.SH",
+      "side": "SELL",
+      "trade_date": "20260414",
+      "price": 50.4895,
+      "quantity": 700,
+      "amount": 35342.622,
+      "fee": 8.8357,
+      "tax": 17.6713,
+      "realized_pnl": -419.585,
+      "return_pct": -1.1,
+      "exit_reason": "time_exit",
+      "entry_date": "20260409",
+      "entry_price": 51.051
+    },
+    {
+      "symbol": "603259.SH",
+      "side": "SELL",
+      "trade_date": "20260414",
+      "price": 106.4434,
+      "quantity": 300,
+      "amount": 31933.035,
+      "fee": 7.9833,
+      "tax": 15.9665,
+      "realized_pnl": 758.9662,
+      "return_pct": 2.5134,
+      "exit_reason": "time_exit",
+      "entry_date": "20260409",
+      "entry_price": 103.8337
+    },
+    {
+      "symbol": "600584.SH",
+      "side": "BUY",
+      "trade_date": "20260415",
+      "price": 44.5445,
+      "quantity": 900,
+      "amount": 40090.05,
+      "fee": 10.0225,
+      "rank_score": 87.6046,
+      "sentiment_score": 75.5846
+    },
+    {
+      "symbol": "002415.SZ",
+      "side": "BUY",
+      "trade_date": "20260415",
+      "price": 33.4834,
+      "quantity": 1200,
+      "amount": 40180.14,
+      "fee": 10.045,
+      "rank_score": 86.4825,
+      "sentiment_score": 75.5846
+    },
+    {
+      "symbol": "300450.SZ",
+      "side": "SELL",
+      "trade_date": "20260416",
+      "price": 53.6063,
+      "quantity": 500,
+      "amount": 26803.17,
+      "fee": 6.7008,
+      "tax": 13.4016,
+      "realized_pnl": 611.9226,
+      "return_pct": 2.415,
+      "exit_reason": "time_exit",
+      "entry_date": "20260413",
+      "entry_price": 52.3423
+    },
+    {
+      "symbol": "600030.SH",
+      "side": "SELL",
+      "trade_date": "20260416",
+      "price": 26.2837,
+      "quantity": 100,
+      "amount": 2628.369,
+      "fee": 5.0,
+      "tax": 1.3142,
+      "realized_pnl": 57.4928,
+      "return_pct": 2.488,
+      "exit_reason": "time_exit",
+      "entry_date": "20260413",
+      "entry_price": 25.6456
+    },
+    {
+      "symbol": "600584.SH",
+      "side": "SELL",
+      "trade_date": "20260420",
+      "price": 44.4455,
+      "quantity": 900,
+      "amount": 40000.959,
+      "fee": 10.0002,
+      "tax": 20.0005,
+      "realized_pnl": -119.0917,
+      "return_pct": -0.2222,
+      "exit_reason": "time_exit",
+      "entry_date": "20260415",
+      "entry_price": 44.5445
+    },
+    {
+      "symbol": "002415.SZ",
+      "side": "SELL",
+      "trade_date": "20260420",
+      "price": 34.4755,
+      "quantity": 1200,
+      "amount": 41370.588,
+      "fee": 10.3426,
+      "tax": 20.6853,
+      "realized_pnl": 1159.4201,
+      "return_pct": 2.9628,
+      "exit_reason": "time_exit",
+      "entry_date": "20260415",
+      "entry_price": 33.4834
+    },
+    {
+      "symbol": "002415.SZ",
+      "side": "BUY",
+      "trade_date": "20260421",
+      "price": 34.5345,
+      "quantity": 1100,
+      "amount": 37987.95,
+      "fee": 9.497,
+      "rank_score": 85.5794,
+      "sentiment_score": 64.6191
+    },
+    {
+      "symbol": "600150.SH",
+      "side": "BUY",
+      "trade_date": "20260421",
+      "price": 35.4754,
+      "quantity": 1100,
+      "amount": 39022.984,
+      "fee": 9.7557,
+      "rank_score": 85.4938,
+      "sentiment_score": 64.6191
+    },
+    {
+      "symbol": "002415.SZ",
+      "side": "SELL",
+      "trade_date": "20260424",
+      "price": 33.2925,
+      "quantity": 1100,
+      "amount": 36621.7134,
+      "fee": 9.1554,
+      "tax": 18.3109,
+      "realized_pnl": -1393.7029,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260421",
+      "entry_price": 34.5345
+    },
+    {
+      "symbol": "600150.SH",
+      "side": "SELL",
+      "trade_date": "20260424",
+      "price": 38.7612,
+      "quantity": 1100,
+      "amount": 42637.32,
+      "fee": 10.6593,
+      "tax": 21.3187,
+      "realized_pnl": 3582.358,
+      "return_pct": 9.2621,
+      "exit_reason": "time_exit",
+      "entry_date": "20260421",
+      "entry_price": 35.4754
+    },
+    {
+      "symbol": "000651.SZ",
+      "side": "BUY",
+      "trade_date": "20260430",
+      "price": 40.5305,
+      "quantity": 1000,
+      "amount": 40530.49,
+      "fee": 10.1326,
+      "rank_score": 88.6997,
+      "sentiment_score": 73.4165
+    },
+    {
+      "symbol": "300760.SZ",
+      "side": "BUY",
+      "trade_date": "20260430",
+      "price": 167.6675,
+      "quantity": 200,
+      "amount": 33533.5,
+      "fee": 8.3834,
+      "rank_score": 84.2612,
+      "sentiment_score": 73.4165
+    },
+    {
+      "symbol": "600584.SH",
+      "side": "BUY",
+      "trade_date": "20260507",
+      "price": 48.9489,
+      "quantity": 800,
+      "amount": 39159.12,
+      "fee": 9.7898,
+      "rank_score": 86.7008,
+      "sentiment_score": 66.9136
+    },
+    {
+      "symbol": "000651.SZ",
+      "side": "SELL",
+      "trade_date": "20260508",
+      "price": 39.8701,
+      "quantity": 1000,
+      "amount": 39870.09,
+      "fee": 9.9675,
+      "tax": 19.935,
+      "realized_pnl": -690.3026,
+      "return_pct": -1.6294,
+      "exit_reason": "time_exit",
+      "entry_date": "20260430",
+      "entry_price": 40.5305
+    },
+    {
+      "symbol": "300760.SZ",
+      "side": "SELL",
+      "trade_date": "20260508",
+      "price": 170.4394,
+      "quantity": 200,
+      "amount": 34087.878,
+      "fee": 8.522,
+      "tax": 17.0439,
+      "realized_pnl": 528.8121,
+      "return_pct": 1.6532,
+      "exit_reason": "time_exit",
+      "entry_date": "20260430",
+      "entry_price": 167.6675
+    },
+    {
+      "symbol": "600584.SH",
+      "side": "SELL",
+      "trade_date": "20260508",
+      "price": 47.1885,
+      "quantity": 800,
+      "amount": 37750.7622,
+      "fee": 9.4377,
+      "tax": 18.8754,
+      "realized_pnl": -1436.6708,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260507",
+      "entry_price": 48.9489
+    },
+    {
+      "symbol": "688126.SH",
+      "side": "BUY",
+      "trade_date": "20260512",
+      "price": 24.3243,
+      "quantity": 1600,
+      "amount": 38918.88,
+      "fee": 9.7297,
+      "rank_score": 91.0479,
+      "sentiment_score": 82.3066
+    },
+    {
+      "symbol": "688012.SH",
+      "side": "BUY",
+      "trade_date": "20260512",
+      "price": 384.384,
+      "quantity": 100,
+      "amount": 38438.4,
+      "fee": 9.6096,
+      "rank_score": 89.3188,
+      "sentiment_score": 82.3066
+    },
+    {
+      "symbol": "688126.SH",
+      "side": "SELL",
+      "trade_date": "20260515",
+      "price": 24.0459,
+      "quantity": 1600,
+      "amount": 38473.488,
+      "fee": 9.6184,
+      "tax": 19.2367,
+      "realized_pnl": -474.2471,
+      "return_pct": -1.1444,
+      "exit_reason": "time_exit",
+      "entry_date": "20260512",
+      "entry_price": 24.3243
+    },
+    {
+      "symbol": "688012.SH",
+      "side": "SELL",
+      "trade_date": "20260515",
+      "price": 370.5596,
+      "quantity": 100,
+      "amount": 37055.9629,
+      "fee": 9.264,
+      "tax": 18.528,
+      "realized_pnl": -1410.229,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260512",
+      "entry_price": 384.384
+    },
+    {
+      "symbol": "600703.SH",
+      "side": "BUY",
+      "trade_date": "20260520",
+      "price": 16.6166,
+      "quantity": 2400,
+      "amount": 39879.84,
+      "fee": 9.97,
+      "rank_score": 83.1232,
+      "sentiment_score": 65.3226
+    },
+    {
+      "symbol": "688036.SH",
+      "side": "BUY",
+      "trade_date": "20260520",
+      "price": 66.066,
+      "quantity": 600,
+      "amount": 39639.6,
+      "fee": 9.9099,
+      "rank_score": 82.4985,
+      "sentiment_score": 65.3226
+    },
+    {
+      "symbol": "600050.SH",
+      "side": "BUY",
+      "trade_date": "20260520",
+      "price": 4.9049,
+      "quantity": 8300,
+      "amount": 40710.67,
+      "fee": 10.1777,
+      "rank_score": 81.4956,
+      "sentiment_score": 65.3226
+    },
+    {
+      "symbol": "600703.SH",
+      "side": "SELL",
+      "trade_date": "20260521",
+      "price": 16.019,
+      "quantity": 2400,
+      "amount": 38445.5616,
+      "fee": 9.6114,
+      "tax": 19.2228,
+      "realized_pnl": -1463.1126,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260520",
+      "entry_price": 16.6166
+    },
+    {
+      "symbol": "688036.SH",
+      "side": "SELL",
+      "trade_date": "20260521",
+      "price": 63.6899,
+      "quantity": 600,
+      "amount": 38213.9618,
+      "fee": 9.5535,
+      "tax": 19.107,
+      "realized_pnl": -1454.2987,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260520",
+      "entry_price": 66.066
+    },
+    {
+      "symbol": "600050.SH",
+      "side": "SELL",
+      "trade_date": "20260521",
+      "price": 4.7285,
+      "quantity": 8300,
+      "amount": 39246.5108,
+      "fee": 9.8116,
+      "tax": 19.6233,
+      "realized_pnl": -1493.5941,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260520",
+      "entry_price": 4.9049
+    },
+    {
+      "symbol": "603501.SH",
+      "side": "BUY",
+      "trade_date": "20260526",
+      "price": 109.0489,
+      "quantity": 300,
+      "amount": 32714.682,
+      "fee": 8.1787,
+      "rank_score": 85.8942,
+      "sentiment_score": 64.2911
+    },
+    {
+      "symbol": "688008.SH",
+      "side": "BUY",
+      "trade_date": "20260526",
+      "price": 286.286,
+      "quantity": 100,
+      "amount": 28628.6,
+      "fee": 7.1571,
+      "rank_score": 82.9286,
+      "sentiment_score": 64.2911
+    },
+    {
+      "symbol": "000725.SZ",
+      "side": "BUY",
+      "trade_date": "20260526",
+      "price": 5.2252,
+      "quantity": 7700,
+      "amount": 40234.194,
+      "fee": 10.0585,
+      "rank_score": 79.1363,
+      "sentiment_score": 64.2911
+    },
+    {
+      "symbol": "603501.SH",
+      "side": "SELL",
+      "trade_date": "20260527",
+      "price": 105.127,
+      "quantity": 300,
+      "amount": 31538.0985,
+      "fee": 7.8845,
+      "tax": 15.769,
+      "realized_pnl": -1200.2371,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260526",
+      "entry_price": 109.0489
+    },
+    {
+      "symbol": "688008.SH",
+      "side": "SELL",
+      "trade_date": "20260527",
+      "price": 275.9897,
+      "quantity": 100,
+      "amount": 27598.9724,
+      "fee": 6.8997,
+      "tax": 13.7995,
+      "realized_pnl": -1050.3268,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260526",
+      "entry_price": 286.286
+    },
+    {
+      "symbol": "000725.SZ",
+      "side": "SELL",
+      "trade_date": "20260529",
+      "price": 5.1049,
+      "quantity": 7700,
+      "amount": 39307.653,
+      "fee": 9.8269,
+      "tax": 19.6538,
+      "realized_pnl": -956.0217,
+      "return_pct": -2.3029,
+      "exit_reason": "time_exit",
+      "entry_date": "20260526",
+      "entry_price": 5.2252
+    },
+    {
+      "symbol": "300433.SZ",
+      "side": "BUY",
+      "trade_date": "20260610",
+      "price": 43.5635,
+      "quantity": 900,
+      "amount": 39207.168,
+      "fee": 9.8018,
+      "rank_score": 85.1639,
+      "sentiment_score": 72.7168
+    },
+    {
+      "symbol": "600703.SH",
+      "side": "BUY",
+      "trade_date": "20260610",
+      "price": 16.7968,
+      "quantity": 2400,
+      "amount": 40312.272,
+      "fee": 10.0781,
+      "rank_score": 81.5674,
+      "sentiment_score": 72.7168
+    },
+    {
+      "symbol": "000725.SZ",
+      "side": "BUY",
+      "trade_date": "20260610",
+      "price": 6.3463,
+      "quantity": 6300,
+      "amount": 39981.942,
+      "fee": 9.9955,
+      "rank_score": 77.9263,
+      "sentiment_score": 72.7168
+    },
+    {
+      "symbol": "300433.SZ",
+      "side": "SELL",
+      "trade_date": "20260611",
+      "price": 41.9968,
+      "quantity": 900,
+      "amount": 37797.0822,
+      "fee": 9.4493,
+      "tax": 18.8985,
+      "realized_pnl": -1438.4336,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260610",
+      "entry_price": 43.5635
+    },
+    {
+      "symbol": "600703.SH",
+      "side": "SELL",
+      "trade_date": "20260611",
+      "price": 16.1927,
+      "quantity": 2400,
+      "amount": 38862.4411,
+      "fee": 9.7156,
+      "tax": 19.4312,
+      "realized_pnl": -1478.9777,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260610",
+      "entry_price": 16.7968
+    },
+    {
+      "symbol": "000725.SZ",
+      "side": "SELL",
+      "trade_date": "20260611",
+      "price": 6.1181,
+      "quantity": 6300,
+      "amount": 38543.9915,
+      "fee": 9.636,
+      "tax": 19.272,
+      "realized_pnl": -1466.8585,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260610",
+      "entry_price": 6.3463
+    },
+    {
+      "symbol": "601688.SH",
+      "side": "BUY",
+      "trade_date": "20260615",
+      "price": 20.05,
+      "quantity": 2000,
+      "amount": 40100.06,
+      "fee": 10.025,
+      "rank_score": 86.5248,
+      "sentiment_score": 72.542
+    },
+    {
+      "symbol": "601398.SH",
+      "side": "BUY",
+      "trade_date": "20260615",
+      "price": 7.7577,
+      "quantity": 5200,
+      "amount": 40340.3,
+      "fee": 10.0851,
+      "rank_score": 83.1309,
+      "sentiment_score": 72.542
+    },
+    {
+      "symbol": "601328.SH",
+      "side": "BUY",
+      "trade_date": "20260615",
+      "price": 7.1471,
+      "quantity": 5600,
+      "amount": 40023.984,
+      "fee": 10.006,
+      "rank_score": 79.9748,
+      "sentiment_score": 72.542
+    },
+    {
+      "symbol": "601398.SH",
+      "side": "SELL",
+      "trade_date": "20260616",
+      "price": 7.4787,
+      "quantity": 5200,
+      "amount": 38889.4611,
+      "fee": 9.7224,
+      "tax": 19.4447,
+      "realized_pnl": -1480.006,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260615",
+      "entry_price": 7.7577
+    },
+    {
+      "symbol": "601328.SH",
+      "side": "SELL",
+      "trade_date": "20260617",
+      "price": 6.8901,
+      "quantity": 5600,
+      "amount": 38584.5214,
+      "fee": 9.6461,
+      "tax": 19.2923,
+      "realized_pnl": -1468.401,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260615",
+      "entry_price": 7.1471
+    },
+    {
+      "symbol": "601688.SH",
+      "side": "SELL",
+      "trade_date": "20260618",
+      "price": 19.5305,
+      "quantity": 2000,
+      "amount": 39060.9,
+      "fee": 9.7652,
+      "tax": 19.5305,
+      "realized_pnl": -1068.4557,
+      "return_pct": -2.5914,
+      "exit_reason": "time_exit",
+      "entry_date": "20260615",
+      "entry_price": 20.05
+    },
+    {
+      "symbol": "600111.SH",
+      "side": "BUY",
+      "trade_date": "20260623",
+      "price": 53.6636,
+      "quantity": 700,
+      "amount": 37564.527,
+      "fee": 9.3911,
+      "rank_score": 94.659,
+      "sentiment_score": 97.6324
+    },
+    {
+      "symbol": "603259.SH",
+      "side": "BUY",
+      "trade_date": "20260623",
+      "price": 107.107,
+      "quantity": 300,
+      "amount": 32132.1,
+      "fee": 8.033,
+      "rank_score": 93.9659,
+      "sentiment_score": 97.6324
+    },
+    {
+      "symbol": "600030.SH",
+      "side": "BUY",
+      "trade_date": "20260623",
+      "price": 28.7287,
+      "quantity": 1400,
+      "amount": 40220.18,
+      "fee": 10.055,
+      "rank_score": 93.4656,
+      "sentiment_score": 97.6324
+    },
+    {
+      "symbol": "600111.SH",
+      "side": "SELL",
+      "trade_date": "20260624",
+      "price": 51.7336,
+      "quantity": 700,
+      "amount": 36213.5188,
+      "fee": 9.0534,
+      "tax": 18.1068,
+      "realized_pnl": -1378.1684,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260623",
+      "entry_price": 53.6636
+    },
+    {
+      "symbol": "600030.SH",
+      "side": "SELL",
+      "trade_date": "20260624",
+      "price": 27.6955,
+      "quantity": 1400,
+      "amount": 38773.6612,
+      "fee": 9.6934,
+      "tax": 19.3868,
+      "realized_pnl": -1475.599,
+      "return_pct": -3.5965,
+      "exit_reason": "stop_loss",
+      "entry_date": "20260623",
+      "entry_price": 28.7287
+    },
+    {
+      "symbol": "603259.SH",
+      "side": "SELL",
+      "trade_date": "20260624",
+      "price": 115.2846,
+      "quantity": 300,
+      "amount": 34585.38,
+      "fee": 8.6463,
+      "tax": 17.2927,
+      "realized_pnl": 2427.341,
+      "return_pct": 7.635,
+      "exit_reason": "force_close",
+      "entry_date": "20260623",
+      "entry_price": 107.107
+    }
+  ],
+  "closed_trades": [
+    {
+      "symbol": "300418.SZ",
+      "entry_date": "20260106",
+      "exit_date": "20260109",
+      "entry_price": 43.4834,
+      "exit_price": 53.966,
+      "quantity": 900,
+      "return_pct": 24.107,
+      "realized_pnl": 9397.859,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "688981.SH",
+      "entry_date": "20260106",
+      "exit_date": "20260109",
+      "entry_price": 129.129,
+      "exit_price": 128.7511,
+      "quantity": 300,
+      "return_pct": -0.2926,
+      "realized_pnl": -142.333,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "300433.SZ",
+      "entry_date": "20260106",
+      "exit_date": "20260109",
+      "entry_price": 32.7928,
+      "exit_price": 38.6513,
+      "quantity": 1200,
+      "return_pct": 17.8654,
+      "realized_pnl": 6995.4738,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600570.SH",
+      "entry_date": "20260113",
+      "exit_date": "20260114",
+      "entry_price": 34.4244,
+      "exit_price": 33.1863,
+      "quantity": 100,
+      "return_pct": -3.5965,
+      "realized_pnl": -130.4666,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "688111.SH",
+      "entry_date": "20260112",
+      "exit_date": "20260115",
+      "entry_price": 350.35,
+      "exit_price": 359.9597,
+      "quantity": 100,
+      "return_pct": 2.7429,
+      "realized_pnl": 933.971,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600584.SH",
+      "entry_date": "20260112",
+      "exit_date": "20260115",
+      "entry_price": 42.022,
+      "exit_price": 43.946,
+      "quantity": 900,
+      "return_pct": 4.5786,
+      "realized_pnl": 1701.9634,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "002230.SZ",
+      "entry_date": "20260112",
+      "exit_date": "20260115",
+      "entry_price": 57.5575,
+      "exit_price": 63.3266,
+      "quantity": 700,
+      "return_pct": 10.0232,
+      "realized_pnl": 4005.1305,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600048.SH",
+      "entry_date": "20260130",
+      "exit_date": "20260202",
+      "entry_price": 7.057,
+      "exit_price": 6.8032,
+      "quantity": 5700,
+      "return_pct": -3.5965,
+      "realized_pnl": -1475.7826,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600111.SH",
+      "entry_date": "20260130",
+      "exit_date": "20260202",
+      "entry_price": 54.054,
+      "exit_price": 52.1099,
+      "quantity": 700,
+      "return_pct": -3.5965,
+      "realized_pnl": -1388.1942,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "601899.SH",
+      "entry_date": "20260130",
+      "exit_date": "20260202",
+      "entry_price": 41.2412,
+      "exit_price": 39.758,
+      "quantity": 900,
+      "return_pct": -3.5965,
+      "realized_pnl": -1361.7524,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "300418.SZ",
+      "entry_date": "20260204",
+      "exit_date": "20260205",
+      "entry_price": 60.07,
+      "exit_price": 57.9096,
+      "quantity": 600,
+      "return_pct": -3.5965,
+      "realized_pnl": -1322.3101,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "688008.SH",
+      "entry_date": "20260204",
+      "exit_date": "20260205",
+      "entry_price": 175.7756,
+      "exit_price": 169.4538,
+      "quantity": 200,
+      "return_pct": -3.5965,
+      "realized_pnl": -1289.772,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600048.SH",
+      "entry_date": "20260205",
+      "exit_date": "20260210",
+      "entry_price": 7.1471,
+      "exit_price": 6.8901,
+      "quantity": 5600,
+      "return_pct": -3.5965,
+      "realized_pnl": -1468.401,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "300750.SZ",
+      "entry_date": "20260205",
+      "exit_date": "20260210",
+      "entry_price": 366.1358,
+      "exit_price": 364.605,
+      "quantity": 100,
+      "return_pct": -0.4181,
+      "realized_pnl": -180.4194,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "601318.SH",
+      "entry_date": "20260210",
+      "exit_date": "20260212",
+      "entry_price": 68.7787,
+      "exit_price": 66.3051,
+      "quantity": 500,
+      "return_pct": -3.5965,
+      "realized_pnl": -1261.6776,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "601012.SH",
+      "entry_date": "20260210",
+      "exit_date": "20260213",
+      "entry_price": 19.019,
+      "exit_price": 18.335,
+      "quantity": 2100,
+      "return_pct": -3.5965,
+      "realized_pnl": -1465.3161,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "603986.SH",
+      "entry_date": "20260225",
+      "exit_date": "20260227",
+      "entry_price": 316.316,
+      "exit_price": 304.9397,
+      "quantity": 100,
+      "return_pct": -3.5965,
+      "realized_pnl": -1160.501,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600150.SH",
+      "entry_date": "20260225",
+      "exit_date": "20260302",
+      "entry_price": 37.1771,
+      "exit_price": 38.0919,
+      "quantity": 1000,
+      "return_pct": 2.4605,
+      "realized_pnl": 886.1611,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600089.SH",
+      "entry_date": "20260225",
+      "exit_date": "20260302",
+      "entry_price": 29.9299,
+      "exit_price": 31.4585,
+      "quantity": 1300,
+      "return_pct": 5.1073,
+      "realized_pnl": 1956.521,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "000725.SZ",
+      "entry_date": "20260306",
+      "exit_date": "20260309",
+      "entry_price": 4.4244,
+      "exit_price": 4.2653,
+      "quantity": 9100,
+      "return_pct": -3.5965,
+      "realized_pnl": -1477.1415,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600089.SH",
+      "entry_date": "20260306",
+      "exit_date": "20260311",
+      "entry_price": 32.4324,
+      "exit_price": 31.266,
+      "quantity": 1200,
+      "return_pct": -3.5965,
+      "realized_pnl": -1427.8569,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600406.SH",
+      "entry_date": "20260306",
+      "exit_date": "20260311",
+      "entry_price": 29.2492,
+      "exit_price": 30.6693,
+      "quantity": 1300,
+      "return_pct": 4.8551,
+      "realized_pnl": 1816.2014,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "002714.SZ",
+      "entry_date": "20260309",
+      "exit_date": "20260312",
+      "entry_price": 49.6496,
+      "exit_price": 50.5394,
+      "quantity": 800,
+      "return_pct": 1.7922,
+      "realized_pnl": 681.5244,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "688223.SH",
+      "entry_date": "20260312",
+      "exit_date": "20260313",
+      "entry_price": 8.3884,
+      "exit_price": 8.0867,
+      "quantity": 1600,
+      "return_pct": -3.5965,
+      "realized_pnl": -494.1703,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "300750.SZ",
+      "entry_date": "20260311",
+      "exit_date": "20260316",
+      "entry_price": 379.9596,
+      "exit_price": 407.9916,
+      "quantity": 100,
+      "return_pct": 7.3776,
+      "realized_pnl": 2772.6026,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "300274.SZ",
+      "entry_date": "20260311",
+      "exit_date": "20260316",
+      "entry_price": 156.5764,
+      "exit_price": 172.827,
+      "quantity": 200,
+      "return_pct": 10.3787,
+      "realized_pnl": 3224.192,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "300014.SZ",
+      "entry_date": "20260312",
+      "exit_date": "20260317",
+      "entry_price": 68.6386,
+      "exit_price": 68.5514,
+      "quantity": 500,
+      "return_pct": -0.127,
+      "realized_pnl": -69.3018,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "300014.SZ",
+      "entry_date": "20260326",
+      "exit_date": "20260330",
+      "entry_price": 70.9108,
+      "exit_price": 68.3605,
+      "quantity": 500,
+      "return_pct": -3.5965,
+      "realized_pnl": -1300.7894,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "601988.SH",
+      "entry_date": "20260326",
+      "exit_date": "20260331",
+      "entry_price": 5.5355,
+      "exit_price": 5.8641,
+      "quantity": 7300,
+      "return_pct": 5.9362,
+      "realized_pnl": 2366.6739,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "300014.SZ",
+      "entry_date": "20260330",
+      "exit_date": "20260331",
+      "entry_price": 71.1511,
+      "exit_price": 68.5921,
+      "quantity": 500,
+      "return_pct": -3.5965,
+      "realized_pnl": -1305.1963,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "603259.SH",
+      "entry_date": "20260330",
+      "exit_date": "20260402",
+      "entry_price": 95.9959,
+      "exit_price": 103.0868,
+      "quantity": 400,
+      "return_pct": 7.3867,
+      "realized_pnl": 2805.438,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "603259.SH",
+      "entry_date": "20260402",
+      "exit_date": "20260403",
+      "entry_price": 103.103,
+      "exit_price": 99.3949,
+      "quantity": 300,
+      "return_pct": -3.5965,
+      "realized_pnl": -1134.7937,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600276.SH",
+      "entry_date": "20260402",
+      "exit_date": "20260407",
+      "entry_price": 57.7977,
+      "exit_price": 55.719,
+      "quantity": 700,
+      "return_pct": -3.5965,
+      "realized_pnl": -1484.3395,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600309.SH",
+      "entry_date": "20260402",
+      "exit_date": "20260408",
+      "entry_price": 82.6926,
+      "exit_price": 86.3536,
+      "quantity": 400,
+      "return_pct": 4.4272,
+      "realized_pnl": 1438.4739,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "688041.SH",
+      "entry_date": "20260409",
+      "exit_date": "20260414",
+      "entry_price": 225.225,
+      "exit_price": 248.5312,
+      "quantity": 100,
+      "return_pct": 10.348,
+      "realized_pnl": 2311.9822,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600111.SH",
+      "entry_date": "20260409",
+      "exit_date": "20260414",
+      "entry_price": 51.051,
+      "exit_price": 50.4895,
+      "quantity": 700,
+      "return_pct": -1.1,
+      "realized_pnl": -419.585,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "603259.SH",
+      "entry_date": "20260409",
+      "exit_date": "20260414",
+      "entry_price": 103.8337,
+      "exit_price": 106.4434,
+      "quantity": 300,
+      "return_pct": 2.5134,
+      "realized_pnl": 758.9662,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "300450.SZ",
+      "entry_date": "20260413",
+      "exit_date": "20260416",
+      "entry_price": 52.3423,
+      "exit_price": 53.6063,
+      "quantity": 500,
+      "return_pct": 2.415,
+      "realized_pnl": 611.9226,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600030.SH",
+      "entry_date": "20260413",
+      "exit_date": "20260416",
+      "entry_price": 25.6456,
+      "exit_price": 26.2837,
+      "quantity": 100,
+      "return_pct": 2.488,
+      "realized_pnl": 57.4928,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600584.SH",
+      "entry_date": "20260415",
+      "exit_date": "20260420",
+      "entry_price": 44.5445,
+      "exit_price": 44.4455,
+      "quantity": 900,
+      "return_pct": -0.2222,
+      "realized_pnl": -119.0917,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "002415.SZ",
+      "entry_date": "20260415",
+      "exit_date": "20260420",
+      "entry_price": 33.4834,
+      "exit_price": 34.4755,
+      "quantity": 1200,
+      "return_pct": 2.9628,
+      "realized_pnl": 1159.4201,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "002415.SZ",
+      "entry_date": "20260421",
+      "exit_date": "20260424",
+      "entry_price": 34.5345,
+      "exit_price": 33.2925,
+      "quantity": 1100,
+      "return_pct": -3.5965,
+      "realized_pnl": -1393.7029,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600150.SH",
+      "entry_date": "20260421",
+      "exit_date": "20260424",
+      "entry_price": 35.4754,
+      "exit_price": 38.7612,
+      "quantity": 1100,
+      "return_pct": 9.2621,
+      "realized_pnl": 3582.358,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "000651.SZ",
+      "entry_date": "20260430",
+      "exit_date": "20260508",
+      "entry_price": 40.5305,
+      "exit_price": 39.8701,
+      "quantity": 1000,
+      "return_pct": -1.6294,
+      "realized_pnl": -690.3026,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "300760.SZ",
+      "entry_date": "20260430",
+      "exit_date": "20260508",
+      "entry_price": 167.6675,
+      "exit_price": 170.4394,
+      "quantity": 200,
+      "return_pct": 1.6532,
+      "realized_pnl": 528.8121,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600584.SH",
+      "entry_date": "20260507",
+      "exit_date": "20260508",
+      "entry_price": 48.9489,
+      "exit_price": 47.1885,
+      "quantity": 800,
+      "return_pct": -3.5965,
+      "realized_pnl": -1436.6708,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "688126.SH",
+      "entry_date": "20260512",
+      "exit_date": "20260515",
+      "entry_price": 24.3243,
+      "exit_price": 24.0459,
+      "quantity": 1600,
+      "return_pct": -1.1444,
+      "realized_pnl": -474.2471,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "688012.SH",
+      "entry_date": "20260512",
+      "exit_date": "20260515",
+      "entry_price": 384.384,
+      "exit_price": 370.5596,
+      "quantity": 100,
+      "return_pct": -3.5965,
+      "realized_pnl": -1410.229,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600703.SH",
+      "entry_date": "20260520",
+      "exit_date": "20260521",
+      "entry_price": 16.6166,
+      "exit_price": 16.019,
+      "quantity": 2400,
+      "return_pct": -3.5965,
+      "realized_pnl": -1463.1126,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "688036.SH",
+      "entry_date": "20260520",
+      "exit_date": "20260521",
+      "entry_price": 66.066,
+      "exit_price": 63.6899,
+      "quantity": 600,
+      "return_pct": -3.5965,
+      "realized_pnl": -1454.2987,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600050.SH",
+      "entry_date": "20260520",
+      "exit_date": "20260521",
+      "entry_price": 4.9049,
+      "exit_price": 4.7285,
+      "quantity": 8300,
+      "return_pct": -3.5965,
+      "realized_pnl": -1493.5941,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "603501.SH",
+      "entry_date": "20260526",
+      "exit_date": "20260527",
+      "entry_price": 109.0489,
+      "exit_price": 105.127,
+      "quantity": 300,
+      "return_pct": -3.5965,
+      "realized_pnl": -1200.2371,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "688008.SH",
+      "entry_date": "20260526",
+      "exit_date": "20260527",
+      "entry_price": 286.286,
+      "exit_price": 275.9897,
+      "quantity": 100,
+      "return_pct": -3.5965,
+      "realized_pnl": -1050.3268,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "000725.SZ",
+      "entry_date": "20260526",
+      "exit_date": "20260529",
+      "entry_price": 5.2252,
+      "exit_price": 5.1049,
+      "quantity": 7700,
+      "return_pct": -2.3029,
+      "realized_pnl": -956.0217,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "300433.SZ",
+      "entry_date": "20260610",
+      "exit_date": "20260611",
+      "entry_price": 43.5635,
+      "exit_price": 41.9968,
+      "quantity": 900,
+      "return_pct": -3.5965,
+      "realized_pnl": -1438.4336,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600703.SH",
+      "entry_date": "20260610",
+      "exit_date": "20260611",
+      "entry_price": 16.7968,
+      "exit_price": 16.1927,
+      "quantity": 2400,
+      "return_pct": -3.5965,
+      "realized_pnl": -1478.9777,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "000725.SZ",
+      "entry_date": "20260610",
+      "exit_date": "20260611",
+      "entry_price": 6.3463,
+      "exit_price": 6.1181,
+      "quantity": 6300,
+      "return_pct": -3.5965,
+      "realized_pnl": -1466.8585,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "601398.SH",
+      "entry_date": "20260615",
+      "exit_date": "20260616",
+      "entry_price": 7.7577,
+      "exit_price": 7.4787,
+      "quantity": 5200,
+      "return_pct": -3.5965,
+      "realized_pnl": -1480.006,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "601328.SH",
+      "entry_date": "20260615",
+      "exit_date": "20260617",
+      "entry_price": 7.1471,
+      "exit_price": 6.8901,
+      "quantity": 5600,
+      "return_pct": -3.5965,
+      "realized_pnl": -1468.401,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "601688.SH",
+      "entry_date": "20260615",
+      "exit_date": "20260618",
+      "entry_price": 20.05,
+      "exit_price": 19.5305,
+      "quantity": 2000,
+      "return_pct": -2.5914,
+      "realized_pnl": -1068.4557,
+      "exit_reason": "time_exit"
+    },
+    {
+      "symbol": "600111.SH",
+      "entry_date": "20260623",
+      "exit_date": "20260624",
+      "entry_price": 53.6636,
+      "exit_price": 51.7336,
+      "quantity": 700,
+      "return_pct": -3.5965,
+      "realized_pnl": -1378.1684,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "600030.SH",
+      "entry_date": "20260623",
+      "exit_date": "20260624",
+      "entry_price": 28.7287,
+      "exit_price": 27.6955,
+      "quantity": 1400,
+      "return_pct": -3.5965,
+      "realized_pnl": -1475.599,
+      "exit_reason": "stop_loss"
+    },
+    {
+      "symbol": "603259.SH",
+      "entry_date": "20260623",
+      "exit_date": "20260624",
+      "entry_price": 107.107,
+      "exit_price": 115.2846,
+      "quantity": 300,
+      "return_pct": 7.635,
+      "realized_pnl": 2427.341,
+      "exit_reason": "force_close"
+    }
+  ],
+  "selection_note": "Daily approximation of the production intraday strategy: use day T close data to rank liquid, positive-trend candidates; buy at T+1 open; enforce total exposure cap, lot size, slippage, commission, stamp duty, stop loss, and fixed holding window.",
+  "run_id": "7a29018067454d1787e373804ba9e6f1",
+  "status": "ok",
+  "lookback_days": 180,
+  "holding_days": 3,
+  "start_date": "20251226",
+  "end_date": "20260624",
+  "universe_count": 88,
+  "symbols_with_data": 86,
+  "no_real_orders": true,
+  "chart_path": "/app/storage/historical_backtest_7a29018067454d1787e373804ba9e6f1.svg"
+}

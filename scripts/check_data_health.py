@@ -7,6 +7,7 @@ import argparse
 import json
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 
@@ -16,6 +17,7 @@ PROCESSED = PROJECT_ROOT / "data" / "processed"
 RAW_PRICES = PROJECT_ROOT / "data" / "raw" / "prices"
 RAW_TUSHARE = PROJECT_ROOT / "data" / "tushare"
 OUTPUT_JSON = PROCESSED / "data_health_latest.json"
+BEIJING_TZ = ZoneInfo("Asia/Shanghai")
 
 
 DATASETS = {
@@ -34,7 +36,7 @@ def inspect_csv(name: str, path: Path) -> dict[str, object]:
     if not path.exists():
         return {"name": name, "exists": False, "status": "missing"}
     df = pd.read_csv(path, dtype={"symbol": str}, encoding="utf-8-sig")
-    updated_at = datetime.fromtimestamp(path.stat().st_mtime).isoformat(timespec="seconds")
+    updated_at = datetime.fromtimestamp(path.stat().st_mtime, tz=BEIJING_TZ).isoformat(timespec="seconds")
     null_cells = int(df.isna().sum().sum())
     row_count = int(len(df))
     latest_trade_date = None
@@ -79,7 +81,7 @@ def main() -> int:
     status = "bad" if bad else "warn" if warn else "ok"
     result = {
         "status": status,
-        "checked_at": datetime.now().isoformat(timespec="seconds"),
+        "checked_at": datetime.now(BEIJING_TZ).isoformat(timespec="seconds"),
         "dataset_count": len(datasets),
         "raw_price_file_count": len(raw_price_files),
         "tushare_daily_file_count": len(tushare_daily_files),

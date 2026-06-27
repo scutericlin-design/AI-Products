@@ -52,6 +52,36 @@ class WatchlistOut(WatchlistIn):
     id: int
 
 
+class FeedbackCreateIn(BaseModel):
+    category: str = Field(default="suggestion", pattern="^(complaint|suggestion|bug|data|other)$")
+    title: str = Field(min_length=2, max_length=120)
+    content: str = Field(min_length=5, max_length=2000)
+    contact: str | None = Field(default=None, max_length=160)
+    page_context: str | None = Field(default=None, max_length=80)
+
+
+class FeedbackAdminUpdateIn(BaseModel):
+    status: str = Field(pattern="^(pending|in_progress|resolved|closed)$")
+    admin_note: str | None = Field(default=None, max_length=2000)
+
+
+class FeedbackOut(BaseModel):
+    id: int
+    ticket_code: str
+    email: str
+    category: str
+    title: str
+    content: str
+    contact: str | None = None
+    page_context: str | None = None
+    status: str
+    admin_note: str | None = None
+    created_at: str
+    updated_at: str | None = None
+    resolved_at: str | None = None
+    handled_by: str | None = None
+
+
 class StockLookupOut(BaseModel):
     symbol: str
     name: str
@@ -63,9 +93,28 @@ class PortfolioAdviceOut(BaseModel):
     name: str
     weight: float
     suggested_target_weight: float
+    target_weight_low: float | None = None
+    target_weight_high: float | None = None
     weight_delta: float
     portfolio_action: str
     signal_action: str
+    holding_score: float | None = None
+    position_role: str | None = None
+    position_profile_key: str | None = None
+    position_profile_label: str | None = None
+    target_position_count: str | None = None
+    account_value_estimate: float | None = None
+    profile_max_single: float | None = None
+    retail_position_note: str | None = None
+    buy_initial_weight: float | None = None
+    buy_add_weight: float | None = None
+    buy_max_weight: float | None = None
+    stop_loss_pct: float | None = None
+    risk_per_trade_pct: float | None = None
+    trade_plan: dict[str, Any] | None = None
+    advice_type: str | None = None
+    action_rationale: str | None = None
+    upgrade_conditions: str | None = None
     price_factor_score: float | None = None
     latest_close: float | None = None
     cost_price: float | None = None
@@ -73,6 +122,9 @@ class PortfolioAdviceOut(BaseModel):
     shares: float | None = None
     trade_date: str | None = None
     risk_flags: str | None = None
+    stock_profile: str | None = None
+    stock_profile_label: str | None = None
+    profile_adjust_note: str | None = None
     turnover_rate: float | None = None
     alpha_score: float | None = None
     fundamental_quality_score: float | None = None
@@ -123,9 +175,57 @@ class RiskSummaryOut(BaseModel):
     max_single_weight: float
     reduce_count: int
     exit_count: int
+    strategy_clear_count: int = 0
     average_pnl_pct: float | None = None
     risk_level: str
     notes: list[str]
+
+
+class ManualTradePlanIn(BaseModel):
+    account_value: float = Field(gt=0)
+    available_cash: float = Field(default=0, ge=0)
+    min_trade_amount: float = Field(default=3000, ge=0)
+    lot_size: int = Field(default=100, ge=1, le=1000)
+
+
+class TradePlanReviewCreateIn(BaseModel):
+    symbol: str = Field(min_length=6, max_length=16)
+    name: str
+    plan_action: str
+    planned_quantity: float | None = Field(default=None, ge=0)
+    ideal_quantity: float | None = Field(default=None, ge=0)
+    target_weight: float | None = Field(default=None, ge=0, le=1)
+    entry_timing_score: float | None = Field(default=None, ge=0, le=100)
+    odds_ratio: float | None = Field(default=None, ge=0)
+    decision: str = Field(default="watch", pattern="^(accepted|watch|skipped)$")
+    plan_snapshot: dict[str, Any] | None = None
+
+
+class TradePlanReviewUpdateIn(BaseModel):
+    actual_action: str | None = None
+    actual_return_pct: float | None = None
+    review_note: str | None = None
+    status: str = Field(default="reviewed", pattern="^(open|reviewed|archived)$")
+
+
+class TradePlanReviewOut(BaseModel):
+    id: int
+    symbol: str
+    name: str
+    plan_action: str
+    planned_quantity: float | None = None
+    ideal_quantity: float | None = None
+    target_weight: float | None = None
+    entry_timing_score: float | None = None
+    odds_ratio: float | None = None
+    decision: str
+    actual_action: str | None = None
+    actual_return_pct: float | None = None
+    review_note: str | None = None
+    status: str
+    created_at: str
+    reviewed_at: str | None = None
+    plan_snapshot: dict[str, Any] | None = None
 
 
 class AdviceLogIn(BaseModel):

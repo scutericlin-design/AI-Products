@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from datetime import datetime
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -14,6 +12,7 @@ from app.schemas import WatchlistIn, WatchlistOut
 from app.services.audit import write_audit_log
 from app.services.portfolio_advice import build_watchlist_scores
 from app.services.score_refresh import ready_tushare_owner, run_tushare_pool_refresh
+from app.services.timezone import now_beijing_iso
 
 
 router = APIRouter(prefix="/api/watchlist", tags=["watchlist"])
@@ -45,7 +44,7 @@ def refresh_watchlist(user: User = Depends(require_feature("portfolio")), db: Se
             "message": "暂无观察股票，不需要刷新评分。",
             "rows": [],
             "model_version": MODEL_VERSION,
-            "refreshed_at": datetime.utcnow().isoformat(),
+            "refreshed_at": now_beijing_iso(),
         }
 
     config = get_or_create_config(user, db)
@@ -96,7 +95,7 @@ def refresh_watchlist(user: User = Depends(require_feature("portfolio")), db: Se
         "model_version": MODEL_VERSION,
         "message": message,
         "rows": build_watchlist_scores(items),
-        "refreshed_at": datetime.utcnow().isoformat(),
+        "refreshed_at": now_beijing_iso(),
         "stdout": stdout,
     }
 

@@ -19,6 +19,7 @@ from app.schemas import DataSourceConfigIn
 from app.security import decrypt_secret, encrypt_secret, mask_secret
 from app.services.audit import parse_audit_detail, write_audit_log
 from app.services.portfolio_advice import build_user_advice
+from app.services.timezone import beijing_iso
 
 
 router = APIRouter(prefix="/api/institutional", tags=["institutional"])
@@ -175,8 +176,8 @@ def serialize_source(config: DataSourceConfig | None, provider: str) -> dict[str
         "token_mask": config.token_mask if config else None,
         "base_url": config.base_url if config else None,
         "notes": config.notes if config else None,
-        "last_checked_at": config.last_checked_at.isoformat() if config and config.last_checked_at else None,
-        "updated_at": config.updated_at.isoformat() if config and config.updated_at else None,
+        "last_checked_at": beijing_iso(config.last_checked_at) if config else None,
+        "updated_at": beijing_iso(config.updated_at) if config else None,
     }
 
 
@@ -199,10 +200,8 @@ def serialize_source_with_platform(
                 "base_url": platform_config.base_url,
                 "priority": platform_config.priority,
                 "notes": "当前账号使用平台级 TuShare Pro 数据源，无需单独配置 Token。",
-                "last_checked_at": platform_config.last_checked_at.isoformat()
-                if platform_config.last_checked_at
-                else None,
-                "updated_at": platform_config.updated_at.isoformat() if platform_config.updated_at else None,
+                "last_checked_at": beijing_iso(platform_config.last_checked_at),
+                "updated_at": beijing_iso(platform_config.updated_at),
                 "using_platform_credential": True,
             }
         )
@@ -331,6 +330,7 @@ def portfolio_risk_review(user: User = Depends(current_user), db: Session = Depe
     low_score_weight = 0.0
     unscored_weight = 0.0
     reduce_weight = 0.0
+    reduce_actions = {"reduce", "trim_to_risk_budget", "reduce_light", "large_reduce", "strategy_clear", "hard_exit", "exit_or_strong_reduce"}
     hhi = 0.0
     for row in advice:
         weight = float(row.get("weight") or 0)
@@ -339,12 +339,12 @@ def portfolio_risk_review(user: User = Depends(current_user), db: Session = Depe
         board_exposure[board] = board_exposure.get(board, 0.0) + weight
         action = str(row.get("portfolio_action") or "unknown")
         action_exposure[action] = action_exposure.get(action, 0.0) + weight
-        score = row.get("price_factor_score")
+        score = row.get("holding_score") if row.get("holding_score") is not None else row.get("price_factor_score")
         if score is None:
             unscored_weight += weight
         elif float(score) < 50:
             low_score_weight += weight
-        if "reduce" in action:
+        if action in reduce_actions:
             reduce_weight += weight
 
     high_beta_board_weight = board_exposure.get("创业板", 0.0) + board_exposure.get("科创板", 0.0)
@@ -438,7 +438,7 @@ def model_governance(user: User = Depends(current_user), db: Session = Depends(g
     readiness_score = round(pass_count / len(gates) * 100)
     readiness = "research" if fail_count else "production_watch" if readiness_score < 90 else "production_candidate"
     return {
-        "model_version": "institutional_score_v6_adaptive_tushare",
+        "model_version": "institutional_score_v7_profile_adaptive_tushare",
         "readiness": readiness,
         "readiness_score": readiness_score,
         "gates": gates,
@@ -469,7 +469,7 @@ def audit_logs(user: User = Depends(current_user), db: Session = Depends(get_db)
                 "action": row.action,
                 "target": row.target,
                 "detail": parse_audit_detail(row),
-                "created_at": row.created_at.isoformat(),
+                "created_at": beijing_iso(row.created_at),
             }
             for row in rows
         ]

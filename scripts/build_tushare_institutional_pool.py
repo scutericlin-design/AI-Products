@@ -29,11 +29,11 @@ from app.services.data_cache import read_market_cache, write_market_cache
 DEFAULT_STRATEGY_TYPE = "short_elastic_2_8w"
 STRATEGY_PROFILES = {
     "short_elastic_2_8w": {
-        "model_version": "institutional_score_v6_short_adaptive_tushare",
+        "model_version": "institutional_score_v7_short_profile_adaptive_tushare",
         "label": "短期高弹性 2-8周",
     },
     "mid_long_quality_3_12m": {
-        "model_version": "institutional_score_v6_midlong_adaptive_tushare",
+        "model_version": "institutional_score_v7_midlong_profile_adaptive_tushare",
         "label": "中长期质量成长 3-12月",
     },
 }
@@ -125,6 +125,153 @@ MARKET_REGIME_PRESETS = {
         "weights": BASE_SCORE_WEIGHTS,
     },
 }
+STOCK_PROFILE_PRESETS = {
+    "small_elastic": {
+        "label": "小盘高弹性",
+        "note": "小盘弹性股不简单按大票流动性标准扣分，重点确认动量、换手和成交承接。",
+        "weight_delta": {
+            "short_elastic_2_8w": {
+                "alpha_score": 0.06,
+                "liquidity_capacity_score": 0.02,
+                "fundamental_quality_score": -0.04,
+                "valuation_sanity_score": -0.02,
+                "risk_control_score": -0.02,
+            },
+            "mid_long_quality_3_12m": {
+                "alpha_score": 0.03,
+                "liquidity_capacity_score": 0.01,
+                "fundamental_quality_score": -0.02,
+                "valuation_sanity_score": -0.01,
+                "risk_control_score": -0.01,
+            },
+        },
+        "threshold_adjust": -1.0,
+        "score_adjust": 1.8,
+        "liquidity_gate_delta": -5.0,
+        "risk_gate_delta": -2.0,
+        "data_gate_delta": -0.08,
+        "close_gate_delta": -5.0,
+        "amplitude_gate_delta": 2.0,
+        "penalty_scale": 0.88,
+        "max_action": "buy",
+    },
+    "mid_growth": {
+        "label": "中盘成长",
+        "note": "中盘成长股按均衡成长框架评分，兼顾趋势、质量和成交承接。",
+        "weight_delta": {},
+        "threshold_adjust": 0.0,
+        "score_adjust": 0.0,
+        "liquidity_gate_delta": 0.0,
+        "risk_gate_delta": 0.0,
+        "data_gate_delta": 0.0,
+        "close_gate_delta": 0.0,
+        "amplitude_gate_delta": 0.0,
+        "penalty_scale": 1.0,
+        "max_action": "buy",
+    },
+    "large_quality": {
+        "label": "大盘质量",
+        "note": "大盘质量股更看重基本面、估值和长期风险控制，降低追涨权重。",
+        "weight_delta": {
+            "short_elastic_2_8w": {
+                "alpha_score": -0.04,
+                "fundamental_quality_score": 0.04,
+                "valuation_sanity_score": 0.02,
+                "liquidity_capacity_score": -0.01,
+                "risk_control_score": -0.01,
+            },
+            "mid_long_quality_3_12m": {
+                "alpha_score": -0.04,
+                "fundamental_quality_score": 0.05,
+                "valuation_sanity_score": 0.03,
+                "liquidity_capacity_score": -0.02,
+                "risk_control_score": -0.02,
+            },
+        },
+        "threshold_adjust": 0.5,
+        "score_adjust": 0.6,
+        "liquidity_gate_delta": 0.0,
+        "risk_gate_delta": 2.0,
+        "data_gate_delta": 0.04,
+        "close_gate_delta": 0.0,
+        "amplitude_gate_delta": -1.0,
+        "penalty_scale": 1.0,
+        "max_action": "buy",
+    },
+    "high_vol_theme": {
+        "label": "高波动题材",
+        "note": "高波动题材保留弹性机会，但必须用更高风控、成交和收盘确认过滤。",
+        "weight_delta": {
+            "short_elastic_2_8w": {
+                "alpha_score": 0.03,
+                "fundamental_quality_score": -0.02,
+                "valuation_sanity_score": -0.01,
+                "liquidity_capacity_score": 0.01,
+                "risk_control_score": -0.01,
+            }
+        },
+        "threshold_adjust": 2.0,
+        "score_adjust": -1.0,
+        "liquidity_gate_delta": 2.0,
+        "risk_gate_delta": 6.0,
+        "data_gate_delta": 0.02,
+        "close_gate_delta": 5.0,
+        "amplitude_gate_delta": -1.0,
+        "penalty_scale": 1.12,
+        "max_action": "buy",
+    },
+    "low_liquidity_watch": {
+        "label": "低流动观察",
+        "note": "流动性和容量不足，不能进入核心买入，只能等待成交额和承接改善。",
+        "weight_delta": {
+            "short_elastic_2_8w": {
+                "alpha_score": 0.02,
+                "liquidity_capacity_score": 0.04,
+                "fundamental_quality_score": -0.02,
+                "valuation_sanity_score": -0.01,
+                "risk_control_score": -0.03,
+            }
+        },
+        "threshold_adjust": 3.0,
+        "score_adjust": -3.0,
+        "liquidity_gate_delta": 8.0,
+        "risk_gate_delta": 3.0,
+        "data_gate_delta": 0.0,
+        "close_gate_delta": 0.0,
+        "amplitude_gate_delta": -1.0,
+        "penalty_scale": 1.15,
+        "max_action": "watch",
+    },
+    "data_limited_growth": {
+        "label": "数据不足成长",
+        "note": "价格和成交表现较好但财务数据不足，降低数据惩罚，先进入观察而非直接归零。",
+        "weight_delta": {
+            "short_elastic_2_8w": {
+                "alpha_score": 0.06,
+                "liquidity_capacity_score": 0.02,
+                "fundamental_quality_score": -0.05,
+                "valuation_sanity_score": -0.02,
+                "risk_control_score": -0.01,
+            },
+            "mid_long_quality_3_12m": {
+                "alpha_score": 0.04,
+                "fundamental_quality_score": -0.04,
+                "valuation_sanity_score": -0.02,
+                "liquidity_capacity_score": 0.01,
+                "risk_control_score": 0.01,
+            },
+        },
+        "threshold_adjust": 1.0,
+        "score_adjust": 0.8,
+        "liquidity_gate_delta": -3.0,
+        "risk_gate_delta": 0.0,
+        "data_gate_delta": -0.12,
+        "close_gate_delta": -2.0,
+        "amplitude_gate_delta": 1.0,
+        "penalty_scale": 0.82,
+        "max_action": "watch",
+    },
+}
 RAW_TUSHARE_DIR = PROJECT_ROOT / "data" / "tushare"
 DAILY_DIR = RAW_TUSHARE_DIR / "daily"
 DAILY_BASIC_DIR = RAW_TUSHARE_DIR / "daily_basic"
@@ -187,6 +334,81 @@ def normalize_strategy_params(params: dict[str, object], args: argparse.Namespac
     ]:
         merged[key] = float(merged[key])
     return merged
+
+
+def normalize_weights(weights: dict[str, float]) -> dict[str, float]:
+    cleaned = {key: max(0.04, float(value)) for key, value in weights.items()}
+    total = sum(cleaned.values())
+    if total <= 0:
+        return dict(BASE_SCORE_WEIGHTS[DEFAULT_STRATEGY_TYPE])
+    return {key: value / total for key, value in cleaned.items()}
+
+
+def stock_profile_for_row(row: pd.Series, min_amount_yi: float) -> str:
+    circ_mv = _safe_float(row.get("circ_mv_yi"), 0.0)
+    total_mv = _safe_float(row.get("total_mv_yi"), 0.0)
+    amount20 = _safe_float(row.get("amount_ma20_yi"), 0.0)
+    turnover = _safe_float(row.get("turnover_rate"), 0.0)
+    volatility = _safe_float(row.get("volatility_60d"), 0.0)
+    alpha = _safe_float(row.get("alpha_score"), 0.0)
+    quality = _safe_float(row.get("fundamental_quality_score"), 0.0)
+    risk = _safe_float(row.get("risk_control_score"), 0.0)
+    financial_data = _safe_float(row.get("financial_data_score"), 1.0)
+    board = str(row.get("board") or "")
+
+    if amount20 < max(min_amount_yi * 1.35, 1.0):
+        return "low_liquidity_watch"
+    if financial_data < 0.65 and alpha >= 58 and amount20 >= min_amount_yi:
+        return "data_limited_growth"
+    if (volatility >= 0.055 or turnover >= 10.0 or board in {"创业板", "科创板"}) and alpha >= 60:
+        return "high_vol_theme"
+    if (0 < circ_mv <= 180 or 0 < total_mv <= 260) and turnover >= 2.0 and alpha >= 56:
+        return "small_elastic"
+    if circ_mv >= 700 or total_mv >= 1200:
+        if quality >= 55 or risk >= 60:
+            return "large_quality"
+    return "mid_growth"
+
+
+def apply_stock_profiles(latest: pd.DataFrame, strategy_type: str, base_weights: dict[str, float], min_amount_yi: float) -> pd.DataFrame:
+    latest = latest.copy()
+    latest["stock_profile"] = latest.apply(lambda row: stock_profile_for_row(row, min_amount_yi), axis=1)
+    latest["stock_profile_label"] = latest["stock_profile"].map(
+        lambda key: STOCK_PROFILE_PRESETS.get(key, STOCK_PROFILE_PRESETS["mid_growth"])["label"]
+    )
+    latest["profile_adjust_note"] = latest["stock_profile"].map(
+        lambda key: STOCK_PROFILE_PRESETS.get(key, STOCK_PROFILE_PRESETS["mid_growth"])["note"]
+    )
+
+    for key in [
+        "threshold_adjust",
+        "score_adjust",
+        "liquidity_gate_delta",
+        "risk_gate_delta",
+        "data_gate_delta",
+        "close_gate_delta",
+        "amplitude_gate_delta",
+        "penalty_scale",
+    ]:
+        latest[f"profile_{key}"] = latest["stock_profile"].map(
+            lambda profile_key, item=key: float(
+                STOCK_PROFILE_PRESETS.get(profile_key, STOCK_PROFILE_PRESETS["mid_growth"]).get(item, 0.0 if item != "penalty_scale" else 1.0)
+            )
+        )
+    latest["profile_max_action"] = latest["stock_profile"].map(
+        lambda key: STOCK_PROFILE_PRESETS.get(key, STOCK_PROFILE_PRESETS["mid_growth"]).get("max_action", "buy")
+    )
+
+    weight_rows: list[dict[str, float]] = []
+    for profile_key in latest["stock_profile"]:
+        preset = STOCK_PROFILE_PRESETS.get(profile_key, STOCK_PROFILE_PRESETS["mid_growth"])
+        deltas = (preset.get("weight_delta") or {}).get(strategy_type, {})
+        weights = {key: base_weights[key] + float(deltas.get(key, 0.0)) for key in base_weights}
+        weight_rows.append(normalize_weights(weights))
+    weight_frame = pd.DataFrame(weight_rows, index=latest.index)
+    for column in base_weights:
+        latest[f"profile_weight_{column}"] = weight_frame[column]
+    return latest
 
 
 def load_strategy_param_map(args: argparse.Namespace, strategy_types: list[str]) -> dict[str, dict[str, object]]:
@@ -768,14 +990,26 @@ def build_latest_scores(
             + 5 * clipped(latest["close_vs_ma60"], 0.35, 0.75).fillna(0)
             + 4 * (1 - latest["valuation_sanity_score"] / 100)
         ).clip(0, 30).round(2)
+    latest = apply_stock_profiles(latest, strategy_type, score_weights, min_amount_yi)
+    latest["effective_buy_score_threshold"] = (
+        effective_buy_score_threshold + latest["profile_threshold_adjust"]
+    ).round(2)
+    latest["profile_alpha_gate"] = (56.0 if is_mid_long else 62.0) + latest["profile_threshold_adjust"].clip(-2.0, 4.0)
+    latest["profile_liquidity_gate"] = ((50.0 if is_mid_long else 55.0) + latest["profile_liquidity_gate_delta"]).clip(42.0, 68.0)
+    latest["profile_risk_gate"] = ((60.0 if is_mid_long else 55.0) + latest["profile_risk_gate_delta"]).clip(50.0, 72.0)
+    latest["profile_data_gate"] = ((0.75 if is_mid_long else 0.55) + latest["profile_data_gate_delta"]).clip(0.45, 0.90)
+    latest["profile_close_position_gate"] = (min_close_position_pct + latest["profile_close_gate_delta"]).clip(35.0, 80.0)
+    latest["profile_amplitude_gate"] = (max_amplitude_pct + latest["profile_amplitude_gate_delta"]).clip(7.0, 18.0)
+
     latest["raw_institutional_score"] = (
         (
-            score_weights["alpha_score"] * latest["alpha_score"]
-            + score_weights["fundamental_quality_score"] * latest["fundamental_quality_score"]
-            + score_weights["valuation_sanity_score"] * latest["valuation_sanity_score"]
-            + score_weights["liquidity_capacity_score"] * latest["liquidity_capacity_score"]
-            + score_weights["risk_control_score"] * latest["risk_control_score"]
+            latest["profile_weight_alpha_score"] * latest["alpha_score"]
+            + latest["profile_weight_fundamental_quality_score"] * latest["fundamental_quality_score"]
+            + latest["profile_weight_valuation_sanity_score"] * latest["valuation_sanity_score"]
+            + latest["profile_weight_liquidity_capacity_score"] * latest["liquidity_capacity_score"]
+            + latest["profile_weight_risk_control_score"] * latest["risk_control_score"]
             - latest["crowding_penalty"]
+            + latest["profile_score_adjust"]
         )
         * ((0.86 + 0.14 * latest["data_completeness"]) if is_mid_long else (0.90 + 0.10 * latest["data_completeness"]))
     ).round(2)
@@ -809,25 +1043,25 @@ def build_latest_scores(
             items.append("long_trend_gate")
         if row["pct_chg"] <= -9.7:
             items.append("limit_down_or_stress")
-        if not is_mid_long and row["intraday_position_pct"] < min_close_position_pct:
+        if not is_mid_long and row["intraday_position_pct"] < row["profile_close_position_gate"]:
             items.append("weak_close_position")
-        if row["amplitude_pct_display"] > max_amplitude_pct:
+        if row["amplitude_pct_display"] > row["profile_amplitude_gate"]:
             items.append("wide_intraday_amplitude")
         if row["amount_ma20_yi"] < min_amount_yi * 1.5:
             items.append("liquidity_watch")
-        if row["alpha_score"] < 55:
+        if row["alpha_score"] < max(52.0, row["profile_alpha_gate"] - 7.0):
             items.append("weak_price_alpha")
-        elif row["alpha_score"] < 62:
+        elif row["alpha_score"] < row["profile_alpha_gate"]:
             items.append("alpha_buy_gate")
-        if row["liquidity_capacity_score"] < 55:
+        if row["liquidity_capacity_score"] < row["profile_liquidity_gate"]:
             items.append("liquidity_buy_gate")
-        if row["risk_control_score"] < 55:
+        if row["risk_control_score"] < row["profile_risk_gate"]:
             items.append("risk_score_gate")
-        if row["data_completeness"] < 0.55:
+        if row["data_completeness"] < row["profile_data_gate"]:
             items.append("data_completeness_gate")
-        if is_mid_long and row["fundamental_quality_score"] < 60:
+        if is_mid_long and row["fundamental_quality_score"] < (58 if row["stock_profile"] in {"small_elastic", "data_limited_growth"} else 60):
             items.append("quality_buy_gate")
-        if is_mid_long and row["valuation_sanity_score"] < 42:
+        if is_mid_long and row["valuation_sanity_score"] < (38 if row["stock_profile"] in {"small_elastic", "data_limited_growth"} else 42):
             items.append("valuation_buy_gate")
         if is_mid_long and row["financial_data_score"] < 0.75:
             items.append("midlong_financial_data_gate")
@@ -869,23 +1103,24 @@ def build_latest_scores(
             sum(penalty for flag, penalty in penalty_rules.items() if flag in str(value).split("|")),
         )
     )
+    latest["gate_penalty_score"] = (latest["gate_penalty_score"] * latest["profile_penalty_scale"]).clip(0, 18).round(2)
     latest["price_factor_score"] = (latest["price_factor_score"] - latest["gate_penalty_score"]).clip(0, 100).round(2)
     latest["action"] = "avoid"
     if is_mid_long:
         latest.loc[latest["price_factor_score"] >= 62, "action"] = "watch"
         latest.loc[
-            (latest["price_factor_score"] >= effective_buy_score_threshold)
-            & (latest["alpha_score"] >= 56)
-            & (latest["fundamental_quality_score"] >= 60)
-            & (latest["valuation_sanity_score"] >= 42)
-            & (latest["liquidity_capacity_score"] >= 50)
-            & (latest["risk_control_score"] >= 60)
-            & (latest["financial_data_score"] >= 0.75)
-            & (latest["data_completeness"] >= 0.75)
+            (latest["price_factor_score"] >= latest["effective_buy_score_threshold"])
+            & (latest["alpha_score"] >= latest["profile_alpha_gate"])
+            & (latest["fundamental_quality_score"] >= latest["stock_profile"].map(lambda key: 58 if key in {"small_elastic", "data_limited_growth"} else 60))
+            & (latest["valuation_sanity_score"] >= latest["stock_profile"].map(lambda key: 38 if key in {"small_elastic", "data_limited_growth"} else 42))
+            & (latest["liquidity_capacity_score"] >= latest["profile_liquidity_gate"])
+            & (latest["risk_control_score"] >= latest["profile_risk_gate"])
+            & (latest["financial_data_score"] >= latest["stock_profile"].map(lambda key: 0.62 if key in {"small_elastic", "data_limited_growth"} else 0.75))
+            & (latest["data_completeness"] >= latest["profile_data_gate"])
             & (latest["close_vs_ma60"] >= -0.04)
             & (latest["close_vs_ma120"] >= -0.08)
             & (latest["pct_chg"] < max_pct_change)
-            & (latest["amplitude_pct_display"] <= max_amplitude_pct)
+            & (latest["amplitude_pct_display"] <= latest["profile_amplitude_gate"])
             & ~latest["risk_flags"].str.contains(
                 "limit_up_or_hard_to_buy|limit_down_or_stress|new_stock_watch|wide_intraday_amplitude|midlong_trend_gate|long_trend_gate",
                 na=False,
@@ -895,21 +1130,56 @@ def build_latest_scores(
     else:
         latest.loc[latest["price_factor_score"] >= 60, "action"] = "watch"
         latest.loc[
-            (latest["price_factor_score"] >= effective_buy_score_threshold)
-            & (latest["alpha_score"] >= 62)
-            & (latest["liquidity_capacity_score"] >= 55)
-            & (latest["risk_control_score"] >= 55)
-            & (latest["data_completeness"] >= 0.55)
+            (latest["price_factor_score"] >= latest["effective_buy_score_threshold"])
+            & (latest["alpha_score"] >= latest["profile_alpha_gate"])
+            & (latest["liquidity_capacity_score"] >= latest["profile_liquidity_gate"])
+            & (latest["risk_control_score"] >= latest["profile_risk_gate"])
+            & (latest["data_completeness"] >= latest["profile_data_gate"])
             & (latest["pct_chg"] >= min_pct_change)
             & (latest["pct_chg"] < max_pct_change)
-            & (latest["intraday_position_pct"] >= min_close_position_pct)
-            & (latest["amplitude_pct_display"] <= max_amplitude_pct)
+            & (latest["intraday_position_pct"] >= latest["profile_close_position_gate"])
+            & (latest["amplitude_pct_display"] <= latest["profile_amplitude_gate"])
             & ~latest["risk_flags"].str.contains(
                 "limit_up_or_hard_to_buy|limit_down_or_stress|new_stock_watch|weak_close_position|wide_intraday_amplitude",
                 na=False,
             ),
             "action",
         ] = "buy"
+        trial_buy_flags = (
+            "limit_up_or_hard_to_buy|limit_down_or_stress|new_stock_watch|"
+            "weak_close_position|wide_intraday_amplitude|weak_price_alpha|"
+            "liquidity_buy_gate|risk_score_gate|data_completeness_gate"
+        )
+        latest.loc[
+            (latest["action"] == "watch")
+            & (latest["price_factor_score"] >= latest["effective_buy_score_threshold"] - 8.5)
+            & (latest["price_factor_score"] >= 74.5)
+            & (latest["alpha_score"] >= 62.0)
+            & (latest["liquidity_capacity_score"] >= 60.0)
+            & (latest["risk_control_score"] >= 65.0)
+            & (latest["data_completeness"] >= 0.75)
+            & (latest["pct_chg"] >= min_pct_change)
+            & (latest["pct_chg"] < max_pct_change)
+            & (latest["intraday_position_pct"] >= 60.0)
+            & (latest["amplitude_pct_display"] <= max_amplitude_pct)
+            & (latest["gate_penalty_score"] <= 3.6)
+            & ~latest["risk_flags"].str.contains(trial_buy_flags, na=False),
+            "action",
+        ] = "trial_buy"
+        trial_idx = latest.index[latest["action"].eq("trial_buy")]
+        if len(trial_idx) > 3:
+            keep_trial_idx = (
+                latest.loc[trial_idx]
+                .sort_values(
+                    ["price_factor_score", "risk_control_score", "liquidity_capacity_score"],
+                    ascending=[False, False, False],
+                )
+                .head(3)
+                .index
+            )
+            latest.loc[trial_idx.difference(keep_trial_idx), "action"] = "watch"
+    latest.loc[(latest["profile_max_action"] == "watch") & (latest["action"] == "buy"), "action"] = "watch"
+    latest.loc[(latest["profile_max_action"] == "watch") & (latest["action"] == "trial_buy"), "action"] = "watch"
 
     latest["confidence"] = "low"
     medium_data_gate = 0.70 if is_mid_long else 0.55
@@ -917,7 +1187,7 @@ def build_latest_scores(
     if is_mid_long:
         latest.loc[
             (latest["action"] == "buy")
-            & (latest["price_factor_score"] >= effective_buy_score_threshold + 4)
+            & (latest["price_factor_score"] >= latest["effective_buy_score_threshold"] + 4)
             & (latest["fundamental_quality_score"] >= 68)
             & (latest["valuation_sanity_score"] >= 50)
             & (latest["risk_control_score"] >= 66)
@@ -927,7 +1197,7 @@ def build_latest_scores(
     else:
         latest.loc[
             (latest["action"] == "buy")
-            & (latest["price_factor_score"] >= effective_buy_score_threshold + 5)
+            & (latest["price_factor_score"] >= latest["effective_buy_score_threshold"] + 5)
             & (latest["fundamental_quality_score"] >= 58)
             & (latest["risk_control_score"] >= 65)
             & (latest["data_completeness"] >= 0.75),
@@ -935,11 +1205,12 @@ def build_latest_scores(
         ] = "high"
     latest["target_weight"] = 0.0
     latest.loc[latest["action"] == "buy", "target_weight"] = target_weight
+    latest.loc[latest["action"] == "trial_buy", "target_weight"] = target_weight * 0.60
     latest.loc[(latest["action"] == "buy") & (latest["confidence"] == "medium"), "target_weight"] = target_weight * 0.75
     latest.loc[(latest["action"] == "buy") & (latest["confidence"] == "low"), "target_weight"] = target_weight * 0.45
     latest["target_weight"] = latest["target_weight"].round(4)
     latest["recommendation_tier"] = latest["action"].map(
-        {"buy": "core_candidate", "watch": "watch_candidate", "avoid": "avoid"}
+        {"buy": "core_candidate", "trial_buy": "starter_candidate", "watch": "watch_candidate", "avoid": "avoid"}
     )
     latest.loc[latest["confidence"] == "high", "recommendation_tier"] = "high_conviction"
     latest["model_version"] = model_version
@@ -953,25 +1224,25 @@ def build_latest_scores(
     latest["market_amount_trend"] = float(market_regime.get("amount_trend") or 0)
     latest["market_volatility_20d"] = float(market_regime.get("median_volatility_20d") or 0)
     latest["adaptive_note"] = str(market_regime.get("note") or "")
-    latest["effective_buy_score_threshold"] = round(effective_buy_score_threshold, 2)
-    latest["score_weight_alpha"] = score_weights["alpha_score"]
-    latest["score_weight_fundamental"] = score_weights["fundamental_quality_score"]
-    latest["score_weight_valuation"] = score_weights["valuation_sanity_score"]
-    latest["score_weight_liquidity"] = score_weights["liquidity_capacity_score"]
-    latest["score_weight_risk"] = score_weights["risk_control_score"]
+    latest["score_weight_alpha"] = latest["profile_weight_alpha_score"].round(4)
+    latest["score_weight_fundamental"] = latest["profile_weight_fundamental_quality_score"].round(4)
+    latest["score_weight_valuation"] = latest["profile_weight_valuation_sanity_score"].round(4)
+    latest["score_weight_liquidity"] = latest["profile_weight_liquidity_capacity_score"].round(4)
+    latest["score_weight_risk"] = latest["profile_weight_risk_control_score"].round(4)
     latest["trade_date"] = pd.to_datetime(latest["trade_date"], format="%Y%m%d").dt.date.astype(str)
     latest["source_time"] = "tushare_proxy"
     latest["review_required"] = True
     latest["reason"] = latest.apply(
         lambda row: (
             f"{strategy_label}；综合评分 {row['price_factor_score']:.1f}；"
+            f"个股画像 {row['stock_profile_label']}，{row['profile_adjust_note']}；"
             f"市场风格 {row['market_regime_label']}，{row['adaptive_note']}；"
             f"20日动量 {row['momentum_20d']:.2%}；60日动量 {row['momentum_60d']:.2%}；"
             f"20日成交 {row['amount_ma20_yi']:.2f}亿；换手 {row['turnover_rate'] if pd.notna(row['turnover_rate']) else '--'}%；"
             f"PE_TTM {row['pe_ttm'] if pd.notna(row['pe_ttm']) else '--'}；"
             f"ROE {row['roe_dt'] if pd.notna(row['roe_dt']) else '--'}；"
             f"门禁扣分 {row['gate_penalty_score']:.1f}；"
-            f"{'核心候选' if row['action'] == 'buy' else '观察候选' if row['action'] == 'watch' else '暂不入池'}"
+            f"{'核心候选' if row['action'] == 'buy' else '试仓候选' if row['action'] == 'trial_buy' else '观察候选' if row['action'] == 'watch' else '暂不入池'}"
         ),
         axis=1,
     )
@@ -990,6 +1261,12 @@ def build_latest_scores(
         "model_version",
         "strategy_type",
         "strategy_label",
+        "stock_profile",
+        "stock_profile_label",
+        "profile_adjust_note",
+        "profile_score_adjust",
+        "profile_penalty_scale",
+        "profile_max_action",
         "market_regime_key",
         "market_regime_label",
         "market_breadth_20d",
@@ -1064,8 +1341,8 @@ def build_latest_scores(
     all_scored = latest.sort_values("price_factor_score", ascending=False).copy()
     all_scored["pool_rank"] = range(1, len(all_scored) + 1)
 
-    ranked = all_scored[all_scored["action"].isin(["buy", "watch"])].copy()
-    ranked["action_sort"] = ranked["action"].map({"buy": 0, "watch": 1}).fillna(2)
+    ranked = all_scored[all_scored["action"].isin(["buy", "trial_buy", "watch"])].copy()
+    ranked["action_sort"] = ranked["action"].map({"buy": 0, "trial_buy": 1, "watch": 2}).fillna(3)
     ranked["confidence_sort"] = ranked["confidence"].map({"high": 0, "medium": 1, "low": 2}).fillna(3)
     ranked = ranked.sort_values(
         ["action_sort", "confidence_sort", "price_factor_score", "risk_control_score"],

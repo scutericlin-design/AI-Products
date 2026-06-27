@@ -12,6 +12,7 @@ from app.models import PlanUpgradeRequest, User
 from app.schemas import PlanUpgradeRequestIn
 from app.services.audit import write_audit_log
 from app.services.platform_settings import is_billing_enabled
+from app.services.timezone import beijing_iso
 
 
 router = APIRouter(prefix="/api/billing", tags=["billing"])
@@ -43,8 +44,8 @@ def serialize_upgrade_request(item: PlanUpgradeRequest) -> dict[str, Any]:
         "billing_cycle": item.billing_cycle,
         "amount_cny": item.amount_cny,
         "status": item.status,
-        "requested_at": item.requested_at.isoformat() if item.requested_at else None,
-        "decided_at": item.decided_at.isoformat() if item.decided_at else None,
+        "requested_at": beijing_iso(item.requested_at),
+        "decided_at": beijing_iso(item.decided_at),
         "decision_note": item.decision_note,
     }
 

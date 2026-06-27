@@ -8,3 +8,4 @@ pydantic-settings
 email-validator
 requests
 tushare
+APScheduler

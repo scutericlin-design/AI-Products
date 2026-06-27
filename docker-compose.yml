@@ -7,3 +7,13 @@ services:
       - .env
     volumes:
       - ./data:/app/data
+
+  trading-engine:
+    build: .
+    command: ["python", "-m", "app.trading"]
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - web

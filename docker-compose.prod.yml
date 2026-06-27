@@ -15,9 +15,28 @@ services:
       retries: 3
       start_period: 20s
 
+  trading-engine:
+    build: .
+    restart: unless-stopped
+    command: ["python", "-m", "app.trading"]
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - web
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.trading.healthcheck"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
   caddy:
     image: caddy:2.8-alpine
     restart: unless-stopped
+    env_file:
+      - .env
     depends_on:
       - web
     ports:

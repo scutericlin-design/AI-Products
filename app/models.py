@@ -25,6 +25,12 @@ class User(Base):
     positions: Mapped[list["PortfolioPosition"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     watchlist: Mapped[list["WatchlistItem"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     advice_logs: Mapped[list["AdviceLog"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    trade_plan_reviews: Mapped[list["TradePlanReview"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    feedback_items: Mapped[list["FeedbackItem"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+        foreign_keys="FeedbackItem.user_id",
+    )
     strategy_config: Mapped["StrategyConfig | None"] = relationship(back_populates="user", cascade="all, delete-orphan")
     strategy_versions: Mapped[list["StrategyVersion"]] = relationship(back_populates="user", cascade="all, delete-orphan")
     export_requests: Mapped[list["DataExportRequest"]] = relationship(
@@ -97,12 +103,58 @@ class AdviceLog(Base):
     user: Mapped[User] = relationship(back_populates="advice_logs")
 
 
+class TradePlanReview(Base):
+    __tablename__ = "trade_plan_reviews"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    symbol: Mapped[str] = mapped_column(String(16), index=True)
+    name: Mapped[str] = mapped_column(String(128))
+    plan_action: Mapped[str] = mapped_column(String(64), index=True)
+    planned_quantity: Mapped[float | None] = mapped_column(Float, nullable=True)
+    ideal_quantity: Mapped[float | None] = mapped_column(Float, nullable=True)
+    target_weight: Mapped[float | None] = mapped_column(Float, nullable=True)
+    entry_timing_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    odds_ratio: Mapped[float | None] = mapped_column(Float, nullable=True)
+    decision: Mapped[str] = mapped_column(String(32), default="watch", index=True)
+    actual_action: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    actual_return_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    review_note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[str] = mapped_column(String(32), default="open", index=True)
+    plan_snapshot_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+    reviewed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    user: Mapped[User] = relationship(back_populates="trade_plan_reviews")
+
+
+class FeedbackItem(Base):
+    __tablename__ = "feedback_items"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    ticket_code: Mapped[str | None] = mapped_column(String(32), unique=True, index=True, nullable=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    category: Mapped[str] = mapped_column(String(32), default="suggestion", index=True)
+    title: Mapped[str] = mapped_column(String(160))
+    content: Mapped[str] = mapped_column(Text)
+    contact: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    page_context: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    status: Mapped[str] = mapped_column(String(32), default="pending", index=True)
+    admin_note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    handled_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
+    resolved_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    user: Mapped[User] = relationship(back_populates="feedback_items", foreign_keys=[user_id])
+
+
 class StrategyConfig(Base):
     __tablename__ = "strategy_configs"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), unique=True, index=True)
-    model_version: Mapped[str] = mapped_column(String(64), default="institutional_score_v6_short_adaptive_tushare")
+    model_version: Mapped[str] = mapped_column(String(64), default="institutional_score_v7_short_profile_adaptive_tushare")
     strategy_type: Mapped[str] = mapped_column(String(64), default="short_elastic_2_8w")
     pool_limit: Mapped[int] = mapped_column(Integer, default=30)
     min_amount_yi: Mapped[float] = mapped_column(Float, default=3.0)
@@ -213,6 +265,54 @@ class UsageLog(Base):
     response_bytes: Mapped[int] = mapped_column(Integer, default=0)
     client_host: Mapped[str | None] = mapped_column(String(96), nullable=True)
     user_agent: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+
+
+class TradingEngineRun(Base):
+    __tablename__ = "trading_engine_runs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    cycle_id: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    trigger_source: Mapped[str] = mapped_column(String(32), default="scheduler", index=True)
+    status: Mapped[str] = mapped_column(String(32), default="running", index=True)
+    market_phase: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    quote_count: Mapped[int] = mapped_column(Integer, default=0)
+    leader_count: Mapped[int] = mapped_column(Integer, default=0)
+    decision_count: Mapped[int] = mapped_column(Integer, default=0)
+    push_status: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    error_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    payload_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    started_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
+class TradingDecisionLog(Base):
+    __tablename__ = "trading_decision_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    cycle_id: Mapped[str] = mapped_column(String(64), index=True)
+    symbol: Mapped[str] = mapped_column(String(16), index=True)
+    name: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    action: Mapped[str] = mapped_column(String(32), index=True)
+    confidence: Mapped[float] = mapped_column(Float, default=0)
+    target_weight: Mapped[float] = mapped_column(Float, default=0)
+    risk_level: Mapped[str] = mapped_column(String(32), default="normal", index=True)
+    reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    risk_flags: Mapped[str | None] = mapped_column(Text, nullable=True)
+    payload_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+
+
+class TradingPushLog(Base):
+    __tablename__ = "trading_push_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    cycle_id: Mapped[str] = mapped_column(String(64), index=True)
+    channel: Mapped[str] = mapped_column(String(32), default="feishu", index=True)
+    status: Mapped[str] = mapped_column(String(32), index=True)
+    response_code: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    response_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    payload_json: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
 
 

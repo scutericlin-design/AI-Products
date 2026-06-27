@@ -15,12 +15,14 @@ PLAN_FEATURES: dict[str, dict[str, bool]] = {
     "free": {
         "system_pool": True,
         "portfolio": True,
+        "optimal_trade_plan": False,
         "backtest": False,
         "data_export": False,
     },
     "pro": {
         "system_pool": True,
         "portfolio": True,
+        "optimal_trade_plan": False,
         "backtest": True,
         "data_export": True,
     },
@@ -51,10 +53,8 @@ def current_admin(user: User = Depends(current_user)) -> User:
 
 def user_feature_flags(user: User, billing_enabled: bool | None = None) -> dict[str, bool]:
     billing_enabled = getattr(user, "_billing_enabled", False) if billing_enabled is None else billing_enabled
-    if not billing_enabled:
-        return dict(PLAN_FEATURES["pro"])
     plan = getattr(user, "plan", "free") or "free"
-    defaults = dict(PLAN_FEATURES.get(plan, PLAN_FEATURES["free"]))
+    defaults = dict(PLAN_FEATURES["pro"] if not billing_enabled else PLAN_FEATURES.get(plan, PLAN_FEATURES["free"]))
     raw = getattr(user, "feature_flags_json", None)
     if raw:
         try:

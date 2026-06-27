@@ -20,7 +20,7 @@
       color: var(--text-primary);
       font: var(--body);
     }
-    button, input, select { font: inherit; }
+    button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
     .app {
       min-height: 100vh;
@@ -236,6 +236,8 @@
     .tag.long { border-color: color-mix(in oklab, var(--accent-long), transparent 30%); color: color-mix(in oklab, var(--accent-long), black 28%); }
     .tag.warn { border-color: color-mix(in oklab, var(--accent-warn), transparent 35%); color: color-mix(in oklab, var(--accent-warn), black 35%); }
     .tag.risk { border-color: color-mix(in oklab, var(--accent-risk), transparent 30%); color: var(--accent-risk); }
+    .tag.market-up { border-color: color-mix(in oklab, var(--accent-risk), transparent 28%); color: var(--accent-risk); background: color-mix(in oklab, var(--accent-risk), transparent 92%); }
+    .tag.market-down { border-color: color-mix(in oklab, var(--accent-long), transparent 28%); color: color-mix(in oklab, var(--accent-long), black 28%); background: color-mix(in oklab, var(--accent-long), transparent 92%); }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -367,13 +369,19 @@
       width: auto;
       margin: 0;
     }
-    input, select {
+    input, select, textarea {
       min-height: 40px;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       padding: 0 10px;
       background: white;
       color: var(--text-primary);
+    }
+    textarea {
+      min-height: 128px;
+      padding: 10px;
+      resize: vertical;
+      line-height: 1.55;
     }
     .result {
       margin: 0 14px 14px;
@@ -447,6 +455,7 @@
     }
     .holding-card h4 { margin: 0; font: var(--h3); }
     .holding-card strong { font: 700 24px/1 var(--font-display); }
+    .holding-card strong small { font: var(--small); color: var(--text-secondary); }
     .holding-card small { color: var(--text-secondary); }
     .pool-grid {
       display: grid;
@@ -903,6 +912,7 @@
     }
     .advice-summary-side {
       min-width: 0;
+      grid-column: 1 / -1;
       display: grid;
       gap: 5px;
     }
@@ -929,6 +939,182 @@
       line-height: 1.3;
       padding: 3px 8px;
       max-width: 100%;
+    }
+    .advice-plan-strip {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .advice-plan-strip span,
+    .report-plan-grid div {
+      min-width: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: color-mix(in oklab, var(--paper-050), white 22%);
+      padding: 8px 9px;
+      display: grid;
+      gap: 3px;
+    }
+    .advice-plan-strip small,
+    .report-plan-grid span,
+    .report-plan-grid small {
+      color: var(--text-secondary);
+      font-size: 11px;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+    .advice-plan-strip strong,
+    .report-plan-grid strong {
+      font: var(--mono);
+      color: var(--text-primary);
+      overflow-wrap: anywhere;
+    }
+    .manual-trade-panel {
+      display: none;
+    }
+    .manual-plan-summary {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .manual-plan-table td {
+      vertical-align: top;
+    }
+    .manual-plan-table th:nth-child(1),
+    .manual-plan-table td:nth-child(1) { width: 8%; }
+    .manual-plan-table th:nth-child(2),
+    .manual-plan-table td:nth-child(2) { width: 14%; }
+    .manual-plan-table th:nth-child(3),
+    .manual-plan-table td:nth-child(3) { width: 14%; }
+    .manual-plan-table th:nth-child(4),
+    .manual-plan-table td:nth-child(4) { width: 14%; }
+    .manual-plan-table th:nth-child(5),
+    .manual-plan-table td:nth-child(5) { width: 10%; }
+    .manual-plan-table th:nth-child(6),
+    .manual-plan-table td:nth-child(6) { width: 12%; }
+    .manual-plan-table th:nth-child(7),
+    .manual-plan-table td:nth-child(7) { width: 28%; }
+    .manual-plan-table small {
+      display: block;
+      color: var(--text-secondary);
+      line-height: 1.35;
+      margin-top: 3px;
+    }
+    .manual-plan-table .money {
+      font: var(--mono);
+      white-space: nowrap;
+    }
+    .manual-plan-table .trade-buy { color: var(--accent-risk); }
+    .manual-plan-table .trade-sell { color: var(--accent-long); }
+    .trade-chipline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 5px;
+    }
+    .trade-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .trade-mini-grid span {
+      min-width: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 5px 6px;
+      color: var(--text-secondary);
+      font-size: 11px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    .trade-mini-grid strong {
+      display: block;
+      color: var(--text-primary);
+      font: var(--mono);
+      margin-top: 2px;
+    }
+    .trade-review-detail {
+      margin-top: 7px;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 7px;
+    }
+    .trade-review-detail summary {
+      cursor: pointer;
+      list-style: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .trade-review-detail summary::-webkit-details-marker { display: none; }
+    .trade-review-detail summary::after {
+      content: "展开";
+      margin-left: 8px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .trade-review-detail[open] summary::after { content: "收起"; }
+    .trade-review-detail p {
+      margin: 6px 0 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .battle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding: 0 14px 14px;
+    }
+    .battle-card {
+      min-width: 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      background: color-mix(in oklab, var(--paper-050), white 20%);
+      display: grid;
+      gap: 7px;
+      align-content: start;
+    }
+    .battle-card h4 {
+      margin: 0;
+      font: var(--h3);
+    }
+    .battle-card p,
+    .battle-card small {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .battle-list {
+      display: grid;
+      gap: 7px;
+    }
+    .battle-row {
+      display: grid;
+      grid-template-columns: minmax(92px, .7fr) minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 7px;
+      font-size: 12px;
+    }
+    .battle-row strong { overflow-wrap: anywhere; }
+    .battle-row small {
+      display: block;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+    .review-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .review-actions button {
+      min-height: 30px;
+      padding: 0 8px;
+      font-size: 12px;
     }
     .advice-matrix .accept-advice {
       min-height: 44px;
@@ -1000,6 +1186,22 @@
       grid-template-columns: repeat(2, minmax(180px, 1fr));
       gap: 8px;
       margin: 10px 0;
+    }
+    .report-plan-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(140px, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .report-plan-copy {
+      display: grid;
+      gap: 6px;
+      margin: 10px 0;
+    }
+    .report-plan-copy p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.5;
     }
     .strategy-detail-grid {
       display: grid;
@@ -1086,6 +1288,7 @@
       padding: 14px;
     }
     .exposure-item {
+      min-width: 0;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       padding: 10px;
@@ -1097,12 +1300,61 @@
       font-size: 12px;
       margin-bottom: 6px;
     }
+    .exposure-item strong {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      line-height: 1.35;
+    }
     .advice-note {
       margin: 0;
       padding: 12px 14px;
       border-top: 1px solid var(--border-subtle);
       color: var(--text-secondary);
       font-size: 12px;
+    }
+    .pool-overview-strip {
+      grid-template-columns: minmax(360px, 1.15fr) minmax(260px, .86fr) minmax(260px, .86fr);
+      gap: 10px;
+      align-items: start;
+    }
+    .pool-overview-strip .panel {
+      align-self: start;
+    }
+    .pool-overview-strip .panel-head {
+      min-height: 40px;
+      padding: 8px 12px;
+    }
+    .pool-overview-strip .exposure-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      padding: 10px 12px;
+    }
+    .pool-overview-strip .exposure-item {
+      padding: 7px 8px;
+      display: grid;
+      gap: 2px;
+      align-content: start;
+    }
+    .pool-overview-strip .exposure-item span {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+    .pool-overview-strip .exposure-item strong {
+      font-size: 12px;
+    }
+    .pool-overview-strip .stack {
+      gap: 7px;
+      padding: 10px 12px;
+    }
+    .pool-overview-strip .stack p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .pool-overview-strip .advice-note {
+      padding: 8px 12px;
+      line-height: 1.45;
     }
     @media (max-width: 1100px) {
       .app { grid-template-columns: 1fr; }
@@ -1122,7 +1374,11 @@
       .pool-metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .pool-row .add-pool { justify-self: start; }
       .advice-matrix,
-      .advice-summary {
+      .advice-summary,
+      .advice-plan-strip,
+      .report-plan-grid,
+      .manual-plan-summary,
+      .battle-grid {
         grid-template-columns: 1fr;
       }
       .advice-matrix .accept-advice { justify-self: start; width: auto; }
@@ -1153,12 +1409,13 @@
         <button data-view="backtest" data-feature="backtest">回测与风控 <code>07</code></button>
         <button data-view="institutional">专业化中心 <code>08</code></button>
         <button data-view="billing" id="billingNavBtn" style="display:none">订阅套餐 <code>09</code></button>
-        <button data-view="admin" id="adminNavBtn" style="display:none">Admin 维护端 <code>10</code></button>
+        <button data-view="feedback">反馈与投诉 <code>10</code></button>
+        <button data-view="admin" id="adminNavBtn" style="display:none">Admin 维护端 <code>11</code></button>
       </nav>
       <div class="system-status">
         <div class="status-row"><span>Universe</span><strong>沪深京 A</strong></div>
         <div class="status-row"><span>Horizon</span><strong>2-8W</strong></div>
-        <div class="status-row"><span>Risk Mode</span><strong id="riskModeLabel">High Beta</strong></div>
+        <div class="status-row"><span>Scenario</span><strong id="riskModeLabel">High Beta</strong></div>
         <div class="status-row"><span>Last Calc</span><strong id="lastCalcLabel">15:04 CST</strong></div>
       </div>
     </aside>
@@ -1184,7 +1441,7 @@
         <section class="hero-strip compact-hero">
           <div class="thesis">
             <h3>今日只看三件事：评分、动作、风险。</h3>
-            <p>高分只是候选，买入前确认成交、公告和仓位上限。</p>
+            <p>高分只是候选，买入前确认成交、公告和仓位纪律。</p>
           </div>
           <div class="metric"><span>最高评分</span><strong id="alphaMetric">82.4</strong></div>
           <div class="metric"><span>单票上限</span><strong id="regimeMaxPosition">12%</strong></div>
@@ -1230,32 +1487,32 @@
         </div>
 
         <div id="systemPool" class="view">
-          <div class="grid-3">
+          <div class="grid-3 pool-overview-strip">
             <section class="panel">
               <div class="panel-head"><h3>推荐池概览</h3><span class="tag long">≤ 30</span></div>
               <div class="exposure-grid">
                 <div class="exposure-item"><span>短/长入池</span><strong class="mono" id="poolCount">0 / 0</strong></div>
                 <div class="exposure-item"><span>最新交易日</span><strong class="mono" id="poolDate">--</strong></div>
-                <div class="exposure-item"><span>短/长核心</span><strong class="mono" id="poolCore">0 / 0</strong></div>
-                <div class="exposure-item"><span>双策略模型</span><strong class="mono" id="poolModel">--</strong></div>
+                <div class="exposure-item"><span>核心/试仓</span><strong class="mono" id="poolCore">0 / 0</strong></div>
+                <div class="exposure-item"><span>模型版本</span><strong class="mono" id="poolModel">--</strong></div>
                 <div class="exposure-item"><span>市场风格</span><strong class="mono" id="poolRegime">--</strong></div>
                 <div class="exposure-item"><span>短/长阈值</span><strong class="mono" id="poolThresholds">--</strong></div>
               </div>
-              <p class="advice-note">短期池和长期池分别保留最新交易日的 buy/watch 标的，自动排除 avoid，并各自限制在 30 只以内。</p>
+              <p class="advice-note">短期池和长期池分别保留核心、试仓和观察标的，自动排除回避，并各自限制在 30 只以内。</p>
             </section>
             <section class="panel">
               <div class="panel-head"><h3>入池规则</h3><span class="tag">Rule set</span></div>
               <div class="stack">
-                <p><strong>基础门槛：</strong>优先使用 TuShare Pro 行情、估值、财务和证券主数据，剔除 ST/退市、低价、低成交额和不可交易标的。</p>
-                <p><strong>排序依据：</strong>拆成价格 Alpha、基本面质量、估值合理性、资金容量、风控质量、数据完整度和拥挤扣分，最多保留 30 只。</p>
-                <p><strong>人工确认：</strong>所有入池股票仍需继续检查 20/60 日趋势、公告、行业催化、涨跌停、财报异常和同题材拥挤度。</p>
+                <p><strong>基础门槛：</strong>TuShare Pro 行情、估值、财务和证券主数据，先剔除 ST/退市、低价、低成交额和不可交易标的。</p>
+                <p><strong>排序依据：</strong>价格 Alpha、基本面质量、估值合理性、资金容量、风控质量、数据完整度和拥挤扣分。</p>
+                <p><strong>人工确认：</strong>入池后仍需复核公告、行业催化、涨跌停、财报异常和题材拥挤度。</p>
               </div>
             </section>
             <section class="panel">
               <div class="panel-head"><h3>池子状态</h3><span class="tag warn" id="poolRegimeTag">等待读取</span></div>
               <div class="stack">
-                <p id="poolRegimeNote"><strong>当前判断：</strong>页面加载时读取短期和长期推荐池；点击更新按钮会自动扫描全 A 股并同时刷新两套表格。</p>
-                <p><strong>使用边界：</strong>这是第一层强势与流动性筛选，不等同于最终买入指令。</p>
+                <p id="poolRegimeNote"><strong>当前判断：</strong>页面加载时读取短期和长期推荐池；点击更新会扫描全 A 股并同步刷新两套表格。</p>
+                <p><strong>使用边界：</strong>这是第一层强势与流动性筛选，试仓和核心仍需人工确认后执行。</p>
               </div>
             </section>
           </div>
@@ -1333,6 +1590,7 @@
                 <div class="tabs pool-filter" data-strategy="short">
                   <button class="active" data-filter="all">全部</button>
                   <button data-filter="buy">核心</button>
+                  <button data-filter="trial_buy">试仓</button>
                   <button data-filter="watch">观察</button>
                 </div>
                 <div class="pool-list" id="shortPoolRows"></div>
@@ -1350,6 +1608,7 @@
                 <div class="tabs pool-filter" data-strategy="mid_long">
                   <button class="active" data-filter="all">全部</button>
                   <button data-filter="buy">核心</button>
+                  <button data-filter="trial_buy">试仓</button>
                   <button data-filter="watch">观察</button>
                 </div>
                 <div class="pool-list" id="midLongPoolRows"></div>
@@ -1417,15 +1676,55 @@
               </div>
             </section>
           </div>
+          <section class="panel manual-trade-panel" id="manualTradePlanPanel">
+            <div class="panel-head">
+              <h3>最优交易计划</h3>
+              <span class="tag risk">仅当前账户</span>
+            </div>
+            <form class="signal-form" id="manualTradePlanForm">
+              <label>账户总资产(元)<input id="manualAccountValue" type="number" min="1" step="100" placeholder="例如 300000" required /></label>
+              <label>可用资金(元)<input id="manualAvailableCash" type="number" min="0" step="100" placeholder="例如 50000" /></label>
+              <label>最小交易金额(元)<input id="manualMinTradeAmount" type="number" min="0" step="100" value="3000" /></label>
+              <button class="primary" type="submit">生成最优交易计划</button>
+            </form>
+            <div class="exposure-grid manual-plan-summary">
+              <div class="exposure-item"><span>计划动作</span><strong class="mono" id="manualExecutableCount">--</strong></div>
+              <div class="exposure-item"><span>计划买入</span><strong class="mono" id="manualBuyCash">--</strong></div>
+              <div class="exposure-item"><span>计划卖出</span><strong class="mono" id="manualSellCash">--</strong></div>
+              <div class="exposure-item"><span>计划后现金</span><strong class="mono" id="manualCashAfter">--</strong></div>
+              <div class="exposure-item"><span>目标持仓</span><strong class="mono" id="manualPositionCount">--</strong></div>
+            </div>
+            <table class="manual-plan-table">
+              <thead><tr><th>优先级</th><th>股票</th><th>角色/评分</th><th>目标仓位</th><th>动作</th><th>计划数量</th><th>人工复核</th></tr></thead>
+              <tbody id="manualTradePlanRows"></tbody>
+            </table>
+            <div class="battle-grid">
+              <article class="battle-card">
+                <h4>市场风格雷达</h4>
+                <p id="marketStyleRadar">生成计划后显示市场状态和模型权重调整。</p>
+              </article>
+              <article class="battle-card">
+                <h4>影子组合</h4>
+                <div class="battle-list" id="shadowPortfolioRows"><small>记录未买入候选和目标组合，后续比较机会成本。</small></div>
+              </article>
+              <article class="battle-card">
+                <h4>复盘学习</h4>
+                <p id="tradeLearningSummary">暂无复盘样本。</p>
+                <button class="control" id="refreshTradeLearningBtn" type="button">刷新复盘</button>
+              </article>
+            </div>
+            <div class="result" id="manualTradePlanResult"></div>
+            <p class="advice-note">该计划由当前持仓、可用资金和系统股票池共同优化生成，只供手动下单参考；不连接券商、不自动交易。实际委托价格、盘口、涨跌停和成交结果以券商客户端为准。</p>
+          </section>
           <section class="panel">
             <div class="panel-head">
               <h3>个人持仓投资建议</h3>
               <div class="tabs" id="adviceFilters">
                 <button class="active" data-filter="all">全部</button>
                 <button data-filter="add">加仓</button>
-                <button data-filter="hold">持有</button>
-                <button data-filter="reduce">减仓</button>
-                <button data-filter="exit_or_strong_reduce">强减/退出</button>
+                <button data-filter="hold">持有/观察</button>
+                <button data-filter="risk_budget">降风险</button>
+                <button data-filter="hard_exit">清仓退出</button>
               </div>
             </div>
             <div class="advice-list" id="adviceRows"></div>
@@ -1459,7 +1758,7 @@
                 <thead><tr><th>你看到的字段</th><th>怎么理解</th></tr></thead>
                 <tbody>
                   <tr><td>评分</td><td>系统对强势程度、成交活跃度、日内位置和风险惩罚后的综合排序。</td></tr>
-                  <tr><td>动作</td><td>buy 代表进入核心候选；watch 代表只观察；avoid 代表暂不碰。</td></tr>
+                  <tr><td>动作</td><td>buy 代表核心候选；trial_buy 代表小仓试仓；watch 代表只观察；avoid 代表暂不碰。</td></tr>
                   <tr><td>建议仓位</td><td>不是必须买多少，而是这只股票在策略里允许暴露的上限。</td></tr>
                   <tr><td>风险标记</td><td>告诉你为什么不能直接买，例如波动过高、收盘弱、成交不足。</td></tr>
                   <tr><td>理由</td><td>把模型字段翻译成人话，方便你快速判断是否值得继续研究。</td></tr>
@@ -1643,7 +1942,7 @@
                 <tr><td>先排除不能买的股票</td><td>ST、退市、低价、成交不足、新股风险都可能让回测失真。</td><td>风险标记和门禁扣分会显示原因。</td></tr>
                 <tr><td>分数不是越涨越高</td><td>过热会提高回撤和无法成交概率。</td><td>拥挤、振幅、涨停会被扣分或降为观察。</td></tr>
                 <tr><td>两套池子一起刷新</td><td>保证短期和长期使用同一批最新 TuShare 数据。</td><td>点击“更新股票池”即可同时更新。</td></tr>
-                <tr><td>最终还要人工确认</td><td>公告、行业催化、停牌、涨跌停和持仓相关性无法完全自动化。</td><td>模型给 buy/watch/avoid，不自动下单。</td></tr>
+                <tr><td>最终还要人工确认</td><td>公告、行业催化、停牌、涨跌停和持仓相关性无法完全自动化。</td><td>模型给核心/试仓/观察/回避，不自动下单。</td></tr>
               </tbody>
             </table>
           </section>
@@ -1750,12 +2049,12 @@
           <section class="panel">
             <div class="panel-head"><h3>组合规则</h3><span class="tag risk">Risk first</span></div>
             <div class="exposure-grid">
-              <div class="exposure-item"><span>当前市场状态</span><strong class="mono" id="regimeName">震荡上行</strong></div>
+              <div class="exposure-item"><span>回测场景</span><strong class="mono" id="regimeName">震荡上行</strong></div>
               <div class="exposure-item"><span>回测入选阈值</span><strong class="mono" id="regimeMinScore">76</strong></div>
               <div class="exposure-item"><span>单票上限</span><strong class="mono" id="regimeSingleCap">12%</strong></div>
               <div class="exposure-item"><span>现金底仓</span><strong class="mono" id="regimeCashRule">10%</strong></div>
             </div>
-            <p class="advice-note" id="regimeNote">震荡上行：允许适度进攻，优先保留趋势和流动性较强的候选。</p>
+            <p class="advice-note" id="regimeNote">震荡上行回测场景：允许适度进攻，优先保留趋势和流动性较强的候选。</p>
             <pre>rebalance_frequency = weekly
 holding_period = 10 to 40 trading_days
 max_names = 8 to 12
@@ -1889,6 +2188,46 @@ reject_trade_if:
           </section>
         </div>
 
+        <div id="feedback" class="view">
+          <div class="hero-strip compact-hero">
+            <div class="thesis">
+              <h3>反馈与投诉</h3>
+              <p>遇到数据、页面、权限或投资工具体验问题，可以直接提交给管理员处理。</p>
+            </div>
+            <div class="metric"><span>处理方式</span><strong>站内</strong></div>
+            <div class="metric"><span>记录编号</span><strong>自动</strong></div>
+            <div class="metric"><span>状态跟踪</span><strong>可查</strong></div>
+          </div>
+          <section class="panel">
+            <div class="panel-head"><h3>提交反馈</h3><span class="tag long">Simple ticket</span></div>
+            <form class="signal-form" id="feedbackForm">
+              <label>反馈类型
+                <select id="feedbackCategory">
+                  <option value="suggestion">建议</option>
+                  <option value="complaint">投诉</option>
+                  <option value="bug">系统问题</option>
+                  <option value="data">数据问题</option>
+                  <option value="other">其他</option>
+                </select>
+              </label>
+              <label>标题<input id="feedbackTitle" maxlength="120" placeholder="一句话说明问题" required /></label>
+              <label>联系方式<input id="feedbackContact" maxlength="160" placeholder="默认使用登录邮箱，可补充电话/微信" /></label>
+              <label>来源页面<input id="feedbackPageContext" readonly /></label>
+              <label style="grid-column: 1 / -1;">详细说明<textarea id="feedbackContent" maxlength="2000" placeholder="请描述遇到的问题、建议或希望改进的地方。" required></textarea></label>
+              <button class="primary" type="submit">提交反馈</button>
+            </form>
+            <div class="result" id="feedbackResult"></div>
+            <p class="advice-note">提交后会生成反馈编号，管理员可以在维护端处理。这里不处理紧急交易委托或实时下单问题。</p>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><h3>我的反馈记录</h3><button class="control" id="refreshFeedbackBtn" type="button">刷新</button></div>
+            <table>
+              <thead><tr><th>编号</th><th>类型</th><th>标题</th><th>状态</th><th>提交时间</th><th>Admin 备注</th></tr></thead>
+              <tbody id="feedbackRows"></tbody>
+            </table>
+          </section>
+        </div>
+
         <div id="admin" class="view">
           <div class="hero-strip">
             <div class="thesis">
@@ -1899,6 +2238,7 @@ reject_trade_if:
             <div class="metric"><span>活跃用户</span><strong id="adminActiveCount">--</strong></div>
             <div class="metric"><span>高级版用户</span><strong id="adminProCount">--</strong></div>
             <div class="metric"><span>待审导出</span><strong id="adminPendingExports">--</strong></div>
+            <div class="metric"><span>待处理反馈</span><strong id="adminPendingFeedback">--</strong></div>
             <div class="metric"><span>今日请求</span><strong id="adminUsageToday">--</strong></div>
             <div class="metric"><span>24h API</span><strong id="adminUsage24h">--</strong></div>
           </div>
@@ -2000,6 +2340,13 @@ reject_trade_if:
               <tbody id="adminExportRows"></tbody>
             </table>
           </section>
+          <section class="panel">
+            <div class="panel-head"><h3>客户反馈</h3><span class="tag warn">Feedback queue</span></div>
+            <table>
+              <thead><tr><th>编号/客户</th><th>类型</th><th>标题与内容</th><th>来源</th><th>状态</th><th>处理备注</th><th>操作</th></tr></thead>
+              <tbody id="adminFeedbackRows"></tbody>
+            </table>
+          </section>
         </div>
       </section>
     </main>
@@ -2016,6 +2363,7 @@ reject_trade_if:
       backtest: ["回测与风控", "分别验证短期 2-8 周和长期 3-12 月策略的收益、回撤、换手、交易可行性和极端行情保护。"],
       institutional: ["专业化中心", "把数据源、模型治理、组合风险和审计日志集中起来，向机构化投研流程靠拢。"],
       billing: ["订阅套餐", "基础版保留核心选股体验，高级版开放完整投研、回测、导出和更高股票池上限。"],
+      feedback: ["反馈与投诉", "提交产品建议、投诉、系统问题或数据问题，并查看处理状态。"],
       admin: ["Admin 维护端", "管理客户权限、策略配置、数据导出审批和数据缓存治理。"]
     };
     let portfolioAdvice = [];
@@ -2030,6 +2378,9 @@ reject_trade_if:
     let modelConfig = null;
     let currentUser = { is_admin: false, plan: "free", billing_enabled: false, feature_flags: {} };
     let adminUsers = [];
+    let latestManualTradePayload = null;
+    let latestManualTradeRows = [];
+    let lastContentView = "dashboard";
     const backtestStrategyProfiles = {
       short: {
         label: "短期策略",
@@ -2054,7 +2405,7 @@ reject_trade_if:
         targetExposure: 0.70,
         cashFloor: 0.10,
         topN: 12,
-        note: "震荡上行：允许适度进攻，优先保留趋势和流动性较强的候选。"
+        note: "震荡上行回测场景：允许适度进攻，优先保留趋势和流动性较强的候选。"
       },
       "高波动修复": {
         riskMode: "Recovery",
@@ -2063,7 +2414,7 @@ reject_trade_if:
         targetExposure: 0.45,
         cashFloor: 0.18,
         topN: 8,
-        note: "高波动修复：只接受更高评分信号，降低单票上限，避免追高和剧烈波动。"
+        note: "高波动修复回测场景：只接受更高评分信号，降低单票上限，避免追高和剧烈波动。"
       },
       "缩量防御": {
         riskMode: "Defensive",
@@ -2072,7 +2423,7 @@ reject_trade_if:
         targetExposure: 0.20,
         cashFloor: 0.35,
         topN: 5,
-        note: "缩量防御：以现金和防守为主，只保留最高置信度候选，新增仓位需要更强确认。"
+        note: "缩量防御回测场景：以现金和防守为主，只保留最高置信度候选，新增仓位需要更强确认。"
       }
     };
     const factors = [
@@ -2114,18 +2465,28 @@ reject_trade_if:
       `).join("");
     }
     function tagClassForAction(action) {
-      if (action === "buy" || action === "add" || action === "hold") return "long";
-      if (action === "reduce" || action === "exit_or_strong_reduce" || action === "avoid") return "risk";
+      if (["buy", "add", "hold", "hold_core"].includes(action)) return "long";
+      if (action === "trial_buy") return "warn";
+      if (["reduce", "reduce_light", "large_reduce", "strategy_clear", "hard_exit", "exit_or_strong_reduce", "avoid"].includes(action)) return "risk";
       return "warn";
     }
     function actionLabel(action) {
       return {
         buy: "可买/加仓",
+        trial_buy: "试仓买入",
         watch: "观察",
         reduce: "减仓",
+        reduce_light: "小幅降仓",
+        large_reduce: "大幅降仓",
         add: "加仓",
         hold: "持有",
+        hold_core: "核心持有",
+        hold_observe: "持有观察",
         hold_watch_no_new: "持有观察",
+        trim_to_risk_budget: "降至风险仓位",
+        no_new_buy: "不新增",
+        strategy_clear: "策略性清仓",
+        hard_exit: "硬风险清仓",
         exit_or_strong_reduce: "强减/退出",
         avoid: "回避",
         not_in_system_pool: "未入系统池",
@@ -2153,6 +2514,14 @@ reject_trade_if:
       const number = Number(value);
       if (!Number.isFinite(number)) return "--";
       return number.toFixed(digits);
+    }
+    function formatMoney(value, digits = 0) {
+      const number = Number(value);
+      if (!Number.isFinite(number)) return "--";
+      return `¥${number.toLocaleString("zh-CN", { minimumFractionDigits: digits, maximumFractionDigits: digits })}`;
+    }
+    function canUseManualTradePlan() {
+      return Boolean(currentUser?.is_admin || currentUser?.feature_flags?.optimal_trade_plan);
     }
     function latestPriceValue(row) {
       const scores = row?.strategy_scores || {};
@@ -2183,7 +2552,7 @@ reject_trade_if:
     function moveTagClass(value) {
       const number = Number(value);
       if (!Number.isFinite(number) || Math.abs(number) < 0.01) return "warn";
-      return number > 0 ? "long" : "risk";
+      return number > 0 ? "market-up" : "market-down";
     }
     function riskFlagText(flags) {
       const raw = String(flags || "").trim();
@@ -2198,7 +2567,12 @@ reject_trade_if:
         high_crowding: "拥挤偏高",
         valuation_rich: "估值偏贵",
         quality_gate_failed: "质量门槛未过",
-        below_buy_threshold: "评分未达买入阈值"
+        below_buy_threshold: "评分未达买入阈值",
+        delisting_risk: "退市风险",
+        st_or_financial_distress: "ST/财务困境",
+        major_accounting_risk: "重大财务或审计风险",
+        limit_down_or_hard_to_sell: "跌停难卖",
+        suspended_or_illiquid: "停牌/严重缺流动性"
       };
       const parts = raw.split(/[|,，;；]+/).map((item) => item.trim()).filter(Boolean);
       return [...new Set(parts.map((item) => labels[item] || item))].slice(0, 4).join("、") || "无硬性风险";
@@ -2207,7 +2581,7 @@ reject_trade_if:
       return `<div class="pool-metric"><span>${label}</span><strong>${value}</strong></div>`;
     }
     function primaryStockScore(row) {
-      const candidates = [row?.price_factor_score, row?.short_score, row?.mid_long_score];
+      const candidates = [row?.holding_score, row?.price_factor_score, row?.short_score, row?.mid_long_score];
       for (const value of candidates) {
         const number = Number(value);
         if (Number.isFinite(number)) return number;
@@ -2229,7 +2603,15 @@ reject_trade_if:
       if (!value) return "--";
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "--";
-      return date.toLocaleString("zh-CN", { hour12: false });
+      return date.toLocaleString("zh-CN", { hour12: false, timeZone: "Asia/Shanghai" });
+    }
+    function compactModelVersion(value) {
+      const text = String(value || "");
+      if (!text) return "--";
+      const match = text.match(/score_v(\d+)/);
+      if (match) return `v${match[1]}`;
+      if (text.includes("quality_first")) return "quality";
+      return text.length > 10 ? text.slice(0, 10) : text;
     }
     function strategyTypeLabel(value) {
       return {
@@ -2281,16 +2663,14 @@ reject_trade_if:
     function scoreBrief(source) {
       const strengths = collectScoreStrengths(source);
       const risks = collectScoreRisks(source);
-      const regime = source?.market_regime_label ? `市场：${source.market_regime_label}` : "";
       return {
         strengths: strengths.length ? strengths.slice(0, 3).join("、") : "暂无突出优势",
-        risks: risks.length ? risks.slice(0, 3).join("、") : "硬性风险暂未突出",
-        regime
+        risks: risks.length ? risks.slice(0, 3).join("、") : "硬性风险暂未突出"
       };
     }
     function compactReason(reason) {
       const text = String(reason || "等待系统生成入选原因");
-      const dropped = ["价格Alpha", "基本面", "估值", "流动性", "风控", "数据完整度", "TuShare机构评分"];
+      const dropped = ["价格Alpha", "基本面", "估值", "流动性", "风控", "数据完整度", "TuShare机构评分", "市场风格", "市场："];
       const parts = text
         .split("；")
         .map((part) => part.trim())
@@ -2304,20 +2684,61 @@ reject_trade_if:
       const current = formatPercent(row?.weight);
       const delta = Number(row?.weight_delta || 0);
       const pnl = formatPercent(row?.pnl_pct, 2);
-      const score = formatNumber(row?.price_factor_score ?? row?.short_score ?? row?.mid_long_score, 1);
-      if (action === "reduce" || action === "exit_or_strong_reduce") {
-        return `${actionLabel(action)}：当前 ${current}，建议降至 ${target}；评分 ${score}，浮盈亏 ${pnl}，先控制单票风险。`;
+      const score = formatNumber(row?.holding_score ?? row?.price_factor_score ?? row?.short_score ?? row?.mid_long_score, 1);
+      const budget = `${formatPercent(row?.target_weight_low, 0)}-${formatPercent(row?.target_weight_high, 0)}`;
+      if (["reduce", "reduce_light", "large_reduce", "trim_to_risk_budget", "exit_or_strong_reduce", "hard_exit", "strategy_clear"].includes(action)) {
+        return `${actionLabel(action)}：当前 ${current}，风险预算 ${budget}，建议到 ${target}；持有评分 ${score}，浮盈亏 ${pnl}。`;
       }
       if (action === "add") {
-        return `加仓观察：当前 ${current}，建议上限 ${target}；评分 ${score}，优先分批执行并确认成交承接。`;
+        return `加仓观察：当前 ${current}，风险预算 ${budget}；持有评分 ${score}，优先分批执行并确认成交承接。`;
       }
-      if (action === "hold_watch_no_new") {
-        return `持有观察：当前 ${current}，建议 ${target}；不新增仓位，等待短期或长期信号改善。`;
+      if (["hold_watch_no_new", "hold_observe", "no_new_buy"].includes(action)) {
+        return `${actionLabel(action)}：当前 ${current}，风险预算 ${budget}；持有评分 ${score}，等待短期或长期信号改善。`;
       }
       const deltaText = Number.isFinite(delta) ? `，仓位变化 ${formatPercent(delta)}` : "";
-      return `${actionLabel(action)}：当前 ${current}，建议 ${target}${deltaText}；评分 ${score}，继续跟踪信号变化。`;
+      return `${actionLabel(action)}：当前 ${current}，建议 ${target}${deltaText}；持有评分 ${score}，继续跟踪信号变化。`;
     }
-    function renderScoreDetails(source, extraHtml = "", showRegime = true) {
+    function planValue(plan, row, key, fallbackKey) {
+      const value = plan?.[key];
+      if (Number.isFinite(Number(value))) return value;
+      return row?.[fallbackKey];
+    }
+    function renderAdvicePlan(row) {
+      const plan = row?.trade_plan || {};
+      const initial = planValue(plan, row, "initial_weight", "buy_initial_weight");
+      const add = planValue(plan, row, "add_weight", "buy_add_weight");
+      const max = planValue(plan, row, "max_weight", "buy_max_weight");
+      const stop = planValue(plan, row, "stop_loss_pct", "stop_loss_pct");
+      const action = row?.portfolio_action || "";
+      const firstLabel = ["hard_exit", "strategy_clear"].includes(action) ? "目标仓位" : "初始/保留";
+      const firstValue = ["hard_exit", "strategy_clear"].includes(action) ? formatPercent(row?.suggested_target_weight, 0) : formatPercent(initial, 0);
+      return `<div class="advice-plan-strip">
+        <span><small>${firstLabel}</small><strong>${firstValue}</strong></span>
+        <span><small>可加上限</small><strong>${formatPercent(add || max, 0)} / ${formatPercent(max, 0)}</strong></span>
+        <span><small>防守纪律</small><strong>止损 ${formatPercent(stop, 0)}</strong></span>
+      </div>`;
+    }
+    function renderReportPlan(payload) {
+      const plan = payload?.trade_plan || {};
+      if (!Object.keys(plan).length) return "";
+      const action = payload?.portfolio_action || payload?.action || "";
+      const clearMode = ["hard_exit", "strategy_clear"].includes(action);
+      const initialLabel = clearMode ? "目标仓位" : "初始买入";
+      const initialValue = clearMode ? formatPercent(payload?.suggested_target_weight, 0) : formatPercent(plan.initial_weight ?? payload?.buy_initial_weight, 0);
+      return `
+        <div class="report-plan-grid">
+          <div><span>${initialLabel}</span><strong>${initialValue}</strong><small>${payload?.position_profile_label || plan.profile_label || "标准散户"} · ${payload?.target_position_count || plan.target_positions || "--"}</small></div>
+          <div><span>确认加仓</span><strong>${formatPercent(plan.add_weight ?? payload?.buy_add_weight, 0)}</strong><small>单票上限 ${formatPercent(plan.max_weight ?? payload?.buy_max_weight, 0)}</small></div>
+          <div><span>防守纪律</span><strong>止损 ${formatPercent(plan.stop_loss_pct ?? payload?.stop_loss_pct, 0)}</strong><small>单笔风险 ${formatPercent(plan.risk_per_trade_pct ?? payload?.risk_per_trade_pct, 1)}</small></div>
+        </div>
+        <div class="report-plan-copy">
+          <p><strong>买入计划：</strong>${plan.buy_rule || "等待评分、趋势和成交承接同时确认后再行动。"}</p>
+          <p><strong>加仓条件：</strong>${plan.add_rule || "评分维持高位且风险标记不恶化，再分批加至上限。"}</p>
+          <p><strong>降仓/清仓：</strong>${plan.clear_rule || plan.reduce_rule || "持有评分跌破风控阈值、趋势破位或流动性走弱时退出。"}</p>
+          <p><strong>复盘节奏：</strong>${plan.review_rule || "每次打开页面刷新评分，财报、公告和异动当日必须复评。"}</p>
+        </div>`;
+    }
+    function renderScoreDetails(source, extraHtml = "", showRegime = false) {
       const weights = [
         ["A", source?.score_weight_alpha],
         ["基", source?.score_weight_fundamental],
@@ -2330,6 +2751,7 @@ reject_trade_if:
         .join(" / ");
       const detail = [
         `模型 ${source?.model_version || "--"}`,
+        `画像 ${source?.stock_profile_label || "--"}`,
         `Alpha ${formatNumber(source?.alpha_score, 1)}`,
         `基本面 ${formatNumber(source?.fundamental_quality_score, 1)}`,
         `估值 ${formatNumber(source?.valuation_sanity_score, 1)}`,
@@ -2365,25 +2787,23 @@ reject_trade_if:
       const action = score?.action || "no_signal";
       const scoreValue = score?.price_factor_score ?? score?.score;
       const date = score?.trade_date || "--";
-      const regime = score?.market_regime_label || context.regime || "--";
       return `<article class="advice-signal-card">
         <header>
           <span>${strategyScoreLabel(key)}</span>
           <span class="tag ${tagClassForAction(action)}">${actionLabel(action)}</span>
         </header>
         <strong>${formatNumber(scoreValue, 1)}</strong>
-        <small>${confidenceLabel(score?.confidence || "low")} · ${date}</small>
+        <small>${confidenceLabel(score?.confidence || "low")}</small>
         <div class="advice-signal-meta">
           <code>换手 ${context.turnover}</code>
-          <code>${regime}</code>
+          <code>评分日 ${date}</code>
         </div>
       </article>`;
     }
     function renderAdviceSignalGrid(row) {
       const scores = row?.strategy_scores || {};
       const context = {
-        turnover: formatTurnoverRate(row?.turnover_rate),
-        regime: row?.market_regime_label || scores.short?.market_regime_label || scores.mid_long?.market_regime_label
+        turnover: formatTurnoverRate(row?.turnover_rate)
       };
       return `<div class="advice-signal-grid">
         ${renderAdviceSignalCard(scores.short, "short", context)}
@@ -2398,7 +2818,7 @@ reject_trade_if:
         <span class="tag ${key === "short" ? "warn" : "long"}">${strategyScoreLabel(key)}</span>
         <strong>${formatNumber(scoreValue, 1)} · ${actionLabel(score?.action || "no_signal")}</strong>
         <small>优势：${brief.strengths}</small>
-        <small>风险：${brief.risks}${brief.regime ? ` · ${brief.regime}` : ""}</small>
+        <small>风险：${brief.risks}</small>
         ${renderScoreDetails(score || {})}
         <p>${reason}</p>
       </div>`;
@@ -2435,6 +2855,8 @@ reject_trade_if:
       document.getElementById("signedInUser").textContent = `${currentUser.email} · ${currentUser.is_admin ? "Admin" : planLabel(currentUser.plan)}`;
       document.getElementById("adminNavBtn").style.display = currentUser.is_admin ? "" : "none";
       document.getElementById("billingNavBtn").style.display = currentUser.billing_enabled ? "" : "none";
+      const manualPanel = document.getElementById("manualTradePlanPanel");
+      if (manualPanel) manualPanel.style.display = canUseManualTradePlan() ? "block" : "none";
       document.querySelectorAll(".admin-only").forEach((node) => {
         node.style.display = currentUser.is_admin ? "" : "none";
       });
@@ -2460,7 +2882,7 @@ reject_trade_if:
       }
     }
     function statusTagClass(status) {
-      if (["available", "configured", "pass", "production_candidate", "production_watch"].includes(status)) return "long";
+      if (["available", "configured", "pass", "production_candidate", "production_watch", "resolved"].includes(status)) return "long";
       if (["fail", "high", "missing_package", "missing_token", "invalid_token", "connection_failed"].includes(status)) return "risk";
       return "warn";
     }
@@ -2481,6 +2903,10 @@ reject_trade_if:
         controlled: "受控",
         medium: "中等",
         high: "高风险",
+        pending: "待处理",
+        in_progress: "处理中",
+        resolved: "已解决",
+        closed: "已关闭",
         research: "研究阶段",
         production_watch: "准生产观察",
         production_candidate: "生产候选"
@@ -2495,7 +2921,7 @@ reject_trade_if:
           <td>${item.role}</td>
           <td><code>${item.token_mask || (item.needs_token ? "未配置" : "无需Token")}</code></td>
           <td><strong>${item.priority}</strong></td>
-          <td>${item.last_checked_at ? new Date(item.last_checked_at).toLocaleString("zh-CN") : "--"}</td>
+          <td>${formatDateTime(item.last_checked_at)}</td>
           <td><button class="control check-source" data-provider="${item.provider}">检查</button></td>
         </tr>
       `).join("");
@@ -2605,7 +3031,7 @@ reject_trade_if:
       document.getElementById("auditRows").innerHTML = rows.length
         ? rows.map((row) => `
           <tr>
-            <td>${new Date(row.created_at).toLocaleString("zh-CN")}</td>
+            <td>${formatDateTime(row.created_at)}</td>
             <td><code>${row.action}</code></td>
             <td>${row.target || "--"}</td>
             <td><code>${JSON.stringify(row.detail || {})}</code></td>
@@ -2709,12 +3135,94 @@ reject_trade_if:
         result.innerHTML = `申请失败：${error.message}`;
       }
     }
+    function feedbackCategoryLabel(category) {
+      return {
+        complaint: "投诉",
+        suggestion: "建议",
+        bug: "系统问题",
+        data: "数据问题",
+        other: "其他"
+      }[category] || category || "--";
+    }
+    function feedbackStatusLabel(status) {
+      return {
+        pending: "待处理",
+        in_progress: "处理中",
+        resolved: "已解决",
+        closed: "已关闭"
+      }[status] || status || "--";
+    }
+    function feedbackStatusClass(status) {
+      if (status === "resolved") return "long";
+      if (status === "closed") return "";
+      return "warn";
+    }
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+    function renderFeedbackRows(rows) {
+      document.getElementById("feedbackRows").innerHTML = rows.length ? rows.map((row) => `
+        <tr>
+          <td><code>${escapeHtml(row.ticket_code)}</code></td>
+          <td><span class="tag ${row.category === "complaint" ? "risk" : row.category === "suggestion" ? "long" : "warn"}">${feedbackCategoryLabel(row.category)}</span></td>
+          <td><strong>${escapeHtml(row.title)}</strong><br /><small>${escapeHtml(row.content)}</small></td>
+          <td><span class="tag ${feedbackStatusClass(row.status)}">${feedbackStatusLabel(row.status)}</span></td>
+          <td>${formatDateTime(row.created_at)}</td>
+          <td>${escapeHtml(row.admin_note || "--")}</td>
+        </tr>
+      `).join("") : `<tr><td colspan="6">暂无反馈记录。</td></tr>`;
+    }
+    async function loadFeedback() {
+      try {
+        renderFeedbackRows(await apiJson("/api/feedback/mine", { cache: "no-store" }));
+      } catch (error) {
+        document.getElementById("feedbackRows").innerHTML = `<tr><td colspan="6">读取失败：${error.message}</td></tr>`;
+      }
+    }
+    async function submitFeedback(event) {
+      event.preventDefault();
+      const result = document.getElementById("feedbackResult");
+      const content = document.getElementById("feedbackContent").value.trim();
+      if (content.length < 5) {
+        result.classList.add("show");
+        result.innerHTML = "请简单描述一下问题或建议，至少 5 个字。";
+        return;
+      }
+      try {
+        const payload = await apiJson("/api/feedback", {
+          method: "POST",
+          body: JSON.stringify({
+            category: document.getElementById("feedbackCategory").value,
+            title: document.getElementById("feedbackTitle").value.trim(),
+            content,
+            contact: document.getElementById("feedbackContact").value.trim() || currentUser.email,
+            page_context: document.getElementById("feedbackPageContext").value.trim() || titles[lastContentView]?.[0] || lastContentView
+          })
+        });
+        result.classList.add("show");
+        result.innerHTML = `已收到，我们会尽快处理。反馈编号：<strong>${payload.ticket_code}</strong>`;
+        document.getElementById("feedbackTitle").value = "";
+        document.getElementById("feedbackContent").value = "";
+        await loadFeedback();
+        if (currentUser.is_admin) await loadAdminFeedback();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `提交失败：${error.message}`;
+      }
+    }
     function renderAdminSummary(payload) {
       document.getElementById("adminUserCount").textContent = payload.user_count ?? "--";
       document.getElementById("adminActiveCount").textContent = payload.active_count ?? "--";
       document.getElementById("adminProCount").textContent = payload.pro_count ?? "--";
       document.getElementById("adminPendingExports").textContent = payload.pending_exports ?? "--";
       document.getElementById("adminPendingUpgrades").textContent = payload.pending_upgrades ?? "--";
+      document.getElementById("adminPendingFeedback").textContent = payload.pending_feedback ?? "--";
       document.getElementById("adminUsageToday").textContent = payload.usage_today ?? "--";
       document.getElementById("adminUsage24h").textContent = payload.usage_24h ?? "--";
     }
@@ -2796,7 +3304,7 @@ reject_trade_if:
               </select>
               <small>${user.billing_enabled ? "按套餐生效" : "当前免费无限制"}</small>
             </td>
-            <td><div class="check-options">${featureCheckbox(user, "system_pool", "股票池")}${featureCheckbox(user, "portfolio", "持股")}${featureCheckbox(user, "backtest", "回测")}${featureCheckbox(user, "data_export", "导出")}</div></td>
+            <td><div class="check-options">${featureCheckbox(user, "system_pool", "股票池")}${featureCheckbox(user, "portfolio", "持股")}${featureCheckbox(user, "optimal_trade_plan", "最优计划")}${featureCheckbox(user, "backtest", "回测")}${featureCheckbox(user, "data_export", "导出")}</div></td>
             <td><code>${strategy.model_version || "--"}</code><br /><small>${strategyTypeLabel(strategy.strategy_type)} · 阈值 ${strategy.buy_score_threshold ?? "--"} · 市场 ${(strategy.markets || []).join(",") || "--"}</small></td>
             <td>${user.position_count}</td>
             <td><button class="control admin-save-user" data-user-id="${user.id}">保存权限</button><button class="control admin-edit-strategy" data-user-id="${user.id}">配置策略</button></td>
@@ -2936,6 +3444,51 @@ reject_trade_if:
       });
       await Promise.all([loadAdminUpgrades(), loadAdminUsers(), loadBillingCenter()]);
     }
+    function renderAdminFeedback(payload) {
+      const rows = payload.rows || [];
+      document.getElementById("adminFeedbackRows").innerHTML = rows.length ? rows.map((row) => `
+        <tr>
+          <td><code>${escapeHtml(row.ticket_code)}</code><br /><small>${escapeHtml(row.email)}</small><br /><small>${formatDateTime(row.created_at)}</small></td>
+          <td><span class="tag ${row.category === "complaint" ? "risk" : row.category === "suggestion" ? "long" : "warn"}">${feedbackCategoryLabel(row.category)}</span></td>
+          <td><strong>${escapeHtml(row.title)}</strong><br /><small>${escapeHtml(row.content)}</small></td>
+          <td>${escapeHtml(row.page_context || "--")}<br /><small>${escapeHtml(row.contact || "--")}</small></td>
+          <td>
+            <select class="control admin-feedback-status" data-id="${row.id}">
+              <option value="pending" ${row.status === "pending" ? "selected" : ""}>待处理</option>
+              <option value="in_progress" ${row.status === "in_progress" ? "selected" : ""}>处理中</option>
+              <option value="resolved" ${row.status === "resolved" ? "selected" : ""}>已解决</option>
+              <option value="closed" ${row.status === "closed" ? "selected" : ""}>关闭</option>
+            </select>
+          </td>
+          <td><input class="admin-feedback-note" data-id="${row.id}" value="${escapeHtml(row.admin_note || "")}" placeholder="处理备注" /></td>
+          <td><button class="control admin-save-feedback" data-id="${row.id}">保存</button></td>
+        </tr>
+      `).join("") : `<tr><td colspan="7">暂无客户反馈。</td></tr>`;
+      document.querySelectorAll(".admin-save-feedback").forEach((button) => {
+        button.addEventListener("click", () => saveAdminFeedback(button.dataset.id));
+      });
+    }
+    async function loadAdminFeedback() {
+      renderAdminFeedback(await apiJson("/api/admin/feedback", { cache: "no-store" }));
+    }
+    async function saveAdminFeedback(id) {
+      const result = document.getElementById("adminResult");
+      try {
+        await apiJson(`/api/admin/feedback/${id}`, {
+          method: "PUT",
+          body: JSON.stringify({
+            status: document.querySelector(`.admin-feedback-status[data-id="${id}"]`).value,
+            admin_note: document.querySelector(`.admin-feedback-note[data-id="${id}"]`).value.trim() || null
+          })
+        });
+        result.classList.add("show");
+        result.innerHTML = `反馈 #${id} 已更新。`;
+        await Promise.all([loadAdminFeedback(), loadAdminCenter()]);
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `反馈处理失败：${error.message}`;
+      }
+    }
     async function loadAdminUsers() {
       renderAdminUsers(await apiJson("/api/admin/users", { cache: "no-store" }));
     }
@@ -2953,6 +3506,7 @@ reject_trade_if:
         loadAdminUsers(),
         loadAdminExports(),
         loadAdminUpgrades(),
+        loadAdminFeedback(),
         loadAdminUsage()
       ]);
       renderAdminSummary(summary);
@@ -2965,12 +3519,13 @@ reject_trade_if:
       }
       document.getElementById("holdingCards").innerHTML = sortedByStockScore(portfolioAdvice).map((row) => {
         const action = row.portfolio_action;
-        const cls = action === "add" || action === "hold" ? "long" : action.includes("reduce") ? "risk" : "warn";
-        const regime = row.market_regime_label || row.strategy_scores?.short?.market_regime_label || row.strategy_scores?.mid_long?.market_regime_label;
+        const cls = tagClassForAction(action);
         return `<article class="holding-card">
           <header><h4>${row.name}</h4><span class="tag ${cls}">${actionLabel(action)}</span></header>
-          <strong>${formatPercent(row.weight)}</strong>
-          <small><code>${row.symbol}</code> · 最新价 ${formatLatestPrice(row)} · 短期 ${formatNumber(row.short_score, 1)} / 长期 ${formatNumber(row.mid_long_score, 1)} · 换手 ${formatTurnoverRate(row.turnover_rate)} · 浮盈亏 ${formatPercent(row.pnl_pct, 2)}${regime ? ` · ${regime}` : ""}</small>
+          <strong>${formatNumber(row.holding_score, 1)} <small>持有评分</small></strong>
+          <small><code>${row.symbol}</code> · 仓位 ${formatPercent(row.weight)} · 最新价 ${formatLatestPrice(row)} <span class="tag ${moveTagClass(row.pct_change)}">${formatSignedPercent(row.pct_change)}</span></small>
+          <small>建议 ${formatPercent(row.suggested_target_weight, 0)} · 预算 ${formatPercent(row.target_weight_low, 0)}-${formatPercent(row.target_weight_high, 0)} · ${row.stock_profile_label || row.position_profile_label || "标准散户"}</small>
+          <small>短期 ${formatNumber(row.short_score, 1)} / 长期 ${formatNumber(row.mid_long_score, 1)} · 换手 ${formatTurnoverRate(row.turnover_rate)} · 浮盈亏 ${formatPercent(row.pnl_pct, 2)}</small>
           <button class="control delete-position" data-symbol="${row.symbol}">删除</button>
         </article>`;
       }).join("");
@@ -2989,8 +3544,17 @@ reject_trade_if:
         });
       });
     }
+    function matchesAdviceFilter(row, filter) {
+      const action = row?.portfolio_action || "hold";
+      if (filter === "all") return true;
+      if (filter === "add") return action === "add";
+      if (filter === "hold") return ["hold", "hold_core", "hold_observe", "hold_watch_no_new", "no_new_buy"].includes(action);
+      if (filter === "risk_budget") return ["reduce", "reduce_light", "large_reduce", "trim_to_risk_budget", "exit_or_strong_reduce"].includes(action);
+      if (filter === "hard_exit") return ["hard_exit", "strategy_clear"].includes(action);
+      return action === filter;
+    }
     function renderAdvice(filter = "all") {
-      const rows = sortedByStockScore(portfolioAdvice).filter((row) => filter === "all" || row.portfolio_action === filter);
+      const rows = sortedByStockScore(portfolioAdvice).filter((row) => matchesAdviceFilter(row, filter));
       const container = document.getElementById("adviceRows");
       if (!rows.length) {
         container.innerHTML = `<article class="advice-item"><div class="advice-matrix"><div class="advice-cell advice-stock"><span>持仓</span><strong>暂无匹配</strong><small>请调整筛选条件</small></div></div><div class="advice-summary"><p>当前筛选下没有需要展示的持仓建议。</p><small>切换上方动作筛选，或等待持仓评分刷新。</small></div></article>`;
@@ -3005,26 +3569,25 @@ reject_trade_if:
         const midLongBrief = scoreBrief(row.strategy_scores?.mid_long || {});
         const scores = row.strategy_scores || {};
         const signalContext = {
-          turnover: formatTurnoverRate(row.turnover_rate),
-          regime: row.market_regime_label || scores.short?.market_regime_label || scores.mid_long?.market_regime_label
+          turnover: formatTurnoverRate(row.turnover_rate)
         };
         return `<article class="advice-item">
           <div class="advice-matrix">
             <div class="advice-cell advice-stock">
               <span>股票</span>
               <strong>${row.name}</strong>
-              <small><code>${row.symbol}</code> · 最新价 ${formatLatestPrice(row)}</small>
+              <small><code>${row.symbol}</code> · 最新价 ${formatLatestPrice(row)} · ${row.stock_profile_label || "均衡成长"}</small>
               <span class="tag ${actionClass}">${actionLabel(action)}</span>
             </div>
             <div class="advice-cell">
               <span>当前仓位</span>
               <strong>${formatPercent(row.weight)}</strong>
-              <small>浮盈亏 ${formatPercent(row.pnl_pct, 2)}</small>
+              <small>持有评分 ${formatNumber(row.holding_score, 1)} · ${row.position_role || "--"} · 浮盈亏 ${formatPercent(row.pnl_pct, 2)}</small>
             </div>
             <div class="advice-cell">
-              <span>建议仓位</span>
+              <span>风险预算</span>
               <strong>${formatPercent(row.suggested_target_weight)}</strong>
-              <small><span class="advice-delta ${deltaClass}">变化 ${formatPercent(delta)}</span></small>
+              <small>${formatPercent(row.target_weight_low, 0)}-${formatPercent(row.target_weight_high, 0)} · <span class="advice-delta ${deltaClass}">变化 ${formatPercent(delta)}</span></small>
             </div>
             ${renderAdviceSignalCard(scores.short, "short", signalContext)}
             ${renderAdviceSignalCard(scores.mid_long, "mid_long", signalContext)}
@@ -3032,6 +3595,8 @@ reject_trade_if:
           </div>
           <div class="advice-summary">
             <p><strong>主建议：</strong>${adviceDecisionText(row)}</p>
+            <p><strong>升级条件：</strong>${row.upgrade_conditions || "继续保持趋势、成交承接和基本面质量。"}</p>
+            ${renderAdvicePlan(row)}
             <div class="advice-summary-side">
               <small>短期优势：${shortBrief.strengths}</small>
               <small>长期优势：${midLongBrief.strengths}</small>
@@ -3072,10 +3637,257 @@ reject_trade_if:
         });
       });
     }
+    function manualIntentLabel(intent) {
+      return {
+        buy: "买入",
+        sell: "卖出",
+        hold: "不操作"
+      }[intent] || intent || "--";
+    }
+    function manualIntentClass(intent) {
+      if (intent === "buy") return "trade-buy";
+      if (intent === "sell") return "trade-sell";
+      return "";
+    }
+    function tradeDecisionLabel(decision) {
+      return {
+        accepted: "采纳",
+        watch: "观察",
+        skipped: "跳过"
+      }[decision] || decision || "--";
+    }
+    function renderMarketStyleRadar(radar = {}) {
+      const el = document.getElementById("marketStyleRadar");
+      if (!el) return;
+      if (!radar || !radar.regime) {
+        el.innerHTML = "生成计划后显示市场状态、现金底线和模型权重调整。";
+        return;
+      }
+      el.innerHTML = `
+        <strong>${radar.regime}</strong> · 现金底线 ${formatPercent(radar.cash_floor, 0)}<br />
+        20日广度 ${formatPercent(radar.breadth_20d, 0)} · 60日广度 ${formatPercent(radar.breadth_60d, 0)} · 波动 ${formatPercent(radar.volatility_20d, 1)}<br />
+        ${radar.adjustment || "按当前市场宽度和波动自动调整买入节奏。"}
+      `;
+    }
+    function renderShadowPortfolio(rows = []) {
+      const el = document.getElementById("shadowPortfolioRows");
+      if (!el) return;
+      if (!rows.length) {
+        el.innerHTML = `<small>暂无影子组合。生成计划后会记录未买入候选和目标组合，用于比较机会成本。</small>`;
+        return;
+      }
+      el.innerHTML = rows.slice(0, 8).map((row) => `
+        <div class="battle-row">
+          <strong>${row.name || "--"}<small><code>${row.symbol || "--"}</code></small></strong>
+          <span>
+            <span class="tag ${row.status === "计划买入" ? "risk" : row.status === "真实持仓跟踪" ? "long" : "warn"}">${row.status || "跟踪"}</span>
+            <small>目标 ${formatPercent(row.target_weight, 0)} · 入场 ${formatNumber(row.entry_timing_score, 1)} · 赔率 ${row.odds_ratio ? `${formatNumber(row.odds_ratio, 2)}倍` : "--"}</small>
+          </span>
+          <small>${row.position_role || "--"}</small>
+        </div>
+      `).join("");
+    }
+    async function loadTradePlanLearning() {
+      if (!canUseManualTradePlan()) return;
+      const el = document.getElementById("tradeLearningSummary");
+      if (!el) return;
+      try {
+        const payload = await apiJson("/api/portfolio/trade-plan-learning", { cache: "no-store" });
+        const insights = (payload.insights || []).slice(0, 2).join(" ");
+        el.innerHTML = `
+          记录 ${payload.total ?? 0} 条 · 已复盘 ${payload.reviewed ?? 0} 条 · 采纳 ${payload.accepted ?? 0} 条 · 观察 ${payload.watched ?? 0} 条<br />
+          胜率 ${payload.win_rate == null ? "--" : formatPercent(payload.win_rate, 1)} · 平均收益 ${payload.avg_return_pct == null ? "--" : formatPercent(payload.avg_return_pct, 2)}<br />
+          ${insights || "先记录计划决策，后续用真实结果校准你的交易习惯。"}
+        `;
+      } catch (error) {
+        el.textContent = `复盘学习读取失败：${error.message}`;
+      }
+    }
+    async function recordTradePlanReview(index, decision, button) {
+      const row = latestManualTradeRows[Number(index)];
+      if (!row) return;
+      const result = document.getElementById("manualTradePlanResult");
+      if (button) {
+        button.disabled = true;
+        button.textContent = "记录中";
+      }
+      try {
+        await apiJson("/api/portfolio/trade-plan-reviews", {
+          method: "POST",
+          body: JSON.stringify({
+            symbol: row.symbol,
+            name: row.name || row.symbol,
+            plan_action: row.manual_action || row.intent || "观察",
+            planned_quantity: Number(row.quantity || 0),
+            ideal_quantity: Number(row.ideal_quantity || 0),
+            target_weight: Number(row.target_weight || 0),
+            entry_timing_score: Number(row.entry_timing?.score || 0),
+            odds_ratio: row.odds_ratio == null ? null : Number(row.odds_ratio),
+            decision,
+            plan_snapshot: {
+              action: row.manual_action,
+              intent: row.intent,
+              portfolio_action: row.portfolio_action,
+              target_weight: row.target_weight,
+              quantity: row.quantity,
+              ideal_quantity: row.ideal_quantity,
+              entry_timing: row.entry_timing,
+              reward_risk: row.reward_risk,
+              battle_plan: row.battle_plan,
+              scenario_plan: row.scenario_plan,
+              competition_note: row.competition_note
+            }
+          })
+        });
+        result.classList.add("show");
+        result.innerHTML = `<strong>${row.name} ${row.symbol}</strong> 已记录为“${tradeDecisionLabel(decision)}”。后续可用真实收益复盘这类决策是否有效。`;
+        await loadTradePlanLearning();
+      } catch (error) {
+        result.classList.add("show");
+        result.innerHTML = `记录复盘失败：${error.message}`;
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.textContent = tradeDecisionLabel(decision);
+        }
+      }
+    }
+    function renderManualTradePlan(payload) {
+      const rows = payload?.rows || [];
+      latestManualTradePayload = payload;
+      document.getElementById("manualExecutableCount").textContent = payload?.executable_count ?? "--";
+      document.getElementById("manualBuyCash").textContent = formatMoney(payload?.planned_buy_cash);
+      document.getElementById("manualSellCash").textContent = formatMoney(payload?.planned_sell_cash);
+      document.getElementById("manualCashAfter").textContent = formatMoney(payload?.cash_after_plan_estimate);
+      document.getElementById("manualPositionCount").textContent = `${payload?.target_position_count ?? "--"}/${payload?.max_position_count ?? "--"}`;
+      const actionable = rows.filter((row) => row.manual_action !== "不操作");
+      latestManualTradeRows = actionable.length ? actionable : rows;
+      document.getElementById("manualTradePlanRows").innerHTML = latestManualTradeRows.map((row, index) => {
+        const intent = row.intent || "hold";
+        const intentClass = manualIntentClass(intent);
+        const quantity = Number(row.quantity || 0);
+        const idealQuantity = Number(row.ideal_quantity || 0);
+        const entry = row.entry_timing || {};
+        const reward = row.reward_risk || {};
+        const sellLayer = row.sell_layer || {};
+        const battle = row.battle_plan || {};
+        const scenario = row.scenario_plan || {};
+        const quantityText = quantity > 0
+          ? `${quantity.toLocaleString("zh-CN")} 股`
+          : row.manual_action === "待买入观察" && idealQuantity > 0
+          ? `目标 ${idealQuantity.toLocaleString("zh-CN")} 股`
+          : "--";
+        const estimated = Number(row.estimated_amount || 0);
+        const idealAmount = Number(row.ideal_amount || 0);
+        const actionTag = row.manual_action === "手动买入" ? "risk" : row.manual_action === "手动卖出" ? "long" : "warn";
+        const sharesNote = row.shares_estimated ? "股数按仓位估算，需核对真实持股。" : "";
+        const score = Number(row.optimization_score ?? row.holding_score ?? 0);
+        const role = row.position_role || "--";
+        const capText = Number(row.position_cap) > 0 ? `上限 ${formatPercent(row.position_cap, 0)}` : "不配置";
+        const sourceText = row.candidate_source === "system_pool" ? "系统候选" : "当前持仓";
+        const weightText = `${formatPercent(row.current_weight)} → ${formatPercent(row.target_weight)}`;
+        const amountText = estimated > 0 ? formatMoney(estimated) : "--";
+        const idealText = idealQuantity > 0 ? `${idealQuantity.toLocaleString("zh-CN")} 股` : "--";
+        const oddsText = reward.odds_ratio ? `${formatNumber(reward.odds_ratio, 2)}倍` : "--";
+        const entryClass = Number(entry.score || 0) >= 82 ? "long" : Number(entry.score || 0) >= 72 ? "warn" : "risk";
+        const quantityHint = row.manual_action === "待买入观察"
+          ? (idealAmount > 0 ? `理论金额 ${formatMoney(idealAmount)}` : "目标不足一手")
+          : quantity > 0 && idealQuantity > quantity
+          ? `目标 ${idealText} · 执行 ${formatMoney(estimated)}`
+          : sharesNote || `估算 ${amountText}`;
+        return `<tr>
+          <td><strong>${index + 1}</strong><small>${manualIntentLabel(intent)} · ${sourceText}</small></td>
+          <td><strong>${row.name}</strong><br /><code>${row.symbol}</code><small>最新价 ${formatMoney(row.latest_price, 2)}</small></td>
+          <td><span class="tag ${role === "超核心" ? "risk" : role === "核心" ? "long" : "warn"}">${role}</span><small>优化分 ${formatNumber(score, 1)} · ${capText}</small></td>
+          <td><strong>${weightText}</strong><small>目标金额 ${formatMoney(row.target_amount)}</small></td>
+          <td><span class="tag ${actionTag}">${row.manual_action}</span><small>${actionLabel(row.portfolio_action)}</small></td>
+          <td class="${intentClass}">${quantityText}<small>${quantityHint}</small></td>
+          <td>
+            <strong>${row.optimization_reason || row.note || "--"}</strong>
+            <div class="trade-chipline">
+              <span class="tag ${entryClass}">${entry.label || "入场待评估"}</span>
+              <span class="tag warn">赔率 ${oddsText}</span>
+              <span class="tag ${sellLayer.type === "持有跟踪" ? "long" : "risk"}">${sellLayer.type || "持有跟踪"}</span>
+            </div>
+            <div class="trade-mini-grid">
+              <span>首笔/加仓<strong>${formatPercent(battle.first_weight, 0)} / ${formatPercent(battle.add_weight, 0)}</strong></span>
+              <span>上行/下行<strong>${formatPercent(reward.upside_pct, 0)} / ${formatPercent(reward.downside_pct, 0)}</strong></span>
+              <span>情景偏向<strong>${scenario.current_bias || "--"}</strong></span>
+              <span>竞争结论<strong>${row.competition_note || "--"}</strong></span>
+            </div>
+            <details class="trade-review-detail">
+              <summary>计划细节</summary>
+              <p><strong>执行：</strong>${row.execution_steps || row.order_price_hint || "手动核对盘口后再下单"}</p>
+              <p><strong>入场：</strong>${entry.rule || "等待更清晰的买点。"}</p>
+              <p><strong>加仓：</strong>${battle.add_rule || "盈利后再考虑加仓，亏损不默认补仓。"}</p>
+              <p><strong>防守：</strong>${battle.stop_rule || sellLayer.rule || "触发风险条件先降仓。"}</p>
+              <p><strong>情景：</strong>${scenario.base?.action || "维持当前计划复盘。"} ${scenario.bear?.action || ""}</p>
+            </details>
+            <div class="review-actions">
+              <button class="control trade-review-btn" type="button" data-index="${index}" data-decision="accepted">采纳</button>
+              <button class="control trade-review-btn" type="button" data-index="${index}" data-decision="watch">观察</button>
+              <button class="control trade-review-btn" type="button" data-index="${index}" data-decision="skipped">跳过</button>
+            </div>
+          </td>
+        </tr>`;
+      }).join("") || `<tr><td colspan="7">暂无持仓，无法生成最优交易计划。</td></tr>`;
+      renderMarketStyleRadar(payload?.market_style_radar);
+      renderShadowPortfolio(payload?.shadow_portfolio || []);
+      document.querySelectorAll(".trade-review-btn").forEach((button) => {
+        button.addEventListener("click", () => recordTradePlanReview(button.dataset.index, button.dataset.decision, button));
+      });
+      loadTradePlanLearning();
+      const notes = (payload?.notes || []).map((item) => `<li>${item}</li>`).join("");
+      const result = document.getElementById("manualTradePlanResult");
+      result.classList.add("show");
+      result.innerHTML = `<strong>最优交易计划已生成。</strong><small>算法：${payload?.algorithm_version || "--"} · 目标股票暴露 ${formatPercent(payload?.target_exposure)} · 现金底线 ${formatPercent(payload?.cash_floor)}</small><ul>${notes}</ul>`;
+    }
+    async function generateManualTradePlan(event) {
+      if (event) event.preventDefault();
+      if (!canUseManualTradePlan()) return;
+      const accountValue = Number(document.getElementById("manualAccountValue").value);
+      const availableCash = Number(document.getElementById("manualAvailableCash").value || 0);
+      const minTradeAmount = Number(document.getElementById("manualMinTradeAmount").value || 3000);
+      const result = document.getElementById("manualTradePlanResult");
+      if (!Number.isFinite(accountValue) || accountValue <= 0) {
+        result.classList.add("show");
+        result.innerHTML = "请先填写账户总资产，系统才能把仓位建议换算成金额和股数。";
+        return;
+      }
+      localStorage.setItem("manualTradeAccountValue", String(accountValue));
+      localStorage.setItem("manualTradeAvailableCash", String(availableCash));
+      localStorage.setItem("manualTradeMinAmount", String(minTradeAmount));
+      result.classList.add("show");
+      result.innerHTML = "正在生成最优交易计划...";
+      try {
+        const payload = await apiJson("/api/portfolio/manual-trade-plan", {
+          method: "POST",
+          body: JSON.stringify({
+            account_value: accountValue,
+            available_cash: Math.max(availableCash, 0),
+            min_trade_amount: Math.max(minTradeAmount, 0),
+            lot_size: 100
+          })
+        });
+        renderManualTradePlan(payload);
+      } catch (error) {
+        result.innerHTML = `最优交易计划生成失败：${error.message}`;
+      }
+    }
+    function hydrateManualTradeInputs() {
+      if (!canUseManualTradePlan()) return;
+      const accountValue = localStorage.getItem("manualTradeAccountValue");
+      const availableCash = localStorage.getItem("manualTradeAvailableCash");
+      const minAmount = localStorage.getItem("manualTradeMinAmount");
+      if (accountValue) document.getElementById("manualAccountValue").value = accountValue;
+      if (availableCash) document.getElementById("manualAvailableCash").value = availableCash;
+      if (minAmount) document.getElementById("manualMinTradeAmount").value = minAmount;
+    }
     function updatePortfolioMetrics() {
       const count = portfolioAdvice.length;
       const totalWeight = portfolioAdvice.reduce((sum, row) => sum + Number(row.weight || 0), 0);
-      const reduceCount = portfolioAdvice.filter((row) => row.portfolio_action.includes("reduce")).length;
+      const riskActions = ["reduce", "reduce_light", "large_reduce", "trim_to_risk_budget", "strategy_clear", "hard_exit", "exit_or_strong_reduce"];
+      const reduceCount = portfolioAdvice.filter((row) => riskActions.includes(row.portfolio_action)).length;
       const avgPnl = count ? portfolioAdvice.reduce((sum, row) => sum + Number(row.pnl_pct || 0), 0) / count : 0;
       document.getElementById("portfolioCount").textContent = count;
       document.getElementById("portfolioWeight").textContent = formatPercent(totalWeight);
@@ -3086,7 +3898,7 @@ reject_trade_if:
         : "当前没有强制降仓建议，继续观察信号变化。";
       document.getElementById("portfolioDiagnosisA").innerHTML = `<strong>核心判断：</strong>当前总仓位 ${formatPercent(totalWeight)}，平均浮盈亏 ${formatPercent(avgPnl, 2)}。`;
       document.getElementById("portfolioDiagnosisB").innerHTML = reduceCount > 0
-        ? `<strong>优先动作：</strong>先处理 ${reduceCount} 只 reduce/exit 标的，再考虑新增系统股票池候选。`
+        ? `<strong>优先动作：</strong>先处理 ${reduceCount} 只降风险/清仓标的，再考虑新增系统股票池候选。`
         : "<strong>优先动作：</strong>维持观察，等待系统股票池出现更高置信度候选。";
     }
     async function loadPortfolioAdvice() {
@@ -3117,6 +3929,9 @@ reject_trade_if:
       if (riskNotes) document.getElementById("portfolioExposureNote").textContent = riskNotes;
       renderHoldings();
       renderAdvice();
+      if (canUseManualTradePlan() && Number(document.getElementById("manualAccountValue").value) > 0) {
+        await generateManualTradePlan();
+      }
       loadInstitutionalRisk();
       })();
       try {
@@ -3202,7 +4017,7 @@ reject_trade_if:
       const hint = document.getElementById("backtestStrategyHint");
       if (hint) {
         const params = backtestRunParams();
-        hint.textContent = `${profile.hint} 当前市场状态下组合回测使用 Top ${params.topN}、阈值 ${params.minScore}、目标仓位 ${formatPercent(params.targetExposure, 0)}。`;
+        hint.textContent = `${profile.hint} 当前回测场景下组合回测使用 Top ${params.topN}、阈值 ${params.minScore}、目标股票暴露 ${formatPercent(params.targetExposure, 0)}。`;
       }
       ["portfolioBacktestStrategyTag", "eventBacktestStrategyTag"].forEach((id) => {
         const tag = document.getElementById(id);
@@ -3624,10 +4439,14 @@ reject_trade_if:
     function renderResearchReport(payload) {
       const result = document.getElementById("researchReportResult");
       result.classList.add("show");
+      const mainAction = payload.portfolio_action || payload.action;
       result.innerHTML = `
-        <strong>${payload.name} ${payload.symbol}</strong> · 最新价 <code>${formatLatestPrice(payload)}</code> · 评分 <span class="score">${formatNumber(payload.score, 1)}</span> · ${actionLabel(payload.action)} · 置信度 ${confidenceLabel(payload.confidence)}<br />
+        <strong>${payload.name} ${payload.symbol}</strong> · 最新价 <code>${formatLatestPrice(payload)}</code> <span class="tag ${moveTagClass(payload.pct_change)}">${formatSignedPercent(payload.pct_change)}</span> · 综合持有评分 <span class="score">${formatNumber(payload.holding_score ?? payload.score, 1)}</span> · ${actionLabel(mainAction)} · 置信度 ${confidenceLabel(payload.confidence)}<br />
         ${renderStrategyScoreGrid(payload, "research-strategy-grid")}
-        <p><strong>评分口径：</strong>${payload.trade_date || "--"} · 换手 ${formatTurnoverRate(payload.turnover_rate)} · <code>${payload.score_source || "--"}</code> · <code>${payload.model_version || "--"}</code></p>
+        <p><strong>评分口径：</strong>${payload.stock_profile_label || "均衡成长"} · 新增买入 ${formatNumber(payload.buy_score, 1)} · 持有 ${formatNumber(payload.holding_score, 1)} · 风险预算 ${formatPercent(payload.target_weight_low, 0)}-${formatPercent(payload.target_weight_high, 0)} · ${payload.trade_date || "--"} · 换手 ${formatTurnoverRate(payload.turnover_rate)} · <code>${payload.score_source || "--"}</code> · <code>${payload.model_version || "--"}</code></p>
+        <p><strong>画像说明：</strong>${payload.profile_adjust_note || "按均衡成长框架评分。"}</p>
+        ${renderReportPlan(payload)}
+        <p><strong>升级条件：</strong>${payload.upgrade_conditions || "继续保持趋势、成交承接和基本面质量。"}</p>
         ${renderStrategyDetailGrid(payload)}
         <p><strong>核心假设：</strong>${payload.thesis}</p>
         <p><strong>证据：</strong>${(payload.evidence || []).join("；") || "暂无结构化证据"}</p>
@@ -3687,8 +4506,12 @@ reject_trade_if:
       const midLongThreshold = midLongRows.find((row) => row.effective_buy_score_threshold)?.effective_buy_score_threshold;
       document.getElementById("poolCount").textContent = `${shortRows.length} / ${midLongRows.length}`;
       document.getElementById("poolDate").textContent = latestDate || "--";
-      document.getElementById("poolCore").textContent = `${shortRows.filter((row) => row.action === "buy").length} / ${midLongRows.filter((row) => row.action === "buy").length}`;
-      document.getElementById("poolModel").textContent = `短 ${shortRows[0]?.model_version || "--"} / 长 ${midLongRows[0]?.model_version || "--"}`;
+      const shortCore = shortRows.filter((row) => row.action === "buy").length;
+      const shortTrial = shortRows.filter((row) => row.action === "trial_buy").length;
+      const midLongCore = midLongRows.filter((row) => row.action === "buy").length;
+      const midLongTrial = midLongRows.filter((row) => row.action === "trial_buy").length;
+      document.getElementById("poolCore").textContent = `短 ${shortCore}+${shortTrial} / 长 ${midLongCore}+${midLongTrial}`;
+      document.getElementById("poolModel").textContent = `短 ${compactModelVersion(shortRows[0]?.model_version)} / 长 ${compactModelVersion(midLongRows[0]?.model_version)}`;
       document.getElementById("poolRegime").textContent = regime;
       document.getElementById("poolThresholds").textContent = `${formatNumber(shortThreshold, 1)} / ${formatNumber(midLongThreshold, 1)}`;
       document.getElementById("poolRegimeTag").textContent = regime === "--" ? "等待读取" : regime;
@@ -3797,7 +4620,7 @@ reject_trade_if:
         <tr>
           <td><strong>${item.name}</strong><br /><code>${item.symbol}</code></td>
           <td>${renderStrategyScoreGrid(item)}<small>主评分 ${formatNumber(item.price_factor_score, 1)}</small></td>
-          <td><span class="tag ${tagClassForAction(item.action)}">${actionLabel(item.action)}</span><br /><small>最新价 ${formatLatestPrice(item)} · 涨跌 ${formatSignedPercent(item.pct_change)} · 换手 ${formatTurnoverRate(item.turnover_rate)} · ${item.trade_date || "--"}</small></td>
+          <td><span class="tag ${tagClassForAction(item.action)}">${actionLabel(item.action)}</span><br /><small>最新价 ${formatLatestPrice(item)} <span class="tag ${moveTagClass(item.pct_change)}">${formatSignedPercent(item.pct_change)}</span> · 换手 ${formatTurnoverRate(item.turnover_rate)} · ${item.trade_date || "--"}</small></td>
           <td><strong>${item.note || "等待二次研究"}</strong><p class="advice-reason">${compactReason(item.reason)}</p>${renderStrategyDetailGrid(item)}</td>
           <td><button class="control remove-watchlist" data-symbol="${item.symbol}">移出</button></td>
         </tr>
@@ -3879,6 +4702,12 @@ reject_trade_if:
       const score = Number(row.price_factor_score || 0);
       const action = row.action;
       const target = formatPercent(row.target_weight, 0);
+      const stockProfile = row.stock_profile_label || "均衡成长";
+      const positionHint = ["buy", "trial_buy"].includes(action) && Number(row.target_weight || 0) > 0
+        ? `建议仓位 ${target}`
+        : action === "watch"
+        ? "观察，不建议新增"
+        : "暂不纳入";
       const flags = riskFlagText(row.risk_flags);
       const confidence = row.confidence || "medium";
       const brief = scoreBrief(row);
@@ -3902,7 +4731,7 @@ reject_trade_if:
               <span class="price-chip">${formatLatestPrice(row)}</span>
               <span class="tag ${moveTagClass(row.pct_change)}">${formatSignedPercent(row.pct_change)}</span>
             </div>
-            <small>${strategyScoreLabel(strategyKey)} · 仓位上限 ${target}</small>
+            <small>${strategyScoreLabel(strategyKey)} · ${stockProfile} · ${positionHint}</small>
           </div>
           <div class="pool-scoreline">
             <span class="tag ${tagClassForAction(action)}">${actionLabel(action)}</span>
@@ -3911,7 +4740,7 @@ reject_trade_if:
           </div>
           <div class="pool-thesis">
             <p><strong>优势</strong><span>${brief.strengths}</span></p>
-            <p><strong>风险</strong><span>${brief.risks}${brief.regime ? ` · ${brief.regime}` : ""}</span></p>
+            <p><strong>风险</strong><span>${brief.risks}</span></p>
           </div>
           <div class="pool-metric-strip">
             ${poolMetric("换手率", turnover)}
@@ -3950,6 +4779,9 @@ reject_trade_if:
       renderStrategyPool("short");
       renderStrategyPool("mid_long");
       bindPoolAddButtons();
+      if (document.querySelector(".view.active")?.id === "systemPool") {
+        applyMarketRegime();
+      }
     }
     function profileForm(strategyKey) {
       return document.querySelector(`.strategy-profile-form[data-strategy="${strategyKey}"]`);
@@ -4056,6 +4888,50 @@ reject_trade_if:
       const name = document.getElementById("marketRegime").value;
       return marketRegimes[name] || marketRegimes["震荡上行"];
     }
+    function textContentOr(id, fallback = "--") {
+      const value = document.getElementById(id)?.textContent?.trim();
+      return value && value !== "--" ? value : fallback;
+    }
+    function viewSubtitle(view, scenarioName, regime) {
+      const base = titles[view]?.[1] || "";
+      if (view === "dashboard") {
+        return `${base} 参考回测场景：${scenarioName}；今日候选仍以系统股票池、持仓评分和风险标记为准。`;
+      }
+      if (view === "systemPool") {
+        const count = textContentOr("poolCount", "待读取");
+        const date = textContentOr("poolDate", "待读取");
+        const thresholds = textContentOr("poolThresholds", "待读取");
+        return `${base} 当前推荐池：短/长入池 ${count}，最新交易日 ${date}，短/长入池阈值 ${thresholds}。`;
+      }
+      if (view === "portfolio") {
+        return `${base} 持仓建议按当前账户持仓、短期/长期评分、系统股票池和风险预算生成；不使用统一回测阈值。`;
+      }
+      if (view === "workflow") {
+        return `${base} 这里解释每日使用顺序，不直接生成交易信号；请以系统股票池和个人持股页的实时结果为准。`;
+      }
+      if (view === "data") {
+        return `${base} 本页用于数据源、缓存、导出和字段治理，不受回测场景参数影响。`;
+      }
+      if (view === "model") {
+        return `${base} 模型阈值以短期/长期配置、版本历史和回测参数为准，不使用顶部统一数字。`;
+      }
+      if (view === "backtest") {
+        return `${base} 当前回测场景：${scenarioName}，入选阈值 ${regime.minScore}，目标股票暴露 ${formatPercent(regime.targetExposure, 0)}，单票上限 ${formatPercent(regime.maxPosition, 0)}，现金底仓 ${formatPercent(regime.cashFloor, 0)}。`;
+      }
+      if (view === "institutional") {
+        return `${base} 组合风险和治理状态来自当前账户、数据源配置、模型门禁和审计日志。`;
+      }
+      if (view === "billing") {
+        return `${base} 当前是否收费由 Admin 商业化开关控制，和回测场景无关。`;
+      }
+      if (view === "feedback") {
+        return `${base} 反馈会绑定当前登录账户并生成编号，Admin 可在维护端处理。`;
+      }
+      if (view === "admin") {
+        return `${base} 本页只对 Admin 开放，统计来自用户、权限、反馈、导出、订阅和接口流量。`;
+      }
+      return base;
+    }
     function applyMarketRegime() {
       const select = document.getElementById("marketRegime");
       const name = select.value;
@@ -4068,16 +4944,24 @@ reject_trade_if:
       document.getElementById("regimeMinScore").textContent = regime.minScore;
       document.getElementById("regimeSingleCap").textContent = formatPercent(regime.maxPosition, 0);
       document.getElementById("regimeCashRule").textContent = formatPercent(regime.cashFloor, 0);
-      document.getElementById("regimeNote").textContent = `${regime.note} 目标总仓位 ${formatPercent(regime.targetExposure, 0)}。`;
-      document.getElementById("lastCalcLabel").textContent = new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
+      document.getElementById("regimeNote").textContent = `${regime.note} 回测目标股票暴露 ${formatPercent(regime.targetExposure, 0)}。`;
+      document.getElementById("lastCalcLabel").textContent = new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" });
       const activeView = document.querySelector(".view.active")?.id || "dashboard";
-      document.getElementById("viewSub").textContent = `${titles[activeView][1]} 当前市场状态：${name}，回测阈值 ${regime.minScore}，目标仓位 ${formatPercent(regime.targetExposure, 0)}，单票上限 ${formatPercent(regime.maxPosition, 0)}，现金底仓 ${formatPercent(regime.cashFloor, 0)}。`;
+      document.getElementById("viewSub").textContent = viewSubtitle(activeView, name, regime);
       syncBacktestStrategyUi();
     }
     document.querySelectorAll(".nav button").forEach((button) => {
       button.addEventListener("click", () => {
         const view = button.dataset.view;
         if (view === "admin" && !currentUser?.is_admin) return;
+        const previousView = document.querySelector(".view.active")?.id || lastContentView || "dashboard";
+        if (view === "feedback") {
+          const sourceView = previousView === "feedback" ? lastContentView : previousView;
+          const input = document.getElementById("feedbackPageContext");
+          if (input) input.value = titles[sourceView]?.[0] || sourceView;
+        } else if (view !== "admin") {
+          lastContentView = view;
+        }
         localStorage.setItem("aShareAlphaView", view);
         document.querySelectorAll(".nav button").forEach((b) => b.classList.toggle("active", b === button));
         document.querySelectorAll(".view").forEach((v) => v.classList.toggle("active", v.id === view));
@@ -4089,6 +4973,9 @@ reject_trade_if:
         }
         if (view === "systemPool" && (currentUser.is_admin || currentUser.feature_flags?.portfolio)) {
           loadWatchlist();
+        }
+        if (view === "feedback") {
+          loadFeedback();
         }
       });
     });
@@ -4148,6 +5035,8 @@ reject_trade_if:
     });
     document.getElementById("positionSymbol").addEventListener("blur", lookupPositionName);
     document.getElementById("positionForm").addEventListener("submit", savePosition);
+    document.getElementById("manualTradePlanForm").addEventListener("submit", generateManualTradePlan);
+    document.getElementById("refreshTradeLearningBtn").addEventListener("click", loadTradePlanLearning);
     document.querySelectorAll("#backtestStrategyTabs button").forEach((button) => {
       button.addEventListener("click", () => {
         selectBacktestStrategy(button.dataset.strategy);
@@ -4178,6 +5067,8 @@ reject_trade_if:
       pruneDataCache(false);
     });
     document.getElementById("dataExportForm").addEventListener("submit", createExportRequest);
+    document.getElementById("feedbackForm").addEventListener("submit", submitFeedback);
+    document.getElementById("refreshFeedbackBtn").addEventListener("click", loadFeedback);
     document.getElementById("refreshBillingBtn").addEventListener("click", loadBillingCenter);
     document.getElementById("refreshAdminBtn").addEventListener("click", loadAdminCenter);
     document.getElementById("refreshAdminUsageBtn").addEventListener("click", loadAdminUsage);
@@ -4200,6 +5091,7 @@ reject_trade_if:
     async function initializeApp() {
       try {
         await loadCurrentUser();
+        hydrateManualTradeInputs();
       } catch (error) {
         localStorage.removeItem("alpha_token");
         localStorage.removeItem("alpha_email");

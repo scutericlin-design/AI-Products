@@ -21,8 +21,9 @@ from app.models import DataCacheEntry, DataExportRequest, PortfolioPosition, Use
 from app.schemas import DataCachePruneIn, DataExportRequestIn
 from app.services.audit import write_audit_log
 from app.services.data_cache import cache_summary, prune_cache
-from app.services.portfolio_advice import build_strategy_score_bundle
+from app.services.portfolio_advice import build_strategy_score_bundle, build_user_advice
 from app.services.stock_lookup import lookup_stock_name, normalize_symbol
+from app.services.timezone import beijing_iso
 
 
 router = APIRouter(prefix="/api/analytics", tags=["analytics"])
@@ -81,6 +82,19 @@ def _safe_float(value: Any, default: float = 0.0) -> float:
         return default
 
 
+def _stock_level_reason(value: Any) -> str:
+    text = str(value or "")
+    if not text:
+        return ""
+    dropped_tokens = ("市场风格", "市场：", "缩量防御", "震荡上行", "高波动修复")
+    parts = [
+        item.strip()
+        for item in text.split("；")
+        if item.strip() and not any(token in item for token in dropped_tokens)
+    ]
+    return "；".join(parts)
+
+
 @router.get("/data-health/latest")
 def latest_data_health(user: User = Depends(current_user)):
     return read_json(DATA_HEALTH_PATH, {"status": "missing", "datasets": []})
@@ -130,8 +144,8 @@ def _serialize_export(item: DataExportRequest) -> dict[str, Any]:
         "start_date": item.start_date,
         "end_date": item.end_date,
         "status": item.status,
-        "requested_at": item.requested_at.isoformat() if item.requested_at else None,
-        "decided_at": item.decided_at.isoformat() if item.decided_at else None,
+        "requested_at": beijing_iso(item.requested_at),
+        "decided_at": beijing_iso(item.decided_at),
         "decision_note": item.decision_note,
     }
 
@@ -273,6 +287,17 @@ def research_report(symbol: str, user: User = Depends(current_user), db: Session
     position = db.scalar(
         select(PortfolioPosition).where(PortfolioPosition.user_id == user.id, PortfolioPosition.symbol == code)
     )
+    advice_record = None
+    if position:
+        user_positions = db.scalars(
+            select(PortfolioPosition).where(PortfolioPosition.user_id == user.id).order_by(PortfolioPosition.weight.desc())
+        ).all()
+        advice_record = next(
+            (item for item in build_user_advice(user_positions) if normalize_symbol(str(item.get("symbol", ""))) == code),
+            None,
+        )
+        if advice_record and advice_record.get("strategy_scores"):
+            strategy_scores = advice_record["strategy_scores"]
 
     row = pool or universe or signal or {}
     score_source = "system_pool_top30" if pool else "scored_universe_latest" if universe else "legacy_signal_latest" if signal else "missing"
@@ -290,25 +315,49 @@ def research_report(symbol: str, user: User = Depends(current_user), db: Session
             score_source = f"{primary_strategy.get('strategy_key')}_strategy_cache"
     score = _safe_float(row.get("price_factor_score"))
     action = row.get("action") or "no_signal"
+    report_record = dict(row)
+    report_record["strategy_scores"] = strategy_scores
+    report_record["signal_action"] = action
+    report_record["weight"] = position.weight if position else 0.0
+    report_record["cost_price"] = position.cost_price if position else None
+    if position and row.get("close") and position.cost_price:
+        latest = _safe_float(row.get("close"))
+        report_record["pnl_pct"] = latest / position.cost_price - 1 if latest and position.cost_price else None
+    if advice_record:
+        finalized = advice_record
+    else:
+        from scripts.build_portfolio_advice import finalize_advice_record
+
+        finalized = finalize_advice_record(report_record, max_single=0.12, watch_cap=0.04)
+    holding_score = finalized.get("holding_score")
+    portfolio_action = finalized.get("portfolio_action")
     risk_flags = [flag for flag in (row.get("risk_flags") or "").split("|") if flag]
     reasons = []
     if score:
-        reasons.append(f"模型评分 {score:.1f}")
+        reasons.append(f"新增买入评分 {score:.1f}")
+    if holding_score is not None:
+        reasons.append(f"综合持有评分 {holding_score:.1f}")
     if row.get("trade_date"):
         reasons.append(f"评分日期 {row['trade_date']}")
     reasons.append(f"评分来源 {score_source}")
     if row.get("reason"):
-        reasons.append(row["reason"])
+        stock_reason = _stock_level_reason(row["reason"])
+        if stock_reason:
+            reasons.append(stock_reason)
     if position:
         reasons.append(f"当前账户仓位 {position.weight:.2%}")
+    if finalized.get("action_rationale"):
+        reasons.append(finalized["action_rationale"])
 
     thesis = "暂未形成强信号，适合作为观察标的。"
-    if action == "buy" and score >= 78:
+    if position:
+        thesis = finalized.get("action_rationale") or "该股票已在账户持仓中，应按综合持有评分和风险预算管理。"
+    elif action == "buy" and score >= 78:
         thesis = "当前具备强势、流动性和价格确认的组合信号，可进入核心观察或小仓试错清单。"
     elif action in {"watch", "hold_or_reduce"}:
-        thesis = "当前信号未达到核心买入标准，应以观察、持有或降风险为主。"
+        thesis = "当前信号未达到核心买入标准，应以观察为主，等待评分或风险条件改善。"
     elif action == "avoid":
-        thesis = "当前模型不支持继续加仓，应优先检查退出或降仓条件。"
+        thesis = "当前模型不支持新增买入，应等待趋势、成交或基本面条件修复。"
 
     risks = risk_flags or ["数据层未发现硬性风险标记，但仍需人工检查公告、涨跌停和板块拥挤度。"]
     invalidation = [
@@ -330,12 +379,37 @@ def research_report(symbol: str, user: User = Depends(current_user), db: Session
         "name": name,
         "name_source": source,
         "action": action,
-        "score": score,
+        "portfolio_action": portfolio_action,
+        "score": holding_score if position and holding_score is not None else score,
+        "buy_score": score,
+        "holding_score": holding_score,
+        "target_weight_low": finalized.get("target_weight_low"),
+        "target_weight_high": finalized.get("target_weight_high"),
+        "suggested_target_weight": finalized.get("suggested_target_weight"),
+        "upgrade_conditions": finalized.get("upgrade_conditions"),
+        "action_rationale": finalized.get("action_rationale"),
+        "position_role": finalized.get("position_role"),
+        "position_profile_key": finalized.get("position_profile_key"),
+        "position_profile_label": finalized.get("position_profile_label"),
+        "target_position_count": finalized.get("target_position_count"),
+        "account_value_estimate": finalized.get("account_value_estimate"),
+        "profile_max_single": finalized.get("profile_max_single"),
+        "retail_position_note": finalized.get("retail_position_note"),
+        "buy_initial_weight": finalized.get("buy_initial_weight"),
+        "buy_add_weight": finalized.get("buy_add_weight"),
+        "buy_max_weight": finalized.get("buy_max_weight"),
+        "stop_loss_pct": finalized.get("stop_loss_pct"),
+        "risk_per_trade_pct": finalized.get("risk_per_trade_pct"),
+        "trade_plan": finalized.get("trade_plan"),
         "score_source": score_source,
         "trade_date": row.get("trade_date"),
+        "stock_profile": row.get("stock_profile") or finalized.get("stock_profile"),
+        "stock_profile_label": row.get("stock_profile_label") or finalized.get("stock_profile_label"),
+        "profile_adjust_note": row.get("profile_adjust_note") or finalized.get("profile_adjust_note"),
         "latest_close": _safe_float(row.get("close"), default=0.0) or None,
+        "pct_change": _safe_float(row.get("pct_change"), default=0.0) or None,
         "turnover_rate": _safe_float(row.get("turnover_rate"), default=0.0) or None,
-        "model_version": row.get("model_version") or "institutional_score_v6_adaptive_tushare",
+        "model_version": row.get("model_version") or "institutional_score_v7_profile_adaptive_tushare",
         "raw_institutional_score": _safe_float(row.get("raw_institutional_score"), default=0.0) or None,
         "gate_penalty_score": _safe_float(row.get("gate_penalty_score"), default=0.0) or None,
         "alpha_score": _safe_float(row.get("alpha_score"), default=0.0) or None,

@@ -4,8 +4,6 @@ import csv
 import json
 import subprocess
 import sys
-from datetime import datetime
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -17,14 +15,15 @@ from app.models import DataSourceConfig, StrategyConfig, StrategyVersion, User
 from app.schemas import StrategyConfigIn, StrategyConfigOut, StrategyProfileIn, StrategyVersionOut
 from app.services.audit import write_audit_log
 from app.services.score_refresh import ready_tushare_owner
+from app.services.timezone import beijing_iso, file_mtime_beijing_iso, now_beijing
 
 
 router = APIRouter(prefix="/api/system-pool", tags=["system-pool"])
 ALLOWED_MARKETS = {"main", "chinext", "star", "beijing"}
 DEFAULT_STRATEGY_TYPE = "short_elastic_2_8w"
 STRATEGY_MODEL_VERSIONS = {
-    "short_elastic_2_8w": "institutional_score_v6_short_adaptive_tushare",
-    "mid_long_quality_3_12m": "institutional_score_v6_midlong_adaptive_tushare",
+    "short_elastic_2_8w": "institutional_score_v7_short_profile_adaptive_tushare",
+    "mid_long_quality_3_12m": "institutional_score_v7_midlong_profile_adaptive_tushare",
 }
 MODEL_VERSION = STRATEGY_MODEL_VERSIONS[DEFAULT_STRATEGY_TYPE]
 STRATEGY_REBUILD_PRESETS = {
@@ -95,10 +94,9 @@ def read_pool() -> list[dict[str, str]]:
 
 
 def pool_meta(path, rows: list[dict[str, str]], strategy_key: str | None = None) -> dict:
-    updated_at = datetime.fromtimestamp(path.stat().st_mtime).isoformat() if path.exists() else None
     return {
         "strategy_key": strategy_key,
-        "updated_at": updated_at,
+        "updated_at": file_mtime_beijing_iso(path),
         "pool_strategy_type": rows[0].get("strategy_type") if rows else None,
         "pool_model_version": rows[0].get("model_version") if rows else None,
         "rows": rows,
@@ -450,7 +448,7 @@ def create_version_snapshot(config: StrategyConfig, db: Session, note: str | Non
     params["profiles"] = serialize_profiles(config)["profiles"]
     version = StrategyVersion(
         user_id=config.user_id,
-        version_code=f"{config.model_version}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+        version_code=f"{config.model_version}_{now_beijing().strftime('%Y%m%d_%H%M%S')}",
         model_version=config.model_version,
         params_json=json.dumps(params, ensure_ascii=False, sort_keys=True),
         note=note,
@@ -468,7 +466,7 @@ def serialize_version(version: StrategyVersion) -> dict:
         "model_version": version.model_version,
         "params": json.loads(version.params_json),
         "note": version.note,
-        "created_at": version.created_at.isoformat(),
+        "created_at": beijing_iso(version.created_at),
     }
 
 

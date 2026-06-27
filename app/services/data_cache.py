@@ -11,6 +11,7 @@ from sqlalchemy import delete, func, select
 from app.config import settings
 from app.database import SessionLocal
 from app.models import DataCacheEntry
+from app.services.timezone import BEIJING_TZ, beijing_iso, file_mtime_beijing_iso, now_beijing
 
 
 PROVIDER = "tushare"
@@ -111,7 +112,7 @@ def _file_record(dataset: str, path: Path) -> dict[str, Any]:
         "trade_date": trade_date,
         "empty": not has_data_rows,
         "size_bytes": int(stat.st_size),
-        "updated_at": datetime.fromtimestamp(stat.st_mtime).isoformat(timespec="seconds"),
+        "updated_at": file_mtime_beijing_iso(path),
     }
 
 
@@ -169,7 +170,7 @@ def _database_cache_summary() -> dict[str, Any]:
                 "size_bytes": int(size_bytes or 0),
                 "oldest_trade_date": oldest_trade_date,
                 "latest_trade_date": latest_trade_date,
-                "latest_updated_at": latest_updated_at.isoformat(timespec="seconds") if latest_updated_at else None,
+                "latest_updated_at": beijing_iso(latest_updated_at),
             }
             for dataset, count, size_bytes, oldest_trade_date, latest_trade_date, latest_updated_at in rows
         ]
@@ -214,13 +215,13 @@ def _prune_files(dataset: str, keep_recent_days: int, dry_run: bool) -> dict[str
             continue
         records = [_file_record(item, path) for path in sorted(directory.glob("*.csv"))]
         cutoff_trade_date = _cutoff_from_records(records, keep_recent_days)
-        cutoff_mtime = datetime.now() - timedelta(days=keep_recent_days)
+        cutoff_mtime = now_beijing().replace(tzinfo=None) - timedelta(days=keep_recent_days)
         for record in records:
             path = Path(record["path"])
             if record.get("trade_date") and cutoff_trade_date:
                 should_delete = str(record["trade_date"]) < cutoff_trade_date
             else:
-                should_delete = datetime.fromtimestamp(path.stat().st_mtime) < cutoff_mtime
+                should_delete = datetime.fromtimestamp(path.stat().st_mtime, tz=BEIJING_TZ).replace(tzinfo=None) < cutoff_mtime
             if not should_delete:
                 continue
             candidates.append(str(path))
@@ -259,7 +260,7 @@ def _prune_database(dataset: str, keep_recent_days: int, dry_run: bool) -> dict[
         if cutoff_trade_date:
             query = query.where(DataCacheEntry.trade_date < cutoff_trade_date)
         else:
-            query = query.where(DataCacheEntry.updated_at < datetime.now() - timedelta(days=keep_recent_days))
+            query = query.where(DataCacheEntry.updated_at < now_beijing().replace(tzinfo=None) - timedelta(days=keep_recent_days))
         entries = db.scalars(query).all()
         size = sum(int(entry.size_bytes or 0) for entry in entries)
         if not dry_run and entries:

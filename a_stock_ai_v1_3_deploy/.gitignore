@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.env
+storage/*.sqlite
+storage/*.sqlite-*
+storage/strategy_params.json
+storage/paper_account.json

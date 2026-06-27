@@ -1,9 +1,53 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+INCLUDE_DATA=0
+
+usage() {
+  cat <<EOF
+Usage: $0 [--include-data] SERVER_IP [SERVER_USER] [REMOTE_DIR]
+
+Examples:
+  $0 1.2.3.4 root /opt/chixiao-alpha
+  $0 --include-data 1.2.3.4 root /opt/chixiao-alpha
+
+Options:
+  --include-data      Include local data/ if this is the first deployment.
+  --no-include-data   Exclude local data/. This is the default.
+EOF
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --include-data)
+      INCLUDE_DATA=1
+      shift
+      ;;
+    --no-include-data)
+      INCLUDE_DATA=0
+      shift
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
 if [ $# -lt 1 ]; then
-  echo "Usage: $0 SERVER_IP [SERVER_USER] [REMOTE_DIR]"
-  echo "Example: $0 1.2.3.4 root /opt/chixiao-alpha"
+  usage >&2
   exit 1
 fi
 
@@ -16,7 +60,16 @@ if [ -n "${SSH_KEY:-}" ]; then
   SSH_ARGS=(-i "$SSH_KEY" -o IdentitiesOnly=yes)
 fi
 
-ARCHIVE="$(bash "$ROOT_DIR/deployment/pack_tencent.sh")"
+PACK_ARGS=()
+if [ "$INCLUDE_DATA" = "1" ]; then
+  PACK_ARGS+=(--include-data)
+fi
+
+if [ ${#PACK_ARGS[@]} -gt 0 ]; then
+  ARCHIVE="$(bash "$ROOT_DIR/deployment/pack_tencent.sh" "${PACK_ARGS[@]}")"
+else
+  ARCHIVE="$(bash "$ROOT_DIR/deployment/pack_tencent.sh")"
+fi
 REMOTE_ARCHIVE="/tmp/$(basename "$ARCHIVE")"
 
 echo "Uploading $ARCHIVE to $SERVER_USER@$SERVER_IP:$REMOTE_ARCHIVE"

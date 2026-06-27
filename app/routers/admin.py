@@ -10,7 +10,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.deps import PLAN_FEATURES, current_admin, user_feature_flags
-from app.models import DataExportRequest, PlanUpgradeRequest, PortfolioPosition, StrategyConfig, UsageLog, User
+from app.models import DataExportRequest, FeedbackItem, PlanUpgradeRequest, PortfolioPosition, StrategyConfig, UsageLog, User
+from app.routers.feedback import serialize_feedback
 from app.routers.system_pool import (
     DEFAULT_STRATEGY_TYPE,
     STRATEGY_MODEL_VERSIONS,
@@ -23,10 +24,12 @@ from app.schemas import (
     AdminStrategyUpdateIn,
     AdminUserUpdateIn,
     DataExportDecisionIn,
+    FeedbackAdminUpdateIn,
     PlanUpgradeDecisionIn,
 )
 from app.services.audit import write_audit_log
 from app.services.platform_settings import is_billing_enabled, set_setting
+from app.services.timezone import as_beijing, beijing_iso
 
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
@@ -56,7 +59,7 @@ def _serialize_user(user: User, db: Session, billing_enabled: bool | None = None
         "feature_flags": user_feature_flags(user, billing_enabled=billing_enabled),
         "position_count": int(position_count or 0),
         "strategy": serialize_config(config) if config else None,
-        "created_at": user.created_at.isoformat() if user.created_at else None,
+        "created_at": beijing_iso(user.created_at),
     }
 
 
@@ -73,8 +76,8 @@ def _serialize_export_request(item: DataExportRequest, db: Session) -> dict:
         "start_date": item.start_date,
         "end_date": item.end_date,
         "status": item.status,
-        "requested_at": item.requested_at.isoformat() if item.requested_at else None,
-        "decided_at": item.decided_at.isoformat() if item.decided_at else None,
+        "requested_at": beijing_iso(item.requested_at),
+        "decided_at": beijing_iso(item.decided_at),
         "decided_by": approver.email if approver else None,
         "decision_note": item.decision_note,
     }
@@ -91,8 +94,8 @@ def _serialize_upgrade_request(item: PlanUpgradeRequest, db: Session) -> dict:
         "billing_cycle": item.billing_cycle,
         "amount_cny": item.amount_cny,
         "status": item.status,
-        "requested_at": item.requested_at.isoformat() if item.requested_at else None,
-        "decided_at": item.decided_at.isoformat() if item.decided_at else None,
+        "requested_at": beijing_iso(item.requested_at),
+        "decided_at": beijing_iso(item.decided_at),
         "decided_by": approver.email if approver else None,
         "decision_note": item.decision_note,
     }
@@ -105,6 +108,7 @@ def summary(admin: User = Depends(current_admin), db: Session = Depends(get_db))
     active_count = db.scalar(select(func.count(User.id)).where(User.status == "active"))
     pending_exports = db.scalar(select(func.count(DataExportRequest.id)).where(DataExportRequest.status == "pending"))
     pending_upgrades = db.scalar(select(func.count(PlanUpgradeRequest.id)).where(PlanUpgradeRequest.status == "pending"))
+    pending_feedback = db.scalar(select(func.count(FeedbackItem.id)).where(FeedbackItem.status.in_(["pending", "in_progress"])))
     admin_count = db.scalar(select(func.count(User.id)).where(User.role == "admin"))
     pro_count = db.scalar(select(func.count(User.id)).where(User.plan == "pro"))
     usage_24h = db.scalar(
@@ -131,6 +135,7 @@ def summary(admin: User = Depends(current_admin), db: Session = Depends(get_db))
         "pro_count": int(pro_count or 0),
         "pending_exports": int(pending_exports or 0),
         "pending_upgrades": int(pending_upgrades or 0),
+        "pending_feedback": int(pending_feedback or 0),
         "usage_24h": int(usage_24h or 0),
         "usage_today": int(usage_today or 0),
         "usage_today_errors": int(usage_today_errors or 0),
@@ -178,7 +183,8 @@ def usage(days: int = 7, admin: User = Depends(current_admin), db: Session = Dep
     today_active_users: set[str] = set()
     today_stats = {"requests": 0, "errors": 0, "bytes": 0, "active_users": 0}
     for row in rows:
-        day = row.created_at.strftime("%Y-%m-%d") if row.created_at else "--"
+        row_created_cn = as_beijing(row.created_at)
+        day = row_created_cn.strftime("%Y-%m-%d") if row_created_cn else "--"
         email = users.get(row.user_id, "anonymous")
         total_bytes += int(row.response_bytes or 0)
         total_duration += float(row.duration_ms or 0)
@@ -304,6 +310,41 @@ def list_export_requests(admin: User = Depends(current_admin), db: Session = Dep
 def list_upgrade_requests(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
     rows = db.scalars(select(PlanUpgradeRequest).order_by(PlanUpgradeRequest.requested_at.desc()).limit(200)).all()
     return {"rows": [_serialize_upgrade_request(item, db) for item in rows]}
+
+
+@router.get("/feedback")
+def list_feedback(admin: User = Depends(current_admin), db: Session = Depends(get_db)):
+    rows = db.scalars(select(FeedbackItem).order_by(FeedbackItem.created_at.desc(), FeedbackItem.id.desc()).limit(200)).all()
+    return {"rows": [serialize_feedback(item, db) for item in rows]}
+
+
+@router.put("/feedback/{feedback_id}")
+def update_feedback(
+    feedback_id: int,
+    payload: FeedbackAdminUpdateIn,
+    admin: User = Depends(current_admin),
+    db: Session = Depends(get_db),
+):
+    item = db.get(FeedbackItem, feedback_id)
+    if item is None:
+        raise HTTPException(status_code=404, detail="反馈记录不存在")
+    item.status = payload.status
+    item.admin_note = payload.admin_note
+    item.handled_by_user_id = admin.id
+    if payload.status in {"resolved", "closed"}:
+        item.resolved_at = datetime.utcnow()
+    elif payload.status in {"pending", "in_progress"}:
+        item.resolved_at = None
+    db.commit()
+    db.refresh(item)
+    write_audit_log(
+        db,
+        admin,
+        "admin.feedback_update",
+        item.ticket_code or str(item.id),
+        {"status": item.status, "feedback_user_id": item.user_id},
+    )
+    return serialize_feedback(item, db)
 
 
 @router.post("/upgrade-requests/{request_id}/decision")

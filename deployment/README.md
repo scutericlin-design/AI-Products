@@ -41,7 +41,7 @@ http://127.0.0.1:8000/
 3. Copy this repository to the VM.
 4. Create `.env`.
 5. Run `docker compose up -d --build`.
-6. Put Nginx and HTTPS in front of port `8000`.
+6. Put Caddy and HTTPS in front of port `8000`; `docker-compose.prod.yml` already includes Caddy.
 
 ## Database Migration Path
 
