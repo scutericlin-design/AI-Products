@@ -1,0 +1,45 @@
+{
+  "title": "2026-08 企业 Skill 管理与安全治理执行方案",
+  "question": "如何为 Codex、ChatGPT、MCP 与内部 Agent 建立可执行的企业级 Skill 生命周期、强制安全规则及管理平台？",
+  "status": "Done",
+  "topic": ["AI Agent", "Product", "Knowledge Base"],
+  "priority": "High",
+  "source_count": 4,
+  "key_takeaways": "Skill 不能自带权限；应按登记、评审、签名发布、最小权限运行、持续审计和可紧急停用的生命周期治理。管理平台必须连接 Git、IAM、Vault、沙箱、MCP Gateway 与 SIEM，而非替代这些控制。",
+  "decision": "采用私有 Skill Registry + Git PR 门禁 + 最小权限运行时 + 分级审批 + 集中审计的控制面方案；先从 L1 只读无网络 Skill 试点，再逐步开放 L2/L3。",
+  "next_action": "30 天内盘点现有 Skill，建立私有注册表、登记模板、CODEOWNERS、Secret/SBOM 门禁和 SSO 组策略。",
+  "ai_index": true,
+  "created": "2026-08-23",
+  "review_date": "2026-11-23",
+  "body": [
+    {"type": "heading_2", "text": "结论"},
+    {"type": "paragraph", "text": "企业 Skill 必须作为软件供应链资产管理。Skill 只描述工作流；身份、源系统 ACL、连接器、运行时沙箱和审批策略分别控制实际能力。"},
+    {"type": "heading_2", "text": "可执行交付物"},
+    {"type": "bulleted_list_item", "text": "SOP：Draft → Submitted → Security Review → Sandbox Test → Approved → Published，并支持 Suspended / Retired。"},
+    {"type": "bulleted_list_item", "text": "规则：默认只读、默认无网络、最小权限、固定版本、不可篡改审计、高危动作双人审批。"},
+    {"type": "bulleted_list_item", "text": "平台：Registry、CI 安全门禁、RBAC、Policy Engine、Vault、Sandbox、MCP Gateway、SIEM 与 Kill Switch。"},
+    {"type": "heading_2", "text": "GitHub 归档"},
+    {"type": "paragraph", "text": "完整执行方案位于 knowledge-base-stack/enterprise-skill-governance/。"}
+  ],
+  "sources": [
+    {"name": "OpenAI Skill controls", "type": "Doc", "url": "https://learn.chatgpt.com/docs/enterprise/skills", "author": "OpenAI", "topic": ["AI Agent"], "quality": "A", "ai_index": true, "notes": "工作区 Skill、本地文件系统 Skill 与 Plugin 的独立治理边界。"},
+    {"name": "OpenAI Plugin controls", "type": "Doc", "url": "https://learn.chatgpt.com/docs/enterprise/apps-and-connectors", "author": "OpenAI", "topic": ["AI Agent"], "quality": "A", "ai_index": true, "notes": "插件、连接器、外部服务授权和运行时权限的能力链。"},
+    {"name": "OpenAI Codex approvals & security", "type": "Doc", "url": "https://learn.chatgpt.com/docs/agent-approvals-security", "author": "OpenAI", "topic": ["AI Agent"], "quality": "A", "ai_index": true, "notes": "沙箱、网络和人工审批的运行时控制。"},
+    {"name": "OpenAI Compliance API and audit events", "type": "Doc", "url": "https://learn.chatgpt.com/docs/enterprise/compliance-api", "author": "OpenAI", "topic": ["AI Agent"], "quality": "A", "ai_index": true, "notes": "合规事件流、SIEM 和调查用途。"}
+  ],
+  "evergreen_notes": [
+    {"name": "Skill 是工作流资产，而不是权限载体", "type": "Principle", "topic": ["AI Agent"], "status": "Stable", "confidence": "High", "source_url": "https://learn.chatgpt.com/docs/enterprise/skills", "ai_index": true, "summary": "Skill 的安装和分发不能替代身份、连接器、源系统 ACL 或运行时沙箱。所有能力需逐层授权与撤销。"},
+    {"name": "高风险 Agent 操作必须从审批走向可执行计划审查", "type": "Playbook", "topic": ["AI Agent"], "status": "Stable", "confidence": "High", "source_url": "https://learn.chatgpt.com/docs/agent-approvals-security", "ai_index": true, "summary": "生产写入、外发、删除、支付和 IAM 修改需先展示影响与回滚，后由独立审批人按次批准。"}
+  ],
+  "decisions": [
+    {"name": "企业 Skill 治理采用分层控制面", "area": "Product", "decision": "实施私有注册表、Git 安全门禁、IAM/RBAC、策略引擎、短期凭据、沙箱、MCP Gateway 与集中审计。", "rationale": "解决供应链、权限扩张、提示注入、数据外泄和不可审计的系统性风险。", "alternatives": "仅依赖提示词约束或人工提醒；仅用单一插件目录。", "revisit_date": "2026-11-23", "ai_index": true}
+  ],
+  "ai_outputs": [
+    {"name": "企业 Skill 管理与安全治理执行方案", "type": "Playbook", "source_tool": "ChatGPT", "summary": "包含可执行 SOP、强制规则、管理平台与工具栈、数据模型及 90 天实施路径。", "created": "2026-08-23", "ai_index": true, "body": [
+      {"type": "heading_2", "text": "执行顺序"},
+      {"type": "numbered_list_item", "text": "30 天内完成资产盘点、注册表、Git 门禁和 SSO 组。"},
+      {"type": "numbered_list_item", "text": "60 天内完成沙箱、网络白名单、Vault、连接器分级和高风险审批。"},
+      {"type": "numbered_list_item", "text": "90 天内完成 MCP Gateway、SIEM、Kill Switch、季度复审和红队回归。"}
+    ]}
+  ]
+}

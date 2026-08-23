@@ -1,0 +1,57 @@
+schema_version: 1
+skill:
+  id: finance-invoice-review
+  display_name: Finance Invoice Review
+  description: Review invoices and create a draft exception report; never sends or pays invoices.
+  owner:
+    business_team: Finance Operations
+    business_owner: finance-ops@example.com
+    technical_owner: ai-platform@example.com
+    security_contact: appsec@example.com
+  lifecycle:
+    status: draft # draft | submitted | approved | published | suspended | retired
+    version: 0.1.0
+    expires_on: 2026-11-30
+    source_repository: github.example.com/company/skill-registry
+    source_commit: REPLACE_WITH_COMMIT_SHA
+    artifact_digest: REPLACE_WITH_SHA256
+    sbom_uri: s3://skill-artifacts/finance-invoice-review/0.1.0/sbom.cdx.json
+    signature_uri: s3://skill-artifacts/finance-invoice-review/0.1.0/signature.sig
+  risk:
+    level: L2 # L1: read-only/no network; L2: bounded connector or draft write; L3: high impact
+    rationale: Reads internal finance records and creates drafts in the approved ticketing system.
+    data_classes: [P1]
+    threat_model_uri: docs/threat-models/finance-invoice-review.md
+  capabilities:
+    filesystem:
+      read_paths: ["workspace:/inputs"]
+      write_paths: ["workspace:/outputs"]
+      allow_delete: false
+    network:
+      enabled: false
+      allowed_domains: []
+    connectors:
+      - name: finance-erp
+        actions: [read_invoice, read_vendor]
+        identity: user_delegated_oauth
+      - name: ticketing
+        actions: [create_draft]
+        identity: service_account
+    commands:
+      allowed: [python, jq]
+      prohibited: [curl, ssh, rm, sudo]
+  runtime:
+    environments: [sandbox, staging]
+    production_allowed: false
+    approval_mode: on_high_impact_action
+    service_account: skill-finance-invoice-review
+    secret_references: ["vault://finance/invoice-review/ticketing"]
+  controls:
+    codeowners: [finance-ops@example.com, appsec@example.com]
+    review_required: [business_owner, platform_engineering, data_owner]
+    tests_required: [schema, secrets, sbom, dependency_scan, prompt_injection, behavior_regression]
+    audit_event_retention_days: 365
+    kill_switch: "skill:finance-invoice-review"
+  emergency:
+    runbook_uri: docs/runbooks/finance-invoice-review.md
+    escalation_channel: '#security-oncall'
