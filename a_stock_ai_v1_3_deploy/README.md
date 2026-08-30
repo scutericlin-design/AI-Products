@@ -1,6 +1,36 @@
-# A股市场实时感知引擎 v1.7
+# A股市场实时感知引擎 v1.9
 
-v1.7 真正价值不是“追逐每一次波动”，而是用组合管理让好股票有时间发挥。
+v1.9 的目标是在不同市场风格下，给稳健、优质成长和热点龙头策略分配不同预算，并保持组合层的统一风控。
+
+## v1.9 多策略动态配置
+
+v1.9 保留现有稳健策略，并新增两个独立策略：
+
+- `robust_hybrid`：原有质量、趋势、情绪与可交易性综合策略，作为稳健核心。
+- `quality_growth`：使用 TuShare 财务指标、行业分类、估值和盘中可交易性筛选中长期候选。财务数据不可用或缓存过期时只观察，不会假装成基本面买入信号。
+- `hot_leader`：只在结构性或趋势市场中以小仓观察强势龙头；涨停、接近涨停、低流动性标的一律不推荐。
+
+市场风格由指数状态、上涨广度、情绪分、恐慌分和涨停热度共同判断，状态连续确认后才切换，`risk_off` 可立即生效。默认配置是影子运行：多策略组合写入 Dashboard、SQLite 和模拟盘，但飞书仍使用已运行的稳健策略，避免升级当日改变你收到的盘中建议。
+
+```text
+MULTI_STRATEGY_ENABLED=true
+MULTI_STRATEGY_MODE=shadow      # shadow: 模拟盘/Dashboard；active: 组合策略接管飞书
+MULTI_STRATEGY_PAPER_ENABLED=true
+MULTI_STRATEGY_MAX_EXPOSURE=0.85
+MARKET_REGIME_CONFIRM_CYCLES=2
+FUNDAMENTAL_CACHE_TTL_HOURS=24
+QUALITY_GROWTH_INDUSTRIES=半导体,通信,软件,人工智能,电力设备,新能源,高端制造,医药
+```
+
+在策略分年度、滚动样本外回测和一段时间的模拟盘结果均达标前，不应把 `MULTI_STRATEGY_MODE` 改为 `active`。系统是决策支持与模拟研究工具，不承诺收益，也不自动下实盘委托。
+
+多策略从开始运行起会将已去重的组合信号写入回测池；可单独回放这些真实产生过的组合信号：
+
+```bash
+python -m app.main --backtest-multi --backtest-days 60 --holding-days 5
+```
+
+该回放只评估系统已经生成过的组合信号，避免用未来数据伪造历史决策。较长周期的历史研究仍需使用点时点财务数据、停牌/涨跌停成交约束和滚动样本外验证，不能将盘中实时策略直接套到历史上宣称有效。
 
 ## 终局收束
 
@@ -119,6 +149,33 @@ python -m app.main --historical-backtest --historical-days 180 --strategy-profil
 ## v1.8 Dashboard
 
 Dashboard 是只读监控台，不提供实盘下单、模拟下单、参数修改或任何 POST 写入接口。它读取 SQLite 日志、纸面账户文件和回测结果，用来观察系统状态。
+
+Dashboard 默认启用登录保护：
+
+```text
+DASHBOARD_AUTH_ENABLED=true
+DASHBOARD_AUTH_USERNAME=admin
+DASHBOARD_AUTH_PASSWORD_HASH=<pbkdf2_sha256:iterations:salt:digest>
+DASHBOARD_AUTH_SECRET=<random session signing secret>
+DASHBOARD_SESSION_SECONDS=28800
+```
+
+生成密码哈希：
+
+```bash
+python -c "from dashboard.auth import make_password_hash; import getpass; print(make_password_hash(getpass.getpass()))"
+```
+
+未登录访问页面会跳转到 `/login`，未登录访问 Dashboard API 会返回 `401 authentication_required`。`/api/ping` 保持公开，用于容器健康检查。
+
+浏览用户申请流程：
+
+- 申请入口：`/a-stock-dashboard/apply`
+- 后台入口：`/a-stock-dashboard/admin`
+- 访客提交邮箱、姓名、密码和备注
+- 管理员批准后，该邮箱可用申请时填写的密码登录
+- 管理员可在后台批准、拒绝、停用或重新启用用户
+- 管理员账号仍由 `DASHBOARD_AUTH_USERNAME` 和 `DASHBOARD_AUTH_PASSWORD_HASH` 控制
 
 本地运行：
 

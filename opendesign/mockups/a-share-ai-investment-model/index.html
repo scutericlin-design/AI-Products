@@ -1386,8 +1386,9 @@
     }
   </style>
   <script>
+    const AUTH_URL = "/static/app.html";
     if (!localStorage.getItem("alpha_token")) {
-      window.location.replace("/");
+      window.location.replace(AUTH_URL);
     }
   </script>
 </head>
@@ -1489,30 +1490,30 @@
         <div id="systemPool" class="view">
           <div class="grid-3 pool-overview-strip">
             <section class="panel">
-              <div class="panel-head"><h3>推荐池概览</h3><span class="tag long">≤ 30</span></div>
+              <div class="panel-head"><h3>候选池概览</h3><span class="tag long">Buy / Watch</span></div>
               <div class="exposure-grid">
                 <div class="exposure-item"><span>短/长入池</span><strong class="mono" id="poolCount">0 / 0</strong></div>
+                <div class="exposure-item"><span>买入信号</span><strong class="mono" id="poolBuySignal">0 / 0</strong></div>
+                <div class="exposure-item"><span>观察候选</span><strong class="mono" id="poolWatchSignal">0 / 0</strong></div>
                 <div class="exposure-item"><span>最新交易日</span><strong class="mono" id="poolDate">--</strong></div>
-                <div class="exposure-item"><span>核心/试仓</span><strong class="mono" id="poolCore">0 / 0</strong></div>
                 <div class="exposure-item"><span>模型版本</span><strong class="mono" id="poolModel">--</strong></div>
-                <div class="exposure-item"><span>市场风格</span><strong class="mono" id="poolRegime">--</strong></div>
                 <div class="exposure-item"><span>短/长阈值</span><strong class="mono" id="poolThresholds">--</strong></div>
               </div>
-              <p class="advice-note">短期池和长期池分别保留核心、试仓和观察标的，自动排除回避，并各自限制在 30 只以内。</p>
+              <p class="advice-note" id="poolDefenseSummary">短期池和长期池分别保留买入、试仓和观察标的，自动排除回避，并各自限制在 30 只以内。</p>
             </section>
             <section class="panel">
-              <div class="panel-head"><h3>入池规则</h3><span class="tag">Rule set</span></div>
+              <div class="panel-head"><h3>分层规则</h3><span class="tag">Rule set</span></div>
               <div class="stack">
                 <p><strong>基础门槛：</strong>TuShare Pro 行情、估值、财务和证券主数据，先剔除 ST/退市、低价、低成交额和不可交易标的。</p>
-                <p><strong>排序依据：</strong>价格 Alpha、基本面质量、估值合理性、资金容量、风控质量、数据完整度和拥挤扣分。</p>
-                <p><strong>人工确认：</strong>入池后仍需复核公告、行业催化、涨跌停、财报异常和题材拥挤度。</p>
+                <p><strong>买入池：</strong>评分达阈值，且价格强度、成交承接、风控门禁和交易可行性同时通过，才给目标仓位。</p>
+                <p><strong>观察池：</strong>分数靠前但仍有门禁或趋势缺口，只跟踪不追买，等待转买入条件被满足。</p>
               </div>
             </section>
             <section class="panel">
               <div class="panel-head"><h3>池子状态</h3><span class="tag warn" id="poolRegimeTag">等待读取</span></div>
               <div class="stack">
-                <p id="poolRegimeNote"><strong>当前判断：</strong>页面加载时读取短期和长期推荐池；点击更新会扫描全 A 股并同步刷新两套表格。</p>
-                <p><strong>使用边界：</strong>这是第一层强势与流动性筛选，试仓和核心仍需人工确认后执行。</p>
+                <p id="poolRegimeNote"><strong>当前判断：</strong>页面加载时读取短期和长期候选池；点击更新会扫描全 A 股并同步刷新两套表格。</p>
+                <p id="poolConversionNote"><strong>转买入条件：</strong>观察股需要评分、趋势、成交和风险门禁同步改善，才会升级为试仓或买入。</p>
               </div>
             </section>
           </div>
@@ -1573,7 +1574,7 @@
           </section>
           <section class="panel">
             <div class="panel-head">
-              <h3>系统推荐股票池</h3>
+              <h3>系统候选股票池</h3>
               <div class="tabs">
                 <button id="refreshPoolBtn" type="button">更新股票池</button>
               </div>
@@ -1589,7 +1590,7 @@
               <div class="pool-section-body">
                 <div class="tabs pool-filter" data-strategy="short">
                   <button class="active" data-filter="all">全部</button>
-                  <button data-filter="buy">核心</button>
+                  <button data-filter="buy">买入</button>
                   <button data-filter="trial_buy">试仓</button>
                   <button data-filter="watch">观察</button>
                 </div>
@@ -1607,7 +1608,7 @@
               <div class="pool-section-body">
                 <div class="tabs pool-filter" data-strategy="mid_long">
                   <button class="active" data-filter="all">全部</button>
-                  <button data-filter="buy">核心</button>
+                  <button data-filter="buy">买入</button>
                   <button data-filter="trial_buy">试仓</button>
                   <button data-filter="watch">观察</button>
                 </div>
@@ -1897,7 +1898,7 @@
               <thead><tr><th>因子</th><th>覆盖率</th><th>IC</th><th>RankIC</th><th>IC为正比例</th></tr></thead>
               <tbody id="factorDiagnosticsRows"></tbody>
             </table>
-            <p class="advice-note" id="factorDiagnosticsSummary">因子检验用于判断信号是否稳定，不应只看单次推荐池。</p>
+            <p class="advice-note" id="factorDiagnosticsSummary">因子检验用于判断信号是否稳定，不应只看单次候选池。</p>
           </section>
           <section class="panel">
             <div class="panel-head"><h3>模型版本历史</h3><span class="tag long">Config snapshots</span></div>
@@ -2355,7 +2356,7 @@ reject_trade_if:
   <script>
     const titles = {
       dashboard: ["信号驾驶舱", "快速查看今日候选、动作、评分和关键风险。"],
-      systemPool: ["系统股票池", "展示模型每天生成的推荐池，最多 30 只，先给出排序、动作和风险标记。"],
+      systemPool: ["系统股票池", "每日生成短期和长期候选池：买入信号、观察名单、风险原因和转买入条件分开显示。"],
       portfolio: ["个人持股", "把个人当前持仓与策略股票池联动，输出加仓、观察、减仓和禁止买入建议。"],
       workflow: ["AI 投研链路", "按每日操作顺序解释：先更新股票池，再看理由和风险，最后形成观察/交易计划。"],
       data: ["数据与表结构", "商业数据源优先，开源数据补充；每个信号必须能回溯到字段、文档和更新时间。"],
@@ -2554,28 +2555,53 @@ reject_trade_if:
       if (!Number.isFinite(number) || Math.abs(number) < 0.01) return "warn";
       return number > 0 ? "market-up" : "market-down";
     }
-    function riskFlagText(flags) {
+    const RISK_FLAG_LABELS = {
+      limit_up_or_hard_to_buy: "涨停或难买",
+      limit_down_or_hard_to_sell: "跌停或难卖",
+      limit_down_or_stress: "跌停或卖压重",
+      wide_intraday_amplitude: "日内振幅偏大",
+      weak_close_position: "收盘位置偏弱",
+      low_liquidity: "成交不足",
+      liquidity_watch: "流动性观察",
+      not_in_current_top_pool: "未入当前Top30",
+      missing_fundamental_data: "基本面数据待补",
+      financial_data_sparse: "财务数据不足",
+      insufficient_history: "历史样本不足",
+      high_crowding: "拥挤偏高",
+      crowding_or_chase_risk: "拥挤或追高风险",
+      valuation_rich: "估值偏贵",
+      valuation_expensive_or_invalid: "估值偏贵或不可比",
+      quality_gate_failed: "质量门槛未过",
+      below_buy_threshold: "评分未达买入阈值",
+      below_min_momentum: "短期动量未确认",
+      weak_price_alpha: "价格强度不足",
+      alpha_buy_gate: "Alpha未达买入门槛",
+      liquidity_buy_gate: "成交承接未达买入门槛",
+      risk_score_gate: "波动风控未达买入门槛",
+      data_completeness_gate: "数据完整度未达门槛",
+      quality_buy_gate: "质量成长门槛未过",
+      valuation_buy_gate: "估值安全垫不足",
+      midlong_trend_gate: "60日趋势未确认",
+      long_trend_gate: "120日趋势未确认",
+      midlong_financial_data_gate: "长期财务数据待补",
+      midlong_data_completeness_gate: "长期数据完整度不足",
+      negative_profit_growth: "利润增速为负",
+      high_debt_ratio: "负债率偏高",
+      delisting_risk: "退市风险",
+      st_or_financial_distress: "ST/财务困境",
+      major_accounting_risk: "重大财务或审计风险",
+      suspended_or_illiquid: "停牌/严重缺流动性",
+      new_stock_watch: "次新股观察"
+    };
+    function flagParts(flags) {
       const raw = String(flags || "").trim();
-      if (!raw || ["none", "nan", "null", "--"].includes(raw.toLowerCase())) return "无硬性风险";
-      const labels = {
-        limit_up_or_hard_to_buy: "涨停难买",
-        wide_intraday_amplitude: "日内振幅偏大",
-        weak_close_position: "收盘位置偏弱",
-        low_liquidity: "成交不足",
-        not_in_current_top_pool: "未入当前Top30",
-        missing_fundamental_data: "基本面数据待补",
-        high_crowding: "拥挤偏高",
-        valuation_rich: "估值偏贵",
-        quality_gate_failed: "质量门槛未过",
-        below_buy_threshold: "评分未达买入阈值",
-        delisting_risk: "退市风险",
-        st_or_financial_distress: "ST/财务困境",
-        major_accounting_risk: "重大财务或审计风险",
-        limit_down_or_hard_to_sell: "跌停难卖",
-        suspended_or_illiquid: "停牌/严重缺流动性"
-      };
-      const parts = raw.split(/[|,，;；]+/).map((item) => item.trim()).filter(Boolean);
-      return [...new Set(parts.map((item) => labels[item] || item))].slice(0, 4).join("、") || "无硬性风险";
+      if (!raw || ["none", "nan", "null", "--"].includes(raw.toLowerCase())) return [];
+      return [...new Set(raw.split(/[|,，;；]+/).map((item) => item.trim()).filter(Boolean))];
+    }
+    function riskFlagText(flags) {
+      const parts = flagParts(flags);
+      if (!parts.length) return "无硬性风险";
+      return parts.map((item) => RISK_FLAG_LABELS[item] || item).slice(0, 4).join("、") || "无硬性风险";
     }
     function poolMetric(label, value) {
       return `<div class="pool-metric"><span>${label}</span><strong>${value}</strong></div>`;
@@ -2838,6 +2864,12 @@ reject_trade_if:
       const token = localStorage.getItem("alpha_token");
       return { ...extra, ...(token ? { Authorization: `Bearer ${token}` } : {}) };
     }
+    function redirectToLogin(message = "登录已过期，请重新登录。") {
+      localStorage.removeItem("alpha_token");
+      localStorage.removeItem("alpha_email");
+      sessionStorage.setItem("alpha_auth_message", message);
+      window.location.replace(AUTH_URL);
+    }
     async function apiJson(path, options = {}) {
       const response = await fetch(path, {
         ...options,
@@ -2846,7 +2878,13 @@ reject_trade_if:
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
         const detail = typeof payload.detail === "object" ? payload.detail.message : payload.detail;
-        throw new Error(detail || payload.error || `HTTP ${response.status}`);
+        const error = new Error(detail || payload.error || `HTTP ${response.status}`);
+        error.status = response.status;
+        error.payload = payload;
+        if (response.status === 401) {
+          redirectToLogin("登录已过期，请重新登录后再更新股票池。");
+        }
+        throw error;
       }
       return payload;
     }
@@ -4495,6 +4533,81 @@ reject_trade_if:
       const headers = rows.shift().map((header) => header.replace(/^\uFEFF/, ""));
       return rows.map((cells) => Object.fromEntries(headers.map((header, index) => [header, cells[index] || ""])));
     }
+    function poolActionCounts(rows) {
+      const list = rows || [];
+      const buy = list.filter((row) => row.action === "buy").length;
+      const trial = list.filter((row) => row.action === "trial_buy").length;
+      const watch = list.filter((row) => row.action === "watch").length;
+      return { buy, trial, buyable: buy + trial, watch };
+    }
+    function firstFiniteMetric(rows, key) {
+      for (const row of rows || []) {
+        if (row?.[key] === "" || row?.[key] === null || row?.[key] === undefined) continue;
+        const value = scoreNumber(row, key);
+        if (value !== null) return value;
+      }
+      return null;
+    }
+    function buildPoolDefenseSummary(shortRows, midLongRows) {
+      const allRows = [...(shortRows || []), ...(midLongRows || [])];
+      if (!allRows.length) return "等待读取短期和长期候选池。点击更新会扫描全 A 股并生成买入池与观察池。";
+      const shortCounts = poolActionCounts(shortRows);
+      const midLongCounts = poolActionCounts(midLongRows);
+      const totalBuyable = shortCounts.buyable + midLongCounts.buyable;
+      const breadth20 = firstFiniteMetric(allRows, "market_breadth_20d");
+      const breadth60 = firstFiniteMetric(allRows, "market_breadth_60d");
+      const momentum20 = firstFiniteMetric(allRows, "market_avg_momentum_20d");
+      const marketFacts = [
+        breadth20 !== null ? `20日上涨占比 ${formatPercent(breadth20, 0)}` : "",
+        breadth60 !== null ? `60日上涨占比 ${formatPercent(breadth60, 0)}` : "",
+        momentum20 !== null ? `20日平均动量 ${formatPercent(momentum20, 1)}` : ""
+      ].filter(Boolean).join("，");
+      if (totalBuyable === 0) {
+        return `今日正式买入/试仓信号为 0，候选池只用于跟踪，不给新增目标仓位${marketFacts ? `；参考环境：${marketFacts}` : ""}。`;
+      }
+      return `今日短期买入/试仓 ${shortCounts.buyable} 只，长期买入/试仓 ${midLongCounts.buyable} 只；其余为观察候选，执行前仍需人工复核公告、涨跌停和成交承接。`;
+    }
+    function buildPoolConversionSummary(shortRows, midLongRows) {
+      const allRows = [...(shortRows || []), ...(midLongRows || [])];
+      const counts = poolActionCounts(allRows);
+      if (!allRows.length) return "观察股需要评分、趋势、成交和风险门禁同步改善，才会升级为试仓或买入。";
+      if (counts.buyable === 0 && counts.watch > 0) {
+        return "当前没有买入信号。观察股升级需要同时满足：评分站上策略阈值、价格强度修复、成交承接达标、波动和数据门禁解除。";
+      }
+      return "买入/试仓只代表模型放行目标仓位；观察股必须等下方“转买”条件被满足，不能把入池排名直接当买入指令。";
+    }
+    function buildUpgradeConditions(row, strategyKey) {
+      const action = row?.action || "watch";
+      if (action === "buy") return "已进入买入池，按仓位计划分批执行并继续复核公告与盘口。";
+      if (action === "trial_buy") return "已进入试仓池，若评分、成交和趋势继续延续，可升级核心买入。";
+      if (action === "avoid") return "未通过基础门槛，先等待评分回升并解除主要风险标记。";
+      const flags = flagParts(row?.risk_flags);
+      const score = Number(row?.price_factor_score);
+      const threshold = Number(row?.effective_buy_score_threshold);
+      const items = [];
+      if (Number.isFinite(score) && Number.isFinite(threshold) && score < threshold) {
+        items.push(`评分补足 ${(threshold - score).toFixed(1)} 分`);
+      }
+      if (flags.some((flag) => ["weak_price_alpha", "alpha_buy_gate"].includes(flag))) {
+        items.push("价格强度修复");
+      }
+      if (flags.includes("below_min_momentum")) items.push("短期动量确认");
+      if (flags.includes("weak_close_position")) items.push("收盘位置回到门槛");
+      if (flags.some((flag) => ["liquidity_buy_gate", "liquidity_watch"].includes(flag))) {
+        items.push("成交承接达标");
+      }
+      if (flags.some((flag) => ["risk_score_gate", "wide_intraday_amplitude", "crowding_or_chase_risk"].includes(flag))) {
+        items.push("波动和拥挤回落");
+      }
+      if (strategyKey === "mid_long" && flags.some((flag) => ["midlong_trend_gate", "long_trend_gate"].includes(flag))) {
+        items.push("60/120日趋势修复");
+      }
+      if (strategyKey === "mid_long" && flags.some((flag) => ["quality_buy_gate", "valuation_buy_gate", "midlong_financial_data_gate"].includes(flag))) {
+        items.push("质量、估值和财务门槛恢复");
+      }
+      if (!items.length) items.push("公告、板块强度和成交承接复核通过");
+      return items.slice(0, 3).join("；");
+    }
     function updatePoolMetrics(rows) {
       const shortRows = systemPools.short || [];
       const midLongRows = systemPools.mid_long || [];
@@ -4504,18 +4617,18 @@ reject_trade_if:
       const adaptiveNote = allRows.find((row) => row.adaptive_note)?.adaptive_note || "点击更新股票池后，系统会识别市场风格并自动调整短期/长期策略权重。";
       const shortThreshold = shortRows.find((row) => row.effective_buy_score_threshold)?.effective_buy_score_threshold;
       const midLongThreshold = midLongRows.find((row) => row.effective_buy_score_threshold)?.effective_buy_score_threshold;
+      const shortCounts = poolActionCounts(shortRows);
+      const midLongCounts = poolActionCounts(midLongRows);
       document.getElementById("poolCount").textContent = `${shortRows.length} / ${midLongRows.length}`;
       document.getElementById("poolDate").textContent = latestDate || "--";
-      const shortCore = shortRows.filter((row) => row.action === "buy").length;
-      const shortTrial = shortRows.filter((row) => row.action === "trial_buy").length;
-      const midLongCore = midLongRows.filter((row) => row.action === "buy").length;
-      const midLongTrial = midLongRows.filter((row) => row.action === "trial_buy").length;
-      document.getElementById("poolCore").textContent = `短 ${shortCore}+${shortTrial} / 长 ${midLongCore}+${midLongTrial}`;
+      document.getElementById("poolBuySignal").textContent = `短 ${shortCounts.buyable} / 长 ${midLongCounts.buyable}`;
+      document.getElementById("poolWatchSignal").textContent = `短 ${shortCounts.watch} / 长 ${midLongCounts.watch}`;
       document.getElementById("poolModel").textContent = `短 ${compactModelVersion(shortRows[0]?.model_version)} / 长 ${compactModelVersion(midLongRows[0]?.model_version)}`;
-      document.getElementById("poolRegime").textContent = regime;
       document.getElementById("poolThresholds").textContent = `${formatNumber(shortThreshold, 1)} / ${formatNumber(midLongThreshold, 1)}`;
       document.getElementById("poolRegimeTag").textContent = regime === "--" ? "等待读取" : regime;
+      document.getElementById("poolDefenseSummary").textContent = buildPoolDefenseSummary(shortRows, midLongRows);
       document.getElementById("poolRegimeNote").innerHTML = `<strong>自适应判断：</strong>${adaptiveNote}`;
+      document.getElementById("poolConversionNote").innerHTML = `<strong>转买入条件：</strong>${buildPoolConversionSummary(shortRows, midLongRows)}`;
     }
     async function loadSystemPool() {
       try {
@@ -4563,16 +4676,15 @@ reject_trade_if:
       result.classList.add("show");
       result.innerHTML = "正在用 TuShare Pro 拉取一次行情、估值和财务数据，并同时生成短期选股池和长期选股池。首轮通常需要 2-6 分钟，后续缓存后会明显加快。";
       try {
-        const token = localStorage.getItem("alpha_token");
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        let response = await fetch("/api/system-pool/rebuild", { method: "POST", headers });
-        if (response.status === 404) {
-          response = await fetch("/api/rebuild-system-pool", { method: "POST" });
+        let payload;
+        try {
+          payload = await apiJson("/api/system-pool/rebuild", { method: "POST" });
+        } catch (error) {
+          if (error.status !== 404) throw error;
+          payload = await apiJson("/api/rebuild-system-pool", { method: "POST" });
         }
-        const payload = await response.json();
-        if (!response.ok || !payload.ok) {
-          const detail = typeof payload.detail === "object" ? payload.detail.message : payload.detail;
-          throw new Error(detail || payload.error || `HTTP ${response.status}`);
+        if (!payload.ok) {
+          throw new Error(payload.error || "系统股票池更新未完成");
         }
         await loadSystemPool();
         result.classList.add("show");
@@ -4613,7 +4725,7 @@ reject_trade_if:
       const rows = document.getElementById("watchlistRows");
       tag.textContent = `${watchlist.length} 只`;
       if (!watchlist.length) {
-        rows.innerHTML = `<tr><td colspan="5">暂无观察股票。可在系统推荐股票池点击“加入观察”。</td></tr>`;
+        rows.innerHTML = `<tr><td colspan="5">暂无观察股票。可在系统候选股票池点击“加入观察”。</td></tr>`;
         return;
       }
       rows.innerHTML = watchlist.map((item) => `
@@ -4675,7 +4787,7 @@ reject_trade_if:
           body: JSON.stringify({
             symbol,
             name,
-            note: "来自系统推荐股票池，等待二次研究确认"
+            note: "来自系统候选股票池，等待二次研究确认"
           })
         });
         await loadWatchlist();
@@ -4692,8 +4804,8 @@ reject_trade_if:
       const date = rows[0]?.trade_date || "--";
       const updated = formatDateTime(meta.updated_at);
       const model = rows[0]?.model_version || meta.pool_model_version || "--";
-      const core = rows.filter((row) => row.action === "buy").length;
-      return `${rows.length} 只 · 核心 ${core} · 交易日 ${date} · 更新 ${updated} · ${model}`;
+      const counts = poolActionCounts(rows);
+      return `${rows.length} 只 · 买入/试仓 ${counts.buyable} · 观察 ${counts.watch} · 交易日 ${date} · 更新 ${updated} · ${compactModelVersion(model)}`;
     }
     function renderPoolRow(row, strategyKey) {
       const rank = row.pool_rank;
@@ -4716,6 +4828,7 @@ reject_trade_if:
       const closePos = Number(row.intraday_position_pct || 0).toFixed(0);
       const amplitude = Number(row.amplitude_pct_display || 0).toFixed(2);
       const reason = compactReason(row.reason);
+      const upgrade = buildUpgradeConditions(row, strategyKey);
       const detail = renderScoreDetails(
         row,
         `<p class="pool-detail-reason">${reason}</p><p class="pool-detail-reason"><strong>风险标记：</strong>${flags}</p>`,
@@ -4741,6 +4854,7 @@ reject_trade_if:
           <div class="pool-thesis">
             <p><strong>优势</strong><span>${brief.strengths}</span></p>
             <p><strong>风险</strong><span>${brief.risks}</span></p>
+            <p><strong>转买</strong><span>${upgrade}</span></p>
           </div>
           <div class="pool-metric-strip">
             ${poolMetric("换手率", turnover)}
@@ -4762,7 +4876,7 @@ reject_trade_if:
       const rows = (systemPools[strategyKey] || []).filter((item) => filter === "all" || item.action === filter).slice(0, 30);
       document.getElementById(metaId).textContent = poolMetaLine(strategyKey);
       if (!rows.length) {
-        document.getElementById(rowsId).innerHTML = `<article class="pool-row"><div class="pool-rank">--</div><div class="pool-stock"><strong>暂无候选</strong><small>${strategyScoreLabel(strategyKey)} · 等待更新</small></div><div class="pool-thesis"><p><strong>提示</strong><span>点击“更新股票池”生成这一套系统推荐池。</span></p></div></article>`;
+        document.getElementById(rowsId).innerHTML = `<article class="pool-row"><div class="pool-rank">--</div><div class="pool-stock"><strong>暂无候选</strong><small>${strategyScoreLabel(strategyKey)} · 等待更新</small></div><div class="pool-thesis"><p><strong>提示</strong><span>点击“更新股票池”生成这一套系统候选池。</span></p></div></article>`;
         return;
       }
       document.getElementById(rowsId).innerHTML = rows.map((row) => renderPoolRow(row, strategyKey)).join("");
@@ -4901,7 +5015,8 @@ reject_trade_if:
         const count = textContentOr("poolCount", "待读取");
         const date = textContentOr("poolDate", "待读取");
         const thresholds = textContentOr("poolThresholds", "待读取");
-        return `${base} 当前推荐池：短/长入池 ${count}，最新交易日 ${date}，短/长入池阈值 ${thresholds}。`;
+        const buySignal = textContentOr("poolBuySignal", "待读取");
+        return `${base} 当前候选池：短/长入池 ${count}，买入信号 ${buySignal}，最新交易日 ${date}，短/长阈值 ${thresholds}。`;
       }
       if (view === "portfolio") {
         return `${base} 持仓建议按当前账户持仓、短期/长期评分、系统股票池和风险预算生成；不使用统一回测阈值。`;
@@ -5085,7 +5200,7 @@ reject_trade_if:
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("alpha_token");
       localStorage.removeItem("alpha_email");
-      window.location.href = "/";
+      window.location.href = AUTH_URL;
     });
 
     async function initializeApp() {
@@ -5093,9 +5208,7 @@ reject_trade_if:
         await loadCurrentUser();
         hydrateManualTradeInputs();
       } catch (error) {
-        localStorage.removeItem("alpha_token");
-        localStorage.removeItem("alpha_email");
-        window.location.href = "/";
+        redirectToLogin("登录已过期，请重新登录后继续使用赤霄 Alpha。");
         return;
       }
       renderStocks();

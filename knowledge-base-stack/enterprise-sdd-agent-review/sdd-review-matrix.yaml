@@ -1,0 +1,48 @@
+version: v1
+review_gates:
+  G1_spec_ready:
+    owner: [product_owner, tech_lead]
+    required:
+      - change_id
+      - scope_and_non_goals
+      - acceptance_criteria
+      - data_and_permission_boundary
+      - rollback_plan
+    fail_action: rework
+  G2_design_plan:
+    owner: [architecture_reviewer, security_reviewer]
+    required:
+      - ac_to_task_traceability
+      - test_plan
+      - dependency_review
+      - threat_model_for_l2_l3
+    fail_action: escalate
+  G3_implementation_ci:
+    owner: [ci, test_owner]
+    required:
+      - build_and_test
+      - sast_sca_secrets_iac
+      - protected_golden_tests
+      - migration_and_rollback_evidence
+    fail_action: block
+  G4_independent_review:
+    owner: [review_agent, code_owner]
+    required:
+      - spec_to_diff_traceability
+      - negative_and_boundary_tests
+      - no_unapproved_scope_expansion
+      - structured_findings
+    fail_action: rework
+  G5_release:
+    owner: [release_owner, change_approver]
+    required:
+      - canary
+      - feature_flag
+      - alerts
+      - rollback_owner
+    fail_action: block
+risk_routing:
+  L0: {human_approval: sample}
+  L1: {human_approval: code_owner}
+  L2: {human_approval: [code_owner, architecture_or_security]}
+  L3: {human_approval: [business_owner, security_owner], automatic_execution: false}

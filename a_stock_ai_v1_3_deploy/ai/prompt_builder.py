@@ -8,6 +8,7 @@ def build_prompt(
     leader: dict[str, Any],
     recommendation_bundle: dict[str, Any] | None = None,
     market_sentiment: dict[str, Any] | None = None,
+    portfolio_plan: dict[str, Any] | None = None,
 ) -> str:
     recommendations = recommendation_bundle or {}
     sentiment = market_sentiment or recommendations.get("market_sentiment") or {}
@@ -30,6 +31,9 @@ def build_prompt(
 系统候选池与买入区间：
 {recommendations}
 
+多策略组合计划（如为空则沿用稳健策略）：
+{portfolio_plan or {}}
+
 请输出：
 - signal (BUY/SELL/HOLD)：整体信号
 - position (0-1)：总仓位建议，不能超过系统给出的position
@@ -48,8 +52,9 @@ class PromptBuilder:
         leader: dict[str, Any],
         recommendation_bundle: dict[str, Any] | None = None,
         market_sentiment: dict[str, Any] | None = None,
+        portfolio_plan: dict[str, Any] | None = None,
     ) -> str:
-        return build_prompt(state, leader, recommendation_bundle, market_sentiment)
+        return build_prompt(state, leader, recommendation_bundle, market_sentiment, portfolio_plan)
 
 
 def build_review_prompt(summary: dict[str, Any], target_chars: int = 1000) -> str:

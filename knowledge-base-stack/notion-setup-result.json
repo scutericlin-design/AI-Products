@@ -1,0 +1,38 @@
+{
+  "hub": {
+    "id": "38c7cf8f-627e-816c-9744-f4c4efbbbd0a",
+    "url": "https://app.notion.com/p/AI-Knowledge-Hub-38c7cf8f627e816c9744f4c4efbbbd0a"
+  },
+  "databases": {
+    "Research Packs": {
+      "id": "38c7cf8f-627e-8168-ad10-f4f141a842a4",
+      "url": "https://app.notion.com/p/38c7cf8f627e8168ad10f4f141a842a4"
+    },
+    "Source Library": {
+      "id": "38c7cf8f-627e-8175-ab5c-c7860f239d4a",
+      "url": "https://app.notion.com/p/38c7cf8f627e8175ab5cc7860f239d4a"
+    },
+    "Evergreen Notes": {
+      "id": "38c7cf8f-627e-810d-886b-e3d2a8d9301a",
+      "url": "https://app.notion.com/p/38c7cf8f627e810d886be3d2a8d9301a"
+    },
+    "Decisions": {
+      "id": "38c7cf8f-627e-811a-872a-ed56bf9f7d0c",
+      "url": "https://app.notion.com/p/38c7cf8f627e811a872aed56bf9f7d0c"
+    },
+    "Projects": {
+      "id": "38c7cf8f-627e-810a-a4e7-f2931a957435",
+      "url": "https://app.notion.com/p/38c7cf8f627e810aa4e7f2931a957435"
+    },
+    "AI Outputs": {
+      "id": "38c7cf8f-627e-8150-85c5-e518345c4cf6",
+      "url": "https://app.notion.com/p/38c7cf8f627e815085c5e518345c4cf6"
+    },
+    "SOP / Templates": {
+      "id": "38c7cf8f-627e-8183-b438-fd37c1b0362b",
+      "url": "https://app.notion.com/p/38c7cf8f627e8183b438fd37c1b0362b"
+    }
+  },
+  "notion_version": "2022-06-28",
+  "dry_run": false
+}

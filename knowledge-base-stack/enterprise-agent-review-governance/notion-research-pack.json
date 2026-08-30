@@ -1,0 +1,48 @@
+{
+  "title": "2026-08 企业 Agent Review 治理与落地方案",
+  "question": "企业如何让 Agent 审查 Agent 的结果，并在质量、安全、权限、人工审批和持续运营之间建立可执行的治理闭环？",
+  "status": "Done",
+  "topic": ["AI Agent", "Governance", "Security"],
+  "priority": "High",
+  "source_count": 7,
+  "key_takeaways": "Agent Review 应由确定性规则、证据验证、独立语义审查、安全红队和风险分级人工审批共同构成。自动评审器需要由专家样本持续校准，不能单独取代人工高风险决策。",
+  "decision": "采用生产 Agent 与 Reviewer 分离、G0-G3 四层门禁、L0-L3 风险路由、全链路 trace 和持续校准的企业 Agent Review 控制面；先从一个 L0/L1 高频任务试点。",
+  "next_action": "在 15 天内选定一个 L0/L1 高频场景，确定 Owner、任务合同、禁止动作、30 条黄金集、结果包 Schema 与只读工具网关。",
+  "ai_index": true,
+  "created": "2026-08-23",
+  "review_date": "2026-11-23",
+  "body": [
+    {"type": "heading_2", "text": "核心结论"},
+    {"type": "paragraph", "text": "Agent 可以有效审查 Agent，但不是自动批准的替代品。最小闭环是：可审计结果包、确定性策略检查、独立 Reviewer、安全 Reviewer、人工风险审批和线上抽样复评。"},
+    {"type": "heading_2", "text": "推荐门禁"},
+    {"type": "bulleted_list_item", "text": "G0：Schema、ACL、DLP、阈值和工具白名单；任一失败立即阻断。"},
+    {"type": "bulleted_list_item", "text": "G1：验证来源、版本、引用和只读重算；关键主张必须可追溯。"},
+    {"type": "bulleted_list_item", "text": "G2/G3：独立业务 Reviewer 与安全/对抗 Reviewer；证据不足或结论冲突升级人工。"},
+    {"type": "heading_2", "text": "GitHub 归档"},
+    {"type": "paragraph", "text": "完整手册位于 knowledge-base-stack/enterprise-agent-review-governance/README.md。"}
+  ],
+  "sources": [
+    {"name": "Anthropic: Claude Code Best Practices", "type": "Doc", "url": "https://www.anthropic.com/engineering/claude-code-best-practices", "author": "Anthropic", "topic": ["AI Agent", "Governance"], "quality": "A", "ai_index": true, "notes": "公开建议用独立、干净上下文的第二个 Agent 审查首个 Agent 的产物，并配合测试与受控权限。"},
+    {"name": "Microsoft Foundry: Agent Evaluators", "type": "Doc", "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/agent-evaluators?preserve-view=true&view=foundry", "author": "Microsoft", "topic": ["AI Agent", "Governance"], "quality": "A", "ai_index": true, "notes": "区分最终结果系统评测与过程评测，并覆盖任务完成、任务遵循、工具调用。"},
+    {"name": "Microsoft Foundry: Observability and Evaluation", "type": "Doc", "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-approach-gen-ai", "author": "Microsoft", "topic": ["AI Agent", "Security"], "quality": "A", "ai_index": true, "notes": "覆盖 CI 质量门禁、追踪、生产流量持续评测和红队。"},
+    {"name": "OpenAI: GDPval", "type": "Doc", "url": "https://openai.com/index/gdpval/", "author": "OpenAI", "topic": ["AI Agent", "Governance"], "quality": "A", "ai_index": true, "notes": "自动评审器可以预测专家偏好，但不能替代专家评审。"},
+    {"name": "LangSmith: Improve LLM-as-a-Judge with Human Feedback", "type": "Doc", "url": "https://docs.langchain.com/langsmith/improve-judge-evaluator-feedback", "author": "LangChain", "topic": ["AI Agent", "Governance"], "quality": "A", "ai_index": true, "notes": "通过人工标注队列比较并迭代 LLM Judge 与专家结论的一致性。"},
+    {"name": "火山引擎：智能体安全平台", "type": "Product", "url": "https://www.volcengine.com/product/aipp", "author": "火山引擎", "topic": ["AI Agent", "Security"], "quality": "A", "ai_index": true, "notes": "公开能力包括智能体资产盘点、配置扫描、风险测评、运行时检测和动态授权。"},
+    {"name": "百度千帆 Agent 开发平台", "type": "Product", "url": "https://cloud.baidu.com/doc/APPBUILDER/index.html", "author": "百度智能云", "topic": ["AI Agent"], "quality": "A", "ai_index": true, "notes": "提供企业 RAG、Agent 和工作流开发能力，可作为应用开发层。"}
+  ],
+  "evergreen_notes": [
+    {"name": "Agent Review 必须审查证据与轨迹，而非只审查最终文字", "type": "Principle", "topic": ["AI Agent", "Governance"], "status": "Stable", "confidence": "High", "source_url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/agent-evaluators?preserve-view=true&view=foundry", "ai_index": true, "summary": "复杂 Agent 系统应同时评测最终任务成功、步骤执行和工具调用；否则正确格式会掩盖错误业务路径。"},
+    {"name": "LLM Reviewer 需要人类校准且不得作为高风险唯一审批者", "type": "Principle", "topic": ["AI Agent", "Governance"], "status": "Stable", "confidence": "High", "source_url": "https://openai.com/index/gdpval/", "ai_index": true, "summary": "自动评审可提升规模与速度，但应通过专家盲审样本持续校准，并保留人类对高风险决定的最终责任。"}
+  ],
+  "decisions": [
+    {"name": "企业 Agent 采用四层 Review Gate 与风险审批", "area": "AI Governance", "decision": "将产出统一封装为可审计结果包；依次执行 G0 确定性规则、G1 证据校验、G2 独立业务审查、G3 安全红队，并按 L0-L3 风险等级路由到自动放行、返工、人工复核或阻断。", "rationale": "单一 LLM 自审存在同源偏差和不可证明性；四层机制同时覆盖硬约束、事实、语义、安全和责任归属。", "alternatives": "仅让同一 Agent 自检；让人工逐条审阅所有低风险任务；仅看最终答案而不记录工具调用与来源。", "revisit_date": "2026-11-23", "ai_index": true}
+  ],
+  "ai_outputs": [
+    {"name": "企业 Agent Review 治理与落地方案", "type": "Playbook", "source_tool": "ChatGPT", "summary": "覆盖治理原则、风险矩阵、SOP、结果包 Schema、Reviewer 任务书、平台架构、指标、90 天计划与上线检查表。", "created": "2026-08-23", "ai_index": true, "body": [
+      {"type": "heading_2", "text": "90 天行动"},
+      {"type": "numbered_list_item", "text": "0–15 天：选择 L0/L1 试点，定义任务合同、风险分级、禁止动作和黄金集。"},
+      {"type": "numbered_list_item", "text": "16–60 天：接入 trace、结果包、G0/G1、独立 Reviewer 与安全红队，并以人工盲审校准。"},
+      {"type": "numbered_list_item", "text": "61–90 天：受控上线、抽样复评、告警降级、治理月报和第二场景扩展。"}
+    ]}
+  ]
+}

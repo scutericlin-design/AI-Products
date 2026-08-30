@@ -1,14 +1,32 @@
 {
     email {$TLS_ADMIN_EMAIL:admin@example.com}
+    auto_https disable_redirects
     servers {
         protocols h1 h2
     }
 }
 
-{$APP_SITE_ADDRESS::80} {
+(app_proxy) {
     encode gzip
     request_body {
         max_size 50MB
     }
+
+    handle /a-stock-dashboard* {
+        reverse_proxy 172.17.0.1:8080
+    }
+
     reverse_proxy web:8000
+}
+
+http://{$APP_IP_ADDRESS:182.254.227.131} {
+    import app_proxy
+}
+
+http://{$APP_SITE_ADDRESS:app.chixiaoalpha.cn} {
+    redir https://{$APP_SITE_ADDRESS:app.chixiaoalpha.cn}{uri} permanent
+}
+
+https://{$APP_SITE_ADDRESS:app.chixiaoalpha.cn} {
+    import app_proxy
 }

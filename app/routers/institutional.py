@@ -301,12 +301,17 @@ def check_data_source(provider: str, user: User = Depends(current_user), db: Ses
     else:
         status = "available"
         message = f"{meta['label']} 本地环境可用。"
+    checked_at = datetime.utcnow()
+    if using_platform_credential and platform_tushare_config is not None:
+        platform_tushare_config.last_checked_at = checked_at
+        db.commit()
+        db.refresh(platform_tushare_config)
     if config is None and not using_platform_credential:
         config = DataSourceConfig(user_id=user.id, provider=normalized)
         db.add(config)
-    if config is not None:
+    if config is not None and not using_platform_credential:
         config.status = status
-        config.last_checked_at = datetime.utcnow()
+        config.last_checked_at = checked_at
         db.commit()
         db.refresh(config)
     write_audit_log(db, user, "data_source.check", normalized, {"status": status, "message": message})

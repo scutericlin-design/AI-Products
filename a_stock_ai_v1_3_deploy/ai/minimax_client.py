@@ -4,12 +4,14 @@ import json
 import re
 from typing import Any
 
-import requests
-
+from ai.llm_failover import LLMFailoverError, LLMTarget, request_with_failover
 from ai.prompt_builder import build_prompt
 from app.config import settings
 from engine.ranking_engine import merge_signal_with_recommendations
 from engine.signal_engine import generate_signal
+
+
+STOCK_AI_EXECUTION_CHAIN = "deepseek_then_minimax_then_stepfun_then_hybrid_alpha_rules"
 
 
 def call_minimax(
@@ -17,11 +19,14 @@ def call_minimax(
     leader: dict[str, Any],
     recommendation_bundle: dict[str, Any] | None = None,
     market_sentiment: dict[str, Any] | None = None,
+    portfolio_plan: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    prompt = build_prompt(state, leader, recommendation_bundle, market_sentiment)
+    prompt = build_prompt(state, leader, recommendation_bundle, market_sentiment, portfolio_plan)
     base_signal = generate_signal(state, leader, market_sentiment)
     if recommendation_bundle:
         base_signal = merge_signal_with_recommendations(base_signal, recommendation_bundle)
+    if portfolio_plan:
+        base_signal = {**base_signal, **portfolio_plan}
     if settings.dry_run or state.get("state") == "NO_DATA" or not leader.get("stock"):
         return {
             **base_signal,
@@ -29,35 +34,23 @@ def call_minimax(
             "prompt": prompt,
         }
 
-    if not settings.minimax_api_key or not settings.minimax_endpoint:
-        return _ai_unavailable_signal(
-            base_signal,
-            prompt,
-            "fallback_missing_config",
-            "MiniMax API key or endpoint is not configured.",
-        )
-
     try:
-        response = requests.post(
-            settings.minimax_endpoint,
-            headers={
-                "Authorization": f"Bearer {settings.minimax_api_key}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": settings.minimax_model,
-                "messages": [
-                    {"role": "user", "content": prompt},
-                ],
-                "temperature": 0.2,
-            },
+        payload, model, attempts = request_with_failover(
+            endpoint=settings.stock_ai_primary_endpoint or "",
+            api_key=settings.stock_ai_primary_api_key or "",
+            primary_model=settings.stock_ai_primary_model,
+            fallback_model=None,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.2,
             timeout=30,
+            validator=_has_structured_signal,
+            targets=stock_ai_targets(),
         )
-        response.raise_for_status()
-        payload = response.json()
-        return _normalize_minimax_payload(payload, base_signal, prompt)
-    except Exception as exc:
-        return _ai_unavailable_signal(base_signal, prompt, "fallback_error", str(exc))
+        return _normalize_minimax_payload(payload, base_signal, prompt, model, attempts)
+    except LLMFailoverError as exc:
+        result = _ai_unavailable_signal(base_signal, prompt, "fallback_error", str(exc))
+        result["ai_attempts"] = exc.attempts
+        return result
 
 
 class MiniMaxClient:
@@ -67,11 +60,18 @@ class MiniMaxClient:
         leader: dict[str, Any],
         recommendation_bundle: dict[str, Any] | None = None,
         market_sentiment: dict[str, Any] | None = None,
+        portfolio_plan: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        return call_minimax(state, leader, recommendation_bundle, market_sentiment)
+        return call_minimax(state, leader, recommendation_bundle, market_sentiment, portfolio_plan)
 
 
-def _normalize_minimax_payload(payload: dict[str, Any], fallback: dict[str, Any], prompt: str) -> dict[str, Any]:
+def _normalize_minimax_payload(
+    payload: dict[str, Any],
+    fallback: dict[str, Any],
+    prompt: str,
+    model: str,
+    attempts: list[dict[str, str]],
+) -> dict[str, Any]:
     text = _extract_text(payload)
     parsed = _parse_jsonish(text)
     if not parsed:
@@ -79,7 +79,7 @@ def _normalize_minimax_payload(payload: dict[str, Any], fallback: dict[str, Any]
             fallback,
             prompt,
             settings.minimax_provider,
-            "MiniMax response was not structured JSON.",
+            "LLM response was not structured JSON.",
         )
         safe["raw"] = payload
         return safe
@@ -93,10 +93,47 @@ def _normalize_minimax_payload(payload: dict[str, Any], fallback: dict[str, Any]
         "position": min(_float(parsed.get("position"), fallback["position"]), _float(fallback.get("position"), 0.0)),
         "risk_level": risk_level,
         "reasoning": reasoning,
-        "ai_provider": settings.minimax_provider,
+        "ai_provider": _successful_provider(attempts),
+        "ai_model": model,
+        "ai_fallback_used": model != settings.stock_ai_primary_model,
+        "ai_attempts": attempts,
         "prompt": prompt,
         "raw": payload,
     }
+
+
+def _has_structured_signal(payload: dict[str, Any]) -> bool:
+    return bool(_parse_jsonish(_extract_text(payload)))
+
+
+def stock_ai_targets() -> list[LLMTarget]:
+    return [
+        LLMTarget(
+            provider="deepseek",
+            endpoint=settings.stock_ai_primary_endpoint,
+            api_key=settings.stock_ai_primary_api_key,
+            model=settings.stock_ai_primary_model,
+        ),
+        LLMTarget(
+            provider="minimax",
+            endpoint=settings.stock_ai_secondary_endpoint,
+            api_key=settings.stock_ai_secondary_api_key,
+            model=settings.stock_ai_secondary_model,
+        ),
+        LLMTarget(
+            provider="stepfun",
+            endpoint=settings.stock_ai_tertiary_endpoint,
+            api_key=settings.stock_ai_tertiary_api_key,
+            model=settings.stock_ai_tertiary_model,
+        ),
+    ]
+
+
+def _successful_provider(attempts: list[dict[str, str]]) -> str:
+    for attempt in reversed(attempts):
+        if attempt.get("status") == "ok":
+            return str(attempt.get("provider") or "unknown")
+    return "unknown"
 
 
 def _extract_text(payload: dict[str, Any]) -> str:
@@ -132,6 +169,26 @@ def _float(value: Any, default: float) -> float:
 
 
 def _ai_unavailable_signal(fallback: dict[str, Any], prompt: str, provider: str, error: str) -> dict[str, Any]:
+    fallback_signal = str(fallback.get("signal") or "HOLD").upper()
+    if settings.ai_degraded_fallback_enabled:
+        flags = list(fallback.get("risk_flags") or [])
+        flags.append("ai_degraded_rule_execution")
+        rule_reasoning = str(fallback.get("reasoning") or "规则引擎未给出额外说明。")
+        return {
+            **fallback,
+            "signal": fallback_signal,
+            "reasoning": (
+                "AI复核暂不可用，已跳过AI决策，按Hybrid Alpha规则引擎原信号、原仓位和硬风控执行。"
+                f" 原规则结论：{rule_reasoning}"
+            ),
+            "risk_flags": list(dict.fromkeys(flags)),
+            "ai_provider": provider,
+            "prompt": prompt,
+            "ai_error": error,
+            "ai_degraded": True,
+            "ai_execution_mode": "hybrid_alpha_rules_only",
+            "ai_execution_chain": STOCK_AI_EXECUTION_CHAIN,
+        }
     return {
         **fallback,
         "signal": "HOLD",

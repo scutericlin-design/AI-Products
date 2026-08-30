@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import sys
 
@@ -16,14 +17,18 @@ def configure_logging() -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="A-share realtime market perception engine v1.7")
+    parser = argparse.ArgumentParser(description="A-share realtime market perception engine v1.9")
     parser.add_argument("--once", action="store_true", help="Run one intraday decision cycle and exit.")
     parser.add_argument("--review-once", action="store_true", help="Run one daily review article cycle and exit.")
     parser.add_argument("--learn-once", action="store_true", help="Run one silent self-learning parameter cycle and exit.")
     parser.add_argument("--simulate-once", action="store_true", help="Replay the latest signal into the paper account.")
+    parser.add_argument("--etf-minute-once", action="store_true", help="Run one ETF minute paper cycle without sending a push.")
+    parser.add_argument("--etf-storage-report", action="store_true", help="Print a read-only ETF minute-storage report.")
     parser.add_argument("--paper-account", action="store_true", help="Print the current paper account state.")
     parser.add_argument("--paper-reset", action="store_true", help="Reset the local paper account to initial cash.")
+    parser.add_argument("--paper-reconcile-session", action="store_true", help="Attach stock paper logs to the active reset session.")
     parser.add_argument("--backtest", action="store_true", help="Run a signal replay backtest from logged BUY decisions.")
+    parser.add_argument("--backtest-multi", action="store_true", help="Replay logged v1.9 multi-strategy portfolio signals.")
     parser.add_argument("--historical-backtest", action="store_true", help="Run a daily historical market-data backtest.")
     parser.add_argument("--optimize-historical", action="store_true", help="Run a historical strategy parameter search.")
     parser.add_argument("--backtest-days", type=int, default=None, help="Backtest lookback window in calendar days.")
@@ -50,6 +55,7 @@ def main() -> int:
             "runner",
             "quality_t",
             "regime_adaptive",
+            "regime_adaptive_balanced_trend",
             "hybrid_alpha",
         ],
         help="Historical backtest strategy profile.",
@@ -106,6 +112,18 @@ def main() -> int:
         )
         return 0
 
+    if args.paper_reconcile_session:
+        from simulation.paper_trading import reconcile_current_paper_account_session
+
+        account = reconcile_current_paper_account_session()
+        metrics = account.get("session_metrics") or {}
+        print(
+            f"paper_account_session account_id={account.get('account_id')} "
+            f"started_at={account.get('session_started_at')} "
+            f"filled={metrics.get('filled_order_count', 0)} sells={metrics.get('sell_trade_count', 0)}"
+        )
+        return 0
+
     if args.paper_account:
         from simulation.paper_trading import current_paper_account
 
@@ -129,16 +147,34 @@ def main() -> int:
         )
         return 0
 
-    if args.backtest:
+    if args.etf_minute_once:
+        from etf_strategy.live_runner import ETFMinutePaperRunner
+
+        result = ETFMinutePaperRunner().run_once()
+        print(
+            f"etf_minute status={result.get('status')} filled={len(result.get('orders') or [])} "
+            f"reason={result.get('reason') or '-'}"
+        )
+        return 0
+
+    if args.etf_storage_report:
+        from etf_strategy.config import load_settings as load_etf_settings
+        from etf_strategy.maintenance import minute_storage_report
+
+        print(json.dumps(minute_storage_report(load_etf_settings().db_path), ensure_ascii=False, indent=2))
+        return 0
+
+    if args.backtest or args.backtest_multi:
         from backtest.signal_replay import run_signal_replay_backtest
 
         result = run_signal_replay_backtest(
             lookback_days=args.backtest_days,
             holding_days=args.holding_days,
+            multi_strategy=args.backtest_multi,
         )
         metrics = result.get("metrics", {})
         print(
-            f"backtest run_id={result.get('run_id')} status={result.get('status')} "
+            f"backtest source={'multi_strategy' if args.backtest_multi else 'legacy'} run_id={result.get('run_id')} status={result.get('status')} "
             f"trades={metrics.get('trade_count', 0)} win_rate={metrics.get('win_rate', 0)} "
             f"avg_return_pct={metrics.get('avg_return_pct', 0)} "
             f"total_return_pct={metrics.get('total_return_pct', 0)} "

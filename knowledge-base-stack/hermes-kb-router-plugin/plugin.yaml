@@ -1,0 +1,6 @@
+name: knowledge-kb-router
+version: 1.0.0
+description: Route Feishu kb commands to the AI Knowledge Hub Knowledge API before normal Hermes chat.
+author: Eric / Codex
+hooks:
+  - pre_gateway_dispatch

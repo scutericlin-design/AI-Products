@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from app.config import settings
 from scheduler.trading_calendar import BEIJING_TZ
-from storage.logger import fetch_backtest_decisions, log_backtest_run
+from storage.logger import fetch_backtest_decisions, fetch_multi_strategy_backtest_decisions, log_backtest_run
 
 
 logger = logging.getLogger(__name__)
@@ -18,11 +18,13 @@ logger = logging.getLogger(__name__)
 def run_signal_replay_backtest(
     lookback_days: int | None = None,
     holding_days: int | None = None,
+    multi_strategy: bool = False,
 ) -> dict[str, Any]:
     run_id = uuid4().hex
     days = lookback_days or settings.backtest_default_days
     hold_days = holding_days or settings.backtest_holding_days
-    decisions = fetch_backtest_decisions(days)
+    decisions = fetch_multi_strategy_backtest_decisions(days) if multi_strategy else fetch_backtest_decisions(days)
+    strategy_name = "v1_9_multi_strategy_signal_replay" if multi_strategy else "v1_6_signal_replay"
     cache: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
     trades: list[dict[str, Any]] = []
     skipped: list[dict[str, Any]] = []
@@ -60,7 +62,7 @@ def run_signal_replay_backtest(
         status = "ok" if trades else "skipped_no_trades"
         log_backtest_run(
             run_id=run_id,
-            strategy_name="v1_6_signal_replay",
+            strategy_name=strategy_name,
             status=status,
             lookback_days=days,
             holding_days=hold_days,
@@ -72,6 +74,7 @@ def run_signal_replay_backtest(
             "status": status,
             "lookback_days": days,
             "holding_days": hold_days,
+            "multi_strategy": multi_strategy,
             "metrics": metrics,
             "trades": trades,
             "skipped": skipped[:50],
@@ -86,7 +89,7 @@ def run_signal_replay_backtest(
         }
         log_backtest_run(
             run_id=run_id,
-            strategy_name="v1_6_signal_replay",
+            strategy_name=strategy_name,
             status="failed",
             lookback_days=days,
             holding_days=hold_days,
@@ -99,6 +102,7 @@ def run_signal_replay_backtest(
             "status": "failed",
             "error": str(exc),
             "metrics": metrics,
+            "multi_strategy": multi_strategy,
             "no_real_orders": True,
         }
 

@@ -37,7 +37,8 @@ body {
 
 button,
 input,
-select {
+select,
+.nav-button {
   font: inherit;
 }
 
@@ -84,7 +85,8 @@ select {
 
 .clock,
 button,
-.badge {
+.badge,
+.nav-button {
   border: 1px solid var(--line);
   background: rgba(26, 25, 21, 0.86);
 }
@@ -119,7 +121,23 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.nav-button {
+  display: grid;
+  min-width: 76px;
+  place-items: center;
+  padding: 0 16px;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.logout-form {
+  display: flex;
+  margin: 0;
+}
+
+button:hover,
+.nav-button:hover {
   border-color: var(--amber);
   color: var(--amber);
 }
@@ -353,6 +371,49 @@ td {
   font-size: 18px;
 }
 
+.multi-strategy-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 14px;
+}
+
+.multi-strategy-summary div,
+.strategy-exposure-row {
+  border-bottom: 1px solid rgba(242, 234, 216, 0.12);
+  padding: 8px 0;
+}
+
+.multi-strategy-summary span,
+.strategy-exposure-row span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.multi-strategy-summary strong {
+  display: block;
+  margin-top: 3px;
+  font-family: "SFMono-Regular", "Cascadia Mono", monospace;
+  font-size: 21px;
+}
+
+.multi-strategy-summary p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.strategy-exposure {
+  display: grid;
+  gap: 4px;
+}
+
+.strategy-exposure-row {
+  display: grid;
+  gap: 4px;
+}
+
 .sparkline {
   width: 100%;
   height: 180px;
@@ -485,6 +546,92 @@ td {
   text-align: center;
 }
 
+.login-body {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+}
+
+.login-shell {
+  width: min(460px, calc(100vw - 32px));
+}
+
+.login-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(35, 32, 24, 0.96), rgba(26, 25, 21, 0.98));
+  box-shadow: 0 24px 60px var(--shadow);
+  padding: 26px;
+}
+
+.login-panel h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.12;
+}
+
+.login-copy,
+.login-note {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.login-error {
+  border: 1px solid rgba(239, 107, 93, 0.5);
+  border-radius: 8px;
+  background: rgba(239, 107, 93, 0.1);
+  color: var(--red);
+  padding: 10px 12px;
+}
+
+.login-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.login-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.login-form span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.login-form input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(17, 16, 13, 0.72);
+  color: var(--text);
+  padding: 12px;
+}
+
+.login-form button {
+  min-height: 44px;
+  margin-top: 4px;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.inline-form {
+  display: inline-flex;
+  margin: 0;
+}
+
+.inline-form button {
+  min-height: 32px;
+  min-width: 58px;
+  padding: 0 10px;
+}
+
 @media (max-width: 1100px) {
   .status-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -516,7 +663,8 @@ td {
   .watch-item,
   .cycle-item,
   .params,
-  .kv {
+  .kv,
+  .multi-strategy-summary {
     grid-template-columns: 1fr;
   }
 }

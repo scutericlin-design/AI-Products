@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Q-GARP 独立策略 Dashboard</title>
+    <link rel="stylesheet" href="static/dashboard.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div><p class="eyebrow">Independent Local Paper Strategy</p><h1>Q-GARP 智慧成长质量模型</h1></div>
+        <div class="topbar__actions">
+          <div class="clock"><span>北京时间</span><strong id="beijingTime">--:--:--</strong></div>
+          <a class="nav-button" href="./">股票实时</a><a class="nav-button" href="etf">ETF策略</a><a class="nav-button" href="hot-leader">热点龙头</a><a class="nav-button" href="sentiment-quant">情绪量化</a>
+          <button id="refreshButton" type="button">刷新</button><a class="nav-button" href="admin">后台</a>
+          <form method="post" action="logout" class="logout-form"><button type="submit">退出</button></form>
+        </div>
+      </header>
+      <main>
+        <section class="status-strip">
+          <article class="metric metric--signal"><span>当前信号</span><strong id="signalValue">--</strong><small id="signalAsOf">等待数据</small></article>
+          <article class="metric"><span>目标仓位</span><strong id="exposureValue">--</strong><small id="regimeValue">市场状态 --</small></article>
+          <article class="metric"><span>模拟盘权益</span><strong id="equityValue">--</strong><small id="returnValue">收益 --</small></article>
+          <article class="metric"><span>数据策略</span><strong>本地模拟</strong><small>不连接券商</small></article>
+          <article class="metric"><span>数据健康</span><strong id="healthValue">--</strong><small id="healthReason">--</small></article>
+        </section>
+        <section class="grid grid--hero">
+          <article class="panel panel--wide"><div class="panel__head"><div><p class="eyebrow">Selection</p><h2>Q-GARP 本轮候选</h2></div><span class="badge" id="candidateCount">0 只</span></div>
+            <div class="table-wrap"><table><thead><tr><th>股票</th><th>行业</th><th>触发价</th><th>综合分</th><th>质量/盈利/估值/趋势</th><th>仓位</th><th>止损</th><th>止盈</th><th>策略理由</th></tr></thead><tbody id="candidatesBody"></tbody></table></div>
+          </article>
+          <article class="panel"><div class="panel__head"><div><p class="eyebrow">Risk</p><h2>风控与规则</h2></div><span class="badge badge--safe">硬约束优先</span></div>
+            <dl class="kv"><div><dt>市场阶段</dt><dd id="regimeDetail">--</dd></div><div><dt>因子模型</dt><dd>30/25/15/15/5</dd></div><div><dt>执行模式</dt><dd>本地模拟盘</dd></div><div><dt>AI权限</dt><dd>仅解释/复盘</dd></div></dl><div class="watchlist" id="riskFlags"></div>
+          </article>
+        </section>
+        <section class="grid grid--two">
+          <article class="panel"><div class="panel__head"><div><p class="eyebrow">Paper Account</p><h2>独立模拟账户</h2></div></div><div class="multi-strategy-summary"><div><span>可用现金</span><strong id="cashValue">--</strong></div><div><span>持仓市值</span><strong id="marketValue">--</strong></div><p id="accountInfo">尚未初始化</p></div><div class="positions" id="positionsList"></div></article>
+          <article class="panel"><div class="panel__head"><div><p class="eyebrow">Execution</p><h2>已成交模拟订单</h2></div></div><div class="orders" id="ordersList"></div></article>
+        </section>
+        <section class="grid grid--two">
+          <article class="panel"><div class="panel__head"><div><p class="eyebrow">Backtest</p><h2>回测记录</h2></div></div><div class="orders" id="backtestList"></div></article>
+          <article class="panel"><div class="panel__head"><div><p class="eyebrow">Data Quality</p><h2>数据质量检查</h2></div></div><div class="orders" id="qualityList"></div></article>
+        </section>
+      </main>
+    </div>
+    <script src="static/qgarp.js"></script>
+  </body>
+</html>

@@ -26,6 +26,18 @@ http://127.0.0.1:8000/
 
 Future cloud deployment notes are in `deployment/README.md`.
 
+## Hermes Knowledge Chain
+
+Hermes can receive Feishu knowledge commands and run the Notion + Onyx + NotebookLM cache bridge from the cloud:
+
+```text
+Feishu -> Hermes -> Notion Research Pack -> NotebookLM Source Pack -> cloud cache -> Mac local sync
+```
+
+Google/NotebookLM upload is handled from the local Mac, where VPN and Google login are available. The cloud default is `KNOWLEDGE_STUDY_WORKSPACE=notebooklm`, with Source Packs cached under `knowledge-base-stack/notebooklm-source-packs/`.
+
+See `knowledge-base-stack/hermes-feishu-chain.md` for commands, endpoints, and cloud environment variables.
+
 ## A-Share Realtime Trading Engine v1.3
 
 The deployable v1.3 runtime is available as a separate container service:

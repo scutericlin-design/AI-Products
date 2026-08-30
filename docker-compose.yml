@@ -7,6 +7,7 @@ services:
       - .env
     volumes:
       - ./data:/app/data
+      - ./knowledge-base-stack:/app/knowledge-base-stack
 
   trading-engine:
     build: .
@@ -15,5 +16,6 @@ services:
       - .env
     volumes:
       - ./data:/app/data
+      - ./knowledge-base-stack:/app/knowledge-base-stack
     depends_on:
       - web

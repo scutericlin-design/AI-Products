@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from hashlib import sha256
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -49,12 +50,18 @@ PARAM_SPECS: dict[str, ParamSpec] = {
 
 def get_strategy_param_snapshot() -> dict[str, Any]:
     document = _load_or_initialize_document()
+    params = get_strategy_params()
     return {
         "version": int(document.get("version") or 1),
         "updated_at": document.get("updated_at"),
         "source": document.get("source"),
         "last_self_learning_at": document.get("last_self_learning_at"),
-        "params": get_strategy_params(),
+        "params": params,
+        # The digest identifies the exact active values even when historic
+        # learning rows and the currently mounted parameter file differ.
+        "fingerprint": sha256(
+            json.dumps(params, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()[:16],
     }
 
 

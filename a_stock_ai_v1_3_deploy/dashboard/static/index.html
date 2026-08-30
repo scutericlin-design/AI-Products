@@ -18,7 +18,13 @@
             <span>北京时间</span>
             <strong id="beijingTime">--:--:--</strong>
           </div>
+          <a class="nav-button" href="etf">ETF策略</a>
+          <a class="nav-button" href="qgarp">Q-GARP策略</a><a class="nav-button" href="hot-leader">热点龙头</a><a class="nav-button" href="sentiment-quant">情绪量化</a>
           <button id="refreshButton" type="button">刷新</button>
+          <a class="nav-button" href="admin">后台</a>
+          <form method="post" action="logout" class="logout-form">
+            <button type="submit">退出</button>
+          </form>
         </div>
       </header>
 
@@ -100,6 +106,51 @@
               <div><dt>风险偏好</dt><dd id="riskAppetite">--</dd></div>
               <div><dt>成交状态</dt><dd id="volumeState">--</dd></div>
             </dl>
+          </article>
+        </section>
+
+        <section class="grid grid--two">
+          <article class="panel panel--wide">
+            <div class="panel__head">
+              <div>
+                <p class="eyebrow">Multi Strategy</p>
+                <h2>策略配比与市场风格</h2>
+              </div>
+              <span class="badge" id="multiStrategyMode">--</span>
+            </div>
+            <div class="multi-strategy-summary">
+              <div><span>确认风格</span><strong id="multiRegime">--</strong></div>
+              <div><span>目标总仓位</span><strong id="multiExposure">--</strong></div>
+              <div><span>现金目标</span><strong id="multiCash">--</strong></div>
+              <p id="multiRegimeReason">等待市场风格计算</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>策略</th>
+                    <th>预算</th>
+                    <th>实际目标</th>
+                    <th>候选</th>
+                    <th>推荐</th>
+                    <th>状态</th>
+                    <th>本轮说明</th>
+                  </tr>
+                </thead>
+                <tbody id="multiStrategyRows"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel__head">
+              <div>
+                <p class="eyebrow">Portfolio</p>
+                <h2>策略持仓归属</h2>
+              </div>
+              <span class="badge badge--safe">模拟盘</span>
+            </div>
+            <div class="strategy-exposure" id="strategyExposure"></div>
           </article>
         </section>
 

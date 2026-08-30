@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import time
 from datetime import datetime
 
@@ -7,16 +8,30 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import select
 
 from app.config import PROJECT_ROOT, settings
 from app.database import SessionLocal, init_db
 from app.models import SessionToken, UsageLog
-from app.routers import admin, analytics, auth, backtest, billing, feedback, institutional, portfolio, system_pool, watchlist
+from app.routers import (
+    admin,
+    analytics,
+    auth,
+    backtest,
+    billing,
+    feedback,
+    institutional,
+    knowledge,
+    portfolio,
+    system_pool,
+    watchlist,
+)
 from app.security import hash_token
 
 
 app = FastAPI(title=settings.app_name)
+logger = logging.getLogger(__name__)
 
 app.add_middleware(
     CORSMiddleware,
@@ -32,6 +47,8 @@ app.include_router(backtest.router)
 app.include_router(billing.router)
 app.include_router(feedback.router)
 app.include_router(institutional.router)
+app.include_router(knowledge.router)
+app.include_router(knowledge.feishu_router)
 app.include_router(portfolio.router)
 app.include_router(system_pool.router)
 app.include_router(watchlist.router)
@@ -83,6 +100,9 @@ async def usage_log_middleware(request, call_next):
                     )
                 )
                 db.commit()
+            except SQLAlchemyError:
+                db.rollback()
+                logger.warning("Usage log write failed for %s %s", request.method, path, exc_info=True)
             finally:
                 db.close()
 

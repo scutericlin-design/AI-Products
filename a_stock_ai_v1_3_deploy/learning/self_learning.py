@@ -70,6 +70,17 @@ def run_self_learning(trigger_source: str = "scheduler") -> dict[str, Any]:
                 proposal["should_apply"] = False
                 status = f"ai_hold_{ai_review.get('status')}"
 
+        if (
+            settings.primary_strategy_id == "hybrid_alpha"
+            and settings.hybrid_alpha_lock_parameters
+            and proposal.get("should_apply")
+        ):
+            proposal["should_apply"] = False
+            proposal["reason"] = (
+                f"{proposal.get('reason')}; Hybrid Alpha 主策略参数已冻结，仅记录复盘建议，不自动改动。"
+            )
+            status = "primary_profile_locked_observe"
+
         if proposal.get("should_apply"):
             applied = apply_strategy_param_changes(
                 proposal.get("changes") or {},

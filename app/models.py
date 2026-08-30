@@ -316,6 +316,36 @@ class TradingPushLog(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
 
 
+class KnowledgeJob(Base):
+    __tablename__ = "knowledge_jobs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    job_key: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    action: Mapped[str] = mapped_column(String(32), default="research", index=True)
+    status: Mapped[str] = mapped_column(String(32), default="queued", index=True)
+    source: Mapped[str] = mapped_column(String(32), default="api", index=True)
+    requester: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    chat_id: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    source_event_id: Mapped[str | None] = mapped_column(String(128), unique=True, nullable=True, index=True)
+    request_text: Mapped[str] = mapped_column(Text)
+    topic: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    title: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    notion_page_id: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    notion_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    source_pack_manifest_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    drive_file_id: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    drive_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    notebooklm_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    onyx_status: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    result_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    log_json: Mapped[str | None] = mapped_column(Text, nullable=True)
+    error_text: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), index=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
+    started_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
 class PlatformSetting(Base):
     __tablename__ = "platform_settings"
 

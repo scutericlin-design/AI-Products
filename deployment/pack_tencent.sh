@@ -51,10 +51,18 @@ TAR_ARGS=(
   --exclude="._*" \
   --exclude=".env" \
   --exclude="deployment/dist" \
+  --exclude="outputs" \
+  --exclude=".reunion_pack_work" \
+  --exclude="a_stock_ai_v1_3_deploy" \
 )
 
 if [ "$INCLUDE_DATA" != "1" ]; then
   TAR_ARGS+=(--exclude="data")
+  TAR_ARGS+=(--exclude="*.db")
+  TAR_ARGS+=(--exclude="*.db-*")
+  TAR_ARGS+=(--exclude="*.sqlite")
+  TAR_ARGS+=(--exclude="*.sqlite.*")
+  TAR_ARGS+=(--exclude="*.partial")
   echo "Packing code only; data/ is excluded." >&2
 else
   echo "Packing code and local data/ for first-time migration." >&2

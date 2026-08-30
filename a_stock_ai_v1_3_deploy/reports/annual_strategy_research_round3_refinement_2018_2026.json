@@ -1,0 +1,1700 @@
+{
+  "research_type": "limited_structural_candidate_comparison",
+  "universe_profile": "blended",
+  "universe_limit": 120,
+  "years": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "annual_results": [
+    {
+      "year": 2018,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 114,
+      "symbols_with_data": 114,
+      "metrics": {
+        "trade_count": 23,
+        "buy_order_count": 23,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 21,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 977077.5911,
+        "total_return_pct": -2.2922,
+        "annualized_return_pct": -2.3761,
+        "max_drawdown_pct": 5.018,
+        "max_drawdown_start": "20180112",
+        "max_drawdown_trough": "20181206",
+        "win_rate": 0.3043,
+        "avg_trade_return_pct": -0.6094,
+        "median_trade_return_pct": -3.5958,
+        "best_trade_return_pct": 11.8881,
+        "worst_trade_return_pct": -3.597,
+        "profit_factor": 0.7278,
+        "entry_mode_counts": {
+          "breakout": 23
+        },
+        "entry_mode_pnl": {
+          "breakout": -22260.081
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 12,
+          "take_profit": 1,
+          "time_exit": 4,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.5217,
+        "sharpe_proxy": -0.7942,
+        "symbol_count_with_data": 114
+      }
+    },
+    {
+      "year": 2018,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 114,
+      "symbols_with_data": 114,
+      "metrics": {
+        "trade_count": 9,
+        "buy_order_count": 9,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 9,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1011842.8038,
+        "total_return_pct": 1.1843,
+        "annualized_return_pct": 1.2284,
+        "max_drawdown_pct": 0.8977,
+        "max_drawdown_start": "20180126",
+        "max_drawdown_trough": "20181206",
+        "win_rate": 0.4444,
+        "avg_trade_return_pct": 1.1666,
+        "median_trade_return_pct": -0.6178,
+        "best_trade_return_pct": 11.888,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 1.8422,
+        "entry_mode_counts": {
+          "breakout": 9
+        },
+        "entry_mode_pnl": {
+          "breakout": 12102.5777
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 3,
+          "take_profit": 1,
+          "time_exit": 3,
+          "trailing_stop": 1
+        },
+        "stop_rate": 0.3333,
+        "sharpe_proxy": 0.6697,
+        "symbol_count_with_data": 114
+      }
+    },
+    {
+      "year": 2018,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 114,
+      "symbols_with_data": 114,
+      "metrics": {
+        "trade_count": 20,
+        "buy_order_count": 20,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 18,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 948636.9189,
+        "total_return_pct": -5.1363,
+        "annualized_return_pct": -5.3214,
+        "max_drawdown_pct": 6.9085,
+        "max_drawdown_start": "20180109",
+        "max_drawdown_trough": "20181206",
+        "win_rate": 0.25,
+        "avg_trade_return_pct": -1.6955,
+        "median_trade_return_pct": -3.468,
+        "best_trade_return_pct": 6.9511,
+        "worst_trade_return_pct": -4.0961,
+        "profit_factor": 0.3658,
+        "entry_mode_counts": {
+          "breakout": 20
+        },
+        "entry_mode_pnl": {
+          "breakout": -50711.4707
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 9,
+          "time_exit": 3,
+          "trailing_stop": 4
+        },
+        "stop_rate": 0.45,
+        "sharpe_proxy": -1.2439,
+        "symbol_count_with_data": 114
+      }
+    },
+    {
+      "year": 2018,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 114,
+      "symbols_with_data": 114,
+      "metrics": {
+        "trade_count": 13,
+        "buy_order_count": 13,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 13,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 953011.819,
+        "total_return_pct": -4.6988,
+        "annualized_return_pct": -4.8685,
+        "max_drawdown_pct": 5.0242,
+        "max_drawdown_start": "20180105",
+        "max_drawdown_trough": "20181206",
+        "win_rate": 0.1538,
+        "avg_trade_return_pct": -2.6689,
+        "median_trade_return_pct": -3.8289,
+        "best_trade_return_pct": 6.4447,
+        "worst_trade_return_pct": -4.596,
+        "profit_factor": 0.1884,
+        "entry_mode_counts": {
+          "breakout": 13
+        },
+        "entry_mode_pnl": {
+          "breakout": -46557.3481
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 5,
+          "stop_loss": 6,
+          "time_exit": 1,
+          "trailing_stop": 1
+        },
+        "stop_rate": 0.4615,
+        "sharpe_proxy": -2.3121,
+        "symbol_count_with_data": 114
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 119,
+      "symbols_with_data": 119,
+      "metrics": {
+        "trade_count": 56,
+        "buy_order_count": 56,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 56,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 1018773.1435,
+        "total_return_pct": 1.8773,
+        "annualized_return_pct": 1.9395,
+        "max_drawdown_pct": 3.1988,
+        "max_drawdown_start": "20190318",
+        "max_drawdown_trough": "20190826",
+        "win_rate": 0.5536,
+        "avg_trade_return_pct": 0.5724,
+        "median_trade_return_pct": 0.8374,
+        "best_trade_return_pct": 11.888,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 1.4785,
+        "entry_mode_counts": {
+          "breakout": 56
+        },
+        "entry_mode_pnl": {
+          "breakout": 20242.3462
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 16,
+          "take_profit": 2,
+          "time_exit": 22,
+          "trailing_stop": 12
+        },
+        "stop_rate": 0.2857,
+        "sharpe_proxy": 0.3564,
+        "symbol_count_with_data": 119
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 119,
+      "symbols_with_data": 119,
+      "metrics": {
+        "trade_count": 38,
+        "buy_order_count": 38,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 38,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 1043891.7838,
+        "total_return_pct": 4.3892,
+        "annualized_return_pct": 4.5363,
+        "max_drawdown_pct": 1.3637,
+        "max_drawdown_start": "20190218",
+        "max_drawdown_trough": "20190402",
+        "win_rate": 0.6579,
+        "avg_trade_return_pct": 1.1117,
+        "median_trade_return_pct": 1.786,
+        "best_trade_return_pct": 8.99,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 2.1266,
+        "entry_mode_counts": {
+          "breakout": 38
+        },
+        "entry_mode_pnl": {
+          "breakout": 44989.7663
+        },
+        "exit_reason_counts": {
+          "force_close": 1,
+          "stop_loss": 10,
+          "time_exit": 14,
+          "trailing_stop": 13
+        },
+        "stop_rate": 0.2632,
+        "sharpe_proxy": 1.0853,
+        "symbol_count_with_data": 119
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 119,
+      "symbols_with_data": 119,
+      "metrics": {
+        "trade_count": 62,
+        "buy_order_count": 62,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 62,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 1037956.2679,
+        "total_return_pct": 3.7956,
+        "annualized_return_pct": 3.9225,
+        "max_drawdown_pct": 4.8982,
+        "max_drawdown_start": "20190305",
+        "max_drawdown_trough": "20190708",
+        "win_rate": 0.5806,
+        "avg_trade_return_pct": 0.4411,
+        "median_trade_return_pct": 0.9446,
+        "best_trade_return_pct": 8.2809,
+        "worst_trade_return_pct": -4.0965,
+        "profit_factor": 1.3089,
+        "entry_mode_counts": {
+          "breakout": 62
+        },
+        "entry_mode_pnl": {
+          "breakout": 39938.2328
+        },
+        "exit_reason_counts": {
+          "force_close": 1,
+          "market_risk_off": 3,
+          "stop_loss": 20,
+          "time_exit": 27,
+          "trailing_stop": 11
+        },
+        "stop_rate": 0.3226,
+        "sharpe_proxy": 0.4665,
+        "symbol_count_with_data": 119
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 119,
+      "symbols_with_data": 119,
+      "metrics": {
+        "trade_count": 46,
+        "buy_order_count": 46,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 46,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 1041002.8364,
+        "total_return_pct": 4.1003,
+        "annualized_return_pct": 4.2375,
+        "max_drawdown_pct": 4.9738,
+        "max_drawdown_start": "20190305",
+        "max_drawdown_trough": "20190822",
+        "win_rate": 0.5435,
+        "avg_trade_return_pct": 0.7274,
+        "median_trade_return_pct": 0.7026,
+        "best_trade_return_pct": 10.0538,
+        "worst_trade_return_pct": -4.5955,
+        "profit_factor": 1.5266,
+        "entry_mode_counts": {
+          "breakout": 46
+        },
+        "entry_mode_pnl": {
+          "breakout": 42531.1414
+        },
+        "exit_reason_counts": {
+          "force_close": 2,
+          "market_risk_off": 7,
+          "stop_loss": 9,
+          "time_exit": 24,
+          "trailing_stop": 4
+        },
+        "stop_rate": 0.1957,
+        "sharpe_proxy": 0.5572,
+        "symbol_count_with_data": 119
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 116,
+      "symbols_with_data": 116,
+      "metrics": {
+        "trade_count": 36,
+        "buy_order_count": 36,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 36,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1055996.6494,
+        "total_return_pct": 5.5997,
+        "annualized_return_pct": 5.813,
+        "max_drawdown_pct": 2.1852,
+        "max_drawdown_start": "20200807",
+        "max_drawdown_trough": "20201113",
+        "win_rate": 0.5278,
+        "avg_trade_return_pct": 1.4286,
+        "median_trade_return_pct": 1.0247,
+        "best_trade_return_pct": 11.8883,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 1.889,
+        "entry_mode_counts": {
+          "breakout": 36
+        },
+        "entry_mode_pnl": {
+          "breakout": 57048.8618
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "stop_loss": 15,
+          "take_profit": 6,
+          "time_exit": 5,
+          "trailing_stop": 8
+        },
+        "stop_rate": 0.4167,
+        "sharpe_proxy": 1.4416,
+        "symbol_count_with_data": 116
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 116,
+      "symbols_with_data": 116,
+      "metrics": {
+        "trade_count": 41,
+        "buy_order_count": 41,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 41,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1040974.0062,
+        "total_return_pct": 4.0974,
+        "annualized_return_pct": 4.2523,
+        "max_drawdown_pct": 2.1826,
+        "max_drawdown_start": "20200807",
+        "max_drawdown_trough": "20201207",
+        "win_rate": 0.561,
+        "avg_trade_return_pct": 0.919,
+        "median_trade_return_pct": 0.8157,
+        "best_trade_return_pct": 11.8881,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 1.6664,
+        "entry_mode_counts": {
+          "breakout": 41
+        },
+        "entry_mode_pnl": {
+          "breakout": 42139.2002
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 14,
+          "take_profit": 4,
+          "time_exit": 9,
+          "trailing_stop": 10
+        },
+        "stop_rate": 0.3415,
+        "sharpe_proxy": 1.1141,
+        "symbol_count_with_data": 116
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 116,
+      "symbols_with_data": 116,
+      "metrics": {
+        "trade_count": 48,
+        "buy_order_count": 48,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 48,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1076170.538,
+        "total_return_pct": 7.6171,
+        "annualized_return_pct": 7.91,
+        "max_drawdown_pct": 3.5119,
+        "max_drawdown_start": "20200713",
+        "max_drawdown_trough": "20201111",
+        "win_rate": 0.5417,
+        "avg_trade_return_pct": 1.1722,
+        "median_trade_return_pct": 0.7775,
+        "best_trade_return_pct": 14.8851,
+        "worst_trade_return_pct": -4.0961,
+        "profit_factor": 1.7188,
+        "entry_mode_counts": {
+          "breakout": 48
+        },
+        "entry_mode_pnl": {
+          "breakout": 77826.5607
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 7,
+          "stop_loss": 18,
+          "take_profit": 5,
+          "time_exit": 6,
+          "trailing_stop": 12
+        },
+        "stop_rate": 0.375,
+        "sharpe_proxy": 1.0188,
+        "symbol_count_with_data": 116
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 116,
+      "symbols_with_data": 116,
+      "metrics": {
+        "trade_count": 33,
+        "buy_order_count": 33,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 33,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1094099.5035,
+        "total_return_pct": 9.41,
+        "annualized_return_pct": 9.775,
+        "max_drawdown_pct": 3.9987,
+        "max_drawdown_start": "20200709",
+        "max_drawdown_trough": "20201113",
+        "win_rate": 0.5152,
+        "avg_trade_return_pct": 2.1381,
+        "median_trade_return_pct": 0.8157,
+        "best_trade_return_pct": 17.8821,
+        "worst_trade_return_pct": -4.5956,
+        "profit_factor": 2.0467,
+        "entry_mode_counts": {
+          "breakout": 33
+        },
+        "entry_mode_pnl": {
+          "breakout": 95235.9434
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 5,
+          "stop_loss": 14,
+          "take_profit": 5,
+          "time_exit": 5,
+          "trailing_stop": 4
+        },
+        "stop_rate": 0.4242,
+        "sharpe_proxy": 1.4469,
+        "symbol_count_with_data": 116
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 39,
+        "buy_order_count": 39,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 39,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 988845.2917,
+        "total_return_pct": -1.1155,
+        "annualized_return_pct": -1.1565,
+        "max_drawdown_pct": 3.9468,
+        "max_drawdown_start": "20210107",
+        "max_drawdown_trough": "20211116",
+        "win_rate": 0.359,
+        "avg_trade_return_pct": -0.1267,
+        "median_trade_return_pct": -3.5964,
+        "best_trade_return_pct": 11.8879,
+        "worst_trade_return_pct": -3.5969,
+        "profit_factor": 0.9377,
+        "entry_mode_counts": {
+          "breakout": 39
+        },
+        "entry_mode_pnl": {
+          "breakout": -10346.986
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 10,
+          "stop_loss": 20,
+          "take_profit": 2,
+          "time_exit": 1,
+          "trailing_stop": 6
+        },
+        "stop_rate": 0.5128,
+        "sharpe_proxy": -0.3186,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 22,
+        "buy_order_count": 22,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 22,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1001868.7519,
+        "total_return_pct": 0.1869,
+        "annualized_return_pct": 0.1938,
+        "max_drawdown_pct": 2.7792,
+        "max_drawdown_start": "20210107",
+        "max_drawdown_trough": "20211112",
+        "win_rate": 0.4545,
+        "avg_trade_return_pct": 0.2438,
+        "median_trade_return_pct": -2.8993,
+        "best_trade_return_pct": 11.8874,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 1.1285,
+        "entry_mode_counts": {
+          "breakout": 22
+        },
+        "entry_mode_pnl": {
+          "breakout": 2380.6187
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "stop_loss": 11,
+          "take_profit": 1,
+          "time_exit": 3,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.5,
+        "sharpe_proxy": 0.0627,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 42,
+        "buy_order_count": 42,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 42,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 952292.6791,
+        "total_return_pct": -4.7707,
+        "annualized_return_pct": -4.943,
+        "max_drawdown_pct": 9.0182,
+        "max_drawdown_start": "20210107",
+        "max_drawdown_trough": "20211206",
+        "win_rate": 0.3333,
+        "avg_trade_return_pct": -0.5849,
+        "median_trade_return_pct": -4.0957,
+        "best_trade_return_pct": 14.8849,
+        "worst_trade_return_pct": -4.0961,
+        "profit_factor": 0.7562,
+        "entry_mode_counts": {
+          "breakout": 42
+        },
+        "entry_mode_pnl": {
+          "breakout": -46690.0517
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 12,
+          "stop_loss": 22,
+          "take_profit": 1,
+          "time_exit": 2,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.5238,
+        "sharpe_proxy": -0.9703,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 32,
+        "buy_order_count": 32,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 32,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 961435.2722,
+        "total_return_pct": -3.8565,
+        "annualized_return_pct": -3.9964,
+        "max_drawdown_pct": 7.6803,
+        "max_drawdown_start": "20210107",
+        "max_drawdown_trough": "20211112",
+        "win_rate": 0.4062,
+        "avg_trade_return_pct": -0.702,
+        "median_trade_return_pct": -2.8525,
+        "best_trade_return_pct": 11.5411,
+        "worst_trade_return_pct": -4.5959,
+        "profit_factor": 0.7,
+        "entry_mode_counts": {
+          "breakout": 32
+        },
+        "entry_mode_pnl": {
+          "breakout": -37793.4035
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 11,
+          "stop_loss": 14,
+          "time_exit": 3,
+          "trailing_stop": 4
+        },
+        "stop_rate": 0.4375,
+        "sharpe_proxy": -0.7792,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 17,
+        "buy_order_count": 17,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 17,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 996414.1576,
+        "total_return_pct": -0.3586,
+        "annualized_return_pct": -0.3734,
+        "max_drawdown_pct": 2.3548,
+        "max_drawdown_start": "20220704",
+        "max_drawdown_trough": "20221219",
+        "win_rate": 0.2941,
+        "avg_trade_return_pct": -0.3361,
+        "median_trade_return_pct": -3.5964,
+        "best_trade_return_pct": 11.8883,
+        "worst_trade_return_pct": -3.5967,
+        "profit_factor": 0.8477,
+        "entry_mode_counts": {
+          "breakout": 17
+        },
+        "entry_mode_pnl": {
+          "breakout": -3125.2007
+        },
+        "exit_reason_counts": {
+          "stop_loss": 10,
+          "take_profit": 2,
+          "time_exit": 3,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.5882,
+        "sharpe_proxy": -0.1186,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 13,
+        "buy_order_count": 13,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 13,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 987991.3832,
+        "total_return_pct": -1.2009,
+        "annualized_return_pct": -1.2502,
+        "max_drawdown_pct": 2.3019,
+        "max_drawdown_start": "20220704",
+        "max_drawdown_trough": "20221212",
+        "win_rate": 0.3077,
+        "avg_trade_return_pct": -0.7825,
+        "median_trade_return_pct": -3.5964,
+        "best_trade_return_pct": 11.8883,
+        "worst_trade_return_pct": -3.5967,
+        "profit_factor": 0.662,
+        "entry_mode_counts": {
+          "breakout": 13
+        },
+        "entry_mode_pnl": {
+          "breakout": -11641.6215
+        },
+        "exit_reason_counts": {
+          "stop_loss": 8,
+          "take_profit": 1,
+          "time_exit": 2,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.6154,
+        "sharpe_proxy": -0.4659,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 19,
+        "buy_order_count": 19,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 19,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 959683.6154,
+        "total_return_pct": -4.0316,
+        "annualized_return_pct": -4.1947,
+        "max_drawdown_pct": 6.0982,
+        "max_drawdown_start": "20220610",
+        "max_drawdown_trough": "20221121",
+        "win_rate": 0.2632,
+        "avg_trade_return_pct": -1.6568,
+        "median_trade_return_pct": -4.0959,
+        "best_trade_return_pct": 14.885,
+        "worst_trade_return_pct": -4.096,
+        "profit_factor": 0.4322,
+        "entry_mode_counts": {
+          "breakout": 19
+        },
+        "entry_mode_pnl": {
+          "breakout": -39734.1914
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 13,
+          "take_profit": 1,
+          "time_exit": 1,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.6842,
+        "sharpe_proxy": -1.5401,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 15,
+        "buy_order_count": 15,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 15,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 974887.9378,
+        "total_return_pct": -2.5112,
+        "annualized_return_pct": -2.6136,
+        "max_drawdown_pct": 4.5607,
+        "max_drawdown_start": "20220705",
+        "max_drawdown_trough": "20221121",
+        "win_rate": 0.2,
+        "avg_trade_return_pct": -1.6486,
+        "median_trade_return_pct": -4.5954,
+        "best_trade_return_pct": 17.882,
+        "worst_trade_return_pct": -4.5957,
+        "profit_factor": 0.4914,
+        "entry_mode_counts": {
+          "breakout": 15
+        },
+        "entry_mode_pnl": {
+          "breakout": -24670.5216
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 10,
+          "take_profit": 1,
+          "time_exit": 1,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.6667,
+        "sharpe_proxy": -0.9171,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 119,
+      "symbols_with_data": 119,
+      "metrics": {
+        "trade_count": 21,
+        "buy_order_count": 21,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 21,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1003307.7157,
+        "total_return_pct": 0.3308,
+        "annualized_return_pct": 0.3445,
+        "max_drawdown_pct": 2.4475,
+        "max_drawdown_start": "20230728",
+        "max_drawdown_trough": "20231122",
+        "win_rate": 0.4762,
+        "avg_trade_return_pct": 0.1058,
+        "median_trade_return_pct": -0.0131,
+        "best_trade_return_pct": 4.9347,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 1.0703,
+        "entry_mode_counts": {
+          "breakout": 21
+        },
+        "entry_mode_pnl": {
+          "breakout": 3887.3654
+        },
+        "exit_reason_counts": {
+          "stop_loss": 8,
+          "time_exit": 8,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.381,
+        "sharpe_proxy": 0.1338,
+        "symbol_count_with_data": 119
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 119,
+      "symbols_with_data": 119,
+      "metrics": {
+        "trade_count": 14,
+        "buy_order_count": 14,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 14,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1004849.42,
+        "total_return_pct": 0.4849,
+        "annualized_return_pct": 0.505,
+        "max_drawdown_pct": 1.2074,
+        "max_drawdown_start": "20230728",
+        "max_drawdown_trough": "20230802",
+        "win_rate": 0.5,
+        "avg_trade_return_pct": 0.345,
+        "median_trade_return_pct": 0.3757,
+        "best_trade_return_pct": 4.1959,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 1.2537,
+        "entry_mode_counts": {
+          "breakout": 14
+        },
+        "entry_mode_pnl": {
+          "breakout": 5246.1719
+        },
+        "exit_reason_counts": {
+          "stop_loss": 5,
+          "time_exit": 6,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.3571,
+        "sharpe_proxy": 0.2625,
+        "symbol_count_with_data": 119
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 119,
+      "symbols_with_data": 119,
+      "metrics": {
+        "trade_count": 24,
+        "buy_order_count": 24,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 24,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1007736.8849,
+        "total_return_pct": 0.7737,
+        "annualized_return_pct": 0.8058,
+        "max_drawdown_pct": 3.9435,
+        "max_drawdown_start": "20230130",
+        "max_drawdown_trough": "20231122",
+        "win_rate": 0.5,
+        "avg_trade_return_pct": 0.1511,
+        "median_trade_return_pct": 0.1872,
+        "best_trade_return_pct": 7.8475,
+        "worst_trade_return_pct": -4.0961,
+        "profit_factor": 1.0834,
+        "entry_mode_counts": {
+          "breakout": 24
+        },
+        "entry_mode_pnl": {
+          "breakout": 8529.4065
+        },
+        "exit_reason_counts": {
+          "stop_loss": 10,
+          "time_exit": 7,
+          "trailing_stop": 7
+        },
+        "stop_rate": 0.4167,
+        "sharpe_proxy": 0.1812,
+        "symbol_count_with_data": 119
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 119,
+      "symbols_with_data": 119,
+      "metrics": {
+        "trade_count": 21,
+        "buy_order_count": 21,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 21,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1001290.2298,
+        "total_return_pct": 0.129,
+        "annualized_return_pct": 0.1344,
+        "max_drawdown_pct": 3.7912,
+        "max_drawdown_start": "20230201",
+        "max_drawdown_trough": "20230808",
+        "win_rate": 0.4762,
+        "avg_trade_return_pct": -0.0569,
+        "median_trade_return_pct": -0.3221,
+        "best_trade_return_pct": 10.7103,
+        "worst_trade_return_pct": -4.5956,
+        "profit_factor": 0.9716,
+        "entry_mode_counts": {
+          "breakout": 21
+        },
+        "entry_mode_pnl": {
+          "breakout": 1924.3636
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 8,
+          "time_exit": 8,
+          "trailing_stop": 4
+        },
+        "stop_rate": 0.381,
+        "sharpe_proxy": 0.0374,
+        "symbol_count_with_data": 119
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 118,
+      "symbols_with_data": 118,
+      "metrics": {
+        "trade_count": 30,
+        "buy_order_count": 30,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 30,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1070051.4691,
+        "total_return_pct": 7.0051,
+        "annualized_return_pct": 7.3049,
+        "max_drawdown_pct": 3.1114,
+        "max_drawdown_start": "20240227",
+        "max_drawdown_trough": "20240925",
+        "win_rate": 0.4667,
+        "avg_trade_return_pct": 2.0539,
+        "median_trade_return_pct": -0.6407,
+        "best_trade_return_pct": 11.8882,
+        "worst_trade_return_pct": -3.5965,
+        "profit_factor": 2.2708,
+        "entry_mode_counts": {
+          "breakout": 30
+        },
+        "entry_mode_pnl": {
+          "breakout": 70813.9151
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 6,
+          "stop_loss": 12,
+          "take_profit": 8,
+          "trailing_stop": 4
+        },
+        "stop_rate": 0.4,
+        "sharpe_proxy": 1.6522,
+        "symbol_count_with_data": 118
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 118,
+      "symbols_with_data": 118,
+      "metrics": {
+        "trade_count": 20,
+        "buy_order_count": 20,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 20,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1041049.6336,
+        "total_return_pct": 4.105,
+        "annualized_return_pct": 4.2782,
+        "max_drawdown_pct": 2.1016,
+        "max_drawdown_start": "20240227",
+        "max_drawdown_trough": "20240925",
+        "win_rate": 0.45,
+        "avg_trade_return_pct": 1.9684,
+        "median_trade_return_pct": -0.6407,
+        "best_trade_return_pct": 11.8882,
+        "worst_trade_return_pct": -3.5968,
+        "profit_factor": 2.1699,
+        "entry_mode_counts": {
+          "breakout": 20
+        },
+        "entry_mode_pnl": {
+          "breakout": 41609.3287
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "stop_loss": 9,
+          "take_profit": 5,
+          "trailing_stop": 4
+        },
+        "stop_rate": 0.45,
+        "sharpe_proxy": 1.0385,
+        "symbol_count_with_data": 118
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 118,
+      "symbols_with_data": 118,
+      "metrics": {
+        "trade_count": 38,
+        "buy_order_count": 38,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 38,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1150971.9154,
+        "total_return_pct": 15.0972,
+        "annualized_return_pct": 15.7679,
+        "max_drawdown_pct": 4.1914,
+        "max_drawdown_start": "20241008",
+        "max_drawdown_trough": "20241009",
+        "win_rate": 0.5263,
+        "avg_trade_return_pct": 2.9312,
+        "median_trade_return_pct": 1.6746,
+        "best_trade_return_pct": 14.8852,
+        "worst_trade_return_pct": -4.096,
+        "profit_factor": 2.725,
+        "entry_mode_counts": {
+          "breakout": 38
+        },
+        "entry_mode_pnl": {
+          "breakout": 152293.8095
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 14,
+          "take_profit": 8,
+          "time_exit": 1,
+          "trailing_stop": 11
+        },
+        "stop_rate": 0.3684,
+        "sharpe_proxy": 1.5714,
+        "symbol_count_with_data": 118
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 118,
+      "symbols_with_data": 118,
+      "metrics": {
+        "trade_count": 26,
+        "buy_order_count": 26,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 26,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1092574.0211,
+        "total_return_pct": 9.2574,
+        "annualized_return_pct": 9.6579,
+        "max_drawdown_pct": 2.6057,
+        "max_drawdown_start": "20240227",
+        "max_drawdown_trough": "20240925",
+        "win_rate": 0.5385,
+        "avg_trade_return_pct": 2.8643,
+        "median_trade_return_pct": 2.4151,
+        "best_trade_return_pct": 17.8821,
+        "worst_trade_return_pct": -4.5958,
+        "profit_factor": 2.6287,
+        "entry_mode_counts": {
+          "breakout": 26
+        },
+        "entry_mode_pnl": {
+          "breakout": 93444.7397
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 3,
+          "stop_loss": 9,
+          "take_profit": 3,
+          "time_exit": 1,
+          "trailing_stop": 10
+        },
+        "stop_rate": 0.3462,
+        "sharpe_proxy": 1.2505,
+        "symbol_count_with_data": 118
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 48,
+        "buy_order_count": 48,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 48,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1035217.1862,
+        "total_return_pct": 3.5217,
+        "annualized_return_pct": 3.6545,
+        "max_drawdown_pct": 2.2491,
+        "max_drawdown_start": "20250102",
+        "max_drawdown_trough": "20250711",
+        "win_rate": 0.4375,
+        "avg_trade_return_pct": 0.9903,
+        "median_trade_return_pct": -1.5731,
+        "best_trade_return_pct": 11.888,
+        "worst_trade_return_pct": -3.5967,
+        "profit_factor": 1.562,
+        "entry_mode_counts": {
+          "breakout": 48
+        },
+        "entry_mode_pnl": {
+          "breakout": 36448.8683
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 5,
+          "stop_loss": 20,
+          "take_profit": 8,
+          "time_exit": 7,
+          "trailing_stop": 8
+        },
+        "stop_rate": 0.4167,
+        "sharpe_proxy": 0.6238,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 36,
+        "buy_order_count": 36,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 36,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1050049.1429,
+        "total_return_pct": 5.0049,
+        "annualized_return_pct": 5.195,
+        "max_drawdown_pct": 3.3884,
+        "max_drawdown_start": "20250212",
+        "max_drawdown_trough": "20250707",
+        "win_rate": 0.4167,
+        "avg_trade_return_pct": 1.7036,
+        "median_trade_return_pct": -1.6225,
+        "best_trade_return_pct": 11.888,
+        "worst_trade_return_pct": -3.5967,
+        "profit_factor": 1.936,
+        "entry_mode_counts": {
+          "breakout": 36
+        },
+        "entry_mode_pnl": {
+          "breakout": 51065.8548
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 16,
+          "take_profit": 8,
+          "time_exit": 8,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.4444,
+        "sharpe_proxy": 0.9708,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 59,
+        "buy_order_count": 59,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 59,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1109272.8447,
+        "total_return_pct": 10.9273,
+        "annualized_return_pct": 11.3542,
+        "max_drawdown_pct": 3.0235,
+        "max_drawdown_start": "20250512",
+        "max_drawdown_trough": "20250523",
+        "win_rate": 0.5254,
+        "avg_trade_return_pct": 1.6911,
+        "median_trade_return_pct": 1.1145,
+        "best_trade_return_pct": 14.8852,
+        "worst_trade_return_pct": -4.0961,
+        "profit_factor": 2.0488,
+        "entry_mode_counts": {
+          "breakout": 59
+        },
+        "entry_mode_pnl": {
+          "breakout": 111158.2247
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 5,
+          "stop_loss": 20,
+          "take_profit": 7,
+          "time_exit": 13,
+          "trailing_stop": 14
+        },
+        "stop_rate": 0.339,
+        "sharpe_proxy": 1.2623,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 47,
+        "buy_order_count": 47,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 47,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1163463.28,
+        "total_return_pct": 16.3463,
+        "annualized_return_pct": 17.0006,
+        "max_drawdown_pct": 3.0136,
+        "max_drawdown_start": "20250221",
+        "max_drawdown_trough": "20250523",
+        "win_rate": 0.5532,
+        "avg_trade_return_pct": 2.9433,
+        "median_trade_return_pct": 1.5828,
+        "best_trade_return_pct": 17.8822,
+        "worst_trade_return_pct": -4.5957,
+        "profit_factor": 2.8265,
+        "entry_mode_counts": {
+          "breakout": 47
+        },
+        "entry_mode_pnl": {
+          "breakout": 164951.9325
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 14,
+          "take_profit": 7,
+          "time_exit": 12,
+          "trailing_stop": 10
+        },
+        "stop_rate": 0.2979,
+        "sharpe_proxy": 1.6836,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 13,
+        "buy_order_count": 13,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 13,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 1006878.9517,
+        "total_return_pct": 0.6879,
+        "annualized_return_pct": 1.3482,
+        "max_drawdown_pct": 1.5539,
+        "max_drawdown_start": "20260106",
+        "max_drawdown_trough": "20260108",
+        "win_rate": 0.3846,
+        "avg_trade_return_pct": 0.4525,
+        "median_trade_return_pct": -3.5964,
+        "best_trade_return_pct": 11.8882,
+        "worst_trade_return_pct": -3.5965,
+        "profit_factor": 1.223,
+        "entry_mode_counts": {
+          "breakout": 13
+        },
+        "entry_mode_pnl": {
+          "breakout": 7229.6406
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "stop_loss": 7,
+          "take_profit": 2,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.5385,
+        "sharpe_proxy": 0.4138,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 8,
+        "buy_order_count": 8,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 8,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 993176.9164,
+        "total_return_pct": -0.6823,
+        "annualized_return_pct": -1.3285,
+        "max_drawdown_pct": 1.6627,
+        "max_drawdown_start": "20260106",
+        "max_drawdown_trough": "20260108",
+        "win_rate": 0.25,
+        "avg_trade_return_pct": -0.7681,
+        "median_trade_return_pct": -3.5964,
+        "best_trade_return_pct": 11.8882,
+        "worst_trade_return_pct": -3.5965,
+        "profit_factor": 0.7152,
+        "entry_mode_counts": {
+          "breakout": 8
+        },
+        "entry_mode_pnl": {
+          "breakout": -6597.4101
+        },
+        "exit_reason_counts": {
+          "stop_loss": 6,
+          "take_profit": 1,
+          "trailing_stop": 1
+        },
+        "stop_rate": 0.75,
+        "sharpe_proxy": -0.5316,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 13,
+        "buy_order_count": 13,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 13,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 1036616.5778,
+        "total_return_pct": 3.6617,
+        "annualized_return_pct": 7.2778,
+        "max_drawdown_pct": 1.5924,
+        "max_drawdown_start": "20260106",
+        "max_drawdown_trough": "20260108",
+        "win_rate": 0.4615,
+        "avg_trade_return_pct": 1.7573,
+        "median_trade_return_pct": -1.1383,
+        "best_trade_return_pct": 14.8852,
+        "worst_trade_return_pct": -4.096,
+        "profit_factor": 1.8884,
+        "entry_mode_counts": {
+          "breakout": 13
+        },
+        "entry_mode_pnl": {
+          "breakout": 37032.849
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 6,
+          "take_profit": 3,
+          "time_exit": 1,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.4615,
+        "sharpe_proxy": 1.8259,
+        "symbol_count_with_data": 120
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "universe_count": 120,
+      "symbols_with_data": 120,
+      "metrics": {
+        "trade_count": 18,
+        "buy_order_count": 18,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 18,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 1068411.3356,
+        "total_return_pct": 6.8411,
+        "annualized_return_pct": 13.7995,
+        "max_drawdown_pct": 1.7748,
+        "max_drawdown_start": "20260106",
+        "max_drawdown_trough": "20260108",
+        "win_rate": 0.4444,
+        "avg_trade_return_pct": 3.2493,
+        "median_trade_return_pct": -1.1014,
+        "best_trade_return_pct": 17.8823,
+        "worst_trade_return_pct": -4.5957,
+        "profit_factor": 2.5447,
+        "entry_mode_counts": {
+          "breakout": 18
+        },
+        "entry_mode_pnl": {
+          "breakout": 68969.0818
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 6,
+          "take_profit": 4,
+          "time_exit": 2,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.3333,
+        "sharpe_proxy": 2.4937,
+        "symbol_count_with_data": 120
+      }
+    }
+  ],
+  "candidate_summary": [
+    {
+      "candidate": "regime_adaptive_balanced_core",
+      "profile_name": "regime_adaptive",
+      "rationale": "Second-round balanced regime candidate retained as the control.",
+      "years": 9,
+      "mean_return_pct": 1.6951,
+      "median_return_pct": 0.6879,
+      "worst_year_return_pct": -2.2922,
+      "negative_years": 3,
+      "compound_return_pct": 15.9004,
+      "mean_max_drawdown_pct": 2.8962,
+      "worst_max_drawdown_pct": 5.018,
+      "mean_trade_count": 31.44,
+      "validation_years": 4,
+      "validation_mean_return_pct": 2.8864,
+      "validation_compound_return_pct": 11.9045,
+      "validation_negative_years": 0
+    },
+    {
+      "candidate": "regime_adaptive_balanced_quality",
+      "profile_name": "regime_adaptive",
+      "rationale": "Favor liquid, high-close-confirmation entries and cut marginal signals.",
+      "years": 9,
+      "mean_return_pct": 1.9522,
+      "median_return_pct": 1.1843,
+      "worst_year_return_pct": -1.2009,
+      "negative_years": 2,
+      "compound_return_pct": 18.7356,
+      "mean_max_drawdown_pct": 1.9872,
+      "worst_max_drawdown_pct": 3.3884,
+      "mean_trade_count": 22.33,
+      "validation_years": 4,
+      "validation_mean_return_pct": 2.2281,
+      "validation_compound_return_pct": 9.0959,
+      "validation_negative_years": 1
+    },
+    {
+      "candidate": "regime_adaptive_balanced_plus",
+      "profile_name": "regime_adaptive",
+      "rationale": "Use more of confirmed strong regimes while retaining the same breadth and panic gates.",
+      "years": 9,
+      "mean_return_pct": 3.1038,
+      "median_return_pct": 3.6617,
+      "worst_year_return_pct": -5.1363,
+      "negative_years": 3,
+      "compound_return_pct": 29.1599,
+      "mean_max_drawdown_pct": 4.7984,
+      "worst_max_drawdown_pct": 9.0182,
+      "mean_trade_count": 36.11,
+      "validation_years": 4,
+      "validation_mean_return_pct": 7.615,
+      "validation_compound_return_pct": 33.3732,
+      "validation_negative_years": 0
+    },
+    {
+      "candidate": "regime_adaptive_balanced_trend",
+      "profile_name": "regime_adaptive",
+      "rationale": "A longer, moderately concentrated trend sleeve with unchanged regime protection.",
+      "years": 9,
+      "mean_return_pct": 3.8908,
+      "median_return_pct": 4.1003,
+      "worst_year_return_pct": -4.6988,
+      "negative_years": 3,
+      "compound_return_pct": 38.3514,
+      "mean_max_drawdown_pct": 4.1581,
+      "worst_max_drawdown_pct": 7.6803,
+      "mean_trade_count": 27.89,
+      "validation_years": 4,
+      "validation_mean_return_pct": 8.1434,
+      "validation_compound_return_pct": 35.9883,
+      "validation_negative_years": 0
+    }
+  ],
+  "assumptions": [
+    "Universe is constructed from the first available daily_basic snapshot on or before each year start.",
+    "Signals use T close and enter at the next trading day open with configured slippage, commission, stamp duty and A-share lot sizing.",
+    "This daily-bar model cannot fully guarantee fills during suspensions or price-limit queues; live and paper execution need further validation.",
+    "quality_t_reference scores price/liquidity characteristics only; it is not a point-in-time financial-statement backtest."
+  ]
+}

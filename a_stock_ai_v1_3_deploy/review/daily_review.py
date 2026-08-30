@@ -7,8 +7,7 @@ from datetime import date, datetime
 from typing import Any
 from uuid import uuid4
 
-import requests
-
+from ai.llm_failover import LLMFailoverError, request_with_failover
 from ai.prompt_builder import build_review_prompt
 from app.config import settings
 from notify.feishu import send_feishu_markdown
@@ -133,25 +132,24 @@ def _call_minimax_text(prompt: str) -> tuple[str, str | None]:
     if not settings.minimax_api_key or not settings.minimax_endpoint:
         return "", "missing_minimax_config"
     try:
-        response = requests.post(
-            settings.minimax_endpoint,
-            headers={
-                "Authorization": f"Bearer {settings.minimax_api_key}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": settings.minimax_model,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.45,
-            },
+        payload, _, _ = request_with_failover(
+            endpoint=settings.minimax_endpoint,
+            api_key=settings.minimax_api_key,
+            primary_model=settings.minimax_model,
+            fallback_model=settings.minimax_fallback_model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.45,
             timeout=45,
+            validator=_has_text_response,
         )
-        response.raise_for_status()
-        payload = response.json()
         text = _extract_text(payload)
         return text.strip(), None
-    except Exception as exc:
+    except LLMFailoverError as exc:
         return "", str(exc)
+
+
+def _has_text_response(payload: dict[str, Any]) -> bool:
+    return bool(_extract_text(payload).strip())
 
 
 def _fallback_article(summary: dict[str, Any]) -> str:

@@ -249,7 +249,8 @@
   </main>
 
   <script>
-    const PRODUCT_URL = "/opendesign/mockups/a-share-ai-investment-model/index.html?v=20260621-pending-buy-quantity";
+    const PRODUCT_URL = "/opendesign/mockups/a-share-ai-investment-model/index.html?v=20260819-system-pool-auth";
+    const AUTH_URL = "/static/app.html";
     const state = { mode: "login" };
     const $ = (id) => document.getElementById(id);
 
@@ -308,6 +309,12 @@
 
     if (localStorage.getItem("alpha_token")) {
       window.location.href = PRODUCT_URL;
+    } else {
+      const authMessage = sessionStorage.getItem("alpha_auth_message");
+      if (authMessage) {
+        sessionStorage.removeItem("alpha_auth_message");
+        setStatus(authMessage, "error");
+      }
     }
   </script>
 </body>

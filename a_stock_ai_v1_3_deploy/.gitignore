@@ -5,3 +5,4 @@ storage/*.sqlite
 storage/*.sqlite-*
 storage/strategy_params.json
 storage/paper_account.json
+etf_strategy/local_data/

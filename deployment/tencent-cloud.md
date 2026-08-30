@@ -110,8 +110,9 @@ APP_NAME=赤霄 Alpha
 DATABASE_URL=sqlite:////app/data/app.db
 APP_SECRET=请替换为迁移前本地使用的同一个 APP_SECRET
 MARKET_DATA_CACHE_BACKEND=database
-APP_SITE_ADDRESS=:80
-TLS_ADMIN_EMAIL=admin@example.com
+APP_IP_ADDRESS=182.254.227.131
+APP_SITE_ADDRESS=app.chixiaoalpha.cn
+TLS_ADMIN_EMAIL=admin@chixiaoalpha.cn
 ```
 
 非常重要：如果本地数据库里已经保存了 TuShare token，云端必须使用同一个 `APP_SECRET`，否则云端无法解密原 token。当前本地默认值是 `local-dev-change-me-before-cloud-deploy`；如果之前没有改过，云端也先保持一致，等重新配置 TuShare token 后再更换。

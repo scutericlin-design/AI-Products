@@ -3,3 +3,6 @@ __pycache__/
 .env
 storage/*.sqlite
 storage/*.sqlite-*
+etf_strategy/local_data/
+hot_leader_strategy/local_data/
+qgarp_strategy/local_data/

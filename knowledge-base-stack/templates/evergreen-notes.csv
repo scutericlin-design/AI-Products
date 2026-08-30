@@ -1,0 +1,4 @@
+Name,Type,Topic,Status,Confidence,Source URL,Related Research Pack,AI Index,Summary
+NotebookLM 应该作为专题研究室，而不是长期知识库,Principle,Knowledge Base,Stable,High,https://support.google.com/notebooklm/answer/16215270,2026-06 Knowledge Stack - Notion Onyx NotebookLM,true,NotebookLM 适合围绕有限 sources 做消化、问答、音频和学习材料生成；长期结构化沉淀仍应回到 Notion。
+Onyx 更适合做跨源检索层，而不是笔记编辑器,Framework,Knowledge Base,Stable,High,https://docs.onyx.app/admins/connectors/overview,2026-06 Knowledge Stack - Notion Onyx NotebookLM,true,Onyx 的价值在连接 Notion 等多源内容，并提供搜索、聊天和 Agent；Notion 仍保留为内容源头。
+个人知识库的核心不是收藏，而是复用,Insight,Knowledge Base,Draft,Medium,,2026-06 Knowledge Stack - Notion Onyx NotebookLM,true,知识库质量取决于未来能否被搜索、引用、决策和项目复用，而不是资料数量。

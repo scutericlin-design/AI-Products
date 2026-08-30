@@ -1,0 +1,1008 @@
+{"kind":"deck","id":"pr/ikdhhk","name":"Deck"}
+{"kind":"layout","layoutId":"062e9d6a-cb49-474d-8130-81360d110516","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"0ebea137-2b8d-42f9-aebb-c9baffcaf262","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/djyn04","slide":1,"title":"第五讲","textShapes":6}
+{"kind":"shape","id":"sh/90je9cvi","slide":1,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/yd0z6103","slide":1,"bbox":[0,0,360,720]}
+{"kind":"shape","id":"sh/rytsvu9k","slide":1,"bbox":[360,0,10,720]}
+{"kind":"textbox","id":"sh/g7adsji5","slide":1,"text":"第五讲","textPreview":"第五讲","textChars":3,"textLines":1,"bbox":[76,74,220,44]}
+{"kind":"textbox","id":"sh/9s36hcrm","slide":1,"text":"散文阅读","textPreview":"散文阅读","textChars":4,"textLines":1,"bbox":[78,144,250,58]}
+{"kind":"textbox","id":"sh/y1kre1w7","slide":1,"text":"选择标题","textPreview":"选择标题","textChars":4,"textLines":1,"bbox":[430,142,620,72]}
+{"kind":"textbox","id":"sh/rmhk3q5o","slide":1,"text":"原题精讲版","textPreview":"原题精讲版","textChars":5,"textLines":1,"bbox":[435,226,260,40]}
+{"kind":"shape","id":"sh/g3ex0nux","slide":1,"bbox":[438,340,682,150]}
+{"kind":"textbox","id":"sh/5o7qpg3e","slide":1,"text":"包含上传资料中的原文、原题和解析\n围绕标题选择题展开，但保留每篇材料的其他题目讲解\n每篇材料都安排“先判断、后揭示”的播放节奏","textPreview":"包含上传资料中的原文、原题和解析 | 围绕标题选择题展开，但保留每篇材料的其他题目讲解 | 每篇材料都安排“先判断、后揭示”的播放节奏","textChars":63,"textLines":3,"bbox":[474,376,560,92]}
+{"kind":"textbox","id":"sh/5gbq1ory","slide":1,"text":"初三语文 · 散文阅读专题","textPreview":"初三语文 · 散文阅读专题","textChars":13,"textLines":1,"bbox":[438,610,460,30]}
+{"kind":"notes","id":"nt/djyn04","slide":1,"text":"新版课件以原题为核心，适合直接带学生逐篇讲。"}
+{"kind":"slide","id":"sl/nbkc1d","slide":2,"title":"课件使用方式","textShapes":13}
+{"kind":"shape","id":"sh/z61032ls","slide":2,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/orytsvu9","slide":2,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/hcrmhk3q","slide":2,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":2,"text":"课件使用方式","textPreview":"课件使用方式","textChars":6,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":2,"text":"这版课件按原题课堂来走","textPreview":"这版课件按原题课堂来走","textChars":11,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/h0fepkzu","slide":2,"text":"每篇文章都保留原文、题目和解析，方法只在关键处介入。","textPreview":"每篇文章都保留原文、题目和解析，方法只在关键处介入。","textChars":26,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/65wjudg7","slide":2,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/zqtcj6to","slide":2,"bbox":[92,300,232,160]}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":2,"text":"读","textPreview":"读","textChars":1,"textLines":1,"bbox":[116,326,50,44]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":2,"text":"读原文，圈标题相关的对象、线索和结尾句","textPreview":"读原文，圈标题相关的对象、线索和结尾句","textChars":19,"textLines":1,"bbox":[176,324,118,80]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":2,"bbox":[384,300,232,160]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":2,"text":"做","textPreview":"做","textChars":1,"textLines":1,"bbox":[408,326,50,44]}
+{"kind":"textbox","id":"sh/z61032ls","slide":2,"text":"先让学生完成原题，再对照解析修正答案","textPreview":"先让学生完成原题，再对照解析修正答案","textChars":18,"textLines":1,"bbox":[468,324,118,80]}
+{"kind":"shape","id":"sh/al87ed8b","slide":2,"bbox":[676,300,232,160]}
+{"kind":"textbox","id":"sh/hcrmhk3q","slide":2,"text":"拆","textPreview":"拆","textChars":1,"textLines":1,"bbox":[700,326,50,44]}
+{"kind":"textbox","id":"sh/orytsvu9","slide":2,"text":"把标题题解析拆成内容、主题、结构、表达","textPreview":"把标题题解析拆成内容、主题、结构、表达","textChars":19,"textLines":1,"bbox":[760,324,118,80]}
+{"kind":"shape","id":"sh/zed8v6ps","slide":2,"bbox":[968,300,232,160]}
+{"kind":"textbox","id":"sh/6xkf6dcb","slide":2,"text":"写","textPreview":"写","textChars":1,"textLines":1,"bbox":[992,326,50,44]}
+{"kind":"textbox","id":"sh/e1w7mp0b","slide":2,"text":"最后回到答题模板，形成可得分表达","textPreview":"最后回到答题模板，形成可得分表达","textChars":16,"textLines":1,"bbox":[1052,324,118,80]}
+{"kind":"textbox","id":"sh/7mp0bi9s","slide":2,"text":"播放策略：原题页停顿，解析页揭示，归纳页收束。","textPreview":"播放策略：原题页停顿，解析页揭示，归纳页收束。","textChars":23,"textLines":1,"bbox":[202,566,880,40]}
+{"kind":"notes","id":"nt/nbkc1d","slide":2,"text":"告诉学生：每篇不只是看答案，而是学习答案怎么来的。"}
+{"kind":"slide","id":"sl/9q2o6k","slide":3,"title":"标题题通用框架","textShapes":6}
+{"kind":"shape","id":"sh/4nap4r65","slide":3,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/b2hwfyxo","slide":3,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":3,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/twra5gbq","slide":3,"text":"标题题通用框架","textPreview":"标题题通用框架","textChars":7,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/4byhgn29","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/bq1oryts","slide":3,"text":"标题 + 理由：理由要回到原文","textPreview":"标题 + 理由：理由要回到原文","textChars":15,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/m58z25kb","slide":3,"text":"公式来自原资料，但这次每一步都用原题验证。","textPreview":"公式来自原资料，但这次每一步都用原题验证。","textChars":21,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/tsvu9kni","slide":3,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/47y1kre1","slide":3,"bbox":[108,270,1064,110]}
+{"kind":"textbox","id":"sh/adsji5sn","slide":3,"text":"公式：标题 + 理由（标题含义 + 标题作用）","textPreview":"公式：标题 + 理由（标题含义 + 标题作用）","textChars":23,"textLines":1,"bbox":[154,304,960,40]}
+{"kind":"shape","id":"sh/3ylc7u54","slide":3,"bbox":[108,430,1064,138]}
+{"kind":"textbox","id":"sh/sji5snel","slide":3,"text":"选择《XX》。阅读文章可知，文章围绕……展开叙事，以《XX》为题可以表现……内容，具有……作用；相比《YY》，它更……。","textPreview":"选择《XX》。阅读文章可知，文章围绕……展开叙事，以《XX》为题可以表现……内容，具有……作用；相比《YY》，它更……。","textChars":60,"textLines":1,"bbox":[150,462,980,68]}
+{"kind":"notes","id":"nt/9q2o6k","slide":3,"text":"提示：模板不是直接背，要把省略号换成原文里的证据。"}
+{"kind":"slide","id":"sl/ujibfg","slide":4,"title":"材料一：父亲与乒乓","textShapes":5}
+{"kind":"shape","id":"sh/r2p8nqxs","slide":4,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/kjm1cfa9","slide":4,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/94fu18jq","slide":4,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/2p8nqxs7","slide":4,"text":"材料一：父亲与乒乓","textPreview":"材料一：父亲与乒乓","textChars":9,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/ra5gbq1o","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/gvy90je9","slide":4,"text":"1. （2025秋•杨浦区期末）阅读下文，完成下列各题。","textPreview":"1. （2025秋•杨浦区期末）阅读下文，完成下列各题。","textChars":28,"textLines":1,"bbox":[76,130,700,34]}
+{"kind":"textbox","id":"sh/9gr2p8nq","slide":4,"text":"《父亲的乒乓》为什么比《打乒乓的父亲》更能统领全文","textPreview":"《父亲的乒乓》为什么比《打乒乓的父亲》更能统领全文","textChars":25,"textLines":1,"bbox":[76,188,940,78]}
+{"kind":"shape","id":"sh/2t83itgf","slide":4,"bbox":[104,350,1010,150]}
+{"kind":"textbox","id":"sh/re1w7mp0","slide":4,"text":"先读原文：圈标题关键词可能对应的内容\n再做原题：题目不是孤立训练，解析要回到文章\n最后精讲标题题：比较两个标题的内容范围、主题深度和表达效果","textPreview":"先读原文：圈标题关键词可能对应的内容 | 再做原题：题目不是孤立训练，解析要回到文章 | 最后精讲标题题：比较两个标题的内容范围、主题深度和表达效果","textChars":70,"textLines":3,"bbox":[146,382,920,88]}
+{"kind":"notes","id":"nt/ujibfg","slide":4,"text":"进入一篇材料前，先交代这一篇训练的主问题。"}
+{"kind":"slide","id":"sl/u0cwd9","slide":5,"title":"材料一：父亲与乒乓 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/qxs72x4n","slide":5,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/xobm58z2","slide":5,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/83itgfml","slide":5,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/fu18jqh0","slide":5,"text":"材料一：父亲与乒乓 · 原文","textPreview":"材料一：父亲与乒乓 · 原文","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/m94fu18j","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/x0nuxc3y","slide":5,"text":"原文阅读 1/2","textPreview":"原文阅读 1/2","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/4fu18jqh","slide":5,"text":"先完整读材料，再回到题目。读的时候圈标题关键词、反复对象和结尾句。","textPreview":"先完整读材料，再回到题目。读的时候圈标题关键词、反复对象和结尾句。","textChars":33,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/f6dcbulw","slide":5,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/mlkjm1cf","slide":5,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/gbq1oryt","slide":5,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/5wjudg7a","slide":5,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/y90je9cv","slide":5,"text":"____________\n\n①想念父亲时，脑海里浮现的多半是他打乒乓时的灵活身姿和开心笑容。微闭眼，就看到了那遥远的日子。\n\n②镜头定格在上世纪六十年代，父亲手握球拍，如脱兔般敏捷挥拍。侧旋、下旋、上旋，力量很足且落点多变。左挡右攻间，他一眼看穿对手的弱侧，摆出狠抽的架势，却在击打的一刹那，轻轻落板，球无声滑落到对手未防备的一侧。顿时，掌声如雷。这一战，父亲赢得了市卫生系统职工单打冠军。我坐在看台望向父亲，他那时多年轻，戴一副黑框眼镜，意气风发。","textPreview":"____________ |  | ①想念父亲时，脑海里浮现的多半是他打乒乓时的灵活身姿和开心笑容。微闭眼，就看到了那遥远的日子。 |  | ②镜头定格在上世纪六十年代，父亲手握球拍，如脱兔般敏捷挥拍。侧旋、下旋、上旋，力量很足且落点多变。左挡右攻间，他一眼看穿对手的弱侧，...","textChars":225,"textLines":5,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/nuxc3ylc","slide":5,"text":"③受父亲影响，我也似有打球天赋。两年级加入校队直接打主力，打败外校选手是常事。一次区级小学大赛，我突然生病，却坚持胜利完赛，老师号召全校队同学以我为标杆。但即便如此，仍每每被父亲打得稀里哗啦。隔着球网，父亲总激动地对我招手：“打我呀，手腕抖动，手指放松，用力！”打完球，他爱拍着我的头说：“你还小，总有一天会赢我的。”\n\n④初中毕业那年，父亲遭遇人生困厄，打球的手也骨折了。我被分配到市郊一家几千人的工厂当锻工。整日里情绪阴郁，也不碰乒乓球桌了。大我4岁的师傅姓林，是全厂乒乓冠军。那天，他很生气地质问我：“为什么进厂几年，一直保密自己会打乒乓球？”我道了原委，师傅林只说，打吧，我们车间还缺一个争夺冠军的好手。不出所料，冠军手到擒来。我加入了厂乒乓球队，渐渐感到自己有了向上和积极的情绪——真要感激师傅林。\n\n⑤过了好多年，父亲走过了人生的坎坷。一日闲聊，我说师傅林是一座不可逾越的山。竟引来父亲疑惑：“你这师傅那么年轻，只用防守，能独步天下？”“你能打赢他？”我说。那年，父亲已远离乒乓十年，人到五十，廉颇老矣。孰料父亲反应断然：“打他，我行。”\n\n⑥那天，约在一个小乒乓馆，观者一圈人。","textPreview":"③受父亲影响，我也似有打球天赋。两年级加入校队直接打主力，打败外校选手是常事。一次区级小学大赛，我突然生病，却坚持胜利完赛，老师号召全校队同学以我为标杆。但即便如此，仍每每被父亲打得稀里哗啦。隔着球网，父亲总激动地对我招手：“打我呀，手腕抖动，手指放松，用力！”打完球，他爱...","textChars":496,"textLines":7,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/u0cwd9","slide":5,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/i8z95m","slide":6,"title":"材料一：父亲与乒乓 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/4r65wjud","slide":6,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/f6dcbulw","slide":6,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/mlkjm1cf","slide":6,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/xkf6dcbu","slide":6,"text":"材料一：父亲与乒乓 · 原文","textPreview":"材料一：父亲与乒乓 · 原文","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/4zidonyd","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/fepkzupw","slide":6,"text":"原文阅读 2/2","textPreview":"原文阅读 2/2","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/mtwra5gb","slide":6,"text":"继续读原文，关注材料如何推进内容和主题。","textPreview":"继续读原文，关注材料如何推进内容和主题。","textChars":20,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/xobm58z2","slide":6,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/83itgfml","slide":6,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/y90je9cv","slide":6,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/nuxc3ylc","slide":6,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/gbq1oryt","slide":6,"text":"⑦师傅林见到父亲态度恭敬：“前辈，恕有不敬，学习了。”“玩玩啊。”父亲神色轻松。开局，师傅林却不客气，主防，趁父亲不备，几板刁钻反击，奏效。第一局父亲败。第二局，师傅林却成了吊线木偶，跟着球来回奔走，局势倒转。决战局，前半段比分胶着。后半程，一个凌厉的正手球，师傅林救起，身体还未回位，下一板快球又扑来，防守体系瞬间溃破，败了。师傅林下场，鞠躬，“老前辈，高手！”“不敢当！”父亲笑着说。\n\n⑧师傅林也输，我怎么赢？我细细琢磨父亲的打法，父亲的球有魔术师的味道，有不按常理出牌的狡黠。我想学。\n\n⑨岁月如流。父亲83岁了。我也早已离开了工厂，成了一名记者。\n\n⑩那天，在父亲的一再要求下，我们带他去参观世博会的各国展馆。展馆的工作人员都视他为贵宾——如此高龄者来参观，绝少。白天父亲兴致勃勃，傍晚到家，对我说：“带你去个地方练练球，认识我几个朋友。”","textPreview":"⑦师傅林见到父亲态度恭敬：“前辈，恕有不敬，学习了。”“玩玩啊。”父亲神色轻松。开局，师傅林却不客气，主防，趁父亲不备，几板刁钻反击，奏效。第一局父亲败。第二局，师傅林却成了吊线木偶，跟着球来回奔走，局势倒转。决战局，前半段比分胶着。后半程，一个凌厉的正手球，师傅林救起，身...","textChars":375,"textLines":7,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/5wjudg7a","slide":6,"text":"⑪在小区乒乓房，见到一群挥汗如雨的打球者，其中有一个长年拜父亲为师的“球痴”小周。小周小父亲四十多岁。“你家老爷子，十几年前是俱乐部球王，现在是总教头。”小周崇拜父亲，“七八年前，我还没法跟老爷子比赛；直到三年前，我总算可以战而胜之了。”\n\n⑫父亲笑着对小周说：“今天我儿子来了，你敢和他对战一场吗？”战了。毫无悬念，我赢了。\n\n⑬走在小区的月色里，恍惚间，我又看到了那个戴黑框眼镜的父亲立在球桌边，一记猛抽迎面而来，他笃定地轻移脚步，一板稳健的搓球化解。几个回合后，他突然一个闪击，球化作一道白光，直扑对方空当。“嗒”的一声撞击台面后飞出很远，声音在寂静的场馆里格外清晰。旋即淹没在“好球，好球！”的声浪中。回过神来，我看到父亲冲着我微笑。\n\n⑭回到家，我问父亲：“我这么轻而易举赢小周，是不是也算赢了你？”\n\n⑮父亲答非所问：“你记牢，打乒乓球，是很好的事。”\n\n⑯母亲说，她现在还一直欣赏父亲的一句话：做好人，打坏球。“做好人，打坏球”，蛮哲理的，对吧！","textPreview":"⑪在小区乒乓房，见到一群挥汗如雨的打球者，其中有一个长年拜父亲为师的“球痴”小周。小周小父亲四十多岁。“你家老爷子，十几年前是俱乐部球王，现在是总教头。”小周崇拜父亲，“七八年前，我还没法跟老爷子比赛；直到三年前，我总算可以战而胜之了。” |  | ⑫父亲笑着对小周说：“今...","textChars":430,"textLines":11,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/i8z95m","slide":6,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/zx8zwa","slide":7,"title":"材料一：父亲与乒乓 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/a5gbq1or","slide":7,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/lszqtcj6","slide":7,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/s72x4nap","slide":7,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/3ylc7u54","slide":7,"text":"材料一：父亲与乒乓 · 原题演练","textPreview":"材料一：父亲与乒乓 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/adsji5sn","slide":7,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/h4byhgn2","slide":7,"text":"第 1 题：先思考","textPreview":"第 1 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/sji5snel","slide":7,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/za1gvy90","slide":7,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/ap4r65wj","slide":7,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/0je9cvix","slide":7,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/t47y1kre","slide":7,"text":"（1）结合全文内容，为文章选择合适的标题，并说明理由。（5分）\nA打乒乓的父亲\nB父亲的乒乓","textPreview":"（1）结合全文内容，为文章选择合适的标题，并说明理由。（5分） | A打乒乓的父亲 | B父亲的乒乓","textChars":46,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/idonyd0z","slide":7,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/byhgn29g","slide":7,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/zx8zwa","slide":7,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/km8lva","slide":8,"title":"材料一：父亲与乒乓 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/xczed8v6","slide":8,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/qpg3ex0n","slide":8,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/fa9w3m94","slide":8,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/8jqh0fep","slide":8,"text":"材料一：父亲与乒乓 · 原题演练","textPreview":"材料一：父亲与乒乓 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/x4nap4r6","slide":8,"text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/qd4vmtwr","slide":8,"text":"第 1 题：答案解析 1/2","textPreview":"第 1 题：答案解析 1/2","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/fyxobm58","slide":8,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/87ed8bat","slide":8,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/xs72x4na","slide":8,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/xkf6dcbu","slide":8,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/4zidonyd","slide":8,"text":"（1）结合全文内容，为文章选择合适的标题，并说明理由。（5分）\nA打乒乓的父亲\nB父亲的乒乓","textPreview":"（1）结合全文内容，为文章选择合适的标题，并说明理由。（5分） | A打乒乓的父亲 | B父亲的乒乓","textChars":46,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/fepkzupw","slide":8,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/mtwra5gb","slide":8,"text":"答案与解析\n选择B：文章叙写了父亲从青年、中年到老年和“我”从少年到中年的人生经历。“乒乓”是贯穿全文的线索,串起了两代人的人生,也是父子间情感的纽带。父亲借“乒乓”培养我敢于拼搏、睿智豁达的人生态度。“父亲的乒乓”饱含“我”对于父亲的钦佩和感激之情。如以“打乒乓的父亲”为题,文中写“我”的成长经历的文字内容就显得累赘。（5分）","textPreview":"答案与解析 | 选择B：文章叙写了父亲从青年、中年到老年和“我”从少年到中年的人生经历。“乒乓”是贯穿全文的线索,串起了两代人的人生,也是父子间情感的纽带。父亲借“乒乓”培养我敢于拼搏、睿智豁达的人生态度。“父亲的乒乓”饱含“我”对于父亲的钦佩和感激之情。如以“打乒乓的父亲...","textChars":165,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/km8lva","slide":8,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/gy1v9v","slide":9,"title":"材料一：父亲与乒乓 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/a5gbq1or","slide":9,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/lszqtcj6","slide":9,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/s72x4nap","slide":9,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/3ylc7u54","slide":9,"text":"材料一：父亲与乒乓 · 原题演练","textPreview":"材料一：父亲与乒乓 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/adsji5sn","slide":9,"text":"09","textPreview":"09","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/h4byhgn2","slide":9,"text":"第 1 题：答案解析 2/2","textPreview":"第 1 题：答案解析 2/2","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/sji5snel","slide":9,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/za1gvy90","slide":9,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/ap4r65wj","slide":9,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/0je9cvix","slide":9,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/t47y1kre","slide":9,"text":"（1）结合全文内容，为文章选择合适的标题，并说明理由。（5分）\nA打乒乓的父亲\nB父亲的乒乓","textPreview":"（1）结合全文内容，为文章选择合适的标题，并说明理由。（5分） | A打乒乓的父亲 | B父亲的乒乓","textChars":46,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/idonyd0z","slide":9,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/byhgn29g","slide":9,"text":"答案与解析\n选择A：文章围绕打乒乓球,叙写了父亲从青年到老年的人生经历。从打球中父亲领到人生真谛,以积极豁达的态度来面对人生困厄。父亲也把这种生活态度通过“打乒乓”传递给“我”。“打乒乓的父亲”,题目质朴,表达了“我”对他的钦佩、感激之情。（3分）","textPreview":"答案与解析 | 选择A：文章围绕打乒乓球,叙写了父亲从青年到老年的人生经历。从打球中父亲领到人生真谛,以积极豁达的态度来面对人生困厄。父亲也把这种生活态度通过“打乒乓”传递给“我”。“打乒乓的父亲”,题目质朴,表达了“我”对他的钦佩、感激之情。（3分）","textChars":124,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/gy1v9v","slide":9,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/eq27co","slide":10,"title":"材料一：父亲与乒乓 · 标题题","textShapes":9}
+{"kind":"shape","id":"sh/fyxobm58","slide":10,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/8jqh0fep","slide":10,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/x4nap4r6","slide":10,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/qpg3ex0n","slide":10,"text":"材料一：父亲与乒乓 · 标题题","textPreview":"材料一：父亲与乒乓 · 标题题","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/fa9w3m94","slide":10,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/8v6psfil","slide":10,"text":"标题题先判断，不急着看解析","textPreview":"标题题先判断，不急着看解析","textChars":13,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/xczed8v6","slide":10,"text":"请学生先选，再说出一个文本依据。","textPreview":"请学生先选，再说出一个文本依据。","textChars":16,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/qtcj6tov","slide":10,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/je9cvixc","slide":10,"bbox":[132,304,470,96]}
+{"kind":"textbox","id":"sh/nih4byhg","slide":10,"text":"A","textPreview":"A","textChars":1,"textLines":1,"bbox":[156,335,64,34]}
+{"kind":"textbox","id":"sh/yxobm58z","slide":10,"text":"打乒乓的父亲","textPreview":"打乒乓的父亲","textChars":6,"textLines":1,"bbox":[242,326,320,44]}
+{"kind":"shape","id":"sh/5o7qpg3e","slide":10,"bbox":[662,304,470,96]}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":10,"text":"B","textPreview":"B","textChars":1,"textLines":1,"bbox":[686,335,64,34]}
+{"kind":"textbox","id":"sh/r65wjudg","slide":10,"text":"父亲的乒乓","textPreview":"父亲的乒乓","textChars":5,"textLines":1,"bbox":[772,326,320,44]}
+{"kind":"shape","id":"sh/ylc7u54z","slide":10,"bbox":[206,498,868,84]}
+{"kind":"textbox","id":"sh/9cvixcze","slide":10,"text":"先选：哪个标题更能罩住父亲、我和两代人的情感？","textPreview":"先选：哪个标题更能罩住父亲、我和两代人的情感？","textChars":23,"textLines":1,"bbox":[248,522,790,34]}
+{"kind":"notes","id":"nt/eq27co","slide":10,"text":"播放到这里先停顿，不揭示答案；让学生用四维标准先判断。"}
+{"kind":"slide","id":"sl/ib2yk2","slide":11,"title":"材料一：父亲与乒乓 · 标题题解析","textShapes":13}
+{"kind":"shape","id":"sh/zupwb2hw","slide":11,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/sfil0rqd","slide":11,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":11,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/al87ed8b","slide":11,"text":"材料一：父亲与乒乓 · 标题题解析","textPreview":"材料一：父亲与乒乓 · 标题题解析","textChars":17,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/z61032ls","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/orytsvu9","slide":11,"text":"解析：B 的优势在“线索”和“传承”","textPreview":"解析：B 的优势在“线索”和“传承”","textChars":18,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/hcrmhk3q","slide":11,"text":"A 能概括父亲，B 更能概括父子两代人的人生经历。","textPreview":"A 能概括父亲，B 更能概括父子两代人的人生经历。","textChars":25,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/6xkf6dcb","slide":11,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/zed8v6ps","slide":11,"bbox":[92,274,480,104]}
+{"kind":"textbox","id":"sh/n29gr2p8","slide":11,"text":"内容","textPreview":"内容","textChars":2,"textLines":1,"bbox":[116,292,110,30]}
+{"kind":"textbox","id":"sh/yhgn29gr","slide":11,"text":"父亲从青年到老年，“我”从少年到中年，都围绕乒乓展开。","textPreview":"父亲从青年到老年，“我”从少年到中年，都围绕乒乓展开。","textChars":27,"textLines":1,"bbox":[230,294,300,52]}
+{"kind":"shape","id":"sh/58z25kb6","slide":11,"bbox":[640,274,480,104]}
+{"kind":"textbox","id":"sh/gn29gr2p","slide":11,"text":"线索","textPreview":"线索","textChars":2,"textLines":1,"bbox":[664,292,110,30]}
+{"kind":"textbox","id":"sh/nuxc3ylc","slide":11,"text":"“乒乓”贯穿全文，串起父亲、我、师傅林和小周。","textPreview":"“乒乓”贯穿全文，串起父亲、我、师傅林和小周。","textChars":23,"textLines":1,"bbox":[778,294,300,52]}
+{"kind":"shape","id":"sh/y90je9cv","slide":11,"bbox":[92,420,480,104]}
+{"kind":"textbox","id":"sh/5wjudg7a","slide":11,"text":"主题","textPreview":"主题","textChars":2,"textLines":1,"bbox":[116,438,110,30]}
+{"kind":"textbox","id":"sh/gbq1oryt","slide":11,"text":"父亲借乒乓传递敢拼搏、睿智豁达的人生态度。","textPreview":"父亲借乒乓传递敢拼搏、睿智豁达的人生态度。","textChars":21,"textLines":1,"bbox":[230,440,300,52]}
+{"kind":"shape","id":"sh/nqxs72x4","slide":11,"bbox":[640,420,480,104]}
+{"kind":"textbox","id":"sh/u54zidon","slide":11,"text":"比较","textPreview":"比较","textChars":2,"textLines":1,"bbox":[664,438,110,30]}
+{"kind":"textbox","id":"sh/29gr2p8n","slide":11,"text":"《打乒乓的父亲》范围偏窄，容易让“我”的成长显得多余。","textPreview":"《打乒乓的父亲》范围偏窄，容易让“我”的成长显得多余。","textChars":27,"textLines":1,"bbox":[778,440,300,52]}
+{"kind":"textbox","id":"sh/vu9knih4","slide":11,"text":"这题要告诉学生：不是 A 完全错，而是 B 的覆盖面和主题更完整。","textPreview":"这题要告诉学生：不是 A 完全错，而是 B 的覆盖面和主题更完整。","textChars":33,"textLines":1,"bbox":[142,594,996,38]}
+{"kind":"notes","id":"nt/ib2yk2","slide":11,"text":"解析页：把原题答案拆成内容、主题、结构、表达四类。"}
+{"kind":"slide","id":"sl/v1d2x5","slide":12,"title":"材料二：千年古村","textShapes":5}
+{"kind":"shape","id":"sh/6hcrmhk3","slide":12,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/d8v6psfi","slide":12,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/onyd0z61","slide":12,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/vahoza1g","slide":12,"text":"材料二：千年古村","textPreview":"材料二：千年古村","textChars":8,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/6tovahoz","slide":12,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/dg7adsji","slide":12,"text":"2. （2025秋•天河区期末）阅读回答问题。","textPreview":"2. （2025秋•天河区期末）阅读回答问题。","textChars":23,"textLines":1,"bbox":[76,130,700,34]}
+{"kind":"textbox","id":"sh/ovahoza1","slide":12,"text":"标题要同时罩住古村遗存、乡风工艺和焕新发展","textPreview":"标题要同时罩住古村遗存、乡风工艺和焕新发展","textChars":21,"textLines":1,"bbox":[76,188,940,78]}
+{"kind":"shape","id":"sh/vmtwra5g","slide":12,"bbox":[104,350,1010,150]}
+{"kind":"textbox","id":"sh/61032lsz","slide":12,"text":"先读原文：圈标题关键词可能对应的内容\n再做原题：题目不是孤立训练，解析要回到文章\n最后精讲标题题：比较两个标题的内容范围、主题深度和表达效果","textPreview":"先读原文：圈标题关键词可能对应的内容 | 再做原题：题目不是孤立训练，解析要回到文章 | 最后精讲标题题：比较两个标题的内容范围、主题深度和表达效果","textChars":70,"textLines":3,"bbox":[146,382,920,88]}
+{"kind":"notes","id":"nt/v1d2x5","slide":12,"text":"进入一篇材料前，先交代这一篇训练的主问题。"}
+{"kind":"slide","id":"sl/rbo6yw","slide":13,"title":"材料二：千年古村 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/lc7u54zi","slide":13,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/eloj2t83","slide":13,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/36hcrmhk","slide":13,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/wfyxobm5","slide":13,"text":"材料二：千年古村 · 原文","textPreview":"材料二：千年古村 · 原文","textChars":13,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/l0rqd4vm","slide":13,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/ed8bat47","slide":13,"text":"原文阅读 1/2","textPreview":"原文阅读 1/2","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/7u54zido","slide":13,"text":"先完整读材料，再回到题目。读的时候圈标题关键词、反复对象和结尾句。","textPreview":"先完整读材料，再回到题目。读的时候圈标题关键词、反复对象和结尾句。","textChars":33,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/w7mp0bi9","slide":13,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/psfil0rq","slide":13,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/tsvu9kni","slide":13,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/47y1kre1","slide":13,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/bm58z25k","slide":13,"text":"__________________\n\n李现新\n\n到古村方峪采风，正赶上芒种时节最热的日子。一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。\n\n一位叫吴斌的小伙子如铁钉般立在太阳下迎接我们。他是土生土长的方峪人，对村里的情况了如指掌，他一边带领我们参观，一边给我们介绍着古村的方方面面。\n\n这是一处典型的鲁西山区的明清时期古村落，整村保存完整，民居保留完好，而且目前还有村民在村中居住。村子依傍着石山，村中有石街石巷、石院石墙、石碾石磨、石影壁石戏台，可以说是触目皆石、无一不石。凭此特色，方峪村跻身“国家级传统村落”“山东省文物保护单位”“山东省乡村记忆工程文化遗产”行列。","textPreview":"__________________ |  | 李现新 |  | 到古村方峪采风，正赶上芒种时节最热的日子。一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。 |  | 一位叫吴斌的小伙子如铁钉般立在太阳下迎接我们。他是土生土长的方峪人，对村里的情况了如指掌，...","textChars":296,"textLines":9,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/m1cfa9w3","slide":13,"text":"在村史馆，馆中央陈列着镇馆之宝——一件八棱经幢(chuáng‌)。幢体的四角上雕有四位侍女的形象，神态安然，衣纹流畅，透着一股宋式的随性。吴斌说，方峪村石雕很多，这是最古老最精美的一件，见证了方峪的千年历史。\n\n出了村史馆，从村口的一截石墙里挺立而出的一株老榆树，诉说着村中光阴的故事。见此状，我的耳边不禁萦绕起了那首《老榆树》：“有一个小小村庄，那是我梦绕魂牵的地方，亲手种下的那棵老榆树，树叶青了又变黄……”这村口的一墙一树，是方峪古村的乡愁序曲，它或许曾无数次出现于漂泊在外的方峪人的梦中。\n\n越向街巷深处走，我们便入“戏”越深。在街巷和院落中穿行时，我们不时地被一些建筑身上的小细节所吸引。比如，墙角往往会做成上直下圆的样式，在拐弯处有意将墙角抹去，以方便人们出行，这便是俗称的“拐弯抹角”。所谓“拐弯抹角”，其实就是互谦互让、邻里和睦等古老乡风的生动体现。另外，村中许多墙上还嵌有各式各样的拴牛石。吴斌告诉我们，小小的拴牛石是家庭财富的体现，类似于现在的家用停车位。","textPreview":"在村史馆，馆中央陈列着镇馆之宝——一件八棱经幢(chuáng‌)。幢体的四角上雕有四位侍女的形象，神态安然，衣纹流畅，透着一股宋式的随性。吴斌说，方峪村石雕很多，这是最古老最精美的一件，见证了方峪的千年历史。 |  | 出了村史馆，从村口的一截石墙里挺立而出的一株老榆树，诉...","textChars":438,"textLines":5,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/rbo6yw","slide":13,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/pngker","slide":14,"title":"材料二：千年古村 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/n29gr2p8","slide":14,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/gn29gr2p","slide":14,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/58z25kb6","slide":14,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/y90je9cv","slide":14,"text":"材料二：千年古村 · 原文","textPreview":"材料二：千年古村 · 原文","textChars":13,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/nuxc3ylc","slide":14,"text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/gbq1oryt","slide":14,"text":"原文阅读 2/2","textPreview":"原文阅读 2/2","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/5wjudg7a","slide":14,"text":"继续读原文，关注材料如何推进内容和主题。","textPreview":"继续读原文，关注材料如何推进内容和主题。","textChars":20,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/u54zidon","slide":14,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/nqxs72x4","slide":14,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/z25kb6xk","slide":14,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/6hcrmhk3","slide":14,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/d8v6psfi","slide":14,"text":"方峪的古民居是鲁西民居的“活标本”，用一句话概括它的特色，那就是“圆形屋，窄门方窗，一石到顶”。当地人称方峪古民居的房顶都为漫屋顶。漫屋顶的制作工序繁杂，需要多人合作才能完成，当地人将此过程称为“锤屋”。“锤屋”一般都选在春秋两季的农闲时节。主人家提前谋划好，到时一吆喝，全村壮劳力齐上阵，通过“地面”“二架”“三架”，将材料依次送上屋顶；屋顶上的人们则用铁锨拍打，用木棒捶击，形成20厘米左右厚度的光滑的灰浆层。整个过程一气呵成，如果中途停工，灰浆便不能凝固成一体，影响工程质量。所有的劳动都是自发和无偿的，主人家仅仅根据自家条件管一顿饭而已。“锤屋”，夯实的不单单是漫屋顶，更是一种守望相助、团结协作的精神。吴斌告诉我们，漫屋顶在这一带很实用，一来便于雨季排水冬天保温，二来因山区五谷杂粮比较多，需要较大面积的晒场，漫屋顶就是很好的晒场，方便打理，且安全防盗。","textPreview":"方峪的古民居是鲁西民居的“活标本”，用一句话概括它的特色，那就是“圆形屋，窄门方窗，一石到顶”。当地人称方峪古民居的房顶都为漫屋顶。漫屋顶的制作工序繁杂，需要多人合作才能完成，当地人将此过程称为“锤屋”。“锤屋”一般都选在春秋两季的农闲时节。主人家提前谋划好，到时一吆喝，全...","textChars":382,"textLines":1,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/onyd0z61","slide":14,"text":"村里目前正在利用村民的部分闲置院落开发民宿。吴斌引导我们参观了几处在建的小院。现在，许多城里人都梦想有自己的一方农家小院，如果能在“绿树村边合，青山郭外斜”的方峪村拥有这样一处院落，和朋友们“开轩面场圃，把酒话桑麻”，何尝不是人生一大幸事？\n\n谈到村庄今后的发展时，吴斌说，现在方峪响亮的名声已经有了，下一步就是想办法盘活村中资产，打造个性品牌，发展乡村休闲文旅产业，让老百姓得到实惠。\n\n目前，村里投资入股了蛋鸡养殖，还流转了200多亩土地种植丹参等中草药。今年，村里又举办了主题为“一个千年古村的苏醒”的系列文化活动，旨在全方位展示古村的文化魅力与原生态之美。系列活动的内容有“方峪印象”石雕展、“相约方峪村”艺术节、“千年方峪村”保护与发展论坛、“方峪金秋”丰收摄影节等。春节期间的开幕式举办得也很成功，内容涵盖了歌曲、舞蹈、朗诵、器乐、戏曲等多种艺术形式，为广大百姓献上了一场展现乡村独特文化魅力的视听盛宴。方峪，这个千年古村正从锣鼓、鞭炮和歌舞声中慢慢醒来，焕彩重生。\n\n（有删改）","textPreview":"村里目前正在利用村民的部分闲置院落开发民宿。吴斌引导我们参观了几处在建的小院。现在，许多城里人都梦想有自己的一方农家小院，如果能在“绿树村边合，青山郭外斜”的方峪村拥有这样一处院落，和朋友们“开轩面场圃，把酒话桑麻”，何尝不是人生一大幸事？ |  | 谈到村庄今后的发展时，...","textChars":446,"textLines":7,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/pngker","slide":14,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/gg3cd5","slide":15,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/rmhk3q5o","slide":15,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/g7adsji5","slide":15,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/9s36hcrm","slide":15,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/yd0z6103","slide":15,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/rytsvu9k","slide":15,"text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/gfmlkjm1","slide":15,"text":"第 1 题：先思考","textPreview":"第 1 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":15,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/ylc7u54z","slide":15,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/r65wjudg","slide":15,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/vahoza1g","slide":15,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/6tovahoz","slide":15,"text":"（1）下列对文章的理解与分析，不正确的一项是（    ）（3分）\nA.方峪村触目皆石、无一不石，村史馆中的八棱经幢石雕见证了方峪的千年历史。\nB.“拐弯抹角”的建筑细节，体现了古村蕴含的互谅互助、邻里和睦的古老乡风。\nC.文末系列文化活动表明，方峪古村的“苏醒”不仅是物质保存，更是文化焕新。\nD.文章记录了“我”在方峪古村的采风见闻，重点介绍了其精彩多样的文化活动。","textPreview":"（1）下列对文章的理解与分析，不正确的一项是（    ）（3分） | A.方峪村触目皆石、无一不石，村史馆中的八棱经幢石雕见证了方峪的千年历史。 | B.“拐弯抹角”的建筑细节，体现了古村蕴含的互谅互助、邻里和睦的古老乡风。 | C.文末系列文化活动表明，方峪古村的“苏醒”...","textChars":184,"textLines":5,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/dg7adsji","slide":15,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/ovahoza1","slide":15,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/gg3cd5","slide":15,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/avnzrb","slide":16,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/7mp0bi9s","slide":16,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/w7mp0bi9","slide":16,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/psfil0rq","slide":16,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/epkzupwb","slide":16,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":16,"text":"16","textPreview":"16","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/wval87ed","slide":16,"text":"第 1 题：答案解析 1/1","textPreview":"第 1 题：答案解析 1/1","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/pg3ex0nu","slide":16,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/eloj2t83","slide":16,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/36hcrmhk","slide":16,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/fil0rqd4","slide":16,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/qxs72x4n","slide":16,"text":"（1）下列对文章的理解与分析，不正确的一项是（    ）（3分）\nA.方峪村触目皆石、无一不石，村史馆中的八棱经幢石雕见证了方峪的千年历史。\nB.“拐弯抹角”的建筑细节，体现了古村蕴含的互谅互助、邻里和睦的古老乡风。\nC.文末系列文化活动表明，方峪古村的“苏醒”不仅是物质保存，更是文化焕新。\nD.文章记录了“我”在方峪古村的采风见闻，重点介绍了其精彩多样的文化活动。","textPreview":"（1）下列对文章的理解与分析，不正确的一项是（    ）（3分） | A.方峪村触目皆石、无一不石，村史馆中的八棱经幢石雕见证了方峪的千年历史。 | B.“拐弯抹角”的建筑细节，体现了古村蕴含的互谅互助、邻里和睦的古老乡风。 | C.文末系列文化活动表明，方峪古村的“苏醒”...","textChars":184,"textLines":5,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/xobm58z2","slide":16,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/83itgfml","slide":16,"text":"答案与解析\n答案：D\n\n【解析】D“重点介绍了其精彩多样的文化活动”有误。","textPreview":"答案与解析 | 答案：D |  | 【解析】D“重点介绍了其精彩多样的文化活动”有误。","textChars":37,"textLines":4,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/avnzrb","slide":16,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/i8ppsg","slide":17,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/7ed8bat4","slide":17,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/0z61032l","slide":17,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/pkzupwb2","slide":17,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/ih4byhgn","slide":17,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/72x4nap4","slide":17,"text":"17","textPreview":"17","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/0nuxc3yl","slide":17,"text":"第 2 题：先思考","textPreview":"第 2 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/p8nqxs72","slide":17,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/ed8v6psf","slide":17,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":17,"text":"第2题","textPreview":"第2题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/rmhk3q5o","slide":17,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/y1kre1w7","slide":17,"text":"（2）请按照括号中的提示，结合上下文赏析文中画线句的表达效果。（4分）\n①一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。（从感官的角度）\n②从村口的一截石墙里挺立而出的一株老榆树，诉说着村中光阴的故事。（从修辞手法的角度）","textPreview":"（2）请按照括号中的提示，结合上下文赏析文中画线句的表达效果。（4分） | ①一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。（从感官的角度） | ②从村口的一截石墙里挺立而出的一株老榆树，诉说着村中光阴的故事。（从修辞手法的角度）","textChars":120,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/9s36hcrm","slide":17,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/g7adsji5","slide":17,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/i8ppsg","slide":17,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/tpkg4r","slide":18,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/qh0fepkz","slide":18,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/18jqh0fe","slide":18,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/8nqxs72x","slide":18,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/jqh0fepk","slide":18,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/q5o7qpg3","slide":18,"text":"18","textPreview":"18","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/1w7mp0bi","slide":18,"text":"第 2 题：答案解析 1/2","textPreview":"第 2 题：答案解析 1/2","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/8bat47y1","slide":18,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/ji5snelo","slide":18,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/uxc3ylc7","slide":18,"text":"第2题","textPreview":"第2题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/gn29gr2p","slide":18,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/58z25kb6","slide":18,"text":"（2）请按照括号中的提示，结合上下文赏析文中画线句的表达效果。（4分）\n①一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。（从感官的角度）\n②从村口的一截石墙里挺立而出的一株老榆树，诉说着村中光阴的故事。（从修辞手法的角度）","textPreview":"（2）请按照括号中的提示，结合上下文赏析文中画线句的表达效果。（4分） | ①一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。（从感官的角度） | ②从村口的一截石墙里挺立而出的一株老榆树，诉说着村中光阴的故事。（从修辞手法的角度）","textChars":120,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/yhgn29gr","slide":18,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/n29gr2p8","slide":18,"text":"答案与解析\n①一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。（从感官的角度）\n\n运用了触觉和嗅觉描写(1分)，“热浪便扑面而来”写出了天气的炎热；“混合着麦香的土焦味”写出了方峪村的乡土气息(1分)。(感官描写1分，效果1分)\n\n②从村口的一截石墙里挺立而出的一株老榆树，诉说着村中光阴的故事。（从修辞手法的角度）","textPreview":"答案与解析 | ①一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。（从感官的角度） |  | 运用了触觉和嗅觉描写(1分)，“热浪便扑面而来”写出了天气的炎热；“混合着麦香的土焦味”写出了方峪村的乡土气息(1分)。(感官描写1分，效果1分) |  | ②从村...","textChars":166,"textLines":6,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/tpkg4r","slide":18,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/dk28kp","slide":19,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/q1orytsv","slide":19,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/xs72x4na","slide":19,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/87ed8bat","slide":19,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/je9cvixc","slide":19,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/qtcj6tov","slide":19,"text":"19","textPreview":"19","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/1gvy90je","slide":19,"text":"第 2 题：答案解析 2/2","textPreview":"第 2 题：答案解析 2/2","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/8z25kb6x","slide":19,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/fa9w3m94","slide":19,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/qpg3ex0n","slide":19,"text":"第2题","textPreview":"第2题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/wjudg7ad","slide":19,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/p4r65wju","slide":19,"text":"（2）请按照括号中的提示，结合上下文赏析文中画线句的表达效果。（4分）\n①一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。（从感官的角度）\n②从村口的一截石墙里挺立而出的一株老榆树，诉说着村中光阴的故事。（从修辞手法的角度）","textPreview":"（2）请按照括号中的提示，结合上下文赏析文中画线句的表达效果。（4分） | ①一下车，一股热浪便扑面而来，鼻孔中立刻盈满了混合着麦香的土焦味。（从感官的角度） | ②从村口的一截石墙里挺立而出的一株老榆树，诉说着村中光阴的故事。（从修辞手法的角度）","textChars":120,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/ed8v6psf","slide":19,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":19,"text":"答案与解析\n运用了拟人的修辞手法，将挺立的老榆树人格化(1分)，生动形象地写出了老榆树作为村庄守护者，见证了方峪的历史变迁(1分)。(拟人手法及分析1分，效果1分)","textPreview":"答案与解析 | 运用了拟人的修辞手法，将挺立的老榆树人格化(1分)，生动形象地写出了老榆树作为村庄守护者，见证了方峪的历史变迁(1分)。(拟人手法及分析1分，效果1分)","textChars":82,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/dk28kp","slide":19,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/rv0yp1","slide":20,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/epkzupwb","slide":20,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/pg3ex0nu","slide":20,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/wval87ed","slide":20,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/7mp0bi9s","slide":20,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/e1w7mp0b","slide":20,"text":"20","textPreview":"20","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/psfil0rq","slide":20,"text":"第 3 题：先思考","textPreview":"第 3 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/w7mp0bi9","slide":20,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/7u54zido","slide":20,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/ed8bat47","slide":20,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/onyd0z61","slide":20,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/d8v6psfi","slide":20,"text":"（3）作者在文中详细描写“锤屋”这一传统工艺过程，有何用意？（4分）","textPreview":"（3）作者在文中详细描写“锤屋”这一传统工艺过程，有何用意？（4分）","textChars":34,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/6hcrmhk3","slide":20,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/z25kb6xk","slide":20,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/rv0yp1","slide":20,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/iy6pdq","slide":21,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/bat47y1k","slide":21,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/4vmtwra5","slide":21,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/tgfmlkjm","slide":21,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/m1cfa9w3","slide":21,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/bm58z25k","slide":21,"text":"21","textPreview":"21","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/47y1kre1","slide":21,"text":"第 3 题：答案解析 1/1","textPreview":"第 3 题：答案解析 1/1","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/tsvu9kni","slide":21,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/m58z25kb","slide":21,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/bq1oryts","slide":21,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/3ex0nuxc","slide":21,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/at47y1kr","slide":21,"text":"（3）作者在文中详细描写“锤屋”这一传统工艺过程，有何用意？（4分）","textPreview":"（3）作者在文中详细描写“锤屋”这一传统工艺过程，有何用意？（4分）","textChars":34,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/lkjm1cfa","slide":21,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/szqtcj6t","slide":21,"text":"答案与解析\n①通过“锤屋”的时令选择、操作过程与协作方式等，展现古村建筑的特色与村民的智慧。\n\n②以“全村壮劳力齐上阵”“自发和无偿”等内容，体现村民守望相助、团结协作的乡风，彰显文化底蕴。\n\n③对传统工艺的细致刻画，展现了方峪古民居的文化价值，为后文古村依托自身特色发展民宿等文旅产业作铺垫。(每点2分，任选两点可得4分；其他答案于文有据、言之成理也可得分)","textPreview":"答案与解析 | ①通过“锤屋”的时令选择、操作过程与协作方式等，展现古村建筑的特色与村民的智慧。 |  | ②以“全村壮劳力齐上阵”“自发和无偿”等内容，体现村民守望相助、团结协作的乡风，彰显文化底蕴。 |  | ③对传统工艺的细致刻画，展现了方峪古民居的文化价值，为后文古...","textChars":180,"textLines":6,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/iy6pdq","slide":21,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/9694l8","slide":22,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/kf6dcbul","slide":22,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/vu9knih4","slide":22,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/29gr2p8n","slide":22,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/d8bat47y","slide":22,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/knih4byh","slide":22,"text":"22","textPreview":"22","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/v6psfil0","slide":22,"text":"第 4 题：先思考","textPreview":"第 4 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/2lszqtcj","slide":22,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/dcbulwva","slide":22,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/kre1w7mp","slide":22,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/6psfil0r","slide":22,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/val87ed8","slide":22,"text":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。（6分）\n①《一个千年古村的苏醒》\n②《千年古村的振兴之路》","textPreview":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。（6分） | ①《一个千年古村的苏醒》 | ②《千年古村的振兴之路》","textChars":60,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/kre1w7mp","slide":22,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/dcbulwva","slide":22,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/9694l8","slide":22,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/2i49za","slide":23,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/zed8v6ps","slide":23,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/oza1gvy9","slide":23,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/hk3q5o7q","slide":23,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/65wjudg7","slide":23,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":23,"text":"23","textPreview":"23","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/obm58z25","slide":23,"text":"第 4 题：答案解析 1/3","textPreview":"第 4 题：答案解析 1/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":23,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/a9w3m94f","slide":23,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":23,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/7y1kre1w","slide":23,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/ed8v6psf","slide":23,"text":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。（6分）\n①《一个千年古村的苏醒》\n②《千年古村的振兴之路》","textPreview":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。（6分） | ①《一个千年古村的苏醒》 | ②《千年古村的振兴之路》","textChars":60,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/p4r65wju","slide":23,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/wjudg7ad","slide":23,"text":"答案与解析\n示例一：选择《一个千年古村的苏醒》\n\n①交代主要内容(1分)，本文记叙了古村从保护古建筑到开发民宿、开展文化活动的发展历程(1分)。\n\n②“千年古村”与“苏醒”揭示了古村在传承与创新中发展的主题(1分)，寄托了作者对古村发展的期盼(1分)。③“苏醒”运用拟人手法，将古村人格化(1分)，生动体现出古村“慢慢醒来，焕彩重生”的生命力量(1分)。④引发了读者对方峪古村“苏醒”的好奇(1分)，吸引读者注意，提升阅读兴趣(1分)。","textPreview":"答案与解析 | 示例一：选择《一个千年古村的苏醒》 |  | ①交代主要内容(1分)，本文记叙了古村从保护古建筑到开发民宿、开展文化活动的发展历程(1分)。 |  | ②“千年古村”与“苏醒”揭示了古村在传承与创新中发展的主题(1分)，寄托了作者对古村发展的期盼(1分)。③...","textChars":218,"textLines":6,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/2i49za","slide":23,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/tth2vd","slide":24,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/at47y1kr","slide":24,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/lkjm1cfa","slide":24,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/szqtcj6t","slide":24,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/32lszqtc","slide":24,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/ahoza1gv","slide":24,"text":"24","textPreview":"24","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/l87ed8ba","slide":24,"text":"第 4 题：答案解析 2/3","textPreview":"第 4 题：答案解析 2/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/sneloj2t","slide":24,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/3q5o7qpg","slide":24,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/e9cvixcz","slide":24,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/87ed8bat","slide":24,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/xs72x4na","slide":24,"text":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。（6分）\n①《一个千年古村的苏醒》\n②《千年古村的振兴之路》","textPreview":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。（6分） | ①《一个千年古村的苏醒》 | ②《千年古村的振兴之路》","textChars":60,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/q1orytsv","slide":24,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/fmlkjm1c","slide":24,"text":"答案与解析\n(第③点：与结尾“主题为‘一个千年古村的苏醒’的系列文化活动”/“焕彩重生呼应，这种回答也可得分)\n\n示例二：选择《千年古村的振兴之路》。","textPreview":"答案与解析 | (第③点：与结尾“主题为‘一个千年古村的苏醒’的系列文化活动”/“焕彩重生呼应，这种回答也可得分) |  | 示例二：选择《千年古村的振兴之路》。","textChars":75,"textLines":4,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/tth2vd","slide":24,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/qxrrfr","slide":25,"title":"材料二：千年古村 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/hgn29gr2","slide":25,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/ap4r65wj","slide":25,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/za1gvy90","slide":25,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/s36hcrmh","slide":25,"text":"材料二：千年古村 · 原题演练","textPreview":"材料二：千年古村 · 原题演练","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/hoza1gvy","slide":25,"text":"25","textPreview":"25","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/a1gvy90j","slide":25,"text":"第 4 题：答案解析 3/3","textPreview":"第 4 题：答案解析 3/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/zidonyd0","slide":25,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/s72x4nap","slide":25,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/lszqtcj6","slide":25,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":25,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":25,"text":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。（6分）\n①《一个千年古村的苏醒》\n②《千年古村的振兴之路》","textPreview":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。（6分） | ①《一个千年古村的苏醒》 | ②《千年古村的振兴之路》","textChars":60,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/zupwb2hw","slide":25,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":25,"text":"答案与解析\n①交代主要内容(1分)，本文记叙了古村依托古建筑等传统特色开发民宿、举办文化活动，使古村振兴发展(1分)。②与结尾古村“焕彩重生”呼应(1分)，点明了在传承文化与创新发展中实现乡村振兴的主题(1分)。③“振兴”既表达了作者对古村发展现状的肯定(1分)，也寄托了对古村未来不断发展的期待。(1分)(其他答案，于文有据言之成理也可)","textPreview":"答案与解析 | ①交代主要内容(1分)，本文记叙了古村依托古建筑等传统特色开发民宿、举办文化活动，使古村振兴发展(1分)。②与结尾古村“焕彩重生”呼应(1分)，点明了在传承文化与创新发展中实现乡村振兴的主题(1分)。③“振兴”既表达了作者对古村发展现状的肯定(1分)，也寄托...","textChars":170,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/qxrrfr","slide":25,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/afecrz","slide":26,"title":"材料二：千年古村 · 标题题","textShapes":9}
+{"kind":"shape","id":"sh/3itgfmlk","slide":26,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/w3m94fu1","slide":26,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/loj2t83i","slide":26,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/e9cvixcz","slide":26,"text":"材料二：千年古村 · 标题题","textPreview":"材料二：千年古村 · 标题题","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/3q5o7qpg","slide":26,"text":"26","textPreview":"26","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/wb2hwfyx","slide":26,"text":"标题题先判断，不急着看解析","textPreview":"标题题先判断，不急着看解析","textChars":13,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/lwval87e","slide":26,"text":"请学生先选，再说出一个文本依据。","textPreview":"请学生先选，再说出一个文本依据。","textChars":16,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/ahoza1gv","slide":26,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/32lszqtc","slide":26,"bbox":[132,304,470,96]}
+{"kind":"textbox","id":"sh/rqd4vmtw","slide":26,"text":"①","textPreview":"①","textChars":1,"textLines":1,"bbox":[156,335,64,34]}
+{"kind":"textbox","id":"sh/25kb6xkf","slide":26,"text":"一个千年古村的苏醒","textPreview":"一个千年古村的苏醒","textChars":9,"textLines":1,"bbox":[242,326,320,44]}
+{"kind":"shape","id":"sh/9w3m94fu","slide":26,"bbox":[662,304,470,96]}
+{"kind":"textbox","id":"sh/kb6xkf6d","slide":26,"text":"②","textPreview":"②","textChars":1,"textLines":1,"bbox":[686,335,64,34]}
+{"kind":"textbox","id":"sh/re1w7mp0","slide":26,"text":"千年古村的振兴之路","textPreview":"千年古村的振兴之路","textChars":9,"textLines":1,"bbox":[772,326,320,44]}
+{"kind":"shape","id":"sh/2t83itgf","slide":26,"bbox":[206,498,868,84]}
+{"kind":"textbox","id":"sh/9knih4by","slide":26,"text":"先选：哪个标题更有画面感，也更能呼应结尾？","textPreview":"先选：哪个标题更有画面感，也更能呼应结尾？","textChars":21,"textLines":1,"bbox":[248,522,790,34]}
+{"kind":"notes","id":"nt/afecrz","slide":26,"text":"播放到这里先停顿，不揭示答案；让学生用四维标准先判断。"}
+{"kind":"slide","id":"sl/bs4c3e","slide":27,"title":"材料二：千年古村 · 标题题解析","textShapes":13}
+{"kind":"shape","id":"sh/g7adsji5","slide":27,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/rmhk3q5o","slide":27,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/y1kre1w7","slide":27,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":27,"text":"材料二：千年古村 · 标题题解析","textPreview":"材料二：千年古村 · 标题题解析","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/gfmlkjm1","slide":27,"text":"27","textPreview":"27","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/rytsvu9k","slide":27,"text":"解析：《一个千年古村的苏醒》强在拟人与呼应","textPreview":"解析：《一个千年古村的苏醒》强在拟人与呼应","textChars":21,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/yd0z6103","slide":27,"text":"“苏醒”把古村写活，也把保护、开发和文化活动连起来。","textPreview":"“苏醒”把古村写活，也把保护、开发和文化活动连起来。","textChars":26,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/9cvixcze","slide":27,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/gr2p8nqx","slide":27,"bbox":[92,274,480,104]}
+{"kind":"textbox","id":"sh/ahoza1gv","slide":27,"text":"内容","textPreview":"内容","textChars":2,"textLines":1,"bbox":[116,292,110,30]}
+{"kind":"textbox","id":"sh/32lszqtc","slide":27,"text":"记叙古村从保护古建筑到开发民宿、开展文化活动。","textPreview":"记叙古村从保护古建筑到开发民宿、开展文化活动。","textChars":23,"textLines":1,"bbox":[230,294,300,52]}
+{"kind":"shape","id":"sh/sneloj2t","slide":27,"bbox":[640,274,480,104]}
+{"kind":"textbox","id":"sh/l87ed8ba","slide":27,"text":"主题","textPreview":"主题","textChars":2,"textLines":1,"bbox":[664,292,110,30]}
+{"kind":"textbox","id":"sh/at47y1kr","slide":27,"text":"揭示古村在传承与创新中发展的主题。","textPreview":"揭示古村在传承与创新中发展的主题。","textChars":17,"textLines":1,"bbox":[778,294,300,52]}
+{"kind":"shape","id":"sh/3ex0nuxc","slide":27,"bbox":[92,420,480,104]}
+{"kind":"textbox","id":"sh/szqtcj6t","slide":27,"text":"结构","textPreview":"结构","textChars":2,"textLines":1,"bbox":[116,438,110,30]}
+{"kind":"textbox","id":"sh/lkjm1cfa","slide":27,"text":"呼应结尾“慢慢醒来，焕彩重生”。","textPreview":"呼应结尾“慢慢醒来，焕彩重生”。","textChars":16,"textLines":1,"bbox":[230,440,300,52]}
+{"kind":"shape","id":"sh/ex0nuxc3","slide":27,"bbox":[640,420,480,104]}
+{"kind":"textbox","id":"sh/3itgfmlk","slide":27,"text":"表达","textPreview":"表达","textChars":2,"textLines":1,"bbox":[664,438,110,30]}
+{"kind":"textbox","id":"sh/vahoza1g","slide":27,"text":"“苏醒”运用拟人，生动写出古村的生命力。","textPreview":"“苏醒”运用拟人，生动写出古村的生命力。","textChars":20,"textLines":1,"bbox":[778,440,300,52]}
+{"kind":"textbox","id":"sh/6tovahoz","slide":27,"text":"第二个标题也能答，但要更侧重乡村振兴这一主题。","textPreview":"第二个标题也能答，但要更侧重乡村振兴这一主题。","textChars":23,"textLines":1,"bbox":[142,594,996,38]}
+{"kind":"notes","id":"nt/bs4c3e","slide":27,"text":"解析页：把原题答案拆成内容、主题、结构、表达四类。"}
+{"kind":"slide","id":"sl/wkiuiy","slide":28,"title":"材料三：沙粒与云雀","textShapes":5}
+{"kind":"shape","id":"sh/cvixczed","slide":28,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/nap4r65w","slide":28,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/upwb2hwf","slide":28,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/54zidony","slide":28,"text":"材料三：沙粒与云雀","textPreview":"材料三：沙粒与云雀","textChars":9,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/cj6tovah","slide":28,"text":"28","textPreview":"28","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/nyd0z610","slide":28,"text":"3. （2024年广州中考）阅读下面文字，完成问题。","textPreview":"3. （2024年广州中考）阅读下面文字，完成问题。","textChars":26,"textLines":1,"bbox":[76,130,700,34]}
+{"kind":"textbox","id":"sh/udg7adsj","slide":28,"text":"开放题要看标题角度：亲近愿望，还是形象对比","textPreview":"开放题要看标题角度：亲近愿望，还是形象对比","textChars":21,"textLines":1,"bbox":[76,188,940,78]}
+{"kind":"shape","id":"sh/1032lszq","slide":28,"bbox":[104,350,1010,150]}
+{"kind":"textbox","id":"sh/cfa9w3m9","slide":28,"text":"先读原文：圈标题关键词可能对应的内容\n再做原题：题目不是孤立训练，解析要回到文章\n最后精讲标题题：比较两个标题的内容范围、主题深度和表达效果","textPreview":"先读原文：圈标题关键词可能对应的内容 | 再做原题：题目不是孤立训练，解析要回到文章 | 最后精讲标题题：比较两个标题的内容范围、主题深度和表达效果","textChars":70,"textLines":3,"bbox":[146,382,920,88]}
+{"kind":"notes","id":"nt/wkiuiy","slide":28,"text":"进入一篇材料前，先交代这一篇训练的主问题。"}
+{"kind":"slide","id":"sl/q229l0","slide":29,"title":"材料三：沙粒与云雀 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/gfmlkjm1","slide":29,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/rytsvu9k","slide":29,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/yd0z6103","slide":29,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/9s36hcrm","slide":29,"text":"材料三：沙粒与云雀 · 原文","textPreview":"材料三：沙粒与云雀 · 原文","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/g7adsji5","slide":29,"text":"29","textPreview":"29","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/rmhk3q5o","slide":29,"text":"原文阅读 1/3","textPreview":"原文阅读 1/3","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/y1kre1w7","slide":29,"text":"先完整读材料，再回到题目。读的时候圈标题关键词、反复对象和结尾句。","textPreview":"先完整读材料，再回到题目。读的时候圈标题关键词、反复对象和结尾句。","textChars":33,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/5o7qpg3e","slide":29,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":29,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/m94fu18j","slide":29,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/fu18jqh0","slide":29,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/4fu18jqh","slide":29,"text":"_____________________\n\n沙粒给云雀的信：\n\n亲爱的云雀，我在给你写信。你收到的信多吗？我从来没有收到过信。因为我是沙粒，是万度苏沙漠成千上万石英质小颗粒中的一粒，如果有人给我写信，他不知道写给谁，沙粒太多了。\n\n自从我打算给别人写信，我想过许多收信人，比如茴香、小红马，想来想去，我想还是给你写封信，以后我们就成了好朋友，对吗？\n\n亲爱的云雀，我听说你还有一个名字叫蒙古百灵，你为什么有两个名字？我就叫沙粒。成千上万的沙粒都叫沙粒。说到这里我有一些苦恼，因为我没有自己的名字。\n\n我拿不准你想不想认识一颗沙粒，但我还是想介绍一下自己。如果你用一只蚂蚁的眼睛来看我，就像看到一个淡黄色的冰块。透明，有香味。那是沙粒才能闻到的香味。","textPreview":"_____________________ |  | 沙粒给云雀的信： |  | 亲爱的云雀，我在给你写信。你收到的信多吗？我从来没有收到过信。因为我是沙粒，是万度苏沙漠成千上万石英质小颗粒中的一粒，如果有人给我写信，他不知道写给谁，沙粒太多了。 |  | 自从我打算给别人...","textChars":325,"textLines":11,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/x0nuxc3y","slide":29,"text":"我告诉你一个秘密，在浆果里，蔓越橘比醋栗要甜。这方面你可能比我知道的多。我告诉你这些，是想和你成为朋友。如果想和别人成为朋友，需要送什么礼物呢？你知道，我是一颗沙粒，什么都没有。不结果实，也不会像柳叶那样在风中摇摆。我想开粉色的花朵，这朵花有三个花瓣我就知足了。\n\n我的伙伴说，如果想成为别人的朋友，要懂得好多事。可是我一直待在沙漠里，什么都不知道。有一天，一只比蚂蚁还要小的昆虫，费了很大力气爬上我的头顶，它说，哇，我登上了山顶。这很可笑，但我也感到骄傲，终于有人认为我是一座山了。\n\n我和我的伙伴们白天夜晚都躺在旷野里。当然我们会感觉有些硌，这么多坚硬的沙粒堆在一起肯定硌得慌，但我们不会彼此埋怨。我喜欢观察伙伴，透过它玻璃似的身体看到它身边还有无尽的沙粒，仿佛置身迷宫里面。下雨的时候，雨洒在沙粒上声音清脆，我们被雨水洗干净，像一粒粒宝石。","textPreview":"我告诉你一个秘密，在浆果里，蔓越橘比醋栗要甜。这方面你可能比我知道的多。我告诉你这些，是想和你成为朋友。如果想和别人成为朋友，需要送什么礼物呢？你知道，我是一颗沙粒，什么都没有。不结果实，也不会像柳叶那样在风中摇摆。我想开粉色的花朵，这朵花有三个花瓣我就知足了。 |  | ...","textChars":373,"textLines":5,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/q229l0","slide":29,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/jxpe1x","slide":30,"title":"材料三：沙粒与云雀 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/qtcj6tov","slide":30,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/1gvy90je","slide":30,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/8z25kb6x","slide":30,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/fmlkjm1c","slide":30,"text":"材料三：沙粒与云雀 · 原文","textPreview":"材料三：沙粒与云雀 · 原文","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/q1orytsv","slide":30,"text":"30","textPreview":"30","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/xs72x4na","slide":30,"text":"原文阅读 2/3","textPreview":"原文阅读 2/3","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/87ed8bat","slide":30,"text":"继续读原文，关注材料如何推进内容和主题。","textPreview":"继续读原文，关注材料如何推进内容和主题。","textChars":20,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/fyxobm58","slide":30,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/qd4vmtwr","slide":30,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/sfil0rqd","slide":30,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":30,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":30,"text":"云雀，你在听我说吗？我希望你对我说的有兴趣。我猜想你从来没有听过沙粒对你说话。你会飞，有机会和花朵交朋友。毕竟能见到花朵，谁在意沙粒呢？说到这里，我有一点伤心，但我们沙粒没有眼泪。\n\n我期待你的回信，可是你回信要写谁收呢？或许你可以这样写：万度苏沙漠给我写信的那粒沙子收。希望我能收到。\n\n亲爱的云雀，我身边的伙伴提醒我，想和别人交朋友，先要赞美。你想得到什么样的赞美？请来信告诉我。你从天空飞过去的时候，我听到了你的歌唱，虽然只听到一个音，但这已经足够。你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。你唱着歌飞走了，你把一句歌词留在一公里的路上，真了不起，可惜我只听到一个音节。","textPreview":"云雀，你在听我说吗？我希望你对我说的有兴趣。我猜想你从来没有听过沙粒对你说话。你会飞，有机会和花朵交朋友。毕竟能见到花朵，谁在意沙粒呢？说到这里，我有一点伤心，但我们沙粒没有眼泪。 |  | 我期待你的回信，可是你回信要写谁收呢？或许你可以这样写：万度苏沙漠给我写信的那粒沙...","textChars":289,"textLines":5,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":30,"text":"亲爱的云雀，当一颗沙粒就要永久沉默，如果沙粒会说话，会歌唱，沙漠就太喧嚣了。所以上天让歌唱者飞翔，让固守者沉默。但愿你能读完我的信。在全世界的沙粒里，可能我是第一个给你写信的。想到这一点，我高兴得想蹦起来。\n\n亲爱的云雀，祝你快乐地飞翔，快乐地歌唱，祝你两只爪子干干净净。我不知道给朋友写信用哪些词会让对方高兴，你来信多告诉我一些美妙的词汇吧。\n\n给你写信的那颗沙粒。\n\n云雀给沙粒的复信：\n\n亲爱的沙粒，我收到了你的来信。别担心我认不出你。七月份，我从小兴安岭飞往狼居胥山脉，路过了你们那个地方。当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。你想想看，如果你的身旁长着灌木，树下一定会有松鼠、花栗鼠甚至黑熊，臭气熏天。从天空上瞭望，树木遮蔽了地表，看不清蚂蚁、野蜜蜂，更看不清沙粒。","textPreview":"亲爱的云雀，当一颗沙粒就要永久沉默，如果沙粒会说话，会歌唱，沙漠就太喧嚣了。所以上天让歌唱者飞翔，让固守者沉默。但愿你能读完我的信。在全世界的沙粒里，可能我是第一个给你写信的。想到这一点，我高兴得想蹦起来。 |  | 亲爱的云雀，祝你快乐地飞翔，快乐地歌唱，祝你两只爪子干干...","textChars":363,"textLines":9,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/jxpe1x","slide":30,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/gf1zkg","slide":31,"title":"材料三：沙粒与云雀 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/idonyd0z","slide":31,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/t47y1kre","slide":31,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/0je9cvix","slide":31,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/b6xkf6dc","slide":31,"text":"材料三：沙粒与云雀 · 原文","textPreview":"材料三：沙粒与云雀 · 原文","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/il0rqd4v","slide":31,"text":"31","textPreview":"31","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/tcj6tova","slide":31,"text":"原文阅读 3/3","textPreview":"原文阅读 3/3","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/0rqd4vmt","slide":31,"text":"继续读原文，关注材料如何推进内容和主题。","textPreview":"继续读原文，关注材料如何推进内容和主题。","textChars":20,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/bi9s36hc","slide":31,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/ixczed8v","slide":31,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/s72x4nap","slide":31,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/lszqtcj6","slide":31,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/a5gbq1or","slide":31,"text":"亲爱的沙粒，在我写下上面这些字的时候，我正飞向葱岭。我去做什么？不做什么，所有的地方只是经过之地。我们鸟类并没有目的地，我们飞翔就像你们静静待在沙漠里。飞翔的时候，如果你盯着天上的星星看，如同静静地躺在夜空里，感觉不到自己飞翔。\n\n下面我解答你的疑惑。我是云雀，又叫蒙古百灵，还叫沙百灵。叫什么都无所谓，再送我一百个名字我还是我。我头顶的羽毛栗红色，两只眼睛有棕白色的眉纹，喙土黄色，爪子肉色。这就是我。对你来说，我长得可能太复杂了。没办法，美总是很复杂的。","textPreview":"亲爱的沙粒，在我写下上面这些字的时候，我正飞向葱岭。我去做什么？不做什么，所有的地方只是经过之地。我们鸟类并没有目的地，我们飞翔就像你们静静待在沙漠里。飞翔的时候，如果你盯着天上的星星看，如同静静地躺在夜空里，感觉不到自己飞翔。 |  | 下面我解答你的疑惑。我是云雀，又叫...","textChars":229,"textLines":3,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/3m94fu18","slide":31,"text":"亲爱的沙粒，你提到了赞美，这里面充满奥妙。如果你想让对方高兴又不违背真实，要学会写诗。比如你说“蒙古百灵是会唱歌的风”，我听了会高兴，这就是赞美。我收到的赞美太少了，远远不够，万物不具备赞美我的才华，我只好自己赞美自己：“云雀，星星融化，也没有你的歌声清脆。”听到这个，我眼睛有一点点湿润。\n\n实际生活中，我经常受冻挨饿，还要忍受干渴。我要去葱岭，但不知道去那里做什么。\n\n我要说的就是这些，可能没什么条理。因为我一边写信，一边飞行，还要提防头顶出现天敌。好了，不说了，我要飞进一片湿润的树林里，去那里捉肥而白的昆虫，捉不到昆虫就吃浆果，然后歌唱。\n\n爱你的云雀，于高加索的黑松林上空。\n\n（节选自鲍尔吉•原野《万物亲近》，有删改）","textPreview":"亲爱的沙粒，你提到了赞美，这里面充满奥妙。如果你想让对方高兴又不违背真实，要学会写诗。比如你说“蒙古百灵是会唱歌的风”，我听了会高兴，这就是赞美。我收到的赞美太少了，远远不够，万物不具备赞美我的才华，我只好自己赞美自己：“云雀，星星融化，也没有你的歌声清脆。”听到这个，我眼...","textChars":316,"textLines":9,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/gf1zkg","slide":31,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/j0hrau","slide":32,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/crmhk3q5","slide":32,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/j6tovaho","slide":32,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/ulwval87","slide":32,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/1kre1w7m","slide":32,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/c3ylc7u5","slide":32,"text":"32","textPreview":"32","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/ji5snelo","slide":32,"text":"第 1 题：先思考","textPreview":"第 1 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/uxc3ylc7","slide":32,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/1w7mp0bi","slide":32,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/8bat47y1","slide":32,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/ytsvu9kn","slide":32,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/neloj2t8","slide":32,"text":"（1）下列对本文的理解与分析，不正确的一项是（    ）（3分）\nA.本文由沙粒的去信和云雀的回信两部分构成，情感表达真切自然。\nB.本文分别从沙粒和云雀的视角表达对自我的认知和对世界的感受。\nC.本文中沙粒和云雀对待名字的不同态度，反映了两者的性格差异。\nD.本文以书面语为主，语言典雅严谨，含蓄深沉，令读者回味无穷。","textPreview":"（1）下列对本文的理解与分析，不正确的一项是（    ）（3分） | A.本文由沙粒的去信和云雀的回信两部分构成，情感表达真切自然。 | B.本文分别从沙粒和云雀的视角表达对自我的认知和对世界的感受。 | C.本文中沙粒和云雀对待名字的不同态度，反映了两者的性格差异。 | ...","textChars":160,"textLines":5,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/czed8v6p","slide":32,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/5kb6xkf6","slide":32,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/j0hrau","slide":32,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/dr8whi","slide":33,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/ex0nuxc3","slide":33,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/loj2t83i","slide":33,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/w3m94fu1","slide":33,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/3q5o7qpg","slide":33,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/e9cvixcz","slide":33,"text":"33","textPreview":"33","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/lwval87e","slide":33,"text":"第 1 题：答案解析 1/1","textPreview":"第 1 题：答案解析 1/1","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/wb2hwfyx","slide":33,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/32lszqtc","slide":33,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/ahoza1gv","slide":33,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/cj6tovah","slide":33,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/54zidony","slide":33,"text":"（1）下列对本文的理解与分析，不正确的一项是（    ）（3分）\nA.本文由沙粒的去信和云雀的回信两部分构成，情感表达真切自然。\nB.本文分别从沙粒和云雀的视角表达对自我的认知和对世界的感受。\nC.本文中沙粒和云雀对待名字的不同态度，反映了两者的性格差异。\nD.本文以书面语为主，语言典雅严谨，含蓄深沉，令读者回味无穷。","textPreview":"（1）下列对本文的理解与分析，不正确的一项是（    ）（3分） | A.本文由沙粒的去信和云雀的回信两部分构成，情感表达真切自然。 | B.本文分别从沙粒和云雀的视角表达对自我的认知和对世界的感受。 | C.本文中沙粒和云雀对待名字的不同态度，反映了两者的性格差异。 | ...","textChars":160,"textLines":5,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/udg7adsj","slide":33,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/nyd0z610","slide":33,"text":"答案与解析\n答案：D\n\n【解析】“语言典雅严谨，含蓄深沉”有误，这两封信的语言比较质朴自然，充满童趣。","textPreview":"答案与解析 | 答案：D |  | 【解析】“语言典雅严谨，含蓄深沉”有误，这两封信的语言比较质朴自然，充满童趣。","textChars":51,"textLines":4,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/dr8whi","slide":33,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/8ahblw","slide":34,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/ylc7u54z","slide":34,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/9cvixcze","slide":34,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/gr2p8nqx","slide":34,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/nih4byhg","slide":34,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/yxobm58z","slide":34,"text":"34","textPreview":"34","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/5o7qpg3e","slide":34,"text":"第 2 题：先思考","textPreview":"第 2 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":34,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/rmhk3q5o","slide":34,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/y1kre1w7","slide":34,"text":"第2题","textPreview":"第2题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/kjm1cfa9","slide":34,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/94fu18jq","slide":34,"text":"（2）你会选沙粒和云雀中哪一个交朋友？请结合它的形象特点说说理由。（4分）","textPreview":"（2）你会选沙粒和云雀中哪一个交朋友？请结合它的形象特点说说理由。（4分）","textChars":37,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/2hwfyxob","slide":34,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/r2p8nqxs","slide":34,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/8ahblw","slide":34,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/4gird4","slide":35,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/crmhk3q5","slide":35,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/j6tovaho","slide":35,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/ulwval87","slide":35,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/1kre1w7m","slide":35,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/c3ylc7u5","slide":35,"text":"35","textPreview":"35","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/ji5snelo","slide":35,"text":"第 2 题：答案解析 1/2","textPreview":"第 2 题：答案解析 1/2","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/uxc3ylc7","slide":35,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/1w7mp0bi","slide":35,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/8bat47y1","slide":35,"text":"第2题","textPreview":"第2题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/ytsvu9kn","slide":35,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/neloj2t8","slide":35,"text":"（2）你会选沙粒和云雀中哪一个交朋友？请结合它的形象特点说说理由。（4分）","textPreview":"（2）你会选沙粒和云雀中哪一个交朋友？请结合它的形象特点说说理由。（4分）","textChars":37,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/czed8v6p","slide":35,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/5kb6xkf6","slide":35,"text":"答案与解析\n示例一:我选沙粒交朋友。理由:①它善良友好(形象特点1分)，例如主动介绍自己/赞美对方/对身边的小伙伴不抱怨(举例分析1分);②它纯真可爱(形象特点1分)，例如希望可以开粉色的花朵/把沙漠看成迷宫/把沙粒看成宝石/为自已被认为是山而骄傲(举例分析1分)。","textPreview":"答案与解析 | 示例一:我选沙粒交朋友。理由:①它善良友好(形象特点1分)，例如主动介绍自己/赞美对方/对身边的小伙伴不抱怨(举例分析1分);②它纯真可爱(形象特点1分)，例如希望可以开粉色的花朵/把沙漠看成迷宫/把沙粒看成宝石/为自已被认为是山而骄傲(举例分析1分)。","textChars":133,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/4gird4","slide":35,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/3cf4ze","slide":36,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/9knih4by","slide":36,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/2t83itgf","slide":36,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/re1w7mp0","slide":36,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/kb6xkf6d","slide":36,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/9w3m94fu","slide":36,"text":"36","textPreview":"36","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/25kb6xkf","slide":36,"text":"第 2 题：答案解析 2/2","textPreview":"第 2 题：答案解析 2/2","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/rqd4vmtw","slide":36,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/kjm1cfa9","slide":36,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/94fu18jq","slide":36,"text":"第2题","textPreview":"第2题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/1orytsvu","slide":36,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/c7u54zid","slide":36,"text":"（2）你会选沙粒和云雀中哪一个交朋友？请结合它的形象特点说说理由。（4分）","textPreview":"（2）你会选沙粒和云雀中哪一个交朋友？请结合它的形象特点说说理由。（4分）","textChars":37,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/jm1cfa9w","slide":36,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/u18jqh0f","slide":36,"text":"答案与解析\n示例二:我选云雀交朋友。理由:①因为它充满自信(形象特点1分)，例如它认为自己长得美/歌声清脆(举例分析1分);②它真诚友善(形象特点1分)，例如给沙粒回信，认真回应它的问题/告诉沙粒飞翔和静静待着其实是一样的/赞美沙漠庄严柔美、沙粒洁净(举例分析1分)。\n\n(4分。理由每点2分，包括形象特点1分，举例分析1分。任选两点理由，若有其他说法，于文有据言之有理亦可得分)","textPreview":"答案与解析 | 示例二:我选云雀交朋友。理由:①因为它充满自信(形象特点1分)，例如它认为自己长得美/歌声清脆(举例分析1分);②它真诚友善(形象特点1分)，例如给沙粒回信，认真回应它的问题/告诉沙粒飞翔和静静待着其实是一样的/赞美沙漠庄严柔美、沙粒洁净(举例分析1分)。 ...","textChars":190,"textLines":4,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/3cf4ze","slide":36,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/v8dc8t","slide":37,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/nqxs72x4","slide":37,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/cbulwval","slide":37,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/5sneloj2","slide":37,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/ytsvu9kn","slide":37,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/neloj2t8","slide":37,"text":"37","textPreview":"37","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/czed8v6p","slide":37,"text":"第 3 题：先思考","textPreview":"第 3 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/5kb6xkf6","slide":37,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/yhgn29gr","slide":37,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/n29gr2p8","slide":37,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/fyxobm58","slide":37,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/qd4vmtwr","slide":37,"text":"（3）请按照括号中的提示，结合上下文，赏析文中划线句子的表达效果。（4分）\n①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度）\n②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textPreview":"（3）请按照括号中的提示，结合上下文，赏析文中划线句子的表达效果。（4分） | ①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度） | ②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textChars":127,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/x4nap4r6","slide":37,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/8jqh0fep","slide":37,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/v8dc8t","slide":37,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/mwva2o","slide":38,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/wb2hwfyx","slide":38,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/3q5o7qpg","slide":38,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/e9cvixcz","slide":38,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/loj2t83i","slide":38,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/w3m94fu1","slide":38,"text":"38","textPreview":"38","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/3itgfmlk","slide":38,"text":"第 3 题：答案解析 1/3","textPreview":"第 3 题：答案解析 1/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/ex0nuxc3","slide":38,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/lkjm1cfa","slide":38,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/szqtcj6t","slide":38,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/il0rqd4v","slide":38,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/b6xkf6dc","slide":38,"text":"（3）请按照括号中的提示，结合上下文，赏析文中划线句子的表达效果。（4分）\n①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度）\n②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textPreview":"（3）请按照括号中的提示，结合上下文，赏析文中划线句子的表达效果。（4分） | ①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度） | ②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textChars":127,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/0rqd4vmt","slide":38,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/tcj6tova","slide":38,"text":"答案与解析\n①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度）\n\n运用比喻，把云雀的歌唱比作泉水流淌和月光敲打冰湖的窗户(修辞手法及运用1分)，形象生动地表现了云雀歌声的清澈灵动(表达效果1分)。\n\n②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textPreview":"答案与解析 | ①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度） |  | 运用比喻，把云雀的歌唱比作泉水流淌和月光敲打冰湖的窗户(修辞手法及运用1分)，形象生动地表现了云雀歌声的清澈灵动(表达效果1分)。 |  | ②当时我心里想，这里多么庄严，金色的沙...","textChars":163,"textLines":6,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/mwva2o","slide":38,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/99yu9p","slide":39,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/t83itgfm","slide":39,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":39,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/b2hwfyxo","slide":39,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/4byhgn29","slide":39,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/twra5gbq","slide":39,"text":"39","textPreview":"39","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/m58z25kb","slide":39,"text":"第 3 题：答案解析 2/3","textPreview":"第 3 题：答案解析 2/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/bq1oryts","slide":39,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/47y1kre1","slide":39,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/tsvu9kni","slide":39,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/90je9cvi","slide":39,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/gfmlkjm1","slide":39,"text":"（3）请按照括号中的提示，结合上下文，赏析文中划线句子的表达效果。（4分）\n①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度）\n②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textPreview":"（3）请按照括号中的提示，结合上下文，赏析文中划线句子的表达效果。（4分） | ①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度） | ②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textChars":127,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/rytsvu9k","slide":39,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/yd0z6103","slide":39,"text":"答案与解析\n示例一：运用景物描写,“金色”表现沙漠的庄严美/“柔美”表现沙漠的曲线美/“洁净”表现沙漠的纯粹美(描写手法及对象特点的1分)，表达云雀对沙漠之美的赞美(表达效果1分)。\n\n示例二：运用白描,“柔美的曲线”用极简的文字勾勒沙漠的轮廓/“全都是洁净的沙子”，简洁地写出沙漠的空阔纯粹(描写手法及对象特点1分)，表达云雀对沙漠之美的赞美(表达效果1分)。","textPreview":"答案与解析 | 示例一：运用景物描写,“金色”表现沙漠的庄严美/“柔美”表现沙漠的曲线美/“洁净”表现沙漠的纯粹美(描写手法及对象特点的1分)，表达云雀对沙漠之美的赞美(表达效果1分)。 |  | 示例二：运用白描,“柔美的曲线”用极简的文字勾勒沙漠的轮廓/“全都是洁净的沙...","textChars":181,"textLines":4,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/99yu9p","slide":39,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/lgztdu","slide":40,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/6dcbulwv","slide":40,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/d4vmtwra","slide":40,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/oj2t83it","slide":40,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/vmtwra5g","slide":40,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/61032lsz","slide":40,"text":"40","textPreview":"40","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/dsji5sne","slide":40,"text":"第 3 题：答案解析 3/3","textPreview":"第 3 题：答案解析 3/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/o7qpg3ex","slide":40,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/vahoza1g","slide":40,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/6tovahoz","slide":40,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/c3ylc7u5","slide":40,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/1kre1w7m","slide":40,"text":"（3）请按照括号中的提示，结合上下文，赏析文中划线句子的表达效果。（4分）\n①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度）\n②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textPreview":"（3）请按照括号中的提示，结合上下文，赏析文中划线句子的表达效果。（4分） | ①你喉咙里像流淌着泉水，像月光敲打冰湖的窗户。（从修辞手法的角度） | ②当时我心里想，这里多么庄严，金色的沙漠有柔美的曲线，这里没有其他东西，全都是洁净的沙子。（从描写手法的角度）","textChars":127,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/uxc3ylc7","slide":40,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/ji5snelo","slide":40,"text":"答案与解析\n示例三：运用心理描写，写出了云雀飞过沙漠时的心理感受(描写手法及对象特点1分)；表现了云雀对沙漠的欣赏赞美之情/对沙粒的友善(表达效果1分)。","textPreview":"答案与解析 | 示例三：运用心理描写，写出了云雀飞过沙漠时的心理感受(描写手法及对象特点1分)；表现了云雀对沙漠的欣赏赞美之情/对沙粒的友善(表达效果1分)。","textChars":77,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/lgztdu","slide":40,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/vcw820","slide":41,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/0je9cvix","slide":41,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/byhgn29g","slide":41,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/idonyd0z","slide":41,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/tcj6tova","slide":41,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/0rqd4vmt","slide":41,"text":"41","textPreview":"41","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/b6xkf6dc","slide":41,"text":"第 4 题：先思考","textPreview":"第 4 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/il0rqd4v","slide":41,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/tovahoza","slide":41,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/032lszqt","slide":41,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/61032lsz","slide":41,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/vmtwra5g","slide":41,"text":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。\n①《让我们成为朋友》            ②《飞翔的歌唱者和沉默的固守者》","textPreview":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。 | ①《让我们成为朋友》            ②《飞翔的歌唱者和沉默的固守者》","textChars":69,"textLines":2,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/o7qpg3ex","slide":41,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/dsji5sne","slide":41,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/vcw820","slide":41,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/tebiow","slide":42,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/adsji5sn","slide":42,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/h4byhgn2","slide":42,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/sji5snel","slide":42,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/3m94fu18","slide":42,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/a5gbq1or","slide":42,"text":"42","textPreview":"42","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/lszqtcj6","slide":42,"text":"第 4 题：答案解析 1/2","textPreview":"第 4 题：答案解析 1/2","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/s72x4nap","slide":42,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/zidonyd0","slide":42,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/a1gvy90j","slide":42,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/8nqxs72x","slide":42,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/18jqh0fe","slide":42,"text":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。\n①《让我们成为朋友》            ②《飞翔的歌唱者和沉默的固守者》","textPreview":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。 | ①《让我们成为朋友》            ②《飞翔的歌唱者和沉默的固守者》","textChars":69,"textLines":2,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/qh0fepkz","slide":42,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/j2t83itg","slide":42,"text":"答案与解析\n示例一：我选①《让我们成为朋友》。理由:(1)紧扣文本内容，沙粒多次表达交朋友的愿望，云雀的真诚回复也表达了这种愿望(2分)。(2)切合文本主题，表达万物沟通交流、亲近友好的愿望(2分)。(3)使用祈使句，直白热烈，充分表达沙粒、云雀双方心愿/交谈的口吻与文本的书信形式相宜/亲切的语气与文本的语言风格相宜(2分)。","textPreview":"答案与解析 | 示例一：我选①《让我们成为朋友》。理由:(1)紧扣文本内容，沙粒多次表达交朋友的愿望，云雀的真诚回复也表达了这种愿望(2分)。(2)切合文本主题，表达万物沟通交流、亲近友好的愿望(2分)。(3)使用祈使句，直白热烈，充分表达沙粒、云雀双方心愿/交谈的口吻与文...","textChars":164,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/tebiow","slide":42,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/euos6r","slide":43,"title":"材料三：沙粒与云雀 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/q5o7qpg3","slide":43,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/1w7mp0bi","slide":43,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/8bat47y1","slide":43,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/j2t83itg","slide":43,"text":"材料三：沙粒与云雀 · 原题演练","textPreview":"材料三：沙粒与云雀 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/qh0fepkz","slide":43,"text":"43","textPreview":"43","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/18jqh0fe","slide":43,"text":"第 4 题：答案解析 2/2","textPreview":"第 4 题：答案解析 2/2","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/8nqxs72x","slide":43,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/j6tovaho","slide":43,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/ulwval87","slide":43,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/4vmtwra5","slide":43,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/tgfmlkjm","slide":43,"text":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。\n①《让我们成为朋友》            ②《飞翔的歌唱者和沉默的固守者》","textPreview":"（4）请从以下两个标题中选择一个作为本文的标题，并说明理由。 | ①《让我们成为朋友》            ②《飞翔的歌唱者和沉默的固守者》","textChars":69,"textLines":2,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/mp0bi9s3","slide":43,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/bat47y1k","slide":43,"text":"答案与解析\n示例二：我选②《飞翔的歌唱者和沉默的固守者》。理由:(1)内容上，准确概括两者的特点:云雀是飞翔的歌唱者，沙粒是沉默的固守者(2分)。(2)暗含文本主题，引发对动与静、歌唱与沉默的思考(2分)。(3)运用一组对比的短语“飞翔的歌唱者”“沉默的固守者”，形成悬念，吸引读者的阅读兴趣/将两个短语加以并列，与两封书信的视角相呼应/含蓄深沉，蕴含哲思(2分)。\n\n(6分。内容方面2分，主题方面2分，语言方面2分)","textPreview":"答案与解析 | 示例二：我选②《飞翔的歌唱者和沉默的固守者》。理由:(1)内容上，准确概括两者的特点:云雀是飞翔的歌唱者，沙粒是沉默的固守者(2分)。(2)暗含文本主题，引发对动与静、歌唱与沉默的思考(2分)。(3)运用一组对比的短语“飞翔的歌唱者”“沉默的固守者”，形成悬...","textChars":210,"textLines":4,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/euos6r","slide":43,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/uh4sdq","slide":44,"title":"材料三：沙粒与云雀 · 标题题","textShapes":9}
+{"kind":"shape","id":"sh/nyd0z610","slide":44,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/cj6tovah","slide":44,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/54zidony","slide":44,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/upwb2hwf","slide":44,"text":"材料三：沙粒与云雀 · 标题题","textPreview":"材料三：沙粒与云雀 · 标题题","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/nap4r65w","slide":44,"text":"44","textPreview":"44","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/cvixczed","slide":44,"text":"标题题先判断，不急着看解析","textPreview":"标题题先判断，不急着看解析","textChars":13,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/5gbq1ory","slide":44,"text":"请学生先选，再说出一个文本依据。","textPreview":"请学生先选，再说出一个文本依据。","textChars":16,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/u18jqh0f","slide":44,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/jm1cfa9w","slide":44,"bbox":[132,304,470,96]}
+{"kind":"textbox","id":"sh/b6xkf6dc","slide":44,"text":"①","textPreview":"①","textChars":1,"textLines":1,"bbox":[156,335,64,34]}
+{"kind":"textbox","id":"sh/il0rqd4v","slide":44,"text":"让我们成为朋友","textPreview":"让我们成为朋友","textChars":7,"textLines":1,"bbox":[242,326,320,44]}
+{"kind":"shape","id":"sh/tcj6tova","slide":44,"bbox":[662,304,470,96]}
+{"kind":"textbox","id":"sh/0rqd4vmt","slide":44,"text":"②","textPreview":"②","textChars":1,"textLines":1,"bbox":[686,335,64,34]}
+{"kind":"textbox","id":"sh/byhgn29g","slide":44,"text":"飞翔的歌唱者和沉默的固守者","textPreview":"飞翔的歌唱者和沉默的固守者","textChars":13,"textLines":1,"bbox":[772,326,320,44]}
+{"kind":"shape","id":"sh/idonyd0z","slide":44,"bbox":[206,498,868,84]}
+{"kind":"textbox","id":"sh/t47y1kre","slide":44,"text":"先选：你准备从情感愿望讲，还是从形象对比讲？","textPreview":"先选：你准备从情感愿望讲，还是从形象对比讲？","textChars":22,"textLines":1,"bbox":[248,522,790,34]}
+{"kind":"notes","id":"nt/uh4sdq","slide":44,"text":"播放到这里先停顿，不揭示答案；让学生用四维标准先判断。"}
+{"kind":"slide","id":"sl/kzkan3","slide":45,"title":"材料三：沙粒与云雀 · 标题题解析","textShapes":13}
+{"kind":"shape","id":"sh/sneloj2t","slide":45,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/32lszqtc","slide":45,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/ahoza1gv","slide":45,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/lkjm1cfa","slide":45,"text":"材料三：沙粒与云雀 · 标题题解析","textPreview":"材料三：沙粒与云雀 · 标题题解析","textChars":17,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/szqtcj6t","slide":45,"text":"45","textPreview":"45","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/3ex0nuxc","slide":45,"text":"解析：两个标题都能选，关键是角度自洽","textPreview":"解析：两个标题都能选，关键是角度自洽","textChars":18,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/at47y1kr","slide":45,"text":"开放题不是找唯一答案，而是看证据能否支撑选择。","textPreview":"开放题不是找唯一答案，而是看证据能否支撑选择。","textChars":23,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/loj2t83i","slide":45,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/w3m94fu1","slide":45,"bbox":[92,274,480,104]}
+{"kind":"textbox","id":"sh/udg7adsj","slide":45,"text":"标题①","textPreview":"标题①","textChars":3,"textLines":1,"bbox":[116,292,110,30]}
+{"kind":"textbox","id":"sh/nyd0z610","slide":45,"text":"紧扣沙粒想交朋友、云雀真诚回信，突出万物沟通亲近。","textPreview":"紧扣沙粒想交朋友、云雀真诚回信，突出万物沟通亲近。","textChars":25,"textLines":1,"bbox":[230,294,300,52]}
+{"kind":"shape","id":"sh/cj6tovah","slide":45,"bbox":[640,274,480,104]}
+{"kind":"textbox","id":"sh/54zidony","slide":45,"text":"语言","textPreview":"语言","textChars":2,"textLines":1,"bbox":[664,292,110,30]}
+{"kind":"textbox","id":"sh/upwb2hwf","slide":45,"text":"祈使句语气亲切，和书信体、童趣语言相宜。","textPreview":"祈使句语气亲切，和书信体、童趣语言相宜。","textChars":20,"textLines":1,"bbox":[778,294,300,52]}
+{"kind":"shape","id":"sh/nap4r65w","slide":45,"bbox":[92,420,480,104]}
+{"kind":"textbox","id":"sh/cvixczed","slide":45,"text":"标题②","textPreview":"标题②","textChars":3,"textLines":1,"bbox":[116,438,110,30]}
+{"kind":"textbox","id":"sh/5gbq1ory","slide":45,"text":"概括云雀飞翔歌唱、沙粒沉默固守的特点。","textPreview":"概括云雀飞翔歌唱、沙粒沉默固守的特点。","textChars":19,"textLines":1,"bbox":[230,440,300,52]}
+{"kind":"shape","id":"sh/u18jqh0f","slide":45,"bbox":[640,420,480,104]}
+{"kind":"textbox","id":"sh/jm1cfa9w","slide":45,"text":"哲理","textPreview":"哲理","textChars":2,"textLines":1,"bbox":[664,438,110,30]}
+{"kind":"textbox","id":"sh/bm58z25k","slide":45,"text":"引发对动与静、歌唱与沉默的思考。","textPreview":"引发对动与静、歌唱与沉默的思考。","textChars":16,"textLines":1,"bbox":[778,440,300,52]}
+{"kind":"textbox","id":"sh/m1cfa9w3","slide":45,"text":"这类题要先说“我选的角度”，再用原文坐实。","textPreview":"这类题要先说“我选的角度”，再用原文坐实。","textChars":21,"textLines":1,"bbox":[142,594,996,38]}
+{"kind":"notes","id":"nt/kzkan3","slide":45,"text":"解析页：把原题答案拆成内容、主题、结构、表达四类。"}
+{"kind":"slide","id":"sl/fqkg0s","slide":46,"title":"材料四：大地的滋味","textShapes":5}
+{"kind":"shape","id":"sh/0nuxc3yl","slide":46,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/72x4nap4","slide":46,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/ih4byhgn","slide":46,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/pkzupwb2","slide":46,"text":"材料四：大地的滋味","textPreview":"材料四：大地的滋味","textChars":9,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/0z61032l","slide":46,"text":"46","textPreview":"46","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/7ed8bat4","slide":46,"text":"4. （2026•荔湾区校级二模）阅读下面文字，完成问题。","textPreview":"4. （2026•荔湾区校级二模）阅读下面文字，完成问题。","textChars":29,"textLines":1,"bbox":[76,130,700,34]}
+{"kind":"textbox","id":"sh/itgfmlkj","slide":46,"text":"文采不是唯一标准，标题更要能统领全文","textPreview":"文采不是唯一标准，标题更要能统领全文","textChars":18,"textLines":1,"bbox":[76,188,940,78]}
+{"kind":"shape","id":"sh/pwb2hwfy","slide":46,"bbox":[104,350,1010,150]}
+{"kind":"textbox","id":"sh/0bi9s36h","slide":46,"text":"先读原文：圈标题关键词可能对应的内容\n再做原题：题目不是孤立训练，解析要回到文章\n最后精讲标题题：比较两个标题的内容范围、主题深度和表达效果","textPreview":"先读原文：圈标题关键词可能对应的内容 | 再做原题：题目不是孤立训练，解析要回到文章 | 最后精讲标题题：比较两个标题的内容范围、主题深度和表达效果","textChars":70,"textLines":3,"bbox":[146,382,920,88]}
+{"kind":"notes","id":"nt/fqkg0s","slide":46,"text":"进入一篇材料前，先交代这一篇训练的主问题。"}
+{"kind":"slide","id":"sl/k52g9a","slide":47,"title":"材料四：大地的滋味 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/1kre1w7m","slide":47,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/uxc3ylc7","slide":47,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/ji5snelo","slide":47,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/crmhk3q5","slide":47,"text":"材料四：大地的滋味 · 原文","textPreview":"材料四：大地的滋味 · 原文","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/1cfa9w3m","slide":47,"text":"47","textPreview":"47","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/ulwval87","slide":47,"text":"原文阅读 1/3","textPreview":"原文阅读 1/3","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/j6tovaho","slide":47,"text":"先完整读材料，再回到题目。读的时候圈标题关键词、反复对象和结尾句。","textPreview":"先完整读材料，再回到题目。读的时候圈标题关键词、反复对象和结尾句。","textChars":33,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/8nqxs72x","slide":47,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/18jqh0fe","slide":47,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/psfil0rq","slide":47,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/w7mp0bi9","slide":47,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/7mp0bi9s","slide":47,"text":"大地的滋味\n\n刘江滨\n\n①《道德经》中云：“五色令人目盲，五音令人耳聋，五味令人口爽。”大地之上，有青黄赤白黑五色入目，有宫商角徵羽五音贯耳，还有酸甜苦辣咸五味咂舌，色、声、味都在大自然之间蓬勃地存在着，呈现着，这是多么神奇瑰丽的景象！\n\n②五味中，甜绝对是当仁不让的一号主角，最受人们喜爱追捧。\n\n③或许我们生下来品啜的第一口乳汁是甜的，那是生命的芬芳，从此烙下深刻的味蕾记忆。大地和上苍也从不吝啬甜品的供应，如草盈野，如花满地。","textPreview":"大地的滋味 |  | 刘江滨 |  | ①《道德经》中云：“五色令人目盲，五音令人耳聋，五味令人口爽。”大地之上，有青黄赤白黑五色入目，有宫商角徵羽五音贯耳，还有酸甜苦辣咸五味咂舌，色、声、味都在大自然之间蓬勃地存在着，呈现着，这是多么神奇瑰丽的景象！ |  | ②五味中，...","textChars":216,"textLines":9,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/e1w7mp0b","slide":47,"text":"④每一个童年都有一个“甜蜜史”，跟糖、草秫（shú）、瓜果有关。有一种野草叫茅根，长在坡坡坎坎，它的根茎呈白色，一节一节的，挺长，从地下拔出来擦去泥土搁嘴里嚼一嚼，汁液不盛，甜味也淡淡的。瓜地、果园都有人看管，最诱人也最易吃到嘴的是“甜棒”，即玉米秸（jiē）和高粱秆。浓密的庄稼稞（kē）形成天然的屏障，趁割草的时候，钻进去谁也瞧不见。此时挑着粗壮的秸秆用镰刀砍断，用牙擗（pǐ）去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来，满口甜汁，妙不可言。\n\n⑤大地上的植物结出的瓜果庶几都是甜的，甜瓜、西瓜，苹果，桃子、梨子、香蕉、葡萄……只不过甜味浓淡不一、纯度不同。人们醉心于甜味给舌头和口腔带来的美妙感受，并将这种滋味延伸到人生的方方面面。譬如，相貌要甜美，声音要甜润，爱情要甜蜜，睡觉做梦都要香甜，日子更是要比蜜甜。总之，甜就是幸福，欢快的滋味。\n\n⑥大地上长着甜，也长着苦。\n\n⑦我的第一口苦水来自我村的一眼老井。有一天我在街上疯跑着玩儿，满头大汗，极渴，在一拐角处看到一个我叫婶子的妇人从井里提出一臂水，我趴到臂边便喝，妇人欲制止，已来不及了，我喝到嘴里一口水，随即噗的一下吐了出来，真苦啊，且涩，吐出来之后舌头还打皱。","textPreview":"④每一个童年都有一个“甜蜜史”，跟糖、草秫（shú）、瓜果有关。有一种野草叫茅根，长在坡坡坎坎，它的根茎呈白色，一节一节的，挺长，从地下拔出来擦去泥土搁嘴里嚼一嚼，汁液不盛，甜味也淡淡的。瓜地、果园都有人看管，最诱人也最易吃到嘴的是“甜棒”，即玉米秸（jiē）和高粱秆。浓密...","textChars":511,"textLines":7,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/k52g9a","slide":47,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/za0gv1","slide":48,"title":"材料四：大地的滋味 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/p0bi9s36","slide":48,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/i9s36hcr","slide":48,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/bulwval8","slide":48,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/032lszqt","slide":48,"text":"材料四：大地的滋味 · 原文","textPreview":"材料四：大地的滋味 · 原文","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/tovahoza","slide":48,"text":"48","textPreview":"48","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/ixczed8v","slide":48,"text":"原文阅读 2/3","textPreview":"原文阅读 2/3","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/bi9s36hc","slide":48,"text":"继续读原文，关注材料如何推进内容和主题。","textPreview":"继续读原文，关注材料如何推进内容和主题。","textChars":20,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/0rqd4vmt","slide":48,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/tcj6tova","slide":48,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/hwfyxobm","slide":48,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/obm58z25","slide":48,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":48,"text":"⑧树叶草叶大多都是苦的。最苦的草叫黄连，有句歇后语叫“哑巴吃黄连——有苦说不出。”这黄连是中药，而几乎所有中草药都苦，应了那句“良药苦口”之说。那年我生病煎了中药汤，捏住鼻子灌了进去、赶紧用糖来甜口，还是压不住，真是苦不堪言。不是所有的苦都不堪，譬如苦瓜，表面看品相不佳，一身疙瘩颇类癞蛤蟆，吃到嘴里，苦中却有一股清新的味道，耐人回味。又如咖啡，那种又苦又香的味道特别容易让人沉迷上瘾。《诗经》有云：“谁谓茶苦，其甘如荠。”这种甘苦相依，苦尽甘来的滋味蕴藏着人生的真谛。","textPreview":"⑧树叶草叶大多都是苦的。最苦的草叫黄连，有句歇后语叫“哑巴吃黄连——有苦说不出。”这黄连是中药，而几乎所有中草药都苦，应了那句“良药苦口”之说。那年我生病煎了中药汤，捏住鼻子灌了进去、赶紧用糖来甜口，还是压不住，真是苦不堪言。不是所有的苦都不堪，譬如苦瓜，表面看品相不佳，一...","textChars":235,"textLines":1,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/65wjudg7","slide":48,"text":"⑨有趣的是，甜虽为人喜，人们却对苦的体味更深刻更宽广，好像有一肚子苦水无处倾泻。痛苦，艰苦，吃苦、受苦，辛苦，疾苦……汇成一句悠长的嗟叹：苦——哇！其实，苦与甜是相对的，不吃苦中苦，哪知甜上甜？就像瓜蔓蒂根是苦的，而甜只是结出的果。苦，虽不堪言，却最耐人品咂回味，最为人间值得。\n\n⑩对酸的最早体验是吃青杏。当小小青杏挂满枝头的时候，小孩子就忍不住下手了，咬到嘴里，吃吃哈哈那叫个酸，口水立马充溢口腔，一旁看的人都能流出哈喇子。更要命的是，酸倒了牙，整个腮帮子木木的，那牙不能沾任何食物，酸疼，得好久才能恢复。尽管如此，我们对酸味还是乐此不疲。“望梅止渴”的故事人人皆知。许多水果在未成熟时都是青色的，亦青涩，除了青杏，还有青枣、青葡萄、青苹果、李子等，熟了之后由青变红（黄、紫），由酸变甜。这是不是与人生很像？\n\n⑪把辣归到五味中实在是一种误读，辣是一种作用于舌头的痛觉，而非味道。葱、姜、薜（bì）、辣椒是常见的辣味蔬菜，其中最辣的是辣椒。《通俗文》云：“辛甚日辣。”辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。由辣的词性本意而引出与人有关的警喻，做事老辣、作风泼辣等。","textPreview":"⑨有趣的是，甜虽为人喜，人们却对苦的体味更深刻更宽广，好像有一肚子苦水无处倾泻。痛苦，艰苦，吃苦、受苦，辛苦，疾苦……汇成一句悠长的嗟叹：苦——哇！其实，苦与甜是相对的，不吃苦中苦，哪知甜上甜？就像瓜蔓蒂根是苦的，而甜只是结出的果。苦，虽不堪言，却最耐人品咂回味，最为人间值...","textChars":506,"textLines":5,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/za0gv1","slide":48,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/vcb3ly","slide":49,"title":"材料四：大地的滋味 · 原文","textShapes":7}
+{"kind":"shape","id":"sh/7u54zido","slide":49,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/wfyxobm5","slide":49,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/l0rqd4vm","slide":49,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/eloj2t83","slide":49,"text":"材料四：大地的滋味 · 原文","textPreview":"材料四：大地的滋味 · 原文","textChars":14,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/36hcrmhk","slide":49,"text":"49","textPreview":"49","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/wra5gbq1","slide":49,"text":"原文阅读 3/3","textPreview":"原文阅读 3/3","textChars":8,"textLines":1,"bbox":[76,86,970,44]}
+{"kind":"textbox","id":"sh/lc7u54zi","slide":49,"text":"继续读原文，关注材料如何推进内容和主题。","textPreview":"继续读原文，关注材料如何推进内容和主题。","textChars":20,"textLines":1,"bbox":[78,132,1020,26]}
+{"kind":"shape","id":"sh/epkzupwb","slide":49,"bbox":[76,170,330,0]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":49,"text":"原文","textPreview":"原文","textChars":2,"textLines":1,"bbox":[78,184,118,34]}
+{"kind":"shape","id":"sh/nqxs72x4","slide":49,"bbox":[58,216,570,446]}
+{"kind":"shape","id":"sh/u54zidon","slide":49,"bbox":[652,216,570,446]}
+{"kind":"textbox","id":"sh/5sneloj2","slide":49,"text":"⑫少小家贫，常吃腌制的萝卜、芥菜疙瘩、韭菜花、大蒜等成菜，积习至今难改，馒头、粥加咸菜就是最好的饭食。北方人爱吃咸，口味重。咸味不仅是调味，更是生命的必需。\n\n⑬盐同样来自大地，是大地慷慨的馈赠。旧时农村有大片大片的盐碱地、土壤贫瘠，寸草不生。土地表层有一层松软的盐土，农人将它用铲子刮了，放到一个专门砌成的盐池用清水反复浸泡导引，流出的盐水经太阳晒或用大锅煮、白色的晶体盐就产生了，这叫“淋小盐”。","textPreview":"⑫少小家贫，常吃腌制的萝卜、芥菜疙瘩、韭菜花、大蒜等成菜，积习至今难改，馒头、粥加咸菜就是最好的饭食。北方人爱吃咸，口味重。咸味不仅是调味，更是生命的必需。 |  | ⑬盐同样来自大地，是大地慷慨的馈赠。旧时农村有大片大片的盐碱地、土壤贫瘠，寸草不生。土地表层有一层松软的盐...","textChars":200,"textLines":3,"bbox":[82,236,522,406]}
+{"kind":"textbox","id":"sh/cbulwval","slide":49,"text":"⑭五味是大地的滋味，也是人生的滋味。“五味杂陈”“百感交集”之谓好像略有消极额唐之意，其实在我看来是盈满，是丰厚，是自足、是上苍的赐予。人活一世，少了哪般滋味岂不是都觉乏味，都感寡淡？只是，甜了别沉溺，苦了别沉沦，酸了别倒牙，辣了别放任，咸了别过度，要以它味来填充，来调和，来平衡。苏东坡尝云“人间有味是清欢”，善于知味于口，深味于心，才会不负大地，不负人生。\n\n（有删改）","textPreview":"⑭五味是大地的滋味，也是人生的滋味。“五味杂陈”“百感交集”之谓好像略有消极额唐之意，其实在我看来是盈满，是丰厚，是自足、是上苍的赐予。人活一世，少了哪般滋味岂不是都觉乏味，都感寡淡？只是，甜了别沉溺，苦了别沉沦，酸了别倒牙，辣了别放任，咸了别过度，要以它味来填充，来调和，...","textChars":187,"textLines":3,"bbox":[676,236,522,406]}
+{"kind":"notes","id":"nt/vcb3ly","slide":49,"text":"原文页：让学生在纸质资料上圈画，PPT 用于投屏同步。"}
+{"kind":"slide","id":"sl/jodfew","slide":50,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/90je9cvi","slide":50,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/yd0z6103","slide":50,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/rytsvu9k","slide":50,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/g7adsji5","slide":50,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/9s36hcrm","slide":50,"text":"50","textPreview":"50","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/y1kre1w7","slide":50,"text":"第 1 题：先思考","textPreview":"第 1 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/rmhk3q5o","slide":50,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/g3ex0nux","slide":50,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/5o7qpg3e","slide":50,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/5gbq1ory","slide":50,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/cvixczed","slide":50,"text":"（1）下列对本文的理解和分析，不正确的一项是（    ）（3分）\nA.作者善用通感手法，如“睡觉做梦都要香甜，日子更是要比蜜甜”，富有表现力和感染力。\nB.文章多处引用典籍，语言典雅优美，同时科学分析五味的化学成分，使文章更具有科学性。\nC.文章综合运用记叙、描写、抒情、议论等多种表达方式，使文章既有诗意，又富有哲理性。\nD.作者结合自己的人生经历，依次描述了甜、苦、酸、辣、咸给人的感受，隐喻了人生滋味。","textPreview":"（1）下列对本文的理解和分析，不正确的一项是（    ）（3分） | A.作者善用通感手法，如“睡觉做梦都要香甜，日子更是要比蜜甜”，富有表现力和感染力。 | B.文章多处引用典籍，语言典雅优美，同时科学分析五味的化学成分，使文章更具有科学性。 | C.文章综合运用记叙、描...","textChars":204,"textLines":5,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/nap4r65w","slide":50,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/upwb2hwf","slide":50,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/jodfew","slide":50,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/j8au9l","slide":51,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/hcrmhk3q","slide":51,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/al87ed8b","slide":51,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/z61032ls","slide":51,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":51,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/h0fepkzu","slide":51,"text":"51","textPreview":"51","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":51,"text":"第 1 题：答案解析 1/1","textPreview":"第 1 题：答案解析 1/1","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/zupwb2hw","slide":51,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/obm58z25","slide":51,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":51,"text":"第1题","textPreview":"第1题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/t83itgfm","slide":51,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/4nap4r65","slide":51,"text":"（1）下列对本文的理解和分析，不正确的一项是（    ）（3分）\nA.作者善用通感手法，如“睡觉做梦都要香甜，日子更是要比蜜甜”，富有表现力和感染力。\nB.文章多处引用典籍，语言典雅优美，同时科学分析五味的化学成分，使文章更具有科学性。\nC.文章综合运用记叙、描写、抒情、议论等多种表达方式，使文章既有诗意，又富有哲理性。\nD.作者结合自己的人生经历，依次描述了甜、苦、酸、辣、咸给人的感受，隐喻了人生滋味。","textPreview":"（1）下列对本文的理解和分析，不正确的一项是（    ）（3分） | A.作者善用通感手法，如“睡觉做梦都要香甜，日子更是要比蜜甜”，富有表现力和感染力。 | B.文章多处引用典籍，语言典雅优美，同时科学分析五味的化学成分，使文章更具有科学性。 | C.文章综合运用记叙、描...","textChars":204,"textLines":5,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/b2hwfyxo","slide":51,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/mhk3q5o7","slide":51,"text":"答案与解析\n答案：B\n\n【解析】B.有误，文章没有科学分析五味的化学成分。","textPreview":"答案与解析 | 答案：B |  | 【解析】B.有误，文章没有科学分析五味的化学成分。","textChars":37,"textLines":4,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/j8au9l","slide":51,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/valhce","slide":52,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/pwb2hwfy","slide":52,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/i5sneloj","slide":52,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/7qpg3ex0","slide":52,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/wjudg7ad","slide":52,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/p4r65wju","slide":52,"text":"52","textPreview":"52","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/ed8v6psf","slide":52,"text":"第 2 题：先思考","textPreview":"第 2 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":52,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/0nuxc3yl","slide":52,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/p8nqxs72","slide":52,"text":"第2题","textPreview":"第2题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/xobm58z2","slide":52,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/83itgfml","slide":52,"text":"（2）文中第⑥段说“大地上长着甜，也长着苦”。作者写了大地上的哪几种苦？分别有什么特点？请分点概述。（4分）","textPreview":"（2）文中第⑥段说“大地上长着甜，也长着苦”。作者写了大地上的哪几种苦？分别有什么特点？请分点概述。（4分）","textChars":54,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/fil0rqd4","slide":52,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/qxs72x4n","slide":52,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/valhce","slide":52,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/3jeh13","slide":53,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/mtwra5gb","slide":53,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/xkf6dcbu","slide":53,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/4zidonyd","slide":53,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/f6dcbulw","slide":53,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/mlkjm1cf","slide":53,"text":"53","textPreview":"53","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/xc3ylc7u","slide":53,"text":"第 2 题：答案解析 1/1","textPreview":"第 2 题：答案解析 1/1","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/4r65wjud","slide":53,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/fu18jqh0","slide":53,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/m94fu18j","slide":53,"text":"第2题","textPreview":"第2题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/sji5snel","slide":53,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/h4byhgn2","slide":53,"text":"（2）文中第⑥段说“大地上长着甜，也长着苦”。作者写了大地上的哪几种苦？分别有什么特点？请分点概述。（4分）","textPreview":"（2）文中第⑥段说“大地上长着甜，也长着苦”。作者写了大地上的哪几种苦？分别有什么特点？请分点概述。（4分）","textChars":54,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/adsji5sn","slide":53,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/3ylc7u54","slide":53,"text":"答案与解析\n①老井的水：苦涩；\n\n②几乎所有的中草药（或黄连）：苦不堪言 但又有益的苦；\n\n③苦瓜：清新的苦；\n\n④咖啡：又苦又香。","textPreview":"答案与解析 | ①老井的水：苦涩； |  | ②几乎所有的中草药（或黄连）：苦不堪言 但又有益的苦； |  | ③苦瓜：清新的苦； |  | ④咖啡：又苦又香。","textChars":66,"textLines":8,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/3jeh13","slide":53,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/toegnh","slide":54,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/rmhk3q5o","slide":54,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/g7adsji5","slide":54,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/9s36hcrm","slide":54,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/yd0z6103","slide":54,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/rytsvu9k","slide":54,"text":"54","textPreview":"54","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/gfmlkjm1","slide":54,"text":"第 3 题：先思考","textPreview":"第 3 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":54,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/ylc7u54z","slide":54,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/r65wjudg","slide":54,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/vahoza1g","slide":54,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/6tovahoz","slide":54,"text":"（3）按照括号中的提示，赏析下列划线句子。（4分）\nA.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度）\nB.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）","textPreview":"（3）按照括号中的提示，赏析下列划线句子。（4分） | A.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度） | B.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）","textChars":110,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/dg7adsji","slide":54,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/ovahoza1","slide":54,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/toegnh","slide":54,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/m98kfs","slide":55,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/ed8bat47","slide":55,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/l0rqd4vm","slide":55,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/wfyxobm5","slide":55,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/36hcrmhk","slide":55,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/eloj2t83","slide":55,"text":"55","textPreview":"55","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/lc7u54zi","slide":55,"text":"第 3 题：答案解析 1/3","textPreview":"第 3 题：答案解析 1/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/wra5gbq1","slide":55,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/7adsji5s","slide":55,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/epkzupwb","slide":55,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/8jqh0fep","slide":55,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/x4nap4r6","slide":55,"text":"（3）按照括号中的提示，赏析下列划线句子。（4分）\nA.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度）\nB.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）","textPreview":"（3）按照括号中的提示，赏析下列划线句子。（4分） | A.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度） | B.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）","textChars":110,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/qd4vmtwr","slide":55,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/fyxobm58","slide":55,"text":"答案与解析\nA.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度）\n\n示例一：动词运用：句子中“用牙擗”和“大嚼”两个动词，生动地展现了人物用牙齿刺去外皮和咀嚼食物的动态过程。写出了亲手劳作、享受自然馈赠的满足感。\n\n示例二：叠词运用：“一条一条”和“一口一口”这两组叠词，写出了吃甘蔗动作的重复性，也传递出节奏感和韵律美，增强了描写的生动性和真实感。","textPreview":"答案与解析 | A.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度） |  | 示例一：动词运用：句子中“用牙擗”和“大嚼”两个动词，生动地展现了人物用牙齿刺去外皮和咀嚼食物的动态过程。写出了亲手劳作、享受自然馈赠的满足感。 |  | 示例二：叠词运用：“一条...","textChars":182,"textLines":6,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/m98kfs","slide":55,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/qqazos","slide":56,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/f6dcbulw","slide":56,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/4r65wjud","slide":56,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/xc3ylc7u","slide":56,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/mtwra5gb","slide":56,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/fepkzupw","slide":56,"text":"56","textPreview":"56","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/4zidonyd","slide":56,"text":"第 3 题：答案解析 2/3","textPreview":"第 3 题：答案解析 2/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/xkf6dcbu","slide":56,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/qxs72x4n","slide":56,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/fil0rqd4","slide":56,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/fepkzupw","slide":56,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/mtwra5gb","slide":56,"text":"（3）按照括号中的提示，赏析下列划线句子。（4分）\nA.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度）\nB.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）","textPreview":"（3）按照括号中的提示，赏析下列划线句子。（4分） | A.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度） | B.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）","textChars":110,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/xkf6dcbu","slide":56,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/4zidonyd","slide":56,"text":"答案与解析\n示例三：拟声词运用：“咔嚓咔嚓”是一个拟声词，它模拟了咀嚼食物时发出的声音，使得读者仿佛能够听到那种清脆、悦耳的声音，进一步增强了场景的真实感和代入感。\n\nB.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）\n\n示例一：运用比喻的修辞手法，把辣椒比作利刃，生动形象地展示出辣椒独特的锥形，表现了辣椒给人的火辣辣的感受（或：表达出人们对“辣”的独特情感）","textPreview":"答案与解析 | 示例三：拟声词运用：“咔嚓咔嚓”是一个拟声词，它模拟了咀嚼食物时发出的声音，使得读者仿佛能够听到那种清脆、悦耳的声音，进一步增强了场景的真实感和代入感。 |  | B.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞...","textChars":206,"textLines":6,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/qqazos","slide":56,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/hs9hoc","slide":57,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/cbulwval","slide":57,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/nqxs72x4","slide":57,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/u54zidon","slide":57,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/5kb6xkf6","slide":57,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/czed8v6p","slide":57,"text":"57","textPreview":"57","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/neloj2t8","slide":57,"text":"第 3 题：答案解析 3/3","textPreview":"第 3 题：答案解析 3/3","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/ytsvu9kn","slide":57,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/58z25kb6","slide":57,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/gn29gr2p","slide":57,"text":"第3题","textPreview":"第3题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/u54zidon","slide":57,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/nqxs72x4","slide":57,"text":"（3）按照括号中的提示，赏析下列划线句子。（4分）\nA.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度）\nB.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）","textPreview":"（3）按照括号中的提示，赏析下列划线句子。（4分） | A.用牙擗去一条一条篾皮，一口一口咔嚓咔嚓大嚼起来。（从词语角度） | B.辣椒圆锥的形状像一把弯曲的利刃，由青转红，收后堆在场院，红彤彤的仿佛平地燃起大火。（从修辞角度）","textChars":110,"textLines":3,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/cbulwval","slide":57,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/5sneloj2","slide":57,"text":"答案与解析\n示例二：运用比喻的修辞手法，把堆起来的红彤彤的辣椒比作平地燃起的大火，让读者感受到辣椒堆成山的火热、火辣（或：写出了辣椒给人带来的热烈和生机）","textPreview":"答案与解析 | 示例二：运用比喻的修辞手法，把堆起来的红彤彤的辣椒比作平地燃起的大火，让读者感受到辣椒堆成山的火热、火辣（或：写出了辣椒给人带来的热烈和生机）","textChars":77,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/hs9hoc","slide":57,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/0seo39","slide":58,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/hk3q5o7q","slide":58,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/6xkf6dcb","slide":58,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/zed8v6ps","slide":58,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/obm58z25","slide":58,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/hwfyxobm","slide":58,"text":"58","textPreview":"58","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/65wjudg7","slide":58,"text":"第 4 题：先思考","textPreview":"第 4 题：先思考","textChars":9,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/zqtcj6to","slide":58,"text":"先看题目，独立判断或写下关键词；下一步再核对答案。","textPreview":"先看题目，独立判断或写下关键词；下一步再核对答案。","textChars":25,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/sfil0rqd","slide":58,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/h0fepkzu","slide":58,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/5wjudg7a","slide":58,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/gbq1oryt","slide":58,"text":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textPreview":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textChars":52,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/nuxc3ylc","slide":58,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/y90je9cv","slide":58,"text":"下一步显示答案与解析","textPreview":"下一步显示答案与解析","textChars":10,"textLines":1,"bbox":[112,526,1056,48]}
+{"kind":"notes","id":"nt/0seo39","slide":58,"text":"先停在题目，让学生口答或写关键词；下一页同版式揭示答案与解析。"}
+{"kind":"slide","id":"sl/6qkg7x","slide":59,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/adsji5sn","slide":59,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/h4byhgn2","slide":59,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/sji5snel","slide":59,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/3m94fu18","slide":59,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/a5gbq1or","slide":59,"text":"59","textPreview":"59","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/lszqtcj6","slide":59,"text":"第 4 题：答案解析 1/4","textPreview":"第 4 题：答案解析 1/4","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/s72x4nap","slide":59,"text":"核对答案时，先找原文依据，再看评分表达。","textPreview":"核对答案时，先找原文依据，再看评分表达。","textChars":20,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/zidonyd0","slide":59,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/a1gvy90j","slide":59,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/8nqxs72x","slide":59,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/18jqh0fe","slide":59,"text":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textPreview":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textChars":52,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/qh0fepkz","slide":59,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/j2t83itg","slide":59,"text":"答案与解析\n示例一：我认为，用“人间有味是清欢”做标题更好。因为①它引用了苏东坡的诗句，更有文学性。与结尾的“苏东坡尝云‘人间有味是清欢’”相呼应，使结构更加完整。②“人间有味是清欢”的意思是人间真正有味道的还是清淡的欢愉。③既表现了文章的内容是在写酸甜苦辣咸五种“人间的滋味”，④又凸显了主旨：人生有酸甜苦辣咸，但少了哪般滋味或者哪般滋味过了都不好，只有五味调和、平衡，","textPreview":"答案与解析 | 示例一：我认为，用“人间有味是清欢”做标题更好。因为①它引用了苏东坡的诗句，更有文学性。与结尾的“苏东坡尝云‘人间有味是清欢’”相呼应，使结构更加完整。②“人间有味是清欢”的意思是人间真正有味道的还是清淡的欢愉。③既表现了文章的内容是在写酸甜苦辣咸五种“人间...","textChars":186,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/6qkg7x","slide":59,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/rby7fy","slide":60,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/5o7qpg3e","slide":60,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/yxobm58z","slide":60,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/nih4byhg","slide":60,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/gr2p8nqx","slide":60,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/9cvixcze","slide":60,"text":"60","textPreview":"60","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/ylc7u54z","slide":60,"text":"第 4 题：答案解析 2/4","textPreview":"第 4 题：答案解析 2/4","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/r65wjudg","slide":60,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/gfmlkjm1","slide":60,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":60,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/lc7u54zi","slide":60,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/wra5gbq1","slide":60,"text":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textPreview":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textChars":52,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/36hcrmhk","slide":60,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/eloj2t83","slide":60,"text":"答案与解析\n不过度快乐、悲伤、任性，达到清淡，才会不负人生。⑤而“大地的滋味”主要是概括了文章的内容，显得比较普通。所以“人间有味是清欢”更好。","textPreview":"答案与解析 | 不过度快乐、悲伤、任性，达到清淡，才会不负人生。⑤而“大地的滋味”主要是概括了文章的内容，显得比较普通。所以“人间有味是清欢”更好。","textChars":72,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/rby7fy","slide":60,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/h7c3rl","slide":61,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/9s36hcrm","slide":61,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/y1kre1w7","slide":61,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/rmhk3q5o","slide":61,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/gfmlkjm1","slide":61,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":61,"text":"61","textPreview":"61","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/yd0z6103","slide":61,"text":"第 4 题：答案解析 3/4","textPreview":"第 4 题：答案解析 3/4","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/rytsvu9k","slide":61,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/gr2p8nqx","slide":61,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/9cvixcze","slide":61,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/tovahoza","slide":61,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/032lszqt","slide":61,"text":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textPreview":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textChars":52,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/bi9s36hc","slide":61,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/ixczed8v","slide":61,"text":"答案与解析\n示例二：我认为，用“大地的滋味”做标题好。因为①它运用了比拟（拟人） 手法，赋予大地以生命和情感，更加生动、亲切，设置了悬念，吸引读者阅读兴趣。②这个标题高度概括了全文内容，文章分别叙述了大地赋予的五种滋味。③在结尾段总结了“大地的滋味是人生的滋味”，与结尾呼应，使行文结构更加严整。④同时暗示了主旨：大地赋予人类的酸甜苦辣咸五种滋味，其实是人生的滋味，","textPreview":"答案与解析 | 示例二：我认为，用“大地的滋味”做标题好。因为①它运用了比拟（拟人） 手法，赋予大地以生命和情感，更加生动、亲切，设置了悬念，吸引读者阅读兴趣。②这个标题高度概括了全文内容，文章分别叙述了大地赋予的五种滋味。③在结尾段总结了“大地的滋味是人生的滋味”，与结尾...","textChars":183,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/h7c3rl","slide":61,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/9ot2g7","slide":62,"title":"材料四：大地的滋味 · 原题演练","textShapes":7}
+{"kind":"shape","id":"sh/upwb2hwf","slide":62,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/5gbq1ory","slide":62,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/cvixczed","slide":62,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/nyd0z610","slide":62,"text":"材料四：大地的滋味 · 原题演练","textPreview":"材料四：大地的滋味 · 原题演练","textChars":16,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/udg7adsj","slide":62,"text":"62","textPreview":"62","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/54zidony","slide":62,"text":"第 4 题：答案解析 4/4","textPreview":"第 4 题：答案解析 4/4","textChars":14,"textLines":1,"bbox":[76,110,940,48]}
+{"kind":"textbox","id":"sh/cj6tovah","slide":62,"text":"继续核对本题解析，区分原文依据和得分表达。","textPreview":"继续核对本题解析，区分原文依据和得分表达。","textChars":21,"textLines":1,"bbox":[78,166,1000,28]}
+{"kind":"shape","id":"sh/judg7ads","slide":62,"bbox":[76,208,330,0]}
+{"kind":"textbox","id":"sh/u9knih4b","slide":62,"text":"第4题","textPreview":"第4题","textChars":3,"textLines":1,"bbox":[86,230,118,34]}
+{"kind":"shape","id":"sh/47y1kre1","slide":62,"bbox":[74,274,1132,160]}
+{"kind":"textbox","id":"sh/tsvu9kni","slide":62,"text":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textPreview":"（4）有人说用“人间有味是清欢”做标题比原标题“大地的滋味”好，请你结合文章内容谈谈自己的看法。（6分）","textChars":52,"textLines":1,"bbox":[112,296,1056,108]}
+{"kind":"shape","id":"sh/m1cfa9w3","slide":62,"bbox":[74,456,1132,194]}
+{"kind":"textbox","id":"sh/bm58z25k","slide":62,"text":"答案与解析\n是上苍的赐予。五味俱全，才能不负人生。⑤而“人间有味是清欢”虽然很有文采，但对文章内容的统领性不足。所以“大地的滋味”更好。","textPreview":"答案与解析 | 是上苍的赐予。五味俱全，才能不负人生。⑤而“人间有味是清欢”虽然很有文采，但对文章内容的统领性不足。所以“大地的滋味”更好。","textChars":68,"textLines":2,"bbox":[112,478,1056,144]}
+{"kind":"notes","id":"nt/9ot2g7","slide":62,"text":"先停在题目，让学生口答或写关键词；点击后再揭示答案与解析。"}
+{"kind":"slide","id":"sl/ci9ojp","slide":63,"title":"材料四：大地的滋味 · 标题题","textShapes":9}
+{"kind":"shape","id":"sh/onyd0z61","slide":63,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/z25kb6xk","slide":63,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/6hcrmhk3","slide":63,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/dg7adsji","slide":63,"text":"材料四：大地的滋味 · 标题题","textPreview":"材料四：大地的滋味 · 标题题","textChars":15,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/ovahoza1","slide":63,"text":"63","textPreview":"63","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/vahoza1g","slide":63,"text":"标题题先判断，不急着看解析","textPreview":"标题题先判断，不急着看解析","textChars":13,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/6tovahoz","slide":63,"text":"请学生先选，再说出一个文本依据。","textPreview":"请学生先选，再说出一个文本依据。","textChars":16,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/dsji5sne","slide":63,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/o7qpg3ex","slide":63,"bbox":[132,304,470,96]}
+{"kind":"textbox","id":"sh/q5o7qpg3","slide":63,"text":"原题","textPreview":"原题","textChars":2,"textLines":1,"bbox":[156,335,64,34]}
+{"kind":"textbox","id":"sh/jqh0fepk","slide":63,"text":"大地的滋味","textPreview":"大地的滋味","textChars":5,"textLines":1,"bbox":[242,326,320,44]}
+{"kind":"shape","id":"sh/8bat47y1","slide":63,"bbox":[662,304,470,96]}
+{"kind":"textbox","id":"sh/1w7mp0bi","slide":63,"text":"改题","textPreview":"改题","textChars":2,"textLines":1,"bbox":[686,335,64,34]}
+{"kind":"textbox","id":"sh/qh0fepkz","slide":63,"text":"人间有味是清欢","textPreview":"人间有味是清欢","textChars":7,"textLines":1,"bbox":[772,326,320,44]}
+{"kind":"shape","id":"sh/j2t83itg","slide":63,"bbox":[206,498,868,84]}
+{"kind":"textbox","id":"sh/8nqxs72x","slide":63,"text":"先判断：哪个标题更能统领“五味”和“人生滋味”？","textPreview":"先判断：哪个标题更能统领“五味”和“人生滋味”？","textChars":24,"textLines":1,"bbox":[248,522,790,34]}
+{"kind":"notes","id":"nt/ci9ojp","slide":63,"text":"播放到这里先停顿，不揭示答案；让学生用四维标准先判断。"}
+{"kind":"slide","id":"sl/i3c951","slide":64,"title":"材料四：大地的滋味 · 标题题解析","textShapes":13}
+{"kind":"shape","id":"sh/w7mp0bi9","slide":64,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/7mp0bi9s","slide":64,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/e1w7mp0b","slide":64,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/pg3ex0nu","slide":64,"text":"材料四：大地的滋味 · 标题题解析","textPreview":"材料四：大地的滋味 · 标题题解析","textChars":17,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/wval87ed","slide":64,"text":"64","textPreview":"64","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":64,"text":"解析：题目好不好，要看统领力","textPreview":"解析：题目好不好，要看统领力","textChars":14,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/epkzupwb","slide":64,"text":"《人间有味是清欢》有文采，但《大地的滋味》更直接统领全文。","textPreview":"《人间有味是清欢》有文采，但《大地的滋味》更直接统领全文。","textChars":29,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/lc7u54zi","slide":64,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/wra5gbq1","slide":64,"bbox":[92,274,480,104]}
+{"kind":"textbox","id":"sh/upwb2hwf","slide":64,"text":"原题","textPreview":"原题","textChars":2,"textLines":1,"bbox":[116,292,110,30]}
+{"kind":"textbox","id":"sh/nap4r65w","slide":64,"text":"高度概括全文内容：甜、苦、酸、辣、咸都来自大地。","textPreview":"高度概括全文内容：甜、苦、酸、辣、咸都来自大地。","textChars":24,"textLines":1,"bbox":[230,294,300,52]}
+{"kind":"shape","id":"sh/cvixczed","slide":64,"bbox":[640,274,480,104]}
+{"kind":"textbox","id":"sh/5gbq1ory","slide":64,"text":"主旨","textPreview":"主旨","textChars":2,"textLines":1,"bbox":[664,292,110,30]}
+{"kind":"textbox","id":"sh/udg7adsj","slide":64,"text":"结尾升华为“大地的滋味，也是人生的滋味”。","textPreview":"结尾升华为“大地的滋味，也是人生的滋味”。","textChars":21,"textLines":1,"bbox":[778,294,300,52]}
+{"kind":"shape","id":"sh/nyd0z610","slide":64,"bbox":[92,420,480,104]}
+{"kind":"textbox","id":"sh/cj6tovah","slide":64,"text":"改题","textPreview":"改题","textChars":2,"textLines":1,"bbox":[116,438,110,30]}
+{"kind":"textbox","id":"sh/54zidony","slide":64,"text":"引用苏轼诗句，有文学性，也可与结尾形成呼应。","textPreview":"引用苏轼诗句，有文学性，也可与结尾形成呼应。","textChars":22,"textLines":1,"bbox":[230,440,300,52]}
+{"kind":"shape","id":"sh/u9knih4b","slide":64,"bbox":[640,420,480,104]}
+{"kind":"textbox","id":"sh/judg7ads","slide":64,"text":"比较","textPreview":"比较","textChars":2,"textLines":1,"bbox":[664,438,110,30]}
+{"kind":"textbox","id":"sh/fil0rqd4","slide":64,"text":"但改题对五味内容的统领不如原题直接、完整。","textPreview":"但改题对五味内容的统领不如原题直接、完整。","textChars":21,"textLines":1,"bbox":[778,440,300,52]}
+{"kind":"textbox","id":"sh/qxs72x4n","slide":64,"text":"提醒学生：标题有文采，还要能管住全文。","textPreview":"提醒学生：标题有文采，还要能管住全文。","textChars":19,"textLines":1,"bbox":[142,594,996,38]}
+{"kind":"notes","id":"nt/i3c951","slide":64,"text":"解析页：把原题答案拆成内容、主题、结构、表达四类。"}
+{"kind":"slide","id":"sl/257a18","slide":65,"title":"本讲收束","textShapes":6}
+{"kind":"shape","id":"sh/a5gbq1or","slide":65,"bbox":[0,0,1280,720]}
+{"kind":"shape","id":"sh/lszqtcj6","slide":65,"bbox":[0,0,1280,8]}
+{"kind":"shape","id":"sh/s72x4nap","slide":65,"bbox":[54,54,6,46]}
+{"kind":"textbox","id":"sh/3ylc7u54","slide":65,"text":"本讲收束","textPreview":"本讲收束","textChars":4,"textLines":1,"bbox":[76,54,620,28]}
+{"kind":"textbox","id":"sh/adsji5sn","slide":65,"text":"65","textPreview":"65","textChars":2,"textLines":1,"bbox":[1136,42,88,32]}
+{"kind":"textbox","id":"sh/h4byhgn2","slide":65,"text":"回到原题：标题理由必须贴着文章写","textPreview":"回到原题：标题理由必须贴着文章写","textChars":16,"textLines":1,"bbox":[76,104,970,56]}
+{"kind":"textbox","id":"sh/sji5snel","slide":65,"text":"读原文、找证据、看题目、拆解析，四步合起来才是完整训练。","textPreview":"读原文、找证据、看题目、拆解析，四步合起来才是完整训练。","textChars":28,"textLines":1,"bbox":[78,166,1020,34]}
+{"kind":"shape","id":"sh/za1gvy90","slide":65,"bbox":[76,214,330,0]}
+{"kind":"shape","id":"sh/ap4r65wj","slide":65,"bbox":[100,282,1080,230]}
+{"kind":"textbox","id":"sh/0je9cvix","slide":65,"text":"内容：标题是否概括文章主要对象和主要事件\n主题：标题是否能点出情感、态度、哲理或价值\n结构：标题是否是线索，是否与开头结尾呼应\n表达：标题是否有修辞、悬念、诗意或对比效果","textPreview":"内容：标题是否概括文章主要对象和主要事件 | 主题：标题是否能点出情感、态度、哲理或价值 | 结构：标题是否是线索，是否与开头结尾呼应 | 表达：标题是否有修辞、悬念、诗意或对比效果","textChars":85,"textLines":4,"bbox":[146,318,940,140]}
+{"kind":"textbox","id":"sh/t47y1kre","slide":65,"text":"课后任务：任选一篇材料，把标题题答案改写成一段 5-6 分完整答案。","textPreview":"课后任务：任选一篇材料，把标题题答案改写成一段 5-6 分完整答案。","textChars":34,"textLines":1,"bbox":[154,586,960,40]}
+{"kind":"notes","id":"nt/257a18","slide":65,"text":"收束：让学生意识到标题题不是背模板，而是回原文找证据。"}

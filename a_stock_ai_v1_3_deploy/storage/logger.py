@@ -130,6 +130,7 @@ def init_db() -> None:
             CREATE TABLE IF NOT EXISTS paper_account_snapshots (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 snapshot_id TEXT NOT NULL UNIQUE,
+                account_id TEXT,
                 cycle_id TEXT,
                 status TEXT NOT NULL,
                 cash REAL DEFAULT 0,
@@ -147,6 +148,7 @@ def init_db() -> None:
             CREATE TABLE IF NOT EXISTS paper_orders (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 order_id TEXT NOT NULL UNIQUE,
+                account_id TEXT,
                 cycle_id TEXT,
                 symbol TEXT NOT NULL,
                 name TEXT,
@@ -163,6 +165,7 @@ def init_db() -> None:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 trade_id TEXT NOT NULL UNIQUE,
                 order_id TEXT,
+                account_id TEXT,
                 cycle_id TEXT,
                 symbol TEXT NOT NULL,
                 name TEXT,
@@ -194,8 +197,49 @@ def init_db() -> None:
                 error_text TEXT,
                 created_at TEXT NOT NULL
             );
+
+            CREATE TABLE IF NOT EXISTS strategy_cycle_logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                cycle_id TEXT NOT NULL,
+                strategy_id TEXT NOT NULL,
+                strategy_label TEXT,
+                regime TEXT,
+                mode TEXT,
+                budget REAL DEFAULT 0,
+                target_exposure REAL DEFAULT 0,
+                candidate_count INTEGER DEFAULT 0,
+                recommendation_count INTEGER DEFAULT 0,
+                status TEXT,
+                reason TEXT,
+                payload_json TEXT,
+                created_at TEXT NOT NULL
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_strategy_cycle_logs_cycle
+            ON strategy_cycle_logs (cycle_id, strategy_id);
             """
         )
+        _ensure_column(db, "paper_account_snapshots", "account_id", "TEXT")
+        _ensure_column(db, "paper_orders", "account_id", "TEXT")
+        _ensure_column(db, "paper_trades", "account_id", "TEXT")
+        db.execute(
+            "CREATE INDEX IF NOT EXISTS idx_paper_snapshots_account_created "
+            "ON paper_account_snapshots(account_id, created_at)"
+        )
+        db.execute(
+            "CREATE INDEX IF NOT EXISTS idx_paper_orders_account_created "
+            "ON paper_orders(account_id, created_at)"
+        )
+        db.execute(
+            "CREATE INDEX IF NOT EXISTS idx_paper_trades_account_created "
+            "ON paper_trades(account_id, created_at)"
+        )
+
+
+def _ensure_column(db: sqlite3.Connection, table: str, column: str, definition: str) -> None:
+    columns = {str(row["name"]) for row in db.execute(f"PRAGMA table_info({table})")}
+    if column not in columns:
+        db.execute(f"ALTER TABLE {table} ADD COLUMN {column} {definition}")
 
 
 def log(data: Any) -> None:
@@ -477,6 +521,50 @@ def fetch_backtest_decisions(lookback_days: int) -> list[dict[str, Any]]:
     return [dict(row) for row in rows]
 
 
+def fetch_multi_strategy_backtest_decisions(lookback_days: int) -> list[dict[str, Any]]:
+    """Returns the already de-duplicated multi-strategy portfolio decisions per cycle."""
+    init_db()
+    start = (datetime.now(BEIJING_TZ) - timedelta(days=lookback_days)).isoformat(timespec="seconds")
+    with _connect() as db:
+        rows = db.execute(
+            """
+            SELECT cycle_id, started_at, payload_json
+            FROM cycle_logs
+            WHERE started_at >= ?
+              AND status = 'ok'
+            ORDER BY started_at ASC
+            """,
+            (start,),
+        ).fetchall()
+
+    decisions: list[dict[str, Any]] = []
+    for row in rows:
+        try:
+            payload = json.loads(str(row["payload_json"] or "{}"))
+        except json.JSONDecodeError:
+            continue
+        multi_strategy = payload.get("multi_strategy") if isinstance(payload.get("multi_strategy"), dict) else {}
+        portfolio = multi_strategy.get("portfolio_signal") if isinstance(multi_strategy.get("portfolio_signal"), dict) else {}
+        if str(portfolio.get("signal") or "").upper() != "BUY":
+            continue
+        for item in portfolio.get("recommendations") or []:
+            if not isinstance(item, dict) or not item.get("symbol"):
+                continue
+            decisions.append(
+                {
+                    "cycle_id": row["cycle_id"],
+                    "symbol": item.get("symbol"),
+                    "name": item.get("name"),
+                    "action": item.get("action", "BUY"),
+                    "confidence": _float_from_mapping(item, "strategy_score") / 100,
+                    "target_weight": _float_from_mapping(item, "target_weight"),
+                    "created_at": row["started_at"],
+                    "payload_json": _json(item),
+                }
+            )
+    return decisions
+
+
 def log_review(
     review_id: str,
     review_date: str,
@@ -594,14 +682,15 @@ def log_paper_account_snapshot(
         db.execute(
             """
             INSERT OR REPLACE INTO paper_account_snapshots (
-                snapshot_id, cycle_id, status, cash, equity, market_value,
+                snapshot_id, account_id, cycle_id, status, cash, equity, market_value,
                 realized_pnl, unrealized_pnl, positions_json, orders_json,
                 trades_json, summary_json, created_at
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 snapshot_id,
+                account.get("account_id"),
                 cycle_id,
                 status,
                 account.get("cash", 0.0),
@@ -624,13 +713,14 @@ def log_paper_order(order: dict[str, Any]) -> None:
         db.execute(
             """
             INSERT OR REPLACE INTO paper_orders (
-                order_id, cycle_id, symbol, name, side, status, quantity,
+                order_id, account_id, cycle_id, symbol, name, side, status, quantity,
                 price, reason, payload_json, created_at
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 order.get("order_id"),
+                order.get("account_id"),
                 order.get("cycle_id"),
                 order.get("symbol"),
                 order.get("name"),
@@ -651,15 +741,16 @@ def log_paper_trade(trade: dict[str, Any]) -> None:
         db.execute(
             """
             INSERT OR REPLACE INTO paper_trades (
-                trade_id, order_id, cycle_id, symbol, name, side, quantity,
+                trade_id, order_id, account_id, cycle_id, symbol, name, side, quantity,
                 price, amount, fee, tax, slippage, realized_pnl, payload_json,
                 created_at
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 trade.get("trade_id"),
                 trade.get("order_id"),
+                trade.get("account_id"),
                 trade.get("cycle_id"),
                 trade.get("symbol"),
                 trade.get("name"),
@@ -675,6 +766,106 @@ def log_paper_trade(trade: dict[str, Any]) -> None:
                 _now(),
             ),
         )
+
+
+def reconcile_paper_account_session(account_id: str, session_started_at: str) -> str:
+    """Attach legacy rows after the latest reset to the active stock paper account.
+
+    Earlier releases logged account state without an account identifier. The only
+    safe migration boundary is a recorded reset, so unrelated historical runs
+    remain untouched.
+    """
+    init_db()
+    with _connect() as db:
+        row = db.execute(
+            """
+            SELECT created_at
+            FROM paper_account_snapshots
+            WHERE status = 'reset'
+            ORDER BY id DESC
+            LIMIT 1
+            """
+        ).fetchone()
+        reset_at = str(row["created_at"]) if row else ""
+        # A reset is an authoritative account-session boundary. For accounts
+        # created before this migration, `updated_at` is only the latest mark
+        # time and must not hide valid post-reset history.
+        effective_start = reset_at or str(session_started_at or "")
+        if not effective_start:
+            return session_started_at
+        for table in ("paper_account_snapshots", "paper_orders", "paper_trades"):
+            db.execute(
+                f"UPDATE {table} SET account_id = ? "
+                "WHERE account_id IS NULL AND created_at >= ?",
+                (account_id, effective_start),
+            )
+        # Legacy versions used one rejected status for both a genuine cash
+        # shortfall and a residual target smaller than an A-share lot. The
+        # latter is a normal no-op, not an execution failure. Restrict the
+        # migration to the exact historical message and the active account.
+        db.execute(
+            """
+            UPDATE paper_orders
+            SET status = 'skipped', reason = '目标仓位与现有持仓差额不足一手，保持持仓'
+            WHERE account_id = ?
+              AND side = 'BUY'
+              AND status = 'rejected'
+              AND quantity = 0
+              AND reason = '现金或目标仓位不足一手'
+            """,
+            (account_id,),
+        )
+    return effective_start
+
+
+def paper_account_session_metrics(account_id: str) -> dict[str, Any]:
+    """Return account-scoped paper-trading evidence without mixing reset eras."""
+    with _connect() as db:
+        order_row = db.execute(
+            """
+            SELECT
+                COUNT(*) AS order_count,
+                SUM(CASE WHEN status = 'filled' THEN 1 ELSE 0 END) AS filled_order_count,
+                SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) AS rejected_order_count,
+                MIN(created_at) AS first_order_at,
+                MAX(created_at) AS last_order_at
+            FROM paper_orders
+            WHERE account_id = ?
+            """,
+            (account_id,),
+        ).fetchone()
+        trade_row = db.execute(
+            """
+            SELECT
+                COUNT(*) AS completed_trade_count,
+                SUM(CASE WHEN side = 'SELL' THEN 1 ELSE 0 END) AS sell_trade_count,
+                COALESCE(SUM(realized_pnl), 0) AS realized_pnl
+            FROM paper_trades
+            WHERE account_id = ?
+            """,
+            (account_id,),
+        ).fetchone()
+        snapshot_row = db.execute(
+            """
+            SELECT MIN(created_at) AS session_first_snapshot_at, MAX(created_at) AS session_last_snapshot_at
+            FROM paper_account_snapshots
+            WHERE account_id = ?
+            """,
+            (account_id,),
+        ).fetchone()
+    return {
+        "account_id": account_id,
+        "order_count": int(order_row["order_count"] or 0),
+        "filled_order_count": int(order_row["filled_order_count"] or 0),
+        "rejected_order_count": int(order_row["rejected_order_count"] or 0),
+        "first_order_at": order_row["first_order_at"],
+        "last_order_at": order_row["last_order_at"],
+        "completed_trade_count": int(trade_row["completed_trade_count"] or 0),
+        "sell_trade_count": int(trade_row["sell_trade_count"] or 0),
+        "realized_pnl": round(float(trade_row["realized_pnl"] or 0.0), 4),
+        "session_first_snapshot_at": snapshot_row["session_first_snapshot_at"],
+        "session_last_snapshot_at": snapshot_row["session_last_snapshot_at"],
+    }
 
 
 def log_backtest_run(
@@ -716,6 +907,47 @@ def log_backtest_run(
         )
 
 
+def log_strategy_cycle(cycle_id: str, multi_strategy: dict[str, Any]) -> None:
+    """Persists every strategy sleeve, including observing sleeves with no trade."""
+    if not isinstance(multi_strategy, dict):
+        return
+    regime = multi_strategy.get("regime") if isinstance(multi_strategy.get("regime"), dict) else {}
+    mode = str(multi_strategy.get("mode") or "disabled")
+    strategies = multi_strategy.get("strategies") if isinstance(multi_strategy.get("strategies"), list) else []
+    if not strategies:
+        return
+    init_db()
+    with _connect() as db:
+        for item in strategies:
+            if not isinstance(item, dict):
+                continue
+            db.execute(
+                """
+                INSERT INTO strategy_cycle_logs (
+                    cycle_id, strategy_id, strategy_label, regime, mode, budget,
+                    target_exposure, candidate_count, recommendation_count, status,
+                    reason, payload_json, created_at
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    cycle_id,
+                    item.get("strategy_id"),
+                    item.get("strategy_label"),
+                    regime.get("regime"),
+                    mode,
+                    float(item.get("budget") or 0.0),
+                    float(item.get("target_exposure") or 0.0),
+                    int(item.get("candidate_count") or 0),
+                    int(item.get("recommendation_count") or 0),
+                    item.get("status"),
+                    item.get("reason"),
+                    _json(item),
+                    _now(),
+                ),
+            )
+
+
 def healthcheck(max_stale_seconds: int | None = None) -> tuple[bool, str]:
     window = current_trading_window()
     if not window.is_open:
@@ -742,3 +974,10 @@ def _local_day_bounds(value: date) -> tuple[str, str]:
     start_local = datetime.combine(value, time.min, tzinfo=BEIJING_TZ)
     end_local = datetime.combine(value + timedelta(days=1), time.min, tzinfo=BEIJING_TZ)
     return start_local.isoformat(timespec="seconds"), end_local.isoformat(timespec="seconds")
+
+
+def _float_from_mapping(value: dict[str, Any], key: str) -> float:
+    try:
+        return float(value.get(key) or 0.0)
+    except (TypeError, ValueError):
+        return 0.0

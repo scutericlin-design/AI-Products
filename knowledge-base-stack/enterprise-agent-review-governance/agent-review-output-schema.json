@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Enterprise Agent Review Result Package",
+  "type": "object",
+  "required": ["artifact_id", "task_spec_version", "risk_level", "producer", "output", "evidence", "tool_calls", "trace_id", "policy_version"],
+  "properties": {
+    "artifact_id": {"type": "string", "description": "Immutable task-result identifier"},
+    "task_spec_version": {"type": "string"},
+    "risk_level": {"enum": ["L0", "L1", "L2", "L3"]},
+    "producer": {
+      "type": "object",
+      "required": ["agent_version", "model", "prompt_version"],
+      "properties": {
+        "agent_version": {"type": "string"},
+        "model": {"type": "string"},
+        "prompt_version": {"type": "string"}
+      }
+    },
+    "input_hash": {"type": "string"},
+    "output": {"type": "object"},
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim_id", "source_uri", "source_version_or_hash", "access_verified"],
+        "properties": {
+          "claim_id": {"type": "string"},
+          "source_uri": {"type": "string"},
+          "source_version_or_hash": {"type": "string"},
+          "access_verified": {"type": "boolean"},
+          "expires_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "tool_calls": {"type": "array", "items": {"type": "object"}},
+    "trace_id": {"type": "string"},
+    "policy_version": {"type": "string"},
+    "review": {
+      "type": "object",
+      "properties": {
+        "decision": {"enum": ["PASS", "REWORK", "ESCALATE", "BLOCK"]},
+        "findings": {"type": "array"},
+        "reviewer_version": {"type": "string"}
+      }
+    }
+  }
+}

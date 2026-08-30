@@ -19,5 +19,10 @@ class PositionEngine:
         if str(updated.get("signal", "HOLD")).upper() in {"SELL", "HOLD"}:
             updated["position"] = 0.0
         else:
-            updated["position"] = clamp_position(updated.get("position"))
+            cap = settings.multi_strategy_max_exposure if updated.get("is_multi_strategy") else settings.max_position_weight
+            try:
+                position = float(updated.get("position"))
+            except (TypeError, ValueError):
+                position = 0.0
+            updated["position"] = round(max(0.0, min(position, cap)), 4)
         return updated

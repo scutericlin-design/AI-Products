@@ -1,0 +1,48 @@
+{
+  "title": "2026-08 企业 SDD Agent 开发与 SDLC 自动化审查方案",
+  "question": "企业如何在 Spec-Driven Development 与 SDLC 自动化中治理代码、测试、审查和发布 Agent，并确保规格可追溯、变更可验证、生产风险可控？",
+  "status": "Done",
+  "topic": ["AI Agent", "SDLC", "Engineering"],
+  "priority": "High",
+  "source_count": 6,
+  "key_takeaways": "企业 SDD Review 应覆盖规格、设计、任务、实现、测试、发布和线上结果。AI 审查只能提供结构化意见；高风险合并与生产发布仍由具名责任人批准。",
+  "decision": "采用 change_id 驱动的变更合同、G1-G5 五道门禁、Spec/测试/证据追溯、Agent 权限隔离、Code Owner 审批和灰度回滚机制；先在一个 L1 服务试点。",
+  "next_action": "在 15 天内为试点服务建立 specs/ 模板、PR 模板、Code Owners、Golden Tests、变更风险表和 CI 证据归档。",
+  "ai_index": true,
+  "created": "2026-08-23",
+  "review_date": "2026-11-23",
+  "body": [
+    {"type": "heading_2", "text": "核心结论"},
+    {"type": "paragraph", "text": "SDD Agent 开发的审查对象是完整变更合同，而非仅代码 diff。必须让 Spec、验收条件、测试、Review finding、CI 证据和发布结果围绕同一个 change_id 可追溯。"},
+    {"type": "heading_2", "text": "五道门禁"},
+    {"type": "bulleted_list_item", "text": "G1 Spec Ready：需求、非目标、验收、权限、回滚完整才允许实现。"},
+    {"type": "bulleted_list_item", "text": "G2 设计计划：任务覆盖全部验收条件并含测试与威胁建模。"},
+    {"type": "bulleted_list_item", "text": "G3/G4：CI 与独立 Agent/人类检查实现、测试、依赖和架构一致性。"},
+    {"type": "bulleted_list_item", "text": "G5：高风险发布使用人工审批、灰度、告警和已验证回滚。"},
+    {"type": "heading_2", "text": "GitHub 归档"},
+    {"type": "paragraph", "text": "完整手册位于 knowledge-base-stack/enterprise-sdd-agent-review/README.md。"}
+  ],
+  "sources": [
+    {"name": "AWS Agentic AI Lens: Specification-driven Tasks", "type": "Doc", "url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp05.html", "author": "AWS", "topic": ["AI Agent", "SDLC"], "quality": "A", "ai_index": true, "notes": "建议将规格、成功条件、预算和终止条件作为 Agent 的调用合同。"},
+    {"name": "GitHub: Review AI-generated Code", "type": "Doc", "url": "https://docs.github.com/en/enterprise-cloud%40latest/copilot/tutorials/review-ai-generated-code", "author": "GitHub", "topic": ["SDLC", "Engineering"], "quality": "A", "ai_index": true, "notes": "先进行功能与静态检查，再核对需求、架构、依赖和 AI 特有风险。"},
+    {"name": "GitHub: Copilot Code Review", "type": "Doc", "url": "https://docs.github.com/en/enterprise-cloud%40latest/copilot/how-tos/copilot-on-github/use-copilot-agents/copilot-code-review", "author": "GitHub", "topic": ["AI Agent", "SDLC"], "quality": "A", "ai_index": true, "notes": "Copilot 只给评论，不计入 required approval；支持仓库自定义审查指令。"},
+    {"name": "GitHub: Integrating Agentic AI into Enterprise SDLC", "type": "Doc", "url": "https://docs.github.com/en/enterprise-cloud%40latest/copilot/tutorials/rolling-out-github-copilot-at-scale/enabling-developers/integrating-agentic-ai", "author": "GitHub", "topic": ["AI Agent", "SDLC"], "quality": "A", "ai_index": true, "notes": "可在人工 PR Review 前使用带企业合规上下文的自定义 Agent 做附加审查。"},
+    {"name": "Anthropic: Claude Code Best Practices", "type": "Doc", "url": "https://www.anthropic.com/engineering/claude-code-best-practices", "author": "Anthropic", "topic": ["AI Agent", "Engineering"], "quality": "A", "ai_index": true, "notes": "测试先行并用独立 Agent 验证实现是否对测试过拟合。"},
+    {"name": "Microsoft Agent Framework Evaluation", "type": "Doc", "url": "https://learn.microsoft.com/en-us/agent-framework/agents/evaluation", "author": "Microsoft", "topic": ["AI Agent", "Engineering"], "quality": "A", "ai_index": true, "notes": "可同时评测任务完成、任务遵循、工具调用与质量/安全。"}
+  ],
+  "evergreen_notes": [
+    {"name": "SDD 的核心审查对象是可追溯的变更合同", "type": "Principle", "topic": ["SDLC", "Engineering"], "status": "Stable", "confidence": "High", "source_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp05.html", "ai_index": true, "summary": "规格、验收条件、任务、代码、测试、CI 和发布证据需要通过稳定 change_id 连接；否则 Agent 自动化只会加快不可控变更。"},
+    {"name": "AI 代码审查应为人类审批提供证据，而不是替代责任", "type": "Principle", "topic": ["AI Agent", "SDLC"], "status": "Stable", "confidence": "High", "source_url": "https://docs.github.com/en/enterprise-cloud%40latest/copilot/how-tos/copilot-on-github/use-copilot-agents/copilot-code-review", "ai_index": true, "summary": "自动审查能提前发现问题和缩短反馈周期，但不应计入 required approval；高风险变更需要具名 Code Owner 和发布审批。"}
+  ],
+  "decisions": [
+    {"name": "SDD Agent 开发采用 G1-G5 变更合同门禁", "area": "Engineering Governance", "decision": "建立 change_id 驱动的 Spec、设计、任务、测试、PR、CI 和发布证据链；以 G1 Spec Ready、G2 设计计划、G3 CI、G4 独立 Review、G5 发布五道门禁控制变更。", "rationale": "将 Agent 从自由生成器约束为可验证的软件交付参与者，在提升交付速度时保留架构、安全和生产责任。", "alternatives": "仅对最终代码 diff 做审查；让同一个 Agent 编写 Spec、代码、测试并自我批准；只在生产发布前做一次人工检查。", "revisit_date": "2026-11-23", "ai_index": true}
+  ],
+  "ai_outputs": [
+    {"name": "企业 SDD Agent 开发与 SDLC 自动化审查手册", "type": "Playbook", "source_tool": "ChatGPT", "summary": "覆盖 Spec 合同、五道门禁、角色权限、PR/发布模板、评测指标、平台架构与 90 天实施计划。", "created": "2026-08-23", "ai_index": true, "body": [
+      {"type": "heading_2", "text": "90 天行动"},
+      {"type": "numbered_list_item", "text": "0–30 天：为一个 L1 服务创建 Spec/PR 模板、Code Owners、Golden Tests 和 CI 证据归档。"},
+      {"type": "numbered_list_item", "text": "31–60 天：上线 Plan/Code/Test Reviewer，建立独立盲审集和安全/依赖检查。"},
+      {"type": "numbered_list_item", "text": "61–90 天：引入发布门禁、灰度、回滚、线上回灌和治理看板。"}
+    ]}
+  ]
+}

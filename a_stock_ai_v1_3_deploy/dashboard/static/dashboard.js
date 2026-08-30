@@ -38,17 +38,20 @@ function render(data) {
   const signal = data.signal || {};
   const health = data.health || {};
   const account = data.paper_account || {};
+  const paperHealth = data.paper_simulation_health || {};
   const sentiment = data.sentiment || {};
   const latest = data.latest_cycle || {};
 
   $("engineName").textContent = engine.name || "A股市场实时感知引擎";
   $("signalValue").textContent = signal.signal || "--";
   $("signalValue").className = signalClass(signal.signal);
-  $("signalReason").textContent = signal.reasoning || signal.no_recommendation_reason || "等待最新信号";
+  const primaryLabel = signal.strategy_label || engine.primary_strategy_id || "主策略";
+  const signalReason = signal.reasoning || signal.no_recommendation_reason || "等待最新信号";
+  $("signalReason").textContent = `${primaryLabel} · ${signalReason}`;
   $("positionValue").textContent = pct(signal.position);
   $("riskLevel").textContent = `风险 ${signal.risk_level || "--"}`;
   $("equityValue").textContent = money(account.equity);
-  $("returnValue").textContent = `收益 ${num(account.return_pct, 4)}%`;
+  $("returnValue").textContent = `收益 ${num(account.return_pct, 4)}% · 已平仓 ${paperHealth.completed_trade_count || 0} 笔`;
   $("stageValue").textContent = signal.market_stage || "--";
   $("stageReason").textContent = signal.market_stage_reason || "等待盘面确认";
   $("healthValue").textContent = health.ok ? "正常" : "关注";
@@ -61,13 +64,15 @@ function render(data) {
   $("panicScore").textContent = num(sentiment.panic_score, 0);
   $("coverageValue").textContent = `${sentiment.coverage_count || 0} / ${sentiment.coverage_level || "--"}`;
   $("riskAppetite").textContent = sentiment.risk_appetite || "--";
-  $("volumeState").textContent = `${data.state?.volume || "--"} · ${latest.quote_count || 0} 条行情`;
+  const selection = latest.selection_universe || {};
+  $("volumeState").textContent = `${data.state?.volume || "--"} · 股票扫描 ${selection.received_count ?? latest.quote_count ?? 0}/${selection.requested_count ?? "--"}`;
 
   renderRecommendations(data.recommendations || []);
   renderWatchlist(data.watchlist || []);
   renderPositions(account.positions || {});
   renderOrders(data.recent_orders || []);
   renderStrategy(data.strategy || {});
+  renderMultiStrategy(data.multi_strategy || {}, account);
   renderCycles(data.recent_cycles || []);
   renderBacktest(data.backtests || {});
   drawGauge($("sentimentCanvas"), Number(sentiment.sentiment_score || 0), Number(sentiment.panic_score || 0));
@@ -85,7 +90,7 @@ function renderRecommendations(items) {
       const range = item.buy_range || {};
       return `<tr>
         <td><span class="symbol">${escapeHtml(item.symbol)}</span><small class="name">${escapeHtml(item.name)}</small></td>
-        <td><span class="mode mode--${escapeHtml(item.selection_mode || "watch")}">${escapeHtml(item.selection_mode || "--")}</span></td>
+        <td><span class="mode mode--${escapeHtml(item.selection_mode || "watch")}">${escapeHtml(item.selection_mode || "--")}</span><small>${escapeHtml(item.strategy_label || "稳健核心")}</small></td>
         <td class="number">${price(item.current_price)}</td>
         <td class="${Number(item.pct_change || 0) >= 0 ? "positive" : "negative"} number">${num(item.pct_change, 2)}%</td>
         <td class="number">${price(range.low)} - ${price(range.high)}<small>最高 ${price(item.max_buy_price)}</small></td>
@@ -108,7 +113,7 @@ function renderWatchlist(items) {
     .slice(0, 8)
     .map(
       (item) => `<div class="watch-item">
-        <div><strong>${escapeHtml(item.symbol)}</strong><span>${escapeHtml(item.name)}</span></div>
+        <div><strong>${escapeHtml(item.symbol)}</strong><span>${escapeHtml(item.name)} · ${escapeHtml(item.strategy_id || "legacy")}</span></div>
         <div><strong class="number">${price(item.current_price)}</strong><span>${escapeHtml(item.selection_mode || "watch")}</span></div>
         <div><strong>${escapeHtml(item.action || "WATCH")}</strong><span>${escapeHtml(item.reasoning || "等待确认")}</span></div>
       </div>`,
@@ -177,6 +182,50 @@ function renderStrategy(strategy) {
   $("strategyParams").innerHTML = preferred
     .filter((key) => key in params)
     .map((key) => `<div class="param"><span>${key}</span><strong>${formatParam(key, params[key])}</strong></div>`)
+    .join("");
+}
+
+function renderMultiStrategy(multi, account) {
+  const regime = multi.regime || {};
+  const allocation = multi.allocation || {};
+  const portfolio = multi.portfolio || {};
+  const mode = multi.mode || "disabled";
+  $("multiStrategyMode").textContent = mode === "shadow" ? "影子运行" : mode === "active" ? "已激活" : "未启用";
+  $("multiRegime").textContent = regime.regime || "--";
+  $("multiExposure").textContent = pct(allocation.target_exposure ?? portfolio.portfolio_target_exposure);
+  $("multiCash").textContent = pct(allocation.cash_target);
+  $("multiRegimeReason").textContent = regime.reason || "等待市场风格计算";
+
+  const body = $("multiStrategyRows");
+  const strategies = multi.strategies || [];
+  if (!strategies.length) {
+    body.innerHTML = `<tr><td colspan="7"><div class="empty">多策略等待下一次盘中周期生成。</div></td></tr>`;
+  } else {
+    body.innerHTML = strategies
+      .map((item) => `<tr>
+        <td><strong>${escapeHtml(item.strategy_label || item.strategy_id)}</strong><small>${escapeHtml(item.strategy_id || "--")}</small></td>
+        <td class="number">${pct(item.budget)}</td>
+        <td class="number">${pct(item.target_exposure)}</td>
+        <td class="number">${item.candidate_count || 0}</td>
+        <td class="number">${item.recommendation_count || 0}</td>
+        <td class="status-${escapeHtml(item.status || "observe")}">${escapeHtml(item.status || "--")}</td>
+        <td>${escapeHtml(item.reason || "--")}</td>
+      </tr>`)
+      .join("");
+  }
+
+  const host = $("strategyExposure");
+  const exposures = account.strategy_exposure || [];
+  if (!exposures.length) {
+    host.innerHTML = `<div class="empty">暂无多策略模拟持仓。</div>`;
+    return;
+  }
+  host.innerHTML = exposures
+    .map((item) => `<div class="strategy-exposure-row">
+      <strong>${escapeHtml(item.strategy_id || "legacy")}</strong>
+      <span>市值 ${money(item.market_value)}</span>
+      <span class="${Number(item.unrealized_pnl || 0) >= 0 ? "positive" : "negative"}">浮盈亏 ${money(item.unrealized_pnl)}</span>
+    </div>`)
     .join("");
 }
 

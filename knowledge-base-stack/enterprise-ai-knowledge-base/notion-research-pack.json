@@ -1,0 +1,46 @@
+{
+  "title": "2026-08 AI 时代企业级知识库建设、治理与应用最佳实践",
+  "question": "企业应如何创建、治理和运营支持 RAG、Copilot 与 Agent 的可信知识库，并在安全、权限、时效、评测和业务价值之间取得平衡？",
+  "status": "Done",
+  "topic": ["AI Agent", "Knowledge Base", "Product"],
+  "priority": "High",
+  "source_count": 4,
+  "key_takeaways": "企业知识库应被视为知识操作系统，而不是向量数据库。关键控制包括：权威来源和内容所有者、元数据与生命周期、ACL 感知检索、混合搜索、带引用回答、提示注入与投毒防护、持续评测和审计。",
+  "decision": "采用“权威源 + 受控索引 + ACL 检索网关 + 引用 RAG + 受控 Agent + 持续运营”的平台路线；先从 P0 知识域和低风险问答试点，再逐步扩展到业务 Agent。",
+  "next_action": "启动 30 天试点：确定三个 P0 知识域、建立内容模板与数据分级、盘点来源、配置 SSO/ACL，并创建每域 50 条黄金评测问题。",
+  "ai_index": true,
+  "created": "2026-08-23",
+  "review_date": "2026-11-23",
+  "body": [
+    {"type": "heading_2", "text": "核心结论"},
+    {"type": "paragraph", "text": "知识库建设应从业务问题、权威来源、权限和运营机制开始，而不是从向量数据库开始。RAG 只用于有可靠证据支持的检索问答；高风险执行由独立 Agent/Skill 审批流程负责。"},
+    {"type": "heading_2", "text": "建设原则"},
+    {"type": "bulleted_list_item", "text": "每条知识都需要所有者、状态、版本、密级、ACL 和复审日期。"},
+    {"type": "bulleted_list_item", "text": "文档、chunk、embedding、缓存和答案都必须继承源系统权限。"},
+    {"type": "bulleted_list_item", "text": "回答必须带来源；检索、权限或引用失败时应安全拒答。"},
+    {"type": "bulleted_list_item", "text": "使用黄金问题集、用户反馈和安全回归测试持续评测，而非只看文档数量。"},
+    {"type": "heading_2", "text": "GitHub 归档"},
+    {"type": "paragraph", "text": "完整手册位于 knowledge-base-stack/enterprise-ai-knowledge-base/README.md。"}
+  ],
+  "sources": [
+    {"name": "NIST AI RMF Core", "type": "Doc", "url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/", "author": "NIST", "topic": ["AI Agent", "Knowledge Base"], "quality": "A", "ai_index": true, "notes": "Govern、Map、Measure、Manage 的持续 AI 风险治理框架。"},
+    {"name": "Microsoft Secure Multitenant RAG", "type": "Doc", "url": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag", "author": "Microsoft", "topic": ["AI Agent", "Knowledge Base"], "quality": "A", "ai_index": true, "notes": "检索时 ACL/security trimming、租户隔离与 API 网关。"},
+    {"name": "OWASP RAG Security Cheat Sheet", "type": "Doc", "url": "https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html", "author": "OWASP", "topic": ["AI Agent"], "quality": "A", "ai_index": true, "notes": "投毒、来源验证、chunk ACL、故障安全与审计。"},
+    {"name": "Microsoft RAG Guidance", "type": "Doc", "url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/retrieval-augmented-generation", "author": "Microsoft", "topic": ["AI Agent", "Knowledge Base"], "quality": "A", "ai_index": true, "notes": "RAG 适用场景、引用和企业数据源身份集成。"}
+  ],
+  "evergreen_notes": [
+    {"name": "企业 AI 知识库的核心是可治理的知识操作系统", "type": "Framework", "topic": ["AI Agent", "Knowledge Base"], "status": "Stable", "confidence": "High", "source_url": "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/", "ai_index": true, "summary": "企业知识库的价值来自权威来源、所有者、生命周期、权限、可引用检索和持续运营，而非单纯的文件或向量规模。"},
+    {"name": "RAG 权限必须在每次检索中执行", "type": "Principle", "topic": ["AI Agent", "Knowledge Base"], "status": "Stable", "confidence": "High", "source_url": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/secure-multitenant-rag", "ai_index": true, "summary": "不应仅靠前端隐藏或向量库分区。每次查询都要带身份和租户上下文，并对 document、chunk、摘要、缓存和输出执行 ACL。"}
+  ],
+  "decisions": [
+    {"name": "企业知识库采用受控索引与引用 RAG 路线", "area": "Knowledge", "decision": "以权威源为主数据，建立受控接入、元数据、ACL 检索网关、混合检索、引用回答、评测与审计；高风险业务执行与知识检索分离。", "rationale": "在提升检索效率的同时控制时效、权限泄露、提示注入、文档投毒和不可追溯风险。", "alternatives": "将所有文件复制至单一向量库；仅使用聊天记录或模型记忆；让 Agent 直接访问和执行源系统动作。", "revisit_date": "2026-11-23", "ai_index": true}
+  ],
+  "ai_outputs": [
+    {"name": "企业 AI 知识库建设、治理与应用手册", "type": "Playbook", "source_tool": "ChatGPT", "summary": "覆盖治理模型、内容与数据规范、参考架构、安全控制、运营 SOP、评测指标、90 天路线图和实施检查表。", "created": "2026-08-23", "ai_index": true, "body": [
+      {"type": "heading_2", "text": "90 天行动"},
+      {"type": "numbered_list_item", "text": "0–30 天：盘点、分类、责任人、P0 试点知识域和黄金问题集。"},
+      {"type": "numbered_list_item", "text": "31–60 天：SSO/ACL、受控检索、引用、反馈和审计。"},
+      {"type": "numbered_list_item", "text": "61–90 天：受控 Agent/Skill、审批网关、SIEM、仪表盘、复审与红队回归。"}
+    ]}
+  ]
+}

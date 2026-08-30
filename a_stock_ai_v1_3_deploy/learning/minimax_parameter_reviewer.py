@@ -4,8 +4,8 @@ import json
 import re
 from typing import Any
 
-import requests
-
+from ai.llm_failover import LLMFailoverError, request_with_failover
+from ai.minimax_client import stock_ai_targets
 from app.config import settings
 from learning.strategy_params import PARAM_SPECS, get_strategy_params
 
@@ -21,30 +21,32 @@ def review_parameter_proposal(evaluation: dict[str, Any], proposal: dict[str, An
         }
     if settings.dry_run:
         return _blocked("dry_run", "Dry-run mode blocks AI parameter changes.")
-    if not settings.minimax_api_key or not settings.minimax_endpoint:
-        return _blocked("missing_config", "MiniMax configuration missing; keep current parameters.")
+    if not any(target.api_key and target.endpoint for target in stock_ai_targets()):
+        return _blocked("missing_config", "Stock LLM configuration missing; keep current parameters.")
 
     prompt = _build_review_prompt(evaluation, proposal)
     try:
-        response = requests.post(
-            settings.minimax_endpoint,
-            headers={
-                "Authorization": f"Bearer {settings.minimax_api_key}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": settings.minimax_model,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.1,
-            },
+        payload, model, attempts = request_with_failover(
+            endpoint=settings.stock_ai_primary_endpoint or "",
+            api_key=settings.stock_ai_primary_api_key or "",
+            primary_model=settings.stock_ai_primary_model,
+            fallback_model=None,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
             timeout=45,
+            validator=_has_structured_review,
+            targets=stock_ai_targets(),
         )
-        response.raise_for_status()
-        payload = response.json()
         parsed = _parse_jsonish(_extract_text(payload))
-        return _normalize_review(parsed, proposal, payload)
-    except Exception as exc:
-        return _blocked("error", f"MiniMax parameter review failed: {exc}")
+        result = _normalize_review(parsed, proposal, payload)
+        result["ai_model"] = model
+        result["ai_fallback_used"] = model != settings.stock_ai_primary_model
+        result["ai_attempts"] = attempts
+        return result
+    except LLMFailoverError as exc:
+        result = _blocked("error", f"LLM parameter review failed: {exc}")
+        result["ai_attempts"] = exc.attempts
+        return result
 
 
 class MiniMaxParameterReviewer:
@@ -165,6 +167,10 @@ def _parse_jsonish(text: str) -> dict[str, Any]:
             parsed = json.loads(match.group(0))
             return parsed if isinstance(parsed, dict) else {}
     return {}
+
+
+def _has_structured_review(payload: dict[str, Any]) -> bool:
+    return bool(_parse_jsonish(_extract_text(payload)))
 
 
 def _float(value: Any, default: float) -> float:

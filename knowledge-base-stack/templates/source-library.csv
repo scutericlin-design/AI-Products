@@ -1,0 +1,4 @@
+Name,Type,URL,Author,Published Date,Topic,Added For,Quality,Used In Research Pack,AI Index,Notes
+Onyx Notion Connector,Doc,https://docs.onyx.app/admins/connectors/official/notion,Onyx,,Knowledge Base,2026-06 Knowledge Stack - Notion Onyx NotebookLM,A,true,true,Onyx 官方 Notion 连接器说明
+NotebookLM Add Sources,Doc,https://support.google.com/notebooklm/answer/16215270,Google,,Knowledge Base,2026-06 Knowledge Stack - Notion Onyx NotebookLM,A,true,true,NotebookLM 支持的来源类型和限制
+Onyx Connectors Overview,Doc,https://docs.onyx.app/admins/connectors/overview,Onyx,,Knowledge Base,2026-06 Knowledge Stack - Notion Onyx NotebookLM,A,true,true,Onyx 连接器和权限说明

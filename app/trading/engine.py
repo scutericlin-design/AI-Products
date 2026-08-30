@@ -7,7 +7,7 @@ from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
-from app.database import SessionLocal, init_db
+from app.database import SessionLocal
 from app.models import TradingDecisionLog, TradingEngineRun, TradingPushLog
 from app.trading.data import TushareDataLayer
 from app.trading.feishu import FeishuNotifier
@@ -40,7 +40,6 @@ class TradingEngine:
         self.notifier = notifier or FeishuNotifier()
 
     def run_cycle(self, trigger_source: str = "scheduler") -> str:
-        init_db()
         cycle_id = uuid4().hex
         db = SessionLocal()
         run = TradingEngineRun(
@@ -124,4 +123,3 @@ class TradingEngine:
             )
         )
         db.commit()
-

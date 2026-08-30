@@ -1,0 +1,2183 @@
+{
+  "research_type": "limited_structural_candidate_comparison",
+  "universe_profile": "adaptive",
+  "universe_limit": 120,
+  "years": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "annual_results": [
+    {
+      "year": 2018,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 109,
+      "symbols_with_data": 109,
+      "metrics": {
+        "trade_count": 10,
+        "buy_order_count": 10,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 8,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 988177.3783,
+        "total_return_pct": -1.1823,
+        "annualized_return_pct": -1.2258,
+        "max_drawdown_pct": 2.1387,
+        "max_drawdown_start": "20180124",
+        "max_drawdown_trough": "20181206",
+        "win_rate": 0.2,
+        "avg_trade_return_pct": -1.1104,
+        "median_trade_return_pct": -2.5785,
+        "best_trade_return_pct": 10.3895,
+        "worst_trade_return_pct": -5.0949,
+        "profit_factor": 0.5487,
+        "entry_mode_counts": {
+          "breakout": 4,
+          "pullback": 6
+        },
+        "entry_mode_pnl": {
+          "breakout": -14047.0788,
+          "pullback": 2384.6298
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 5,
+          "stop_loss": 4,
+          "take_profit": 1
+        },
+        "stop_rate": 0.4,
+        "sharpe_proxy": -1.0282,
+        "symbol_count_with_data": 109
+      }
+    },
+    {
+      "year": 2018,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 109,
+      "symbols_with_data": 109,
+      "metrics": {
+        "trade_count": 2,
+        "buy_order_count": 2,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 2,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 993803.3732,
+        "total_return_pct": -0.6197,
+        "annualized_return_pct": -0.6425,
+        "max_drawdown_pct": 0.6197,
+        "max_drawdown_start": "20180102",
+        "max_drawdown_trough": "20180316",
+        "win_rate": 0.0,
+        "avg_trade_return_pct": -4.6589,
+        "median_trade_return_pct": -4.6589,
+        "best_trade_return_pct": -4.2228,
+        "worst_trade_return_pct": -5.0949,
+        "profit_factor": 0.0,
+        "entry_mode_counts": {
+          "breakout": 2
+        },
+        "entry_mode_pnl": {
+          "breakout": -6164.0445
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 1
+        },
+        "stop_rate": 0.5,
+        "sharpe_proxy": -1.8119,
+        "symbol_count_with_data": 109
+      }
+    },
+    {
+      "year": 2018,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 109,
+      "symbols_with_data": 109,
+      "metrics": {
+        "trade_count": 5,
+        "buy_order_count": 5,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 4,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 987858.9294,
+        "total_return_pct": -1.2141,
+        "annualized_return_pct": -1.2588,
+        "max_drawdown_pct": 1.2141,
+        "max_drawdown_start": "20180102",
+        "max_drawdown_trough": "20181120",
+        "win_rate": 0.0,
+        "avg_trade_return_pct": -3.9139,
+        "median_trade_return_pct": -4.2228,
+        "best_trade_return_pct": -1.8604,
+        "worst_trade_return_pct": -5.0949,
+        "profit_factor": 0.0,
+        "entry_mode_counts": {
+          "breakout": 4,
+          "pullback": 1
+        },
+        "entry_mode_pnl": {
+          "breakout": -10933.7591,
+          "pullback": -1133.732
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "stop_loss": 3
+        },
+        "stop_rate": 0.6,
+        "sharpe_proxy": -1.8576,
+        "symbol_count_with_data": 109
+      }
+    },
+    {
+      "year": 2018,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 109,
+      "symbols_with_data": 109,
+      "metrics": {
+        "trade_count": 217,
+        "buy_order_count": 217,
+        "t_trade_count": 1,
+        "add_on_count": 1,
+        "tier_a_trade_count": 11,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 688890.3683,
+        "total_return_pct": -31.111,
+        "annualized_return_pct": -32.0553,
+        "max_drawdown_pct": 37.1789,
+        "max_drawdown_start": "20180124",
+        "max_drawdown_trough": "20181228",
+        "win_rate": 0.3733,
+        "avg_trade_return_pct": -1.172,
+        "median_trade_return_pct": -2.1357,
+        "best_trade_return_pct": 17.8821,
+        "worst_trade_return_pct": -7.593,
+        "profit_factor": 0.5696,
+        "entry_mode_counts": {
+          "breakout": 217
+        },
+        "entry_mode_pnl": {
+          "breakout": -305551.0419
+        },
+        "exit_reason_counts": {
+          "stop_loss": 86,
+          "take_profit": 2,
+          "time_exit": 122,
+          "trailing_stop": 7
+        },
+        "stop_rate": 0.3963,
+        "sharpe_proxy": -1.7689,
+        "symbol_count_with_data": 109
+      }
+    },
+    {
+      "year": 2018,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 109,
+      "symbols_with_data": 109,
+      "metrics": {
+        "trade_count": 2,
+        "buy_order_count": 2,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 2,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 998294.627,
+        "total_return_pct": -0.1705,
+        "annualized_return_pct": -0.1768,
+        "max_drawdown_pct": 0.3653,
+        "max_drawdown_start": "20180928",
+        "max_drawdown_trough": "20181206",
+        "win_rate": 0.5,
+        "avg_trade_return_pct": -0.7047,
+        "median_trade_return_pct": -0.7047,
+        "best_trade_return_pct": 2.1871,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 0.6081,
+        "entry_mode_counts": {
+          "breakout": 2
+        },
+        "entry_mode_pnl": {
+          "breakout": -1657.1598
+        },
+        "exit_reason_counts": {
+          "stop_loss": 1,
+          "time_exit": 1
+        },
+        "stop_rate": 0.5,
+        "sharpe_proxy": -0.4259,
+        "symbol_count_with_data": 109
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 72,
+        "buy_order_count": 72,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 65,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 1035651.9053,
+        "total_return_pct": 3.5652,
+        "annualized_return_pct": 3.6842,
+        "max_drawdown_pct": 6.4066,
+        "max_drawdown_start": "20190312",
+        "max_drawdown_trough": "20190402",
+        "win_rate": 0.4583,
+        "avg_trade_return_pct": 2.1902,
+        "median_trade_return_pct": -0.4672,
+        "best_trade_return_pct": 37.8621,
+        "worst_trade_return_pct": -5.0952,
+        "profit_factor": 2.2517,
+        "entry_mode_counts": {
+          "breakout": 57,
+          "pullback": 15
+        },
+        "entry_mode_pnl": {
+          "breakout": 40623.4544,
+          "pullback": -3237.4097
+        },
+        "exit_reason_counts": {
+          "force_close": 5,
+          "market_risk_off": 14,
+          "partial_take_profit": 6,
+          "stop_loss": 19,
+          "take_profit": 3,
+          "time_exit": 20,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.2639,
+        "sharpe_proxy": 0.4156,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 40,
+        "buy_order_count": 40,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 40,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 1001025.2053,
+        "total_return_pct": 0.1025,
+        "annualized_return_pct": 0.1059,
+        "max_drawdown_pct": 5.7364,
+        "max_drawdown_start": "20190305",
+        "max_drawdown_trough": "20191111",
+        "win_rate": 0.45,
+        "avg_trade_return_pct": 2.3437,
+        "median_trade_return_pct": -0.6482,
+        "best_trade_return_pct": 37.8621,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 2.1929,
+        "entry_mode_counts": {
+          "breakout": 39,
+          "pullback": 1
+        },
+        "entry_mode_pnl": {
+          "breakout": -2399.4948,
+          "pullback": 4371.8349
+        },
+        "exit_reason_counts": {
+          "force_close": 2,
+          "market_risk_off": 9,
+          "partial_take_profit": 3,
+          "stop_loss": 11,
+          "take_profit": 3,
+          "time_exit": 11,
+          "trailing_stop": 1
+        },
+        "stop_rate": 0.275,
+        "sharpe_proxy": 0.0195,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 63,
+        "buy_order_count": 63,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 58,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 1045875.6774,
+        "total_return_pct": 4.5876,
+        "annualized_return_pct": 4.7415,
+        "max_drawdown_pct": 6.1582,
+        "max_drawdown_start": "20190312",
+        "max_drawdown_trough": "20190402",
+        "win_rate": 0.4762,
+        "avg_trade_return_pct": 2.4141,
+        "median_trade_return_pct": -0.2209,
+        "best_trade_return_pct": 37.8621,
+        "worst_trade_return_pct": -5.0951,
+        "profit_factor": 2.3449,
+        "entry_mode_counts": {
+          "breakout": 53,
+          "pullback": 10
+        },
+        "entry_mode_pnl": {
+          "breakout": 47490.5857,
+          "pullback": -403.7051
+        },
+        "exit_reason_counts": {
+          "force_close": 3,
+          "market_risk_off": 11,
+          "partial_take_profit": 5,
+          "stop_loss": 18,
+          "take_profit": 3,
+          "time_exit": 20,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.2857,
+        "sharpe_proxy": 0.6982,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 260,
+        "buy_order_count": 260,
+        "t_trade_count": 0,
+        "add_on_count": 1,
+        "tier_a_trade_count": 16,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 926184.078,
+        "total_return_pct": -7.3816,
+        "annualized_return_pct": -7.6142,
+        "max_drawdown_pct": 23.212,
+        "max_drawdown_start": "20190225",
+        "max_drawdown_trough": "20191125",
+        "win_rate": 0.4577,
+        "avg_trade_return_pct": -0.1254,
+        "median_trade_return_pct": -0.5736,
+        "best_trade_return_pct": 17.8831,
+        "worst_trade_return_pct": -7.5925,
+        "profit_factor": 0.9432,
+        "entry_mode_counts": {
+          "breakout": 260
+        },
+        "entry_mode_pnl": {
+          "breakout": -65050.6393
+        },
+        "exit_reason_counts": {
+          "force_close": 7,
+          "stop_loss": 81,
+          "take_profit": 3,
+          "time_exit": 150,
+          "trailing_stop": 19
+        },
+        "stop_rate": 0.3115,
+        "sharpe_proxy": -0.3373,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2019,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 23,
+        "buy_order_count": 23,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 23,
+        "trading_days": 244,
+        "initial_cash": 1000000.0,
+        "final_equity": 1029594.0398,
+        "total_return_pct": 2.9594,
+        "annualized_return_pct": 3.0579,
+        "max_drawdown_pct": 1.6262,
+        "max_drawdown_start": "20190225",
+        "max_drawdown_trough": "20190704",
+        "win_rate": 0.6522,
+        "avg_trade_return_pct": 1.456,
+        "median_trade_return_pct": 1.4375,
+        "best_trade_return_pct": 11.8882,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 2.9193,
+        "entry_mode_counts": {
+          "breakout": 23
+        },
+        "entry_mode_pnl": {
+          "breakout": 30134.7108
+        },
+        "exit_reason_counts": {
+          "stop_loss": 4,
+          "take_profit": 1,
+          "time_exit": 15,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.1739,
+        "sharpe_proxy": 1.0704,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 78,
+        "buy_order_count": 78,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 69,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 939917.5208,
+        "total_return_pct": -6.0082,
+        "annualized_return_pct": -6.2237,
+        "max_drawdown_pct": 10.1361,
+        "max_drawdown_start": "20200713",
+        "max_drawdown_trough": "20201208",
+        "win_rate": 0.3974,
+        "avg_trade_return_pct": 0.968,
+        "median_trade_return_pct": -1.1806,
+        "best_trade_return_pct": 20.4554,
+        "worst_trade_return_pct": -5.0952,
+        "profit_factor": 1.4568,
+        "entry_mode_counts": {
+          "breakout": 56,
+          "pullback": 22
+        },
+        "entry_mode_pnl": {
+          "breakout": -52392.7151,
+          "pullback": -5492.4774
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 16,
+          "partial_take_profit": 5,
+          "stop_loss": 28,
+          "take_profit": 1,
+          "time_exit": 21,
+          "trailing_stop": 7
+        },
+        "stop_rate": 0.359,
+        "sharpe_proxy": -0.522,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 44,
+        "buy_order_count": 44,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 40,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 910626.6409,
+        "total_return_pct": -8.9373,
+        "annualized_return_pct": -9.2525,
+        "max_drawdown_pct": 10.1697,
+        "max_drawdown_start": "20200102",
+        "max_drawdown_trough": "20200228",
+        "win_rate": 0.4091,
+        "avg_trade_return_pct": 1.2803,
+        "median_trade_return_pct": -3.0882,
+        "best_trade_return_pct": 20.4554,
+        "worst_trade_return_pct": -5.0952,
+        "profit_factor": 1.4851,
+        "entry_mode_counts": {
+          "breakout": 40,
+          "pullback": 4
+        },
+        "entry_mode_pnl": {
+          "breakout": -86952.7074,
+          "pullback": -1068.0613
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 7,
+          "partial_take_profit": 4,
+          "stop_loss": 21,
+          "time_exit": 9,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.4773,
+        "sharpe_proxy": -0.9518,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 74,
+        "buy_order_count": 74,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 67,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 978910.9889,
+        "total_return_pct": -2.1089,
+        "annualized_return_pct": -2.1861,
+        "max_drawdown_pct": 12.0313,
+        "max_drawdown_start": "20200713",
+        "max_drawdown_trough": "20201208",
+        "win_rate": 0.4459,
+        "avg_trade_return_pct": 1.877,
+        "median_trade_return_pct": -0.8811,
+        "best_trade_return_pct": 20.4554,
+        "worst_trade_return_pct": -5.0956,
+        "profit_factor": 1.8664,
+        "entry_mode_counts": {
+          "breakout": 64,
+          "pullback": 10
+        },
+        "entry_mode_pnl": {
+          "breakout": -18674.9303,
+          "pullback": -436.1383
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 16,
+          "partial_take_profit": 6,
+          "stop_loss": 28,
+          "take_profit": 1,
+          "time_exit": 16,
+          "trailing_stop": 7
+        },
+        "stop_rate": 0.3784,
+        "sharpe_proxy": -0.1947,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 298,
+        "buy_order_count": 298,
+        "t_trade_count": 1,
+        "add_on_count": 6,
+        "tier_a_trade_count": 35,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1049351.2977,
+        "total_return_pct": 4.9351,
+        "annualized_return_pct": 5.1225,
+        "max_drawdown_pct": 19.8963,
+        "max_drawdown_start": "20200225",
+        "max_drawdown_trough": "20200615",
+        "win_rate": 0.4933,
+        "avg_trade_return_pct": 0.3135,
+        "median_trade_return_pct": -0.2494,
+        "best_trade_return_pct": 22.477,
+        "worst_trade_return_pct": -9.3248,
+        "profit_factor": 1.1331,
+        "entry_mode_counts": {
+          "breakout": 298
+        },
+        "entry_mode_pnl": {
+          "breakout": 57806.4102
+        },
+        "exit_reason_counts": {
+          "force_close": 8,
+          "stop_loss": 99,
+          "take_profit": 10,
+          "time_exit": 130,
+          "trailing_stop": 51
+        },
+        "stop_rate": 0.3322,
+        "sharpe_proxy": 0.2003,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2020,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 33,
+        "buy_order_count": 33,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 33,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1015898.8792,
+        "total_return_pct": 1.5899,
+        "annualized_return_pct": 1.6493,
+        "max_drawdown_pct": 2.7371,
+        "max_drawdown_start": "20200715",
+        "max_drawdown_trough": "20201111",
+        "win_rate": 0.5152,
+        "avg_trade_return_pct": 0.6379,
+        "median_trade_return_pct": 0.7168,
+        "best_trade_return_pct": 11.888,
+        "worst_trade_return_pct": -3.5968,
+        "profit_factor": 1.4724,
+        "entry_mode_counts": {
+          "breakout": 33
+        },
+        "entry_mode_pnl": {
+          "breakout": 16685.2495
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "stop_loss": 11,
+          "take_profit": 2,
+          "time_exit": 9,
+          "trailing_stop": 9
+        },
+        "stop_rate": 0.3333,
+        "sharpe_proxy": 0.5189,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 99,
+      "symbols_with_data": 99,
+      "metrics": {
+        "trade_count": 58,
+        "buy_order_count": 58,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 50,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 982862.6076,
+        "total_return_pct": -1.7137,
+        "annualized_return_pct": -1.7766,
+        "max_drawdown_pct": 4.2731,
+        "max_drawdown_start": "20210429",
+        "max_drawdown_trough": "20211220",
+        "win_rate": 0.3448,
+        "avg_trade_return_pct": -0.2455,
+        "median_trade_return_pct": -3.2968,
+        "best_trade_return_pct": 15.884,
+        "worst_trade_return_pct": -5.0951,
+        "profit_factor": 0.8962,
+        "entry_mode_counts": {
+          "breakout": 21,
+          "pullback": 37
+        },
+        "entry_mode_pnl": {
+          "breakout": -27719.2041,
+          "pullback": 11262.8476
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 10,
+          "partial_take_profit": 1,
+          "stop_loss": 31,
+          "take_profit": 5,
+          "time_exit": 6,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.5345,
+        "sharpe_proxy": -0.6144,
+        "symbol_count_with_data": 99
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 99,
+      "symbols_with_data": 99,
+      "metrics": {
+        "trade_count": 27,
+        "buy_order_count": 27,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 24,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1004203.1734,
+        "total_return_pct": 0.4203,
+        "annualized_return_pct": 0.4359,
+        "max_drawdown_pct": 2.1253,
+        "max_drawdown_start": "20210531",
+        "max_drawdown_trough": "20211210",
+        "win_rate": 0.4815,
+        "avg_trade_return_pct": 0.2672,
+        "median_trade_return_pct": -2.5487,
+        "best_trade_return_pct": 10.3896,
+        "worst_trade_return_pct": -5.0951,
+        "profit_factor": 1.1179,
+        "entry_mode_counts": {
+          "breakout": 19,
+          "pullback": 8
+        },
+        "entry_mode_pnl": {
+          "breakout": -12437.6165,
+          "pullback": 16941.5579
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 10,
+          "take_profit": 3,
+          "time_exit": 7,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.3704,
+        "sharpe_proxy": 0.2166,
+        "symbol_count_with_data": 99
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 99,
+      "symbols_with_data": 99,
+      "metrics": {
+        "trade_count": 46,
+        "buy_order_count": 46,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 37,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 986960.3708,
+        "total_return_pct": -1.304,
+        "annualized_return_pct": -1.3519,
+        "max_drawdown_pct": 3.1938,
+        "max_drawdown_start": "20210519",
+        "max_drawdown_trough": "20211220",
+        "win_rate": 0.3261,
+        "avg_trade_return_pct": -0.3999,
+        "median_trade_return_pct": -3.2968,
+        "best_trade_return_pct": 15.884,
+        "worst_trade_return_pct": -5.0951,
+        "profit_factor": 0.8398,
+        "entry_mode_counts": {
+          "breakout": 23,
+          "pullback": 23
+        },
+        "entry_mode_pnl": {
+          "breakout": -20752.3623,
+          "pullback": 8162.3908
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 6,
+          "partial_take_profit": 1,
+          "stop_loss": 23,
+          "take_profit": 3,
+          "time_exit": 8,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.5,
+        "sharpe_proxy": -0.647,
+        "symbol_count_with_data": 99
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 99,
+      "symbols_with_data": 99,
+      "metrics": {
+        "trade_count": 298,
+        "buy_order_count": 298,
+        "t_trade_count": 3,
+        "add_on_count": 2,
+        "tier_a_trade_count": 24,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 749372.8275,
+        "total_return_pct": -25.0627,
+        "annualized_return_pct": -25.8592,
+        "max_drawdown_pct": 29.359,
+        "max_drawdown_start": "20210112",
+        "max_drawdown_trough": "20211229",
+        "win_rate": 0.3792,
+        "avg_trade_return_pct": -0.6561,
+        "median_trade_return_pct": -4.7128,
+        "best_trade_return_pct": 17.8827,
+        "worst_trade_return_pct": -7.5927,
+        "profit_factor": 0.7902,
+        "entry_mode_counts": {
+          "breakout": 298
+        },
+        "entry_mode_pnl": {
+          "breakout": -243442.8257
+        },
+        "exit_reason_counts": {
+          "force_close": 4,
+          "stop_loss": 145,
+          "take_profit": 16,
+          "time_exit": 91,
+          "trailing_stop": 42
+        },
+        "stop_rate": 0.4866,
+        "sharpe_proxy": -0.7309,
+        "symbol_count_with_data": 99
+      }
+    },
+    {
+      "year": 2021,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 99,
+      "symbols_with_data": 99,
+      "metrics": {
+        "trade_count": 13,
+        "buy_order_count": 13,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 13,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 996297.5835,
+        "total_return_pct": -0.3702,
+        "annualized_return_pct": -0.3839,
+        "max_drawdown_pct": 2.1145,
+        "max_drawdown_start": "20210105",
+        "max_drawdown_trough": "20211210",
+        "win_rate": 0.5385,
+        "avg_trade_return_pct": -0.189,
+        "median_trade_return_pct": 0.0396,
+        "best_trade_return_pct": 5.0561,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 0.8683,
+        "entry_mode_counts": {
+          "breakout": 13
+        },
+        "entry_mode_pnl": {
+          "breakout": -3389.7839
+        },
+        "exit_reason_counts": {
+          "stop_loss": 5,
+          "time_exit": 6,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.3846,
+        "sharpe_proxy": -0.2058,
+        "symbol_count_with_data": 99
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 102,
+      "symbols_with_data": 102,
+      "metrics": {
+        "trade_count": 22,
+        "buy_order_count": 22,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 18,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 987566.2958,
+        "total_return_pct": -1.2434,
+        "annualized_return_pct": -1.2944,
+        "max_drawdown_pct": 2.3002,
+        "max_drawdown_start": "20220608",
+        "max_drawdown_trough": "20220629",
+        "win_rate": 0.2727,
+        "avg_trade_return_pct": -0.5811,
+        "median_trade_return_pct": -3.2966,
+        "best_trade_return_pct": 15.8839,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 0.7445,
+        "entry_mode_counts": {
+          "breakout": 6,
+          "pullback": 16
+        },
+        "entry_mode_pnl": {
+          "breakout": -1650.322,
+          "pullback": -10511.4255
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "partial_take_profit": 1,
+          "stop_loss": 13,
+          "take_profit": 1,
+          "time_exit": 2,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.5909,
+        "sharpe_proxy": -0.414,
+        "symbol_count_with_data": 102
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 102,
+      "symbols_with_data": 102,
+      "metrics": {
+        "trade_count": 8,
+        "buy_order_count": 8,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 7,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 996930.381,
+        "total_return_pct": -0.307,
+        "annualized_return_pct": -0.3196,
+        "max_drawdown_pct": 1.1984,
+        "max_drawdown_start": "20220705",
+        "max_drawdown_trough": "20221109",
+        "win_rate": 0.375,
+        "avg_trade_return_pct": 0.4541,
+        "median_trade_return_pct": -3.1607,
+        "best_trade_return_pct": 15.8839,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 1.2017,
+        "entry_mode_counts": {
+          "breakout": 4,
+          "pullback": 4
+        },
+        "entry_mode_pnl": {
+          "breakout": 297.4747,
+          "pullback": -3290.8383
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "partial_take_profit": 1,
+          "stop_loss": 4,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.5,
+        "sharpe_proxy": -0.1834,
+        "symbol_count_with_data": 102
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 102,
+      "symbols_with_data": 102,
+      "metrics": {
+        "trade_count": 15,
+        "buy_order_count": 15,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 13,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 994685.115,
+        "total_return_pct": -0.5315,
+        "annualized_return_pct": -0.5534,
+        "max_drawdown_pct": 1.4458,
+        "max_drawdown_start": "20220628",
+        "max_drawdown_trough": "20220629",
+        "win_rate": 0.2667,
+        "avg_trade_return_pct": -0.1013,
+        "median_trade_return_pct": -3.2965,
+        "best_trade_return_pct": 15.8839,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 0.9547,
+        "entry_mode_counts": {
+          "breakout": 6,
+          "pullback": 9
+        },
+        "entry_mode_pnl": {
+          "breakout": -1126.7763,
+          "pullback": -4038.1081
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "partial_take_profit": 1,
+          "stop_loss": 8,
+          "take_profit": 1,
+          "time_exit": 1,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.5333,
+        "sharpe_proxy": -0.2517,
+        "symbol_count_with_data": 102
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 102,
+      "symbols_with_data": 102,
+      "metrics": {
+        "trade_count": 208,
+        "buy_order_count": 208,
+        "t_trade_count": 1,
+        "add_on_count": 4,
+        "tier_a_trade_count": 26,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 690237.9357,
+        "total_return_pct": -30.9762,
+        "annualized_return_pct": -32.0255,
+        "max_drawdown_pct": 34.9223,
+        "max_drawdown_start": "20220222",
+        "max_drawdown_trough": "20221202",
+        "win_rate": 0.3846,
+        "avg_trade_return_pct": -1.1319,
+        "median_trade_return_pct": -2.5818,
+        "best_trade_return_pct": 17.8825,
+        "worst_trade_return_pct": -9.1802,
+        "profit_factor": 0.6084,
+        "entry_mode_counts": {
+          "breakout": 208
+        },
+        "entry_mode_pnl": {
+          "breakout": -304468.3361
+        },
+        "exit_reason_counts": {
+          "force_close": 1,
+          "stop_loss": 88,
+          "take_profit": 4,
+          "time_exit": 100,
+          "trailing_stop": 15
+        },
+        "stop_rate": 0.4231,
+        "sharpe_proxy": -1.7387,
+        "symbol_count_with_data": 102
+      }
+    },
+    {
+      "year": 2022,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 102,
+      "symbols_with_data": 102,
+      "metrics": {
+        "trade_count": 6,
+        "buy_order_count": 6,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 6,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 991961.5296,
+        "total_return_pct": -0.8038,
+        "annualized_return_pct": -0.8369,
+        "max_drawdown_pct": 1.3791,
+        "max_drawdown_start": "20220613",
+        "max_drawdown_trough": "20221117",
+        "win_rate": 0.3333,
+        "avg_trade_return_pct": -1.4398,
+        "median_trade_return_pct": -3.5964,
+        "best_trade_return_pct": 3.8016,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 0.3995,
+        "entry_mode_counts": {
+          "breakout": 6
+        },
+        "entry_mode_pnl": {
+          "breakout": -7898.8953
+        },
+        "exit_reason_counts": {
+          "stop_loss": 4,
+          "time_exit": 1,
+          "trailing_stop": 1
+        },
+        "stop_rate": 0.6667,
+        "sharpe_proxy": -0.797,
+        "symbol_count_with_data": 102
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 15,
+        "buy_order_count": 15,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 14,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 988792.6295,
+        "total_return_pct": -1.1207,
+        "annualized_return_pct": -1.1668,
+        "max_drawdown_pct": 1.9982,
+        "max_drawdown_start": "20230201",
+        "max_drawdown_trough": "20230412",
+        "win_rate": 0.2,
+        "avg_trade_return_pct": -1.4972,
+        "median_trade_return_pct": -3.1414,
+        "best_trade_return_pct": 8.9514,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 0.391,
+        "entry_mode_counts": {
+          "breakout": 9,
+          "pullback": 6
+        },
+        "entry_mode_pnl": {
+          "breakout": -3273.4172,
+          "pullback": -7757.3826
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 7,
+          "time_exit": 3,
+          "trailing_stop": 1
+        },
+        "stop_rate": 0.4667,
+        "sharpe_proxy": -1.0062,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 4,
+        "buy_order_count": 4,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 4,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 997455.0046,
+        "total_return_pct": -0.2545,
+        "annualized_return_pct": -0.265,
+        "max_drawdown_pct": 0.7606,
+        "max_drawdown_start": "20230130",
+        "max_drawdown_trough": "20230206",
+        "win_rate": 0.25,
+        "avg_trade_return_pct": -1.4365,
+        "median_trade_return_pct": -2.6716,
+        "best_trade_return_pct": 4.6921,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 0.4495,
+        "entry_mode_counts": {
+          "breakout": 3,
+          "pullback": 1
+        },
+        "entry_mode_pnl": {
+          "breakout": -1219.2834,
+          "pullback": -1275.2841
+        },
+        "exit_reason_counts": {
+          "stop_loss": 2,
+          "time_exit": 2
+        },
+        "stop_rate": 0.5,
+        "sharpe_proxy": -0.5163,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 8,
+        "buy_order_count": 8,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 8,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 997206.9603,
+        "total_return_pct": -0.2793,
+        "annualized_return_pct": -0.2908,
+        "max_drawdown_pct": 0.9861,
+        "max_drawdown_start": "20230201",
+        "max_drawdown_trough": "20230412",
+        "win_rate": 0.375,
+        "avg_trade_return_pct": -1.0876,
+        "median_trade_return_pct": -2.6715,
+        "best_trade_return_pct": 4.6921,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 0.5379,
+        "entry_mode_counts": {
+          "breakout": 5,
+          "pullback": 3
+        },
+        "entry_mode_pnl": {
+          "breakout": -241.3565,
+          "pullback": -2471.2727
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 4,
+          "time_exit": 2,
+          "trailing_stop": 1
+        },
+        "stop_rate": 0.5,
+        "sharpe_proxy": -0.3981,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 204,
+        "buy_order_count": 204,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 18,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 755410.9033,
+        "total_return_pct": -24.4589,
+        "annualized_return_pct": -25.3294,
+        "max_drawdown_pct": 26.9841,
+        "max_drawdown_start": "20230130",
+        "max_drawdown_trough": "20231227",
+        "win_rate": 0.3578,
+        "avg_trade_return_pct": -0.7784,
+        "median_trade_return_pct": -1.9775,
+        "best_trade_return_pct": 17.8823,
+        "worst_trade_return_pct": -7.5928,
+        "profit_factor": 0.7117,
+        "entry_mode_counts": {
+          "breakout": 204
+        },
+        "entry_mode_pnl": {
+          "breakout": -238364.3927
+        },
+        "exit_reason_counts": {
+          "force_close": 4,
+          "stop_loss": 73,
+          "take_profit": 9,
+          "time_exit": 101,
+          "trailing_stop": 17
+        },
+        "stop_rate": 0.3578,
+        "sharpe_proxy": -1.7801,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2023,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 104,
+      "symbols_with_data": 104,
+      "metrics": {
+        "trade_count": 7,
+        "buy_order_count": 7,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 7,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 985751.0112,
+        "total_return_pct": -1.4249,
+        "annualized_return_pct": -1.4833,
+        "max_drawdown_pct": 1.4249,
+        "max_drawdown_start": "20230103",
+        "max_drawdown_trough": "20230802",
+        "win_rate": 0.2857,
+        "avg_trade_return_pct": -2.0589,
+        "median_trade_return_pct": -3.5965,
+        "best_trade_return_pct": 2.9363,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 0.1986,
+        "entry_mode_counts": {
+          "breakout": 7
+        },
+        "entry_mode_pnl": {
+          "breakout": -14083.7818
+        },
+        "exit_reason_counts": {
+          "stop_loss": 5,
+          "time_exit": 1,
+          "trailing_stop": 1
+        },
+        "stop_rate": 0.7143,
+        "sharpe_proxy": -1.4616,
+        "symbol_count_with_data": 104
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 63,
+        "buy_order_count": 63,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 50,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1013137.0985,
+        "total_return_pct": 1.3137,
+        "annualized_return_pct": 1.3684,
+        "max_drawdown_pct": 6.102,
+        "max_drawdown_start": "20241008",
+        "max_drawdown_trough": "20241118",
+        "win_rate": 0.4286,
+        "avg_trade_return_pct": 1.3796,
+        "median_trade_return_pct": -0.9025,
+        "best_trade_return_pct": 37.8618,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 1.7799,
+        "entry_mode_counts": {
+          "breakout": 26,
+          "pullback": 37
+        },
+        "entry_mode_pnl": {
+          "breakout": 1214.8473,
+          "pullback": 13090.4566
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 11,
+          "partial_take_profit": 3,
+          "stop_loss": 24,
+          "take_profit": 7,
+          "time_exit": 11,
+          "trailing_stop": 7
+        },
+        "stop_rate": 0.381,
+        "sharpe_proxy": 0.1759,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 34,
+        "buy_order_count": 34,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 29,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 974348.3039,
+        "total_return_pct": -2.5652,
+        "annualized_return_pct": -2.6697,
+        "max_drawdown_pct": 6.5005,
+        "max_drawdown_start": "20241008",
+        "max_drawdown_trough": "20241213",
+        "win_rate": 0.3529,
+        "avg_trade_return_pct": -0.1365,
+        "median_trade_return_pct": -1.7348,
+        "best_trade_return_pct": 15.8842,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 0.9359,
+        "entry_mode_counts": {
+          "breakout": 25,
+          "pullback": 9
+        },
+        "entry_mode_pnl": {
+          "breakout": -19489.4442,
+          "pullback": -5353.7261
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 8,
+          "partial_take_profit": 2,
+          "stop_loss": 13,
+          "time_exit": 6,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.3824,
+        "sharpe_proxy": -0.4718,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 48,
+        "buy_order_count": 48,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 39,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 986177.0101,
+        "total_return_pct": -1.3823,
+        "annualized_return_pct": -1.439,
+        "max_drawdown_pct": 6.375,
+        "max_drawdown_start": "20241008",
+        "max_drawdown_trough": "20241213",
+        "win_rate": 0.4167,
+        "avg_trade_return_pct": 1.2482,
+        "median_trade_return_pct": -2.4519,
+        "best_trade_return_pct": 37.8618,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 1.6124,
+        "entry_mode_counts": {
+          "breakout": 26,
+          "pullback": 22
+        },
+        "entry_mode_pnl": {
+          "breakout": -14004.1991,
+          "pullback": 1110.6828
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 6,
+          "partial_take_profit": 3,
+          "stop_loss": 21,
+          "take_profit": 4,
+          "time_exit": 8,
+          "trailing_stop": 6
+        },
+        "stop_rate": 0.4375,
+        "sharpe_proxy": -0.2341,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 261,
+        "buy_order_count": 261,
+        "t_trade_count": 1,
+        "add_on_count": 8,
+        "tier_a_trade_count": 41,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 818837.145,
+        "total_return_pct": -18.1163,
+        "annualized_return_pct": -18.7898,
+        "max_drawdown_pct": 29.1844,
+        "max_drawdown_start": "20240111",
+        "max_drawdown_trough": "20240918",
+        "win_rate": 0.4138,
+        "avg_trade_return_pct": -0.4208,
+        "median_trade_return_pct": -2.1029,
+        "best_trade_return_pct": 37.9484,
+        "worst_trade_return_pct": -8.6829,
+        "profit_factor": 0.8438,
+        "entry_mode_counts": {
+          "breakout": 261
+        },
+        "entry_mode_pnl": {
+          "breakout": -174400.545
+        },
+        "exit_reason_counts": {
+          "force_close": 5,
+          "stop_loss": 95,
+          "take_profit": 9,
+          "time_exit": 119,
+          "trailing_stop": 33
+        },
+        "stop_rate": 0.364,
+        "sharpe_proxy": -0.7837,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2024,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 103,
+      "symbols_with_data": 103,
+      "metrics": {
+        "trade_count": 18,
+        "buy_order_count": 18,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 18,
+        "trading_days": 242,
+        "initial_cash": 1000000.0,
+        "final_equity": 1040012.7774,
+        "total_return_pct": 4.0013,
+        "annualized_return_pct": 4.17,
+        "max_drawdown_pct": 1.8746,
+        "max_drawdown_start": "20240223",
+        "max_drawdown_trough": "20240925",
+        "win_rate": 0.3889,
+        "avg_trade_return_pct": 2.3064,
+        "median_trade_return_pct": -1.2826,
+        "best_trade_return_pct": 11.8881,
+        "worst_trade_return_pct": -3.5966,
+        "profit_factor": 2.3667,
+        "entry_mode_counts": {
+          "breakout": 18
+        },
+        "entry_mode_pnl": {
+          "breakout": 40435.7619
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 1,
+          "stop_loss": 7,
+          "take_profit": 6,
+          "time_exit": 4
+        },
+        "stop_rate": 0.3889,
+        "sharpe_proxy": 1.1141,
+        "symbol_count_with_data": 103
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 108,
+      "symbols_with_data": 108,
+      "metrics": {
+        "trade_count": 54,
+        "buy_order_count": 54,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 52,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 903277.1709,
+        "total_return_pct": -9.6723,
+        "annualized_return_pct": -10.012,
+        "max_drawdown_pct": 11.0293,
+        "max_drawdown_start": "20250102",
+        "max_drawdown_trough": "20250919",
+        "win_rate": 0.3148,
+        "avg_trade_return_pct": -0.3024,
+        "median_trade_return_pct": -3.2967,
+        "best_trade_return_pct": 33.1684,
+        "worst_trade_return_pct": -5.0951,
+        "profit_factor": 0.8848,
+        "entry_mode_counts": {
+          "breakout": 35,
+          "pullback": 19
+        },
+        "entry_mode_pnl": {
+          "breakout": -95209.0011,
+          "pullback": -45.4131
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "stop_loss": 28,
+          "take_profit": 4,
+          "time_exit": 13,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.5185,
+        "sharpe_proxy": -1.3578,
+        "symbol_count_with_data": 108
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 108,
+      "symbols_with_data": 108,
+      "metrics": {
+        "trade_count": 38,
+        "buy_order_count": 38,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 34,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1064367.1719,
+        "total_return_pct": 6.4367,
+        "annualized_return_pct": 6.6829,
+        "max_drawdown_pct": 7.9847,
+        "max_drawdown_start": "20250825",
+        "max_drawdown_trough": "20251028",
+        "win_rate": 0.4474,
+        "avg_trade_return_pct": 1.3812,
+        "median_trade_return_pct": -2.5796,
+        "best_trade_return_pct": 17.882,
+        "worst_trade_return_pct": -5.0951,
+        "profit_factor": 1.6091,
+        "entry_mode_counts": {
+          "breakout": 29,
+          "pullback": 9
+        },
+        "entry_mode_pnl": {
+          "breakout": 73577.9251,
+          "pullback": -8103.9218
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 3,
+          "partial_take_profit": 2,
+          "stop_loss": 17,
+          "take_profit": 3,
+          "time_exit": 8,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.4474,
+        "sharpe_proxy": 0.6443,
+        "symbol_count_with_data": 108
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 108,
+      "symbols_with_data": 108,
+      "metrics": {
+        "trade_count": 56,
+        "buy_order_count": 56,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 52,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 1082771.5266,
+        "total_return_pct": 8.2772,
+        "annualized_return_pct": 8.5965,
+        "max_drawdown_pct": 5.2536,
+        "max_drawdown_start": "20250825",
+        "max_drawdown_trough": "20251028",
+        "win_rate": 0.4464,
+        "avg_trade_return_pct": 2.3925,
+        "median_trade_return_pct": -2.3292,
+        "best_trade_return_pct": 82.0831,
+        "worst_trade_return_pct": -5.0951,
+        "profit_factor": 2.0627,
+        "entry_mode_counts": {
+          "breakout": 40,
+          "pullback": 16
+        },
+        "entry_mode_pnl": {
+          "breakout": 86711.2019,
+          "pullback": -2423.6794
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "partial_take_profit": 2,
+          "stop_loss": 25,
+          "take_profit": 6,
+          "time_exit": 13,
+          "trailing_stop": 6
+        },
+        "stop_rate": 0.4464,
+        "sharpe_proxy": 0.7378,
+        "symbol_count_with_data": 108
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 108,
+      "symbols_with_data": 108,
+      "metrics": {
+        "trade_count": 269,
+        "buy_order_count": 269,
+        "t_trade_count": 0,
+        "add_on_count": 7,
+        "tier_a_trade_count": 41,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 995704.2733,
+        "total_return_pct": -0.4296,
+        "annualized_return_pct": -0.4454,
+        "max_drawdown_pct": 22.2487,
+        "max_drawdown_start": "20250221",
+        "max_drawdown_trough": "20250707",
+        "win_rate": 0.4349,
+        "avg_trade_return_pct": -0.0154,
+        "median_trade_return_pct": -1.2521,
+        "best_trade_return_pct": 17.8823,
+        "worst_trade_return_pct": -14.315,
+        "profit_factor": 0.9939,
+        "entry_mode_counts": {
+          "breakout": 269
+        },
+        "entry_mode_pnl": {
+          "breakout": 4566.7212
+        },
+        "exit_reason_counts": {
+          "force_close": 5,
+          "stop_loss": 84,
+          "take_profit": 16,
+          "time_exit": 128,
+          "trailing_stop": 36
+        },
+        "stop_rate": 0.3123,
+        "sharpe_proxy": -0.017,
+        "symbol_count_with_data": 108
+      }
+    },
+    {
+      "year": 2025,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 108,
+      "symbols_with_data": 108,
+      "metrics": {
+        "trade_count": 19,
+        "buy_order_count": 19,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 19,
+        "trading_days": 243,
+        "initial_cash": 1000000.0,
+        "final_equity": 994565.3778,
+        "total_return_pct": -0.5435,
+        "annualized_return_pct": -0.5635,
+        "max_drawdown_pct": 2.9224,
+        "max_drawdown_start": "20250211",
+        "max_drawdown_trough": "20250721",
+        "win_rate": 0.3158,
+        "avg_trade_return_pct": -0.2181,
+        "median_trade_return_pct": -3.5964,
+        "best_trade_return_pct": 11.888,
+        "worst_trade_return_pct": -3.5967,
+        "profit_factor": 0.9031,
+        "entry_mode_counts": {
+          "breakout": 19
+        },
+        "entry_mode_pnl": {
+          "breakout": -4981.052
+        },
+        "exit_reason_counts": {
+          "stop_loss": 11,
+          "take_profit": 2,
+          "time_exit": 3,
+          "trailing_stop": 3
+        },
+        "stop_rate": 0.5789,
+        "sharpe_proxy": -0.2802,
+        "symbol_count_with_data": 108
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "universe_count": 105,
+      "symbols_with_data": 105,
+      "metrics": {
+        "trade_count": 38,
+        "buy_order_count": 38,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 31,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 1000907.2906,
+        "total_return_pct": 0.0907,
+        "annualized_return_pct": 0.1773,
+        "max_drawdown_pct": 1.0572,
+        "max_drawdown_start": "20260106",
+        "max_drawdown_trough": "20260109",
+        "win_rate": 0.4474,
+        "avg_trade_return_pct": 0.7538,
+        "median_trade_return_pct": -1.5303,
+        "best_trade_return_pct": 15.8839,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 1.3952,
+        "entry_mode_counts": {
+          "breakout": 11,
+          "pullback": 27
+        },
+        "entry_mode_pnl": {
+          "breakout": -6539.7421,
+          "pullback": 7842.0734
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 6,
+          "partial_take_profit": 1,
+          "stop_loss": 17,
+          "take_profit": 4,
+          "time_exit": 5,
+          "trailing_stop": 5
+        },
+        "stop_rate": 0.4474,
+        "sharpe_proxy": 0.0792,
+        "symbol_count_with_data": 105
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "universe_count": 105,
+      "symbols_with_data": 105,
+      "metrics": {
+        "trade_count": 16,
+        "buy_order_count": 16,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 16,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 991670.8058,
+        "total_return_pct": -0.8329,
+        "annualized_return_pct": -1.6206,
+        "max_drawdown_pct": 1.2265,
+        "max_drawdown_start": "20260105",
+        "max_drawdown_trough": "20260415",
+        "win_rate": 0.375,
+        "avg_trade_return_pct": -0.6161,
+        "median_trade_return_pct": -3.2968,
+        "best_trade_return_pct": 11.9507,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 0.7597,
+        "entry_mode_counts": {
+          "breakout": 11,
+          "pullback": 5
+        },
+        "entry_mode_pnl": {
+          "breakout": -7486.2165,
+          "pullback": -605.0843
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 2,
+          "stop_loss": 9,
+          "take_profit": 1,
+          "time_exit": 2,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.5625,
+        "sharpe_proxy": -0.971,
+        "symbol_count_with_data": 105
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "universe_count": 105,
+      "symbols_with_data": 105,
+      "metrics": {
+        "trade_count": 35,
+        "buy_order_count": 35,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 27,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 992172.6758,
+        "total_return_pct": -0.7827,
+        "annualized_return_pct": -1.5234,
+        "max_drawdown_pct": 1.3431,
+        "max_drawdown_start": "20260105",
+        "max_drawdown_trough": "20260415",
+        "win_rate": 0.4,
+        "avg_trade_return_pct": 0.0063,
+        "median_trade_return_pct": -2.0213,
+        "best_trade_return_pct": 15.8839,
+        "worst_trade_return_pct": -5.095,
+        "profit_factor": 1.003,
+        "entry_mode_counts": {
+          "breakout": 13,
+          "pullback": 22
+        },
+        "entry_mode_pnl": {
+          "breakout": -6874.5347,
+          "pullback": -647.5689
+        },
+        "exit_reason_counts": {
+          "market_risk_off": 4,
+          "partial_take_profit": 1,
+          "stop_loss": 17,
+          "take_profit": 2,
+          "time_exit": 4,
+          "trailing_stop": 7
+        },
+        "stop_rate": 0.4857,
+        "sharpe_proxy": -0.7518,
+        "symbol_count_with_data": 105
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "universe_count": 105,
+      "symbols_with_data": 105,
+      "metrics": {
+        "trade_count": 130,
+        "buy_order_count": 130,
+        "t_trade_count": 0,
+        "add_on_count": 3,
+        "tier_a_trade_count": 22,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 1044547.8563,
+        "total_return_pct": 4.4548,
+        "annualized_return_pct": 8.8871,
+        "max_drawdown_pct": 14.0541,
+        "max_drawdown_start": "20260526",
+        "max_drawdown_trough": "20260714",
+        "win_rate": 0.4077,
+        "avg_trade_return_pct": 0.2274,
+        "median_trade_return_pct": -4.1854,
+        "best_trade_return_pct": 21.715,
+        "worst_trade_return_pct": -7.5931,
+        "profit_factor": 1.076,
+        "entry_mode_counts": {
+          "breakout": 130
+        },
+        "entry_mode_pnl": {
+          "breakout": 49395.9565
+        },
+        "exit_reason_counts": {
+          "force_close": 6,
+          "stop_loss": 65,
+          "take_profit": 8,
+          "time_exit": 33,
+          "trailing_stop": 18
+        },
+        "stop_rate": 0.5,
+        "sharpe_proxy": 0.3903,
+        "symbol_count_with_data": 105
+      }
+    },
+    {
+      "year": 2026,
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "universe_count": 105,
+      "symbols_with_data": 105,
+      "metrics": {
+        "trade_count": 10,
+        "buy_order_count": 10,
+        "t_trade_count": 0,
+        "add_on_count": 0,
+        "tier_a_trade_count": 10,
+        "trading_days": 129,
+        "initial_cash": 1000000.0,
+        "final_equity": 1010881.3879,
+        "total_return_pct": 1.0881,
+        "annualized_return_pct": 2.1367,
+        "max_drawdown_pct": 0.574,
+        "max_drawdown_start": "20260106",
+        "max_drawdown_trough": "20260107",
+        "win_rate": 0.6,
+        "avg_trade_return_pct": 1.0658,
+        "median_trade_return_pct": 1.2483,
+        "best_trade_return_pct": 11.8882,
+        "worst_trade_return_pct": -3.5965,
+        "profit_factor": 1.7409,
+        "entry_mode_counts": {
+          "breakout": 10
+        },
+        "entry_mode_pnl": {
+          "breakout": 11115.4869
+        },
+        "exit_reason_counts": {
+          "stop_loss": 4,
+          "take_profit": 1,
+          "time_exit": 3,
+          "trailing_stop": 2
+        },
+        "stop_rate": 0.4,
+        "sharpe_proxy": 0.883,
+        "symbol_count_with_data": 105
+      }
+    }
+  ],
+  "candidate_summary": [
+    {
+      "candidate": "hybrid_alpha_baseline",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Current hybrid tactical profile: breakout plus controlled pullback entries.",
+      "years": 9,
+      "mean_return_pct": -1.7746,
+      "median_return_pct": -1.1823,
+      "worst_year_return_pct": -9.6723,
+      "negative_years": 6,
+      "compound_return_pct": -15.4359,
+      "mean_max_drawdown_pct": 5.049,
+      "worst_max_drawdown_pct": 11.0293,
+      "mean_trade_count": 45.56,
+      "validation_years": 4,
+      "validation_mean_return_pct": -2.3472,
+      "validation_compound_return_pct": -9.4292,
+      "validation_negative_years": 2
+    },
+    {
+      "candidate": "hybrid_alpha_guarded",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Reduce exposure and countertrend pullbacks unless breadth is broad; prioritize bear-market defense.",
+      "years": 9,
+      "mean_return_pct": -0.7286,
+      "median_return_pct": -0.307,
+      "worst_year_return_pct": -8.9373,
+      "negative_years": 6,
+      "compound_return_pct": -6.9667,
+      "mean_max_drawdown_pct": 4.0358,
+      "worst_max_drawdown_pct": 10.1697,
+      "mean_trade_count": 23.67,
+      "validation_years": 4,
+      "validation_mean_return_pct": 0.696,
+      "validation_compound_return_pct": 2.5809,
+      "validation_negative_years": 3
+    },
+    {
+      "candidate": "hybrid_alpha_trend",
+      "profile_name": "hybrid_alpha",
+      "rationale": "Keep a diversified trend sleeve while reducing weak-regime and short pullback exposure.",
+      "years": 9,
+      "mean_return_pct": 0.5847,
+      "median_return_pct": -0.7827,
+      "worst_year_return_pct": -2.1089,
+      "negative_years": 7,
+      "compound_return_pct": 4.8982,
+      "mean_max_drawdown_pct": 4.2223,
+      "worst_max_drawdown_pct": 12.0313,
+      "mean_trade_count": 38.89,
+      "validation_years": 4,
+      "validation_mean_return_pct": 1.4582,
+      "validation_compound_return_pct": 5.6488,
+      "validation_negative_years": 3
+    },
+    {
+      "candidate": "quality_t_reference",
+      "profile_name": "quality_t",
+      "rationale": "Existing quality/T profile used as a price-liquidity quality reference, not a fundamental-data proxy.",
+      "years": 9,
+      "mean_return_pct": -14.2385,
+      "median_return_pct": -18.1163,
+      "worst_year_return_pct": -31.111,
+      "negative_years": 7,
+      "compound_return_pct": -77.7206,
+      "mean_max_drawdown_pct": 26.3378,
+      "worst_max_drawdown_pct": 37.1789,
+      "mean_trade_count": 238.33,
+      "validation_years": 4,
+      "validation_mean_return_pct": -9.6375,
+      "validation_compound_return_pct": -35.6662,
+      "validation_negative_years": 3
+    },
+    {
+      "candidate": "regime_adaptive_reference",
+      "profile_name": "regime_adaptive",
+      "rationale": "Existing low-exposure regime filter used as a defensive reference.",
+      "years": 9,
+      "mean_return_pct": 0.7029,
+      "median_return_pct": -0.1705,
+      "worst_year_return_pct": -1.4249,
+      "negative_years": 5,
+      "compound_return_pct": 6.365,
+      "mean_max_drawdown_pct": 1.6687,
+      "worst_max_drawdown_pct": 2.9224,
+      "mean_trade_count": 14.56,
+      "validation_years": 4,
+      "validation_mean_return_pct": 0.7802,
+      "validation_compound_return_pct": 3.0716,
+      "validation_negative_years": 2
+    }
+  ],
+  "assumptions": [
+    "Universe is constructed from the first available daily_basic snapshot on or before each year start.",
+    "Signals use T close and enter at the next trading day open with configured slippage, commission, stamp duty and A-share lot sizing.",
+    "This daily-bar model cannot fully guarantee fills during suspensions or price-limit queues; live and paper execution need further validation.",
+    "quality_t_reference scores price/liquidity characteristics only; it is not a point-in-time financial-statement backtest."
+  ]
+}

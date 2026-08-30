@@ -1,0 +1,367 @@
+{
+  "title": "2026-06 中学生英语提升与高考优胜策略",
+  "question": "如何系统提高中学生英语水平，并在高考英语中取得优异成绩？",
+  "status": "Done",
+  "topic": ["Education", "English Learning", "Gaokao", "Personal Ops"],
+  "priority": "High",
+  "onyx_agent": "Personal Knowledge Recall",
+  "source_count": 7,
+  "key_takeaways": "1. 高考英语提分不是先刷题，而是建立“能力诊断-输入积累-输出反馈-限时迁移”的闭环。2. 官方改革方向强调关键能力、学科素养和思维品质，因此阅读推理、概括、语篇理解、表达质量比单点语法更关键。3. 中学生英语长期提升需要大量可理解输入，配合检索练习、间隔复习和高频反馈。4. 高分段突破重点在阅读证据定位、完形/语法的语篇逻辑、写作任务完成度和表达准确性。5. 最可执行的方案是12周一个周期：2周诊断补洞、6周能力建设、4周高考化迁移。",
+  "decision": "采用“高考目标拆解 + 每日英语训练闭环 + 每周诊断复盘 + NotebookLM专题研究材料库”的方案，不把英语学习简化为背单词或刷套卷。",
+  "next_action": "选择一个学生样本，收集最近一次英语试卷分项分数，用本Research Pack的诊断表制定第一个12周训练周期。",
+  "ai_index": true,
+  "created": "2026-06-27",
+  "review_date": "2026-07-11",
+  "body": [
+    {
+      "type": "heading_2",
+      "text": "Executive Summary"
+    },
+    {
+      "type": "paragraph",
+      "text": "要让中学生英语水平真实提高，并在高考英语中拿高分，核心不是增加学习时长，而是把学习活动改造成一个闭环：先诊断薄弱项，再用可理解输入扩大语言材料库，用检索练习和间隔复习巩固词汇/语法/句型，用限时题型训练迁移到考试，最后用错题和写作反馈修正系统。"
+    },
+    {
+      "type": "paragraph",
+      "text": "本方案默认面向中国初高中学生，尤其是准备进入或已经处于高中阶段、以高考英语为结果目标的学生。不同省份试卷题型和分值可能不同，落地时要用本省最新考试说明、近三年真题和学校评分标准校准。"
+    },
+    {
+      "type": "heading_2",
+      "text": "Evidence Map"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "官方高考方向：教育部教育考试院2025/2026招生工作信息都强调深化考试内容和形式改革，更好考查关键能力、学科素养和思维品质。这意味着英语备考不能只停留在词汇和语法点，而要训练理解、推理、表达和迁移。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "英语能力标准：中国英语能力等级量表是面向全学段的英语能力等级标准，2024版已发布并于2025-03-01实施；它提醒我们不要只按题型看英语，要同时看理解、表达、语用和策略。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "考试阅读特征：RACE数据集来自中国12-18岁学生的英语考试，约2.8万篇文章和近10万道题；研究指出大量题目需要推理、概括和跨句整合，高中部分难度明显高于初中。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "二语和阅读训练：中学生需要足量、可理解、分层的阅读与听力输入，同时配合词汇、语法、写作和题型训练。只背词表而缺少语篇输入，会导致阅读速度、语感和写作迁移不足。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "写作训练证据：What Works Clearinghouse写作指南强调给学生日常写作时间，并教授写作过程；这可转化为高考写作的“写-改-再写”机制，而不是考前背几篇范文。"
+    },
+    {
+      "type": "heading_2",
+      "text": "Diagnosis: 先把问题切开"
+    },
+    {
+      "type": "paragraph",
+      "text": "先拿一套最近真题或学校高质量模拟题，按模块记录分数、耗时和错误类型。不要只看总分。高考英语的核心诊断维度包括：听力、阅读理解、完形/语篇填空、语法与句法、应用文/读后续写或书面表达、速度、错题复发率。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "如果150分制低于90分：优先补词汇、基本句法、听力辨音和简单阅读；目标是把大量“看不懂”变成“能大致理解”。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "90-120分：优先补阅读速度、长难句、语篇逻辑、完形上下文和写作准确性；目标是减少中档题失误。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "120-135分：优先训练限时稳定性、细节证据定位、推理题、写作高级但安全的表达；目标是把会做题变成稳定拿分。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "135分以上：优先减少低级错误，打磨作文得分点，提升复杂语篇的精读和复盘质量；目标是高分稳定性。"
+    },
+    {
+      "type": "heading_2",
+      "text": "12周训练周期"
+    },
+    {
+      "type": "heading_3",
+      "text": "第1-2周：诊断与补洞"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "完成1套完整诊断卷，记录每道错题的原因：词汇、句法、定位、推理、粗心、时间不足、表达不准。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "建立三本账：词汇账、句法账、错题账。每条记录都要可复习，而不是只抄答案。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "每天20分钟词汇检索复习，不只看中文释义，要能说出英文搭配、例句和高考语境。"
+    },
+    {
+      "type": "heading_3",
+      "text": "第3-8周：能力建设"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "阅读：每周8-12篇，至少4篇精读。精读时标出主题句、转折、因果、指代、作者态度和证据句。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "听力：每天15-20分钟，采用“听题-复听-看文本-跟读/影子朗读-复述”流程。目标不是听过，而是能预测题干、捕捉转折和数字细节。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "语法：不要孤立刷语法点。每周围绕一种句法结构做“识别-翻译-仿写-纠错”，如非谓语、从句、强调、倒装、虚拟、长难句主干。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "写作：每周2篇限时写作，每篇至少改两轮。第一轮改任务完成和结构，第二轮改句法、词汇和衔接。"
+    },
+    {
+      "type": "heading_3",
+      "text": "第9-12周：考试迁移"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "每周1-2套限时卷，严格记录各模块耗时。不要每天刷整卷，整卷训练是检测，不是唯一学习方式。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "每套卷复盘时间至少等于做题时间的70%。复盘输出必须包括：高频错因、可复习卡片、下周训练任务。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "作文建立个人安全表达库：不是堆高级词，而是积累稳定、少错、能覆盖常见任务的句型和衔接方式。"
+    },
+    {
+      "type": "heading_2",
+      "text": "Daily Operating System"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "10分钟：昨日词汇和错题主动回忆，不看答案先写。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "20分钟：一篇阅读或一段听力输入，要求能复述核心信息。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "15分钟：句法/语法专项，必须产出3个自己的例句。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "15分钟：题型训练或作文微写作，及时订正。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "5分钟：记录今天新增的错误类型和明天优先项。"
+    },
+    {
+      "type": "heading_2",
+      "text": "Scoring Strategy by Module"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "听力：训练预测题干、识别转折、复述大意。错题不能只看原文，要追问是音没听出、词不认识、信息没抓住，还是被干扰项带走。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "阅读理解：先题后文适合多数考试场景，但关键是回到原文找证据。推理题要区分原文事实、合理推断和过度推断。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "完形/语篇填空：核心不是单词辨析，而是上下文逻辑、搭配、语法角色和语篇连贯。训练时要在空格前后标出线索。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "写作：高分作文不是模板堆砌，而是任务完成清楚、结构自然、语言准确、衔接顺畅。每篇作文都要留下一个可复用表达和一个必须避免的错误。"
+    },
+    {
+      "type": "heading_2",
+      "text": "Parent and Teacher Collaboration"
+    },
+    {
+      "type": "paragraph",
+      "text": "家长和老师的关键作用不是增加压力，而是维护系统：每周看一次数据，不看当天情绪；每两周复盘一次方案，不频繁换资料；把鼓励和反馈绑定到过程指标，而不是只绑定分数。"
+    },
+    {
+      "type": "heading_2",
+      "text": "Metrics"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "输入量：每周阅读篇数、听力分钟数、可复述材料数。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "输出量：每周作文篇数、修改轮次、口头复述次数。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "质量指标：错题复发率、限时完成率、阅读证据定位准确率、作文语法错误密度。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "结果指标：每两周一次分项分数趋势，不用每天看总分。"
+    },
+    {
+      "type": "heading_2",
+      "text": "NotebookLM Prompts"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "请基于所有来源生成一份中学生英语提分 Source Map，区分官方考试方向、语言能力标准和学习科学证据。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "请把本研究转化为一个12周高考英语训练计划，按基础薄弱/中等/高分冲刺三类学生给出差异化安排。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "请生成一份家长和老师都能使用的每周复盘表，包含过程指标、风险信号和下周行动。"
+    },
+    {
+      "type": "heading_2",
+      "text": "Risks and Caveats"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "不同省份高考英语题型、听力安排、写作题型可能不同，必须用本省最近三年真题校准。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "短期冲分和长期能力不是完全冲突，但如果只刷题不复盘，分数会很快遇到瓶颈。"
+    },
+    {
+      "type": "bulleted_list_item",
+      "text": "基础薄弱学生不要一开始就做大量整卷；高分学生不要只做容易材料。训练难度要随阶段上调。"
+    }
+  ],
+  "sources": [
+    {
+      "name": "教育部部署做好2026年普通高校招生工作",
+      "type": "Article",
+      "url": "https://gaokao.neea.edu.cn/html1/report/2601/62-1.htm",
+      "author": "教育部 / 教育部教育考试院",
+      "published_date": "2026-01-23",
+      "topic": ["Gaokao", "Education"],
+      "quality": "A",
+      "ai_index": true,
+      "notes": "官方最新高考工作部署，强调深化考试内容和形式改革，考查关键能力、学科素养和思维品质。"
+    },
+    {
+      "name": "普通高等学校招生全国统一考试 - 中国教育考试网",
+      "type": "Article",
+      "url": "https://gaokao.neea.edu.cn/",
+      "author": "教育部教育考试院",
+      "topic": ["Gaokao"],
+      "quality": "A",
+      "ai_index": true,
+      "notes": "高考官方入口，包含考试动态、考试大纲和历年高考试题评析。"
+    },
+    {
+      "name": "中国英语能力等级量表项目介绍",
+      "type": "Article",
+      "url": "https://cse.neea.edu.cn/html1/folder/1505/28-1.htm",
+      "author": "教育部教育考试院",
+      "published_date": "2025-03-01",
+      "topic": ["English Learning", "Assessment"],
+      "quality": "A",
+      "ai_index": true,
+      "notes": "《中国英语能力等级量表》2024版于2025-03-01实施，可作为理解英语能力维度的参考。"
+    },
+    {
+      "name": "Improving Literacy in Secondary Schools",
+      "type": "Report",
+      "url": "https://educationendowmentfoundation.org.uk/education-evidence/guidance-reports/literacy-ks3-ks4",
+      "author": "Education Endowment Foundation",
+      "published_date": "2018-07-06",
+      "topic": ["English Learning", "Literacy"],
+      "quality": "A",
+      "ai_index": true,
+      "notes": "中学读写能力证据指南，强调阅读、写作、词汇和学科语言。"
+    },
+    {
+      "name": "Teaching Elementary School Students to Be Effective Writers",
+      "type": "Report",
+      "url": "https://ies.ed.gov/ncee/wwc/PracticeGuide/17",
+      "author": "What Works Clearinghouse / IES",
+      "published_date": "2018-10-01",
+      "topic": ["Writing", "English Learning"],
+      "quality": "A",
+      "ai_index": true,
+      "notes": "写作教学实践指南，强调日常写作时间和写作过程教学，可迁移到高考写作训练。"
+    },
+    {
+      "name": "RACE: Large-scale ReAding Comprehension Dataset From Examinations",
+      "type": "Article",
+      "url": "https://arxiv.org/abs/1704.04683",
+      "author": "Guokun Lai et al.",
+      "published_date": "2017-04-15",
+      "topic": ["Reading", "English Learning", "Assessment"],
+      "quality": "B",
+      "ai_index": true,
+      "notes": "来自中国12-18岁学生英语考试的大规模阅读理解数据，支持“考试阅读高度依赖推理和跨句理解”的判断。"
+    },
+    {
+      "name": "Testing effect / Retrieval practice overview",
+      "type": "Article",
+      "url": "https://en.wikipedia.org/wiki/Testing_effect",
+      "author": "Wikipedia overview with academic references",
+      "topic": ["Learning Science", "English Learning"],
+      "quality": "B",
+      "ai_index": false,
+      "notes": "用于快速索引检索练习、主动回忆、测试效应的核心概念；实际落地时应优先查看其引用的原始论文。"
+    }
+  ],
+  "evergreen_notes": [
+    {
+      "name": "英语提分的核心是能力闭环，而不是单点刷题",
+      "type": "Principle",
+      "topic": ["English Learning", "Education"],
+      "status": "Stable",
+      "confidence": "High",
+      "source_url": "https://gaokao.neea.edu.cn/html1/report/2601/62-1.htm",
+      "summary": "中学生英语要长期提高，必须形成诊断、输入、检索、输出、反馈和限时迁移的闭环。刷题只负责暴露问题和迁移能力，不能替代词汇、语篇理解和写作反馈。",
+      "ai_index": true
+    },
+    {
+      "name": "高考英语高分依赖语篇推理和表达质量",
+      "type": "Insight",
+      "topic": ["Gaokao", "English Learning"],
+      "status": "Stable",
+      "confidence": "High",
+      "source_url": "https://arxiv.org/abs/1704.04683",
+      "summary": "高考导向下的英语能力不只是词汇和语法。阅读理解、完形、语法填空和写作都要求学生在语篇中处理证据、逻辑、态度和表达准确性。",
+      "ai_index": true
+    },
+    {
+      "name": "英语写作应该采用写-改-再写机制",
+      "type": "Playbook",
+      "topic": ["Writing", "English Learning"],
+      "status": "Stable",
+      "confidence": "Medium",
+      "source_url": "https://ies.ed.gov/ncee/wwc/PracticeGuide/17",
+      "summary": "高考写作提升不能只背模板。每周固定限时写作，并至少经历两轮修改，才能把任务完成、结构、句法准确性和衔接手段转化为稳定得分。",
+      "ai_index": true
+    }
+  ],
+  "decisions": [
+    {
+      "name": "采用12周闭环训练方案提升中学生高考英语",
+      "area": "Knowledge",
+      "decision": "采用12周为一周期的英语提升系统：2周诊断补洞、6周能力建设、4周考试迁移，并通过周复盘调整。",
+      "rationale": "该方案同时对齐官方高考改革方向、英语能力标准和学习科学证据，避免只背单词或只刷题的单一策略。",
+      "alternatives": "只刷整卷；只背3500词；只报补习班；只背作文模板。",
+      "revisit_date": "2026-07-25",
+      "ai_index": true
+    }
+  ],
+  "ai_outputs": [
+    {
+      "name": "中学生高考英语提升方案 - 初始研究综合",
+      "type": "Memo",
+      "source_tool": "ChatGPT",
+      "summary": "基于官方高考方向、英语能力等级量表、中学读写证据和考试阅读研究，形成12周闭环训练方案。后续将同步到NotebookLM进行专题研究。",
+      "created": "2026-06-27",
+      "ai_index": true
+    }
+  ]
+}

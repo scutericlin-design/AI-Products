@@ -449,6 +449,59 @@ def _strategy_profile(
             "liquidity_weight": 0.20,
             "pct_weight": 0.18,
         },
+        "regime_adaptive_balanced_trend": {
+            "name": "regime_adaptive_balanced_trend",
+            "max_total_exposure": 0.62,
+            "max_names": 3,
+            "per_trade_weight": 0.14,
+            "holding_days": holding_days or 7,
+            "stop_loss_pct": 0.045,
+            "take_profit_pct": 0.18,
+            "trailing_stop_pct": 0.075,
+            "trail_activation_pct": 0.095,
+            "allow_sideways": False,
+            "regime_filter_enabled": True,
+            "market_exit_enabled": True,
+            "regime_min_score": 58.0,
+            "regime_exit_score": 45.0,
+            "regime_full_score": 70.0,
+            "min_breadth20": 0.47,
+            "min_breadth60": 0.40,
+            "min_regime_momentum20": 0.0,
+            "narrow_regime_enabled": True,
+            "narrow_regime_min_score": 55.0,
+            "narrow_min_momentum5": 0.6,
+            "narrow_min_sentiment_score": 60.0,
+            "narrow_rank_boost": 9.0,
+            "narrow_exposure_scale": 0.28,
+            "stop_loss_cooldown_enabled": True,
+            "stop_loss_cooldown_count": 2,
+            "stop_loss_cooldown_window": 10,
+            "stop_loss_cooldown_days": 16,
+            "min_sentiment_score": 55.0,
+            "panic_threshold": 63.0,
+            "rank_threshold": 88.0,
+            "min_history_bars": 20,
+            "min_amount_yi": max(settings.min_turnover_yi, 2.5),
+            "min_pct_chg": 1.3,
+            "max_pct_chg": 8.4,
+            "min_momentum5": 1.8,
+            "min_momentum10": 1.2,
+            "min_momentum20": 0.2,
+            "max_volatility10": 9.2,
+            "require_ma_stack": True,
+            "require_ma60_stack": False,
+            "min_close_high_ratio": 0.95,
+            "pct_sweet_spot": 4.5,
+            "volatility_penalty_start": 3.0,
+            "momentum5_weight": 3.0,
+            "momentum10_weight": 2.8,
+            "momentum20_weight": 1.6,
+            "sentiment_weight": 0.16,
+            "trend_weight": 0.46,
+            "liquidity_weight": 0.20,
+            "pct_weight": 0.18,
+        },
         "hybrid_alpha": {
             "name": "hybrid_alpha",
             "max_total_exposure": 1.0,
@@ -829,12 +882,13 @@ def _build_historical_universe_context(
     as_of_date: str,
     limit: int = 300,
 ) -> tuple[list[str], dict[str, list[str]]]:
+    from data.stock_universe import build_stock_universe
     from data.tushare_client import TushareClient
 
     client = TushareClient()
     normalized_profile = str(profile_name or "watchlist").strip().lower()
     if normalized_profile in {"watchlist", "settings", "current"}:
-        universe = settings.watch_symbols or client._default_symbols()
+        universe = client.core_selection_symbols()
         return universe, {symbol: ["core"] for symbol in universe}
     if normalized_profile == "default":
         universe = client._default_symbols()
@@ -842,84 +896,17 @@ def _build_historical_universe_context(
 
     try:
         frame = _fetch_daily_basic_snapshot(as_of_date)
+        return build_stock_universe(
+            frame,
+            profile_name=normalized_profile,
+            limit=limit,
+            core_symbols=client.core_selection_symbols(),
+            normalize_symbol=client.normalize_symbol,
+        )
     except Exception as exc:
         logger.warning("daily_basic universe failed; falling back to watchlist: %s", exc)
-        universe = settings.watch_symbols or client._default_symbols()
+        universe = client.core_selection_symbols()
         return universe, {symbol: ["core"] for symbol in universe}
-    if frame is None or frame.empty:
-        universe = settings.watch_symbols or client._default_symbols()
-        return universe, {symbol: ["core"] for symbol in universe}
-
-    columns = {str(column).strip().lower(): column for column in frame.columns}
-    ts_col = columns.get("ts_code")
-    turnover_col = columns.get("turnover_rate")
-    circ_mv_col = columns.get("circ_mv")
-    if ts_col is None or turnover_col is None or circ_mv_col is None:
-        universe = settings.watch_symbols or client._default_symbols()
-        return universe, {symbol: ["core"] for symbol in universe}
-
-    data = frame.copy()
-    data[ts_col] = data[ts_col].astype(str)
-    data = data[~data[ts_col].str.endswith(".BJ")]
-    data["_turnover"] = data[turnover_col].fillna(0).astype(float)
-    data["_circ_mv"] = data[circ_mv_col].fillna(0).astype(float)
-    data = data[data["_circ_mv"] > 0]
-    cap = max(int(limit or 300), 1)
-
-    if normalized_profile == "large":
-        selected = data[data["_turnover"] >= 0.2].sort_values(["_circ_mv", "_turnover"], ascending=[False, False])
-        universe = _dedupe_symbols(selected[ts_col].head(cap).tolist())
-        return universe, {symbol: ["large"] for symbol in universe}
-
-    if normalized_profile == "active_mid":
-        selected = data[
-            (data["_turnover"] >= 1.0)
-            & (data["_circ_mv"] >= 300000)
-            & (data["_circ_mv"] <= 12000000)
-        ].copy()
-        selected["_active_value"] = selected["_turnover"] * selected["_circ_mv"]
-        selected = selected.sort_values("_active_value", ascending=False)
-        universe = _dedupe_symbols(selected[ts_col].head(cap).tolist())
-        return universe, {symbol: ["active"] for symbol in universe}
-
-    if normalized_profile in {"blended", "institutional", "adaptive"}:
-        large_count = max(cap // 2, 1)
-        active_count = max(cap - large_count, 1)
-        if normalized_profile == "institutional":
-            large_count = max(int(cap * 0.4), 1)
-            active_count = max(cap - large_count, 1)
-        if normalized_profile == "adaptive":
-            core = settings.watch_symbols or client._default_symbols()
-            core_count = min(len(core), max(int(cap * 0.3), 1))
-            large_count = max(int(cap * 0.35), 1)
-            active_count = max(cap - core_count - large_count, 1)
-        large = data[data["_turnover"] >= 0.2].sort_values(["_circ_mv", "_turnover"], ascending=[False, False])
-        active = data[
-            (data["_turnover"] >= 1.0)
-            & (data["_circ_mv"] >= 300000)
-            & (data["_circ_mv"] <= 12000000)
-        ].copy()
-        active["_active_value"] = active["_turnover"] * active["_circ_mv"]
-        active = active.sort_values("_active_value", ascending=False)
-        tags: dict[str, list[str]] = {}
-        pieces: list[tuple[str, list[str]]] = []
-        if normalized_profile == "adaptive":
-            pieces.append(("core", (settings.watch_symbols or client._default_symbols())[:core_count]))
-        pieces.append(("large", large[ts_col].head(large_count).tolist()))
-        pieces.append(("active", active[ts_col].head(active_count).tolist()))
-        ordered: list[str] = []
-        for tag, symbols in pieces:
-            for symbol in _dedupe_symbols(symbols):
-                if symbol not in tags:
-                    ordered.append(symbol)
-                    tags[symbol] = []
-                if tag not in tags[symbol]:
-                    tags[symbol].append(tag)
-        return ordered[:cap], {symbol: tags.get(symbol, []) for symbol in ordered[:cap]}
-
-    logger.warning("unknown historical universe profile=%s; using watchlist", profile_name)
-    universe = settings.watch_symbols or client._default_symbols()
-    return universe, {symbol: ["core"] for symbol in universe}
 
 
 def _fetch_daily_basic_snapshot(as_of_date: str) -> Any:

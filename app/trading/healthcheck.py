@@ -5,13 +5,12 @@ import sys
 from sqlalchemy import select
 
 from app.config import settings
-from app.database import SessionLocal, init_db
+from app.database import SessionLocal
 from app.models import TradingEngineRun
 from app.trading.utils import utc_now_naive
 
 
 def main() -> int:
-    init_db()
     db = SessionLocal()
     try:
         latest = db.scalar(select(TradingEngineRun).order_by(TradingEngineRun.started_at.desc()))

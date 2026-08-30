@@ -39,20 +39,90 @@ class Quote:
 
 class TushareClient:
     def fetch_realtime_quotes(self, symbols: list[str] | None = None) -> list[Quote]:
-        normalized = [self.normalize_symbol(item) for item in (symbols or settings.watch_symbols)]
+        normalized = [self.normalize_symbol(item) for item in (symbols or self.core_selection_symbols())]
+        if settings.dry_run:
+            return self._dry_run_quotes(normalized)
+        return self._fetch_quotes_in_batches(normalized)
+
+    def core_selection_symbols(self) -> list[str]:
+        """Return explicit core names, not the dynamically built adaptive universe."""
+        configured = [self.normalize_symbol(item) for item in settings.watch_symbols]
+        return list(dict.fromkeys(configured or self._default_symbols()))
+
+    def selection_symbols(self) -> list[str]:
+        """Compatibility alias for callers that need the configured core basket."""
+        return self.core_selection_symbols()
+
+    def fetch_daily_basic_snapshot(
+        self,
+        as_of_date: str,
+        lookback_days: int = 15,
+    ) -> tuple[pd.DataFrame, str]:
+        """Load the most recent tradable daily_basic snapshot for universe construction."""
+        if settings.dry_run:
+            return pd.DataFrame(), as_of_date
+
+        import tushare as ts
+
+        if settings.tushare_base_url:
+            pro = self._proxy_pro_api(ts)
+        else:
+            if settings.tushare_token:
+                ts.set_token(settings.tushare_token)
+            pro = ts.pro_api()
+        as_of = datetime.strptime(as_of_date, "%Y%m%d").date()
+        fields = "ts_code,turnover_rate,volume_ratio,total_mv,circ_mv"
+        for offset in range(0, max(int(lookback_days), 1)):
+            trade_date = (as_of - timedelta(days=offset)).strftime("%Y%m%d")
+            frame = pro.daily_basic(trade_date=trade_date, fields=fields)
+            if frame is not None and not frame.empty:
+                if offset:
+                    logger.info(
+                        "daily_basic universe snapshot rolled back from %s to %s",
+                        as_of_date,
+                        trade_date,
+                    )
+                return frame, trade_date
+        return pd.DataFrame(), as_of_date
+
+    def fetch_market_sentiment_quotes(self) -> list[Quote]:
+        """Load a dedicated broad market sample without expanding the stock picker."""
+        normalized = list(
+            dict.fromkeys(self.normalize_symbol(item) for item in settings.market_sentiment_symbols)
+        )
         if settings.dry_run:
             return self._dry_run_quotes(normalized)
         if not normalized:
-            normalized = self._default_symbols()
+            return []
+
+        result = self._fetch_quotes_in_batches(normalized)
+        logger.info(
+            "market sentiment sample loaded rows=%s requested=%s sources=%s",
+            len(result),
+            len(normalized),
+            ",".join(sorted({quote.source for quote in result})) or "none",
+        )
+        return result
+
+    def _fetch_quotes_in_batches(self, symbols: list[str], batch_size: int = 50) -> list[Quote]:
+        quotes: dict[str, Quote] = {}
+        for start in range(0, len(symbols), max(batch_size, 1)):
+            batch = symbols[start : start + max(batch_size, 1)]
+            for quote in self._fetch_quotes_for_symbols(batch):
+                if quote.price > 0:
+                    quotes[quote.symbol] = quote
+        return list(quotes.values())
+
+    def _fetch_quotes_for_symbols(self, symbols: list[str]) -> list[Quote]:
         try:
-            quotes = self._fetch_from_tushare(normalized)
+            quotes = self._fetch_from_tushare(symbols)
             if quotes:
                 return quotes
         except Exception as exc:
             logger.warning("tushare realtime quote fetch failed: %s", exc, exc_info=True)
         if settings.akshare_enabled:
             try:
-                quotes = self._fetch_from_akshare(normalized)
+                quotes = self._fetch_from_akshare(symbols)
                 if quotes:
                     return quotes
             except Exception as exc:
