@@ -1,0 +1,40 @@
+services:
+  stock-alpha-paper:
+    image: chixiao-stock-alpha:20260906-v1
+    build:
+      context: ./code
+      dockerfile: stock_alpha/deployment/Dockerfile
+    restart: unless-stopped
+    read_only: true
+    mem_limit: 768m
+    memswap_limit: 768m
+    cpus: 0.75
+    pids_limit: 128
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    environment:
+      TZ: Asia/Shanghai
+      STOCK_ALPHA_HOME: /runtime
+      STOCK_ALPHA_SEED: /seed
+      STOCK_ALPHA_RUNTIME_CONFIG: /run/secrets/runtime.json
+      STOCK_ALPHA_AI_CONFIG: /run/secrets/ai.json
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - ./runtime:/runtime
+      - ./secrets/runtime.json:/run/secrets/runtime.json:ro
+      - ./secrets/ai.json:/run/secrets/ai.json:ro
+      - /opt/chixiao-alpha/a_stock_ai_v1_3_deploy/stock_alpha/local_data/2018_2026:/seed:ro
+    healthcheck:
+      test: ["CMD", "python", "-m", "stock_alpha.live", "healthcheck"]
+      interval: 60s
+      timeout: 15s
+      start_period: 600s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

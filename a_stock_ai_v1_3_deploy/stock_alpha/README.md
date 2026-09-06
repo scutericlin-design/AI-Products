@@ -42,6 +42,19 @@ python -m unittest tests.test_stock_alpha
 
 下载逐请求原样缓存，可断点重跑，输入文件具有SHA-256校验。`--offline`只读取已有缓存；不会自动切换供应商或生成假数据。端点协议及字段见[TuShare财务指标](https://tushare.pro/document/2?doc_id=79)、[每日指标](https://tushare.pro/document/2?doc_id=32)。回放按日期区分2023年8月28日前后的卖出印花税，政策依据为[税务总局公告](https://fgk.chinatax.gov.cn/zcfgk/c102416/c5211343/content.html)；佣金与滑点仍是可配置研究假设。
 
+## 独立AI配置
+
+新策略首选模型为`deepseek-v4-flash`，Base URL为`https://tbtk.asia/v1`。配置通过本模块的`local_data/ai_config.json`读取（字段为`model`、`base_url`、`api_key`），该目录不纳入Git，含密钥的文件权限应为`600`。
+
+可用`STOCK_ALPHA_AI_MODEL`、`STOCK_ALPHA_AI_BASE_URL`、`STOCK_ALPHA_AI_API_KEY`单独覆盖，或用`STOCK_ALPHA_AI_CONFIG`指定配置文件。不读取主策略的`STOCK_AI_*`或`MINIMAX_*`配置，不修改任何其他策略。
+
+```bash
+python -m stock_alpha.ai_config
+python -m stock_alpha.ai_config --check
+```
+
+第一个命令只展示脱敏配置；第二个仅发送一条简短的连通性测试，不发送账户信息，不下单，不启动模拟盘。现有研究回测仍为确定性规则。独立实时模拟执行、AI事件评估和备用模型链由新增的 `stock_alpha.live` 接入，详见 [独立模拟盘说明](LIVE.md)。
+
 ## 升级验收
 
 输出净收益、年度回撤、换手、成本翻倍测试、未成交和缺失数据诊断；比较沪深300价格指数及80%指数+20%现金的参考组合。价格指数不是含分红的可交易产品，也不是旧主策略的替身。

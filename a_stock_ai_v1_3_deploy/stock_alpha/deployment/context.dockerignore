@@ -1,0 +1,7 @@
+**/local_data
+**/__pycache__
+**/*.pyc
+**/.env*
+**/*.sqlite*
+**/ai_config.json
+**/runtime_config.json
