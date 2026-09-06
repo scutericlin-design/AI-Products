@@ -100,6 +100,8 @@ services:
       HOT_LEADER_AUTO_ENABLED: ${HOT_LEADER_AUTO_ENABLED:-true}
       HOT_LEADER_AUTO_REFRESH_CALENDAR_DAYS: ${HOT_LEADER_AUTO_REFRESH_CALENDAR_DAYS:-75}
       HOT_LEADER_INTRADAY_ENABLED: ${HOT_LEADER_INTRADAY_ENABLED:-true}
+      HOT_LEADER_LIVE_THEME_ENABLED: ${HOT_LEADER_LIVE_THEME_ENABLED:-true}
+      HOT_LEADER_LIVE_THEME_INTERVAL_MINUTES: ${HOT_LEADER_LIVE_THEME_INTERVAL_MINUTES:-5}
       HOT_LEADER_INTRADAY_ENTRY_ENABLED: ${HOT_LEADER_INTRADAY_ENTRY_ENABLED:-true}
       HOT_LEADER_INTRADAY_INTERVAL_MINUTES: ${HOT_LEADER_INTRADAY_INTERVAL_MINUTES:-2}
       HOT_LEADER_INTRADAY_ENTRY_MIN_CHANGE: ${HOT_LEADER_INTRADAY_ENTRY_MIN_CHANGE:--0.02}
@@ -229,6 +231,8 @@ services:
       HOT_LEADER_STORAGE_DIR: /app/hot_leader_strategy/local_data
       A_SHARE_QUANT_DATA_DIR: ${A_SHARE_QUANT_DATA_DIR:-/app/a_share_quant_data}
       HOT_LEADER_INTRADAY_ENABLED: ${HOT_LEADER_INTRADAY_ENABLED:-true}
+      HOT_LEADER_LIVE_THEME_ENABLED: ${HOT_LEADER_LIVE_THEME_ENABLED:-true}
+      HOT_LEADER_LIVE_THEME_INTERVAL_MINUTES: ${HOT_LEADER_LIVE_THEME_INTERVAL_MINUTES:-5}
       HOT_LEADER_INTRADAY_ENTRY_ENABLED: ${HOT_LEADER_INTRADAY_ENTRY_ENABLED:-true}
       HOT_LEADER_INTRADAY_INTERVAL_MINUTES: ${HOT_LEADER_INTRADAY_INTERVAL_MINUTES:-2}
       HOT_LEADER_INTRADAY_ENTRY_MIN_CHANGE: ${HOT_LEADER_INTRADAY_ENTRY_MIN_CHANGE:--0.02}
@@ -256,6 +260,8 @@ services:
       # TuShare/DeepSeek research artifacts are produced outside this service.
       # Mount read-only: dashboard requests must never mutate research archives.
       - ../../a_share_quant_tool/data:/app/a_share_quant_data:ro
+      # Stock Alpha has its own worker and ledger; dashboard access is read-only.
+      - ${STOCK_ALPHA_RUNTIME_DIR:-/opt/chixiao-stock-alpha/runtime}:/app/stock_alpha_runtime:ro
     ports:
       - "${DASHBOARD_PORT:-8080}:8080"
     depends_on:

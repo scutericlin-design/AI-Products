@@ -33,6 +33,7 @@ from dashboard.data import build_dashboard_payload, build_etf_dashboard_payload,
 from hot_leader_strategy.dashboard import build_hot_leader_dashboard_payload
 from qgarp_strategy.dashboard import build_qgarp_dashboard_payload
 from sentiment_quant_dashboard import build_sentiment_quant_dashboard_payload
+from dashboard.stock_alpha_data import build_stock_alpha_payload
 
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -90,6 +91,16 @@ class DashboardHandler(BaseHTTPRequestHandler):
             if not self._require_auth(path):
                 return
             self._send_file(STATIC_DIR / "sentiment_quant.html")
+            return
+        if path == "/stock-alpha":
+            if not self._require_auth(path):
+                return
+            self._send_file(STATIC_DIR / "stock_alpha.html")
+            return
+        if path == "/api/stock-alpha-dashboard":
+            if not self._require_auth(path):
+                return
+            self._send_json(build_stock_alpha_payload())
             return
         if path == "/api/ping":
             self._send_json(

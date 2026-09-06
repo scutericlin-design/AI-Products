@@ -2,9 +2,13 @@ from __future__ import annotations
 
 import logging
 import sys
+import csv
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import re
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import pandas as pd
 import requests
@@ -14,6 +18,7 @@ from hot_leader_strategy.models import DailyBar, Instrument
 
 
 logger=logging.getLogger(__name__)
+TZ = ZoneInfo("Asia/Shanghai")
 
 
 class HotLeaderDataError(RuntimeError): pass
@@ -139,6 +144,34 @@ class HotLeaderDataClient:
             if not prices: raise HotLeaderDataError("TuShare 中转实时行情返回为空")
             return prices
         except Exception as exc: raise HotLeaderDataError(f"实时成交价不可用：{exc}") from exc
+
+    def realtime_market_quotes(self, symbols: list[str]) -> dict[str, Any]:
+        """Fetch a timestamped full-universe observation in bounded Sina batches.
+
+        The TuShare proxy currently returns empty real-time rows. This backup is
+        an independent observation feed only: it cannot provide an execution
+        price or create an order. Batches are parallel but bounded so an entire
+        5k-name liquid universe does not monopolize the scheduler.
+        """
+        requested = sorted({_symbol(symbol) for symbol in symbols if _symbol(symbol) and not _symbol(symbol).endswith(".BJ")})
+        if not requested:
+            raise HotLeaderDataError("全市场热点扫描缺少股票池")
+        batches = [requested[index:index + 50] for index in range(0, len(requested), 50)]
+        quotes: list[dict[str, Any]] = []
+        failures = 0
+        with ThreadPoolExecutor(max_workers=6, thread_name_prefix="hot-leader-sina") as pool:
+            futures = [pool.submit(_fetch_sina_batch, batch) for batch in batches]
+            for future in as_completed(futures):
+                try:
+                    quotes.extend(future.result())
+                except HotLeaderDataError:
+                    failures += 1
+        if len(quotes) < min(100, max(6, len(requested) // 10)):
+            raise HotLeaderDataError(f"全市场热点快照覆盖不足：{len(quotes)}/{len(requested)}，失败批次={failures}")
+        provider_times = [row["provider_timestamp"] for row in quotes if row.get("provider_timestamp")]
+        return {"source": "sina_timestamped_full_market", "observed_at": datetime.now(TZ).isoformat(timespec="seconds"),
+                "provider_timestamp": max(provider_times) if provider_times else None, "provider_timestamp_available": bool(provider_times),
+                "quotes": quotes, "provider_row_count": len(quotes), "failed_batches": failures}
     def monthly_liquid_universe(self,start:str,end:str,limit:int)->list[tuple[str,list[tuple[str,float]]]]:
         if not self._available: raise HotLeaderDataError("历史点时点股票池需要 TuShare 中转或 Token")
         result=[]
@@ -188,6 +221,38 @@ def _symbol(value:str)->str:
     raw=value.strip().upper()
     if not raw:return ""
     return raw if "." in raw else f"{raw.zfill(6)}.{'SH' if raw.startswith(('6','68')) else 'SZ'}"
+
+
+def _fetch_sina_batch(symbols: list[str]) -> list[dict[str, Any]]:
+    aliases = {f"{symbol.split('.')[1].lower()}{symbol[:6]}": symbol for symbol in symbols}
+    try:
+        response = requests.get("https://hq.sinajs.cn/list=" + ",".join(aliases), headers={
+            "User-Agent": "Mozilla/5.0", "Referer": "https://finance.sina.com.cn/"}, timeout=(4, 12), allow_redirects=False)
+        response.raise_for_status()
+        text = response.content.decode("gbk")
+    except (requests.RequestException, UnicodeDecodeError) as exc:
+        raise HotLeaderDataError(f"Sina 实时行情请求失败：{type(exc).__name__}") from exc
+    results = []
+    for match in re.finditer(r'var hq_str_(sh|sz)(\d{6})="(.*?)";', text):
+        alias = match.group(1) + match.group(2)
+        symbol = aliases.get(alias)
+        if not symbol:
+            continue
+        try:
+            row = next(csv.reader([match.group(3)]))
+            if len(row) < 32:
+                continue
+            price, pre_close = _num(row[3]), _num(row[2])
+            timestamp = datetime.fromisoformat(f"{row[30]}T{row[31]}").replace(tzinfo=TZ)
+            if price <= 0 or pre_close <= 0:
+                continue
+            results.append({"symbol": symbol, "name": row[0], "price": price,
+                            "pct_change": round((price / pre_close - 1) * 100, 4), "amount": _num(row[9]),
+                            "volume": _num(row[8]), "amplitude_pct": round((_num(row[4]) - _num(row[5])) / pre_close * 100, 4),
+                            "turnover_rate": 0.0, "pre_close": pre_close, "provider_timestamp": timestamp.isoformat(timespec="seconds")})
+        except (ValueError, IndexError, TypeError):
+            continue
+    return results
 def _months(start:str,end:str)->list[tuple[str,str]]:
     current=datetime.strptime(start,"%Y%m%d").replace(day=1); last=datetime.strptime(end,"%Y%m%d")
     result=[]

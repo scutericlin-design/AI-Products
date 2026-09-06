@@ -118,6 +118,23 @@ def run_hot_leader_intraday_cycle() -> dict[str, object] | None:
     return result
 
 
+def run_hot_leader_live_theme_cycle() -> dict[str, object] | None:
+    """Persist a whole-market observation only; it cannot create an order."""
+    window = current_trading_window()
+    if not window.is_open:
+        logger.info("skip hot-leader live theme cycle: phase=%s reason=%s", window.phase, window.reason)
+        return None
+    from hot_leader_strategy.config import load_settings as load_hot_leader_settings
+    from hot_leader_strategy.runner import HotLeaderRunner
+
+    settings = load_hot_leader_settings()
+    if not settings.auto_enabled or not settings.live_theme_enabled:
+        return {"status": "skipped_hot_leader_live_theme_disabled", "no_real_orders": True}
+    result = HotLeaderRunner(settings=settings).live_theme_once()
+    logger.info("hot-leader live theme cycle finished: status=%s quotes=%s themes=%s", result.get("status"), result.get("quote_count", 0), result.get("hot_theme_count", 0))
+    return result
+
+
 def run_market_status_push() -> dict[str, object] | None:
     """Send a scheduled market brief from the latest completed stock cycle."""
     window = current_trading_window()
@@ -219,6 +236,24 @@ def start_scheduler() -> None:
                     run_hot_leader_intraday_cycle,
                     trigger=CronTrigger(day_of_week="mon-fri", second=35, timezone="Asia/Shanghai", **fields),
                     id=f"a_stock_ai_hot_leader_intraday_{suffix}",
+                    max_instances=1,
+                    coalesce=True,
+                    replace_existing=True,
+                )
+        if hot_leader_settings.live_theme_enabled:
+            interval = hot_leader_settings.live_theme_interval_minutes
+            hot_leader_theme_windows = (
+                ("morning_0935", {"hour": 9, "minute": _minute_range(35, 55, interval)}),
+                ("morning_10", {"hour": 10, "minute": _minute_range(0, 55, interval)}),
+                ("morning_11", {"hour": 11, "minute": _minute_range(0, 25, interval)}),
+                ("afternoon_13", {"hour": 13, "minute": _minute_range(0, 55, interval)}),
+                ("afternoon_14", {"hour": 14, "minute": _minute_range(0, 55, interval)}),
+            )
+            for suffix, fields in hot_leader_theme_windows:
+                scheduler.add_job(
+                    run_hot_leader_live_theme_cycle,
+                    trigger=CronTrigger(day_of_week="mon-fri", second=50, timezone="Asia/Shanghai", **fields),
+                    id=f"a_stock_ai_hot_leader_live_theme_{suffix}",
                     max_instances=1,
                     coalesce=True,
                     replace_existing=True,

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stock Alpha 独立模拟盘</title>
+  <link rel="stylesheet" href="static/dashboard.css">
+  <link rel="stylesheet" href="static/stock_alpha.css">
+</head>
+<body><div class="shell">
+  <header class="topbar"><div><p class="eyebrow">赤霄 · 独立模拟策略</p><h1>Stock Alpha</h1></div>
+    <nav class="topbar__actions" aria-label="策略导航">
+      <a class="nav-button" href="./">股票实时</a><a class="nav-button" href="etf">ETF策略</a><a class="nav-button" href="qgarp">Q-GARP</a><a class="nav-button" href="hot-leader">热点龙头</a><a class="nav-button" href="sentiment-quant">情绪量化</a>
+      <button id="refreshButton" type="button" aria-label="刷新数据" title="刷新数据">↻</button>
+      <a class="nav-button" href="admin">后台</a><form method="post" action="logout" class="logout-form"><button type="submit">退出</button></form>
+    </nav>
+  </header>
+  <main>
+    <div class="alpha-account-bar"><div class="alpha-tabs" role="tablist" aria-label="独立对照账本">
+      <button role="tab" aria-selected="true" data-account="C_ai">AI正式模拟盘</button><button role="tab" aria-selected="false" data-account="B_enhanced" tabindex="-1">增强规则 · B</button><button role="tab" aria-selected="false" data-account="A_baseline" tabindex="-1">原规则 · A</button>
+    </div><span class="badge">模拟交易 · 独立100万元</span></div>
+    <p id="loadStatus" role="status" aria-live="polite">正在读取独立账本…</p>
+    <section class="status-strip" aria-label="账户概览">
+      <article class="metric"><span>总资产</span><strong id="equity">--</strong><small id="returns">--</small></article>
+      <article class="metric"><span>可用资金</span><strong id="cash">--</strong><small id="exposure">--</small></article>
+      <article class="metric"><span>已实现盈亏</span><strong id="realized">--</strong><small id="fees">--</small></article>
+      <article class="metric"><span>最大回撤</span><strong id="drawdown">--</strong><small id="trades">--</small></article>
+      <article class="metric"><span>服务状态</span><strong id="health">--</strong><small id="updated">--</small></article>
+    </section>
+    <section class="alpha-section"><div class="panel__head"><h2>净值与收益</h2><span id="curveLabel" class="badge">每日最后快照</span></div><div class="alpha-chart"><canvas id="equityChart" role="img" aria-label="当前账本净值曲线"></canvas></div><p id="curveSummary"></p></section>
+    <section class="alpha-section"><div class="panel__head"><h2>A / B / C 对照</h2><span class="badge">独立记账</span></div><div class="table-wrap"><table><thead><tr><th>账本</th><th>总资产</th><th>收益率</th><th>最大回撤</th><th>成交笔数</th><th>费用</th></tr></thead><tbody id="comparison"></tbody></table></div></section>
+    <section class="alpha-section"><div class="panel__head"><h2>当前持仓</h2><span id="positionCount" class="badge">--</span></div><div class="table-wrap"><table><thead><tr><th>代码 / 名称</th><th>股数</th><th>成本</th><th>估值价格</th><th>市值</th><th>浮动盈亏</th><th>仓位</th><th>成本止损参考</th><th>估值时间</th></tr></thead><tbody id="positions"></tbody></table></div></section>
+    <section class="alpha-section"><div class="panel__head"><h2>模拟成交</h2><span class="badge">最近100笔</span></div><div class="table-wrap"><table><thead><tr><th>北京时间</th><th>代码 / 名称</th><th>方向</th><th>价格</th><th>股数</th><th>费用</th><th>已实现盈亏</th><th>决策链</th><th>原因</th></tr></thead><tbody id="orders"></tbody></table></div></section>
+    <section class="alpha-section"><div class="panel__head"><h2>策略与AI决策</h2><span id="aiMode" class="badge">--</span></div><dl class="kv" id="strategyInfo"></dl><div id="evidence" class="watchlist"></div></section>
+    <section class="alpha-section"><div class="panel__head"><h2>执行检查记录</h2><span class="badge">最近30条</span></div><div class="table-wrap"><table><thead><tr><th>执行周期</th><th>股票</th><th>方向</th><th>状态</th><th>原因</th></tr></thead><tbody id="blocks"></tbody></table></div></section>
+    <p class="alpha-disclaimer">仅模拟交易，不代表实盘可成交收益。止损受T+1、跳空和涨跌停约束；除权分红待核对时，估值可能暂不完整。</p>
+  </main>
+</div><script src="static/stock_alpha.js"></script></body></html>

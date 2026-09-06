@@ -6,6 +6,7 @@ from dataclasses import replace
 from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from unittest.mock import Mock, patch
 
 from hot_leader_strategy.config import load_settings
 from hot_leader_strategy.intraday import HotLeaderIntradayMonitor
@@ -13,6 +14,9 @@ from hot_leader_strategy.models import DailyBar, Instrument
 from hot_leader_strategy.paper import HotLeaderPaperRunner
 from hot_leader_strategy.storage import HotLeaderStore
 from hot_leader_strategy.strategy import HotLeaderStrategy
+from hot_leader_strategy.runner import HotLeaderRunner
+from hot_leader_strategy.data_client import HotLeaderDataClient
+from hot_leader_strategy.dashboard import build_hot_leader_dashboard_payload
 
 
 class HotLeaderTests(unittest.TestCase):
@@ -93,6 +97,58 @@ class HotLeaderTests(unittest.TestCase):
         self.assertTrue(any(order["side"]=="SELL" for order in exited["orders"]))
         self.assertEqual(exited["events"][0]["side"],"SELL")
 
+    def test_live_theme_observation_saves_current_session_without_orders(self)->None:
+        settings=replace(self.settings,auto_enabled=True,live_theme_enabled=True,live_theme_interval_minutes=5)
+        self.store.upsert_instruments(self.items)
+        self.store.upsert_universe("20260818",[(item.symbol,100-i) for i,item in enumerate(self.items)],"test")
+        quotes=[]
+        for i,item in enumerate(self.items):
+            quotes.append({"symbol":item.symbol,"name":item.name,"industry":item.industry,"price":10+i,
+                           "pct_change":6.0 if i<3 else 0.5,"amount":100_000_000,"volume":1000000,
+                           "amplitude_pct":4,"turnover_rate":5,"pre_close":9})
+        client=_LiveThemeClient(quotes)
+        result=HotLeaderRunner(settings=settings,store=self.store,client=client).live_theme_once(datetime(2026,8,19,10,0,tzinfo=ZoneInfo("Asia/Shanghai")))
+        self.assertEqual(result["status"],"ok")
+        self.assertTrue(result["no_real_orders"])
+        latest=self.store.latest_live_theme_run()
+        self.assertEqual(latest["quote_count"],6)
+        self.assertTrue(latest["payload"]["observation_only"])
+        self.assertEqual(latest["payload"]["trade_effect"],"none_next_session_research_context_only")
+        self.assertTrue(any(theme["theme"]=="题材A" and theme["hot"] for theme in latest["payload"]["hot_themes"]))
+
+    def test_live_theme_never_calls_source_when_closed(self)->None:
+        settings=replace(self.settings,auto_enabled=True,live_theme_enabled=True)
+        client=_LiveThemeClient([])
+        result=HotLeaderRunner(settings=settings,store=self.store,client=client).live_theme_once(datetime(2026,8,19,12,0,tzinfo=ZoneInfo("Asia/Shanghai")))
+        self.assertEqual(result["status"],"skipped_outside_trading_window")
+        self.assertFalse(client.called)
+
+    def test_public_live_theme_snapshot_is_normalized_and_bounded(self)->None:
+        rows=[{"f12":f"{index:06d}","f14":f"测试{index}","f2":10,"f3":2,"f5":1000,"f6":10_000_000,"f7":3,"f8":2,"f18":9.8,"f100":"测试行业"} for index in range(1,101)]
+        response=Mock(); response.raise_for_status.return_value=None; response.json.return_value={"data":{"diff":rows}}
+        client=HotLeaderDataClient(self.settings)
+        with patch("hot_leader_strategy.data_client._fetch_sina_batch",return_value=[{"symbol":"000001.SZ","provider_timestamp":"2026-08-19T10:00:00+08:00"} for _ in range(100)]) as fetch:
+            result=client.realtime_market_quotes([f"{index:06d}.SZ" for index in range(1,101)])
+        self.assertEqual(result["source"],"sina_timestamped_full_market")
+        self.assertEqual(len(result["quotes"]),200)
+        self.assertTrue(result["provider_timestamp_available"])
+        self.assertEqual(fetch.call_count,2)
+
+    def test_dashboard_exposes_live_theme_time_without_writing(self)->None:
+        self.store.save_live_theme_run(trade_date="20260819",status="ok",source="test",observed_at="2026-08-19T10:00:00+08:00",provider_timestamp=None,universe_count=5000,quote_count=4000,payload={"hot_themes":[{"theme":"题材A","hot":True}],"market_avg_change_pct":1.2})
+        with patch("hot_leader_strategy.dashboard.load_settings",return_value=replace(self.settings,live_theme_enabled=True,live_theme_interval_minutes=5)):
+            payload=build_hot_leader_dashboard_payload()
+        self.assertTrue(payload["read_only"])
+        self.assertEqual(payload["live_theme"]["run"]["observed_at"],"2026-08-19T10:00:00+08:00")
+        self.assertEqual(payload["live_theme"]["observation"]["hot_themes"][0]["theme"],"题材A")
+
+    def test_old_ledger_without_live_theme_table_reads_as_no_snapshot(self)->None:
+        old_path=Path(self.temp.name)/"old.sqlite"
+        import sqlite3
+        with sqlite3.connect(old_path) as db:
+            db.execute("CREATE TABLE hot_leader_instruments (symbol TEXT)")
+        self.assertEqual(HotLeaderStore(old_path,read_only=True).latest_live_theme_run(),{})
+
 def _bars(symbol:str,start:float)->list[DailyBar]:
     result=[]
     for i in range(30):
@@ -103,5 +159,11 @@ def _bars(symbol:str,start:float)->list[DailyBar]:
 class _QuoteClient:
     def __init__(self,prices:dict[str,float]):self.prices=prices
     def realtime_prices(self,symbols:list[str])->dict[str,float]:return {symbol:self.prices[symbol] for symbol in symbols if symbol in self.prices}
+
+class _LiveThemeClient:
+    def __init__(self,quotes):self.quotes=quotes;self.called=False
+    def realtime_market_quotes(self,symbols):
+        self.called=True
+        return {"source":"test","observed_at":"2026-08-19T10:00:00+08:00","provider_timestamp":None,"quotes":self.quotes}
 
 if __name__=="__main__":unittest.main()

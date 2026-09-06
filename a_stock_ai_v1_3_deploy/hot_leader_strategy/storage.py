@@ -41,6 +41,8 @@ class HotLeaderStore:
             CREATE INDEX IF NOT EXISTS idx_hot_leader_intraday_snapshots_symbol_time ON hot_leader_intraday_snapshots(symbol, recorded_at DESC);
             CREATE TABLE IF NOT EXISTS hot_leader_intraday_events (event_id TEXT PRIMARY KEY, dedupe_key TEXT UNIQUE NOT NULL, trade_date TEXT NOT NULL, symbol TEXT NOT NULL, event_type TEXT NOT NULL, status TEXT NOT NULL, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
             CREATE INDEX IF NOT EXISTS idx_hot_leader_intraday_events_symbol_time ON hot_leader_intraday_events(symbol, event_type, created_at DESC);
+            CREATE TABLE IF NOT EXISTS hot_leader_live_theme_runs (run_id TEXT PRIMARY KEY, trade_date TEXT NOT NULL, status TEXT NOT NULL, source TEXT NOT NULL, observed_at TEXT NOT NULL, provider_timestamp TEXT, universe_count INTEGER NOT NULL, quote_count INTEGER NOT NULL, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
+            CREATE INDEX IF NOT EXISTS idx_hot_leader_live_theme_runs_time ON hot_leader_live_theme_runs(observed_at DESC);
             CREATE TABLE IF NOT EXISTS hot_leader_backtests (run_id TEXT PRIMARY KEY, status TEXT NOT NULL, start_date TEXT NOT NULL, end_date TEXT NOT NULL, metrics_json TEXT NOT NULL, assumptions_json TEXT NOT NULL, result_json TEXT NOT NULL, created_at TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS hot_leader_quality_checks (check_id TEXT PRIMARY KEY, check_type TEXT NOT NULL, status TEXT NOT NULL, detail TEXT NOT NULL, as_of TEXT, created_at TEXT NOT NULL);
             """)
@@ -167,6 +169,24 @@ class HotLeaderStore:
                 (limit,),
             )
         ]
+
+    def save_live_theme_run(self, *, trade_date: str, status: str, source: str, observed_at: str,
+                            provider_timestamp: str | None, universe_count: int, quote_count: int,
+                            payload: dict[str, Any]) -> str:
+        ident = uuid4().hex
+        with self._connect() as db:
+            db.execute("INSERT INTO hot_leader_live_theme_runs VALUES(?,?,?,?,?,?,?,?,?,?)",
+                       (ident, trade_date, status, source, observed_at, provider_timestamp, universe_count, quote_count, _dump(payload), _now()))
+        return ident
+
+    def latest_live_theme_run(self) -> dict[str, Any]:
+        try:
+            rows = self._query("SELECT run_id,trade_date,status,source,observed_at,provider_timestamp,universe_count,quote_count,payload_json,created_at FROM hot_leader_live_theme_runs ORDER BY observed_at DESC LIMIT 1")
+        except sqlite3.OperationalError as exc:
+            if "no such table" in str(exc).lower():
+                return {}
+            raise
+        return {**rows[0], "payload": _loads(rows[0]["payload_json"])} if rows else {}
 
     def recent_signals(self, limit: int = 20) -> list[dict[str, Any]]:
         return [{**row,"payload":_loads(row["payload_json"])} for row in self._query("SELECT signal_id,as_of,signal,payload_json,created_at FROM hot_leader_signals ORDER BY created_at DESC LIMIT ?", (limit,))]

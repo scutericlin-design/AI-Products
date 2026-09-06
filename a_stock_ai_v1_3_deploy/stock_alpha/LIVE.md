@@ -50,6 +50,12 @@ docker compose -p stock-alpha-isolated -f /opt/chixiao-stock-alpha/docker-compos
 docker compose -p stock-alpha-isolated -f /opt/chixiao-stock-alpha/docker-compose.yml logs --tail 50 stock-alpha-paper
 ```
 
-`runtime/summary.json`、`health.json`、`plans/`、`paper.sqlite`分别保存账户汇总、状态、决策证据和独立账本。当前未接入旧dashboard。
+`runtime/summary.json`、`health.json`、`plans/`、`paper.sqlite`分别保存账户汇总、状态、决策证据和独立账本。
+
+Dashboard新增 `/a-stock-dashboard/stock-alpha`，默认显示C正式模拟盘，可切换A/B影子账本。沿用既有登录权限；只有只读查询，没有下单、重置或参数修改接口。页面每15秒刷新，不触发交易或AI调用。
+
+Dashboard将独立运行目录只读挂载至 `/app/stock_alpha_runtime`。读取时使用交易工作进程共用的 `worker.lock` 获取非阻塞共享锁，将主库及WAL一致复制到临时目录后立即释放锁，仅查询临时副本，避免只读挂载下SQLite共享内存文件初始化失败。工作进程忙、文件缺失或单文件超过128MiB时返回不可用，不忽略WAL、不重置账本。增长超过此读取预算时应升级快照发布服务。
+
+2026-09-07云端dashboard使用 `docker/dashboard-stock-alpha.override.json` 固定新镜像；后续单独重建dashboard时应保留新增只读挂载，且不重启交易服务。首次变更前的源码与原镜像记录位于云端 `dashboard_backups/20260907_003053`；登录配置和用户库挂载保持原样。
 
 上线仅代表开始前瞻实验。应比较扣费收益、回撤、换手、数据阻断、AI相对B的增量贡献及成本压力表现；至少跨多个再平衡周期观察。不能以几笔赚钱交易自动替换旧主策略，也不能把LLM当前知识用于历史回放后声称无未来信息。

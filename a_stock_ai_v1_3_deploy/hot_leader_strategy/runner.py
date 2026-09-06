@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from datetime import datetime, timedelta
+import re
+from statistics import mean, median
 from typing import Any
 from zoneinfo import ZoneInfo
 
@@ -10,6 +13,7 @@ from hot_leader_strategy.notify import send_execution_report
 from hot_leader_strategy.paper import ACCOUNT_ID, HotLeaderPaperRunner
 from hot_leader_strategy.storage import HotLeaderStore
 from hot_leader_strategy.strategy import HotLeaderStrategy
+from scheduler.trading_calendar import current_trading_window
 
 TZ=ZoneInfo("Asia/Shanghai")
 
@@ -120,9 +124,80 @@ class HotLeaderRunner:
 
         return HotLeaderIntradayMonitor(settings=self.settings, store=self.store, client=self.client).run_once(now)
 
+    def live_theme_once(self, now: datetime | None = None) -> dict[str, Any]:
+        """Persist a current-session theme observation without changing paper orders."""
+        checked_at = (now or datetime.now(TZ)).astimezone(TZ)
+        window = current_trading_window(checked_at)
+        if not self.settings.auto_enabled or not self.settings.live_theme_enabled:
+            return {"status": "disabled", "no_real_orders": True, "checked_at": window.checked_at}
+        if not window.is_open:
+            return {"status": "skipped_outside_trading_window", "no_real_orders": True,
+                    "checked_at": window.checked_at, "reason": window.reason}
+        trade_date = checked_at.strftime("%Y%m%d")
+        try:
+            universe = self.store.universe_as_of(trade_date)
+            if not universe:
+                raise RuntimeError("缺少上一交易日流动性股票池")
+            snapshot = self.client.realtime_market_quotes(sorted(universe))
+            industries = {item.symbol: item.industry or "未分类" for item in self.store.instruments(trade_date)}
+            quotes = [{**row, "industry": industries.get(row["symbol"], "未分类")} for row in snapshot["quotes"]
+                      if row["symbol"] in universe and not _excluded_live_name(row["name"])]
+            payload = _build_live_theme_payload(quotes, checked_at, self.settings)
+            minimum_coverage = min(100, max(6, len(universe) // 10))
+            if payload["quote_count"] < minimum_coverage:
+                raise RuntimeError(f"流动性股票池实时覆盖不足：{payload['quote_count']}/{minimum_coverage}")
+            run_id = self.store.save_live_theme_run(
+                trade_date=trade_date, status="ok", source=str(snapshot["source"]), observed_at=str(snapshot["observed_at"]),
+                provider_timestamp=snapshot.get("provider_timestamp"), universe_count=len(universe), quote_count=payload["quote_count"], payload=payload,
+            )
+            self.store.log_quality("live_theme", "ok", f"source={snapshot['source']} universe={len(universe)} quotes={payload['quote_count']} themes={len(payload['hot_themes'])}", trade_date)
+            return {"status": "ok", "no_real_orders": True, "run_id": run_id, "checked_at": window.checked_at,
+                    "observed_at": snapshot["observed_at"], "quote_count": payload["quote_count"], "hot_theme_count": len(payload["hot_themes"]),
+                    "source": snapshot["source"]}
+        except Exception as exc:
+            detail = f"盘中热点扫描不可用：{type(exc).__name__}"
+            self.store.log_quality("live_theme", "blocked", detail, trade_date)
+            return {"status": "blocked", "no_real_orders": True, "checked_at": window.checked_at, "reason": detail}
+
     def paper_once(self,as_of:str|None=None)->dict[str,Any]:
         signal=self.signal_once(as_of); plan=signal.get("plan")
         if not plan:return {"status":"no_signal","orders":[],"no_real_orders":True,"reason":signal.get("reason")}
         if not self.settings.paper_enabled:return {"status":"disabled","orders":[],"no_real_orders":True,"plan":plan,"reason":"HOT_LEADER_PAPER_ENABLED=false"}
         result=HotLeaderPaperRunner(self.settings,self.store).run(plan); result["push"]=send_execution_report(result,self.settings); return result
     def account(self)->dict[str,Any]:return self.store.paper_snapshot(ACCOUNT_ID,self.settings.paper_initial_cash)
+
+
+def _build_live_theme_payload(quotes: list[dict[str, Any]], checked_at: datetime, settings: HotLeaderSettings) -> dict[str, Any]:
+    """Cross-sectional observation score, deliberately separate from daily alpha."""
+    usable = [row for row in quotes if row["amount"] > 0 and row["industry"] not in {"", "未分类"}]
+    market_change = mean(max(-10.0, min(10.0, float(row["pct_change"]))) for row in usable) if usable else 0.0
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in usable:
+        grouped[str(row["industry"])].append(row)
+    themes = []
+    for theme, members in grouped.items():
+        if len(members) < settings.min_theme_members:
+            continue
+        changes = [max(-10.0, min(10.0, float(row["pct_change"]))) for row in members]
+        breadth = sum(change > 0 for change in changes) / len(changes)
+        avg_change = mean(changes)
+        turnover = median(float(row["turnover_rate"]) for row in members)
+        amount_yi = sum(float(row["amount"]) for row in members) / 100_000_000
+        relative = avg_change - market_change
+        score = max(0, min(100, 50 + relative * 4 + (breadth - 0.5) * 32 + min(turnover, 10) * 1.2))
+        hot = avg_change >= max(market_change + 0.6, 0.8) and breadth >= 0.60 and amount_yi >= 1
+        leaders = sorted(members, key=lambda row: (float(row["pct_change"]), float(row["amount"]), float(row["turnover_rate"])), reverse=True)[:3]
+        themes.append({"theme": theme, "score": round(score, 2), "hot": hot, "member_count": len(members),
+                       "avg_change_pct": round(avg_change, 2), "relative_change_pct": round(relative, 2),
+                       "breadth": round(breadth, 3), "turnover_rate": round(turnover, 2), "amount_yi": round(amount_yi, 2),
+                       "leaders": [{key: leader[key] for key in ("symbol", "name", "price", "pct_change", "amount", "turnover_rate")} for leader in leaders]})
+    themes.sort(key=lambda row: (not row["hot"], -row["score"], -row["amount_yi"], row["theme"]))
+    return {"observation_only": True, "trade_effect": "none_next_session_research_context_only",
+            "model": "intraday_theme_observation_v1", "market_avg_change_pct": round(market_change, 2),
+            "quote_count": len(usable), "hot_themes": themes[:12], "generated_at": checked_at.isoformat(timespec="seconds"),
+            "source_timestamp_available": False, "source_timestamp_note": "供应商未提供逐笔更新时间；仅展示本系统拉取时间。"}
+
+
+def _excluded_live_name(name: str) -> bool:
+    value = str(name).upper()
+    return bool(re.match(r"^\*?ST", value)) or "退" in value

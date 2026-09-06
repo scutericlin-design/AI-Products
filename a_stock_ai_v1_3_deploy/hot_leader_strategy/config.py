@@ -56,6 +56,8 @@ class HotLeaderSettings:
     auto_enabled: bool
     auto_refresh_calendar_days: int
     intraday_enabled: bool
+    live_theme_enabled: bool
+    live_theme_interval_minutes: int
     intraday_entry_enabled: bool
     intraday_interval_minutes: int
     intraday_entry_min_change: float
@@ -98,6 +100,11 @@ class HotLeaderSettings:
                     "buy_cutoff": self.intraday_buy_cutoff,
                     "event_cooldown_minutes": self.intraday_event_cooldown_minutes,
                 },
+                "live_theme_observation": {
+                    "enabled": self.live_theme_enabled,
+                    "interval_minutes": self.live_theme_interval_minutes,
+                    "execution": "observation_only_next_session_research_context",
+                },
             },
             "mode": "independent_local_paper_only",
         }
@@ -133,6 +140,8 @@ def load_settings(*, ensure_dirs: bool = True) -> HotLeaderSettings:
         auto_enabled=_bool("HOT_LEADER_AUTO_ENABLED", False),
         auto_refresh_calendar_days=min(max(_int("HOT_LEADER_AUTO_REFRESH_CALENDAR_DAYS", 75), 35), 160),
         intraday_enabled=_bool("HOT_LEADER_INTRADAY_ENABLED", False),
+        live_theme_enabled=_bool("HOT_LEADER_LIVE_THEME_ENABLED", True),
+        live_theme_interval_minutes=min(max(_int("HOT_LEADER_LIVE_THEME_INTERVAL_MINUTES", 5), 1), 15),
         intraday_entry_enabled=_bool("HOT_LEADER_INTRADAY_ENTRY_ENABLED", True),
         intraday_interval_minutes=min(max(_int("HOT_LEADER_INTRADAY_INTERVAL_MINUTES", 2), 1), 15),
         intraday_entry_min_change=min(max(_float("HOT_LEADER_INTRADAY_ENTRY_MIN_CHANGE", -0.02), -0.10), 0.10),
