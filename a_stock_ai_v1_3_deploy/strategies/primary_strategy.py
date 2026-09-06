@@ -39,11 +39,11 @@ def _hybrid_alpha_signal(signal: dict[str, Any]) -> dict[str, Any]:
     updated["watchlist"] = [_tag_hybrid_alpha(item) for item in list(signal.get("watchlist") or [])]
     updated["strategy_id"] = HYBRID_ALPHA_ID
     updated["strategy_label"] = HYBRID_ALPHA_LABEL
-    updated["strategy_version"] = "v1.7_hybrid_alpha_restored"
+    updated["strategy_version"] = "v2.0_hybrid_alpha_disciplined_execution"
     updated["primary_strategy_id"] = HYBRID_ALPHA_ID
     updated["selection_logic"] = (
-        "Hybrid Alpha 主策略：市场状态、情绪、龙头强度、质量和可交易性共同确认；"
-        "AI 只能降低风险或确认候选，不能新增标的。"
+        "Hybrid Alpha v2 主策略：市场状态、情绪、龙头强度、质量和可交易性共同确认；"
+        "执行层按逐仓位止损、移动止盈、最低持有期和总暴露预算处理，AI不能新增标的。"
     )
     flags = list(updated.get("risk_flags") or [])
     flags.append("hybrid_alpha_primary")

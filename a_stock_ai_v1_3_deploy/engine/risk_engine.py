@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from math import isfinite
 from typing import Any
 
 from app.config import settings
@@ -8,18 +9,44 @@ from learning.strategy_params import param_float
 
 
 def risk_check(ai_result: dict[str, Any]) -> dict[str, Any]:
-    checked = PositionEngine().apply_position_limits(_normalize_signal(ai_result))
+    normalized = _normalize_signal(ai_result)
+    before_ai = _reference_budget(normalized)
+    checked = PositionEngine().apply_position_limits(normalized)
     checked = _apply_sentiment_controls(checked)
 
-    if "downtrend" in str(ai_result).lower():
+    state = normalized.get("state")
+    if isinstance(state, dict) and str(state.get("state") or "").strip().upper() == "DOWNTREND":
         checked["signal"] = "SELL"
-        checked["position"] = 0.1
+        checked["position"] = 0.0
         checked["risk_level"] = "high"
         flags: list[str] = list(checked.get("risk_flags") or [])
         flags.append("forced_downtrend_sell")
         checked["risk_flags"] = list(dict.fromkeys(flags))
 
-    return _apply_recommendation_controls(checked)
+    after_risk = _weight(checked.get("position")) if checked["signal"] == "BUY" else 0.0
+    scale = min(1.0, after_risk / before_ai) if before_ai > 0 else 0.0
+    checked = _apply_recommendation_controls(checked, scale)
+    checked["risk_budget"] = {
+        "version": 1,
+        "semantics": "relative_candidate_budget_not_total_portfolio_exposure",
+        "before_ai": before_ai,
+        "after_ai": normalized["position"],
+        "after_risk": checked["position"],
+        "candidate_weight_scale": scale,
+    }
+    return checked
+
+
+def _reference_budget(signal: dict[str, Any]) -> float:
+    previous = signal.get("risk_budget")
+    if isinstance(previous, dict) and previous.get("version") == 1:
+        # Rechecking an already scaled signal must not apply its reduction twice.
+        return _weight(previous.get("after_risk"))
+    total = sum(_candidate_weight(item) for item in signal.get("recommendations") or [] if isinstance(item, dict))
+    # Ranking caps the bundle scalar, not its individual target weights. The AI
+    # merge changes only that scalar, so reconstruct its pre-AI value here.
+    # The multi-strategy merge instead emits the uncapped aggregate target.
+    return round(total if signal.get("is_multi_strategy") else min(total, settings.max_position_weight), 4)
 
 
 class RiskEngine:
@@ -37,17 +64,19 @@ def _normalize_signal(value: dict[str, Any]) -> dict[str, Any]:
             "raw": value,
         }
     normalized = dict(value)
-    normalized["signal"] = str(normalized.get("signal", "HOLD")).upper()
-    normalized.setdefault("position", 0.0)
+    normalized["signal"] = str(normalized.get("signal", "HOLD")).strip().upper()
+    if normalized["signal"] not in {"BUY", "SELL", "HOLD"}:
+        normalized["signal"] = "HOLD"
+    normalized["position"] = _weight(normalized.get("position"))
     normalized.setdefault("risk_level", "normal")
     normalized.setdefault("reasoning", "")
     return normalized
 
 
-def _apply_recommendation_controls(signal: dict[str, Any]) -> dict[str, Any]:
+def _apply_recommendation_controls(signal: dict[str, Any], weight_scale: float = 1.0) -> dict[str, Any]:
     updated = dict(signal)
     overall_signal = str(updated.get("signal", "HOLD")).upper()
-    recommendations = list(updated.get("recommendations") or [])
+    recommendations = [item for item in updated.get("recommendations") or [] if isinstance(item, dict)]
     if overall_signal != "BUY":
         if recommendations:
             updated["watchlist"] = _downgrade_to_watchlist(recommendations) + list(updated.get("watchlist") or [])
@@ -60,8 +89,16 @@ def _apply_recommendation_controls(signal: dict[str, Any]) -> dict[str, Any]:
     safe_recommendations = []
     downgraded = []
     for item in recommendations:
-        if item.get("can_buy") and not item.get("is_limit_up") and not item.get("near_limit_up"):
-            safe_recommendations.append(item)
+        weight = round(_candidate_weight(item) * weight_scale, 8)
+        if weight > 0 and item.get("can_buy") and not item.get("is_limit_up") and not item.get("near_limit_up"):
+            candidate = {**item, "position": weight}
+            if "target_weight" in item:
+                candidate["target_weight"] = weight
+            if isinstance(item.get("strategy_weights"), dict):
+                candidate["strategy_weights"] = {
+                    key: round(_weight(value) * weight_scale, 8) for key, value in item["strategy_weights"].items()
+                }
+            safe_recommendations.append(candidate)
         else:
             downgraded.append({**item, "action": "WATCH", "position": 0.0})
     updated["recommendations"] = safe_recommendations
@@ -112,9 +149,18 @@ def _apply_sentiment_controls(signal: dict[str, Any]) -> dict[str, Any]:
 
 def _float(value: Any, default: float) -> float:
     try:
-        return float(value)
-    except (TypeError, ValueError):
+        number = float(value)
+        return number if isfinite(number) else default
+    except (TypeError, ValueError, OverflowError):
         return default
+
+
+def _weight(value: Any) -> float:
+    return max(_float(value, 0.0), 0.0)
+
+
+def _candidate_weight(item: dict[str, Any]) -> float:
+    return _weight(item.get("position", item.get("target_weight")))
 
 
 def _downgrade_to_watchlist(recommendations: list[dict[str, Any]]) -> list[dict[str, Any]]:

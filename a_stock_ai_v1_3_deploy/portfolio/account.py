@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from dataclasses import asdict, dataclass, field
-from datetime import datetime
-from math import floor
+from datetime import date, datetime
+from math import floor, isfinite
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import Any
 from uuid import uuid4
 
@@ -14,6 +16,10 @@ from scheduler.trading_calendar import BEIJING_TZ
 
 
 logger = logging.getLogger(__name__)
+
+
+class PaperAccountLoadError(ValueError):
+    """An existing account cannot be read safely; initialization is forbidden."""
 
 
 @dataclass
@@ -28,6 +34,8 @@ class PaperPosition:
     unrealized_pnl: float = 0.0
     last_trade_date: str = ""
     strategy_id: str = "legacy"
+    entry_date: str = ""
+    high_watermark: float = 0.0
 
 
 @dataclass
@@ -39,6 +47,7 @@ class PaperAccount:
     positions: dict[str, PaperPosition] = field(default_factory=dict)
     session_started_at: str = ""
     updated_at: str = ""
+    last_exit_dates: dict[str, str] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         positions = {symbol: asdict(position) for symbol, position in self.positions.items()}
@@ -56,6 +65,7 @@ class PaperAccount:
             "positions": positions,
             "session_started_at": self.session_started_at,
             "updated_at": self.updated_at,
+            "last_exit_dates": dict(self.last_exit_dates),
         }
 
 
@@ -65,41 +75,99 @@ def load_account(path: Path | None = None) -> PaperAccount:
         return new_account()
     try:
         raw = json.loads(account_path.read_text(encoding="utf-8"))
+        if not isinstance(raw, dict):
+            raise ValueError("expected an account JSON object")
+        if not isinstance(raw.get("account_id"), str) or not raw["account_id"].strip():
+            raise ValueError("account_id is missing or invalid")
+        cash = _stored_float(raw.get("cash"), "cash")
+        initial_cash = _stored_float(raw.get("initial_cash"), "initial_cash")
+        if cash < 0 or initial_cash <= 0:
+            raise ValueError("cash must be nonnegative and initial_cash must be positive")
+        if not isinstance(raw.get("positions"), dict):
+            raise ValueError("positions must be an object")
         positions: dict[str, PaperPosition] = {}
-        for symbol, payload in (raw.get("positions") or {}).items():
+        for symbol, payload in raw["positions"].items():
+            if not symbol or not isinstance(payload, dict):
+                raise ValueError(f"invalid position record: {symbol!r}")
+            quantity = _stored_float(payload.get("quantity"), f"{symbol}.quantity")
+            available = _stored_float(payload.get("available_quantity", 0), f"{symbol}.available_quantity")
+            cost = _stored_float(payload.get("avg_cost"), f"{symbol}.avg_cost")
+            price = _stored_float(payload.get("last_price"), f"{symbol}.last_price")
+            if not quantity.is_integer() or not available.is_integer() or not 0 <= available <= quantity:
+                raise ValueError(f"{symbol}: quantities must be nonnegative integers with available <= total")
+            if cost < 0 or (quantity > 0 and cost == 0) or price < 0:
+                raise ValueError(f"{symbol}: invalid cost or last price")
             positions[symbol] = PaperPosition(
                 symbol=str(payload.get("symbol") or symbol),
                 name=str(payload.get("name") or symbol),
-                quantity=int(payload.get("quantity") or 0),
-                available_quantity=int(payload.get("available_quantity") or 0),
-                avg_cost=_float(payload.get("avg_cost"), 0.0),
-                last_price=_float(payload.get("last_price"), 0.0),
-                market_value=_float(payload.get("market_value"), 0.0),
-                unrealized_pnl=_float(payload.get("unrealized_pnl"), 0.0),
+                quantity=int(quantity),
+                available_quantity=int(available),
+                avg_cost=cost,
+                last_price=price,
+                market_value=_stored_float(payload.get("market_value", 0.0), f"{symbol}.market_value"),
+                unrealized_pnl=_stored_float(payload.get("unrealized_pnl", 0.0), f"{symbol}.unrealized_pnl"),
                 last_trade_date=str(payload.get("last_trade_date") or ""),
+                entry_date=str(payload.get("entry_date") or payload.get("last_trade_date") or ""),
+                high_watermark=_stored_float(payload.get("high_watermark", price), f"{symbol}.high_watermark"),
                 strategy_id=str(payload.get("strategy_id") or "legacy"),
             )
         account = PaperAccount(
-            account_id=str(raw.get("account_id") or uuid4().hex),
-            cash=_float(raw.get("cash"), settings.paper_initial_cash),
-            initial_cash=_float(raw.get("initial_cash"), settings.paper_initial_cash),
-            realized_pnl=_float(raw.get("realized_pnl"), 0.0),
+            account_id=raw["account_id"],
+            cash=cash,
+            initial_cash=initial_cash,
+            realized_pnl=_stored_float(raw.get("realized_pnl", 0.0), "realized_pnl"),
             positions=positions,
             session_started_at=str(raw.get("session_started_at") or raw.get("updated_at") or _now()),
             updated_at=str(raw.get("updated_at") or ""),
+            last_exit_dates=(
+                {str(symbol): value for symbol, value in (raw.get("last_exit_dates") or {}).items()
+                 if isinstance(value, str)}
+                if isinstance(raw.get("last_exit_dates", {}), dict) else {}
+            ),
         )
         rollover_t1(account)
         return account
-    except Exception as exc:
-        logger.warning("paper account load failed, creating a fresh account: %s", exc)
-        return new_account()
+    except (OSError, ValueError, TypeError, OverflowError) as exc:
+        raise PaperAccountLoadError(
+            f"Cannot load existing paper account {account_path}: {exc}. "
+            "Refusing to initialize a replacement account; restore or repair the existing file."
+        ) from exc
+
+
+def _stored_float(value: Any, field_name: str) -> float:
+    try:
+        number = float(value)
+        if isfinite(number):
+            return number
+    except (TypeError, ValueError, OverflowError):
+        pass
+    raise ValueError(f"{field_name} must be a finite number")
 
 
 def save_account(account: PaperAccount, path: Path | None = None) -> None:
-    account.updated_at = _now()
+    updated_at = _now()
+    payload = {**account.to_dict(), "updated_at": updated_at}
+    serialized = json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False)
     account_path = path or settings.paper_account_path
     account_path.parent.mkdir(parents=True, exist_ok=True)
-    account_path.write_text(json.dumps(account.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8")
+    temporary_path: Path | None = None
+    try:
+        # Same-directory replacement keeps readers on either complete snapshot.
+        with NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=account_path.parent,
+            prefix=f".{account_path.name}.", suffix=".tmp", delete=False,
+        ) as handle:
+            temporary_path = Path(handle.name)
+            if account_path.exists():
+                os.fchmod(handle.fileno(), account_path.stat().st_mode & 0o777)
+            handle.write(serialized)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary_path, account_path)
+        account.updated_at = updated_at
+    finally:
+        if temporary_path is not None:
+            temporary_path.unlink(missing_ok=True)
 
 
 def new_account() -> PaperAccount:
@@ -115,16 +183,23 @@ def new_account() -> PaperAccount:
 
 def rollover_t1(account: PaperAccount) -> None:
     today = datetime.now(BEIJING_TZ).date().isoformat()
+    account.last_exit_dates = {symbol: day for symbol, day in account.last_exit_dates.items() if day >= today}
     for position in account.positions.values():
         if position.last_trade_date and position.last_trade_date < today:
             position.available_quantity = position.quantity
 
 
+def reentry_blocked(account: PaperAccount, symbol: str, as_of_date: date | None = None) -> bool:
+    today = as_of_date or datetime.now(BEIJING_TZ).date()
+    return account.last_exit_dates.get(symbol) == today.isoformat()
+
+
 def mark_to_market(account: PaperAccount, prices: dict[str, float]) -> dict[str, Any]:
     for symbol, position in account.positions.items():
-        price = _float(prices.get(symbol), position.last_price)
+        price = _float(prices.get(symbol), 0.0)
         if price > 0:
             position.last_price = price
+            position.high_watermark = max(position.high_watermark, price)
         position.market_value = round(position.quantity * position.last_price, 4)
         position.unrealized_pnl = round((position.last_price - position.avg_cost) * position.quantity, 4)
     return account_summary(account)
@@ -158,39 +233,73 @@ def simulate_buy(
     account: PaperAccount,
     recommendation: dict[str, Any],
     cycle_id: str | None = None,
+    *,
+    prices: dict[str, float] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any] | None]:
-    symbol = str(recommendation.get("symbol") or "")
+    symbol = str(recommendation.get("symbol") or "").strip().upper()
     name = str(recommendation.get("name") or symbol)
     strategy_id = "+".join(str(item) for item in (recommendation.get("strategy_ids") or [recommendation.get("strategy_id") or "legacy"]))
-    raw_price = _float(recommendation.get("current_price") or recommendation.get("price"), 0.0)
+    raw_price = _float(
+        prices.get(symbol) if prices is not None else recommendation.get("current_price", recommendation.get("price")),
+        0.0,
+    )
     max_buy_price = _float(recommendation.get("max_buy_price"), 0.0)
     if not symbol or raw_price <= 0:
         return _order(cycle_id, symbol or "UNKNOWN", name, "BUY", "rejected", 0, 0.0, "缺少股票代码或价格", strategy_id), None
+    if reentry_blocked(account, symbol):
+        return _order(
+            cycle_id, symbol, name, "BUY", "skipped", 0, raw_price, "退出当日不重新买入", strategy_id,
+            metadata={"skip_kind": "reentry_cooldown"},
+        ), None
+    if "max_buy_price" in recommendation and max_buy_price <= 0:
+        return _order(cycle_id, symbol, name, "BUY", "rejected", 0, raw_price, "最高买价无效", strategy_id), None
     if not recommendation.get("can_buy", True):
         return _order(cycle_id, symbol, name, "BUY", "rejected", 0, raw_price, "推荐已标记为不可买入", strategy_id), None
     if recommendation.get("is_limit_up") or recommendation.get("near_limit_up"):
         return _order(cycle_id, symbol, name, "BUY", "rejected", 0, raw_price, "涨停或接近涨停，模拟盘不追", strategy_id), None
 
     price = round(raw_price * (1 + settings.paper_slippage_pct), 4)
+    if not isfinite(price) or price <= 0:
+        return _order(cycle_id, symbol, name, "BUY", "rejected", 0, 0.0, "执行价格无效", strategy_id), None
     if max_buy_price > 0 and price > max_buy_price:
         return _order(cycle_id, symbol, name, "BUY", "rejected", 0, price, "含滑点价格超过最高追价", strategy_id), None
 
-    mark_to_market(account, {symbol: price})
-    summary = account_summary(account)
-    equity_before = max(_float(summary.get("equity"), 0.0), 0.0)
     target_weight = min(
-        _float(recommendation.get("position") or recommendation.get("target_weight"), settings.paper_max_position_pct),
+        _float(recommendation.get("position", recommendation.get("target_weight")), 0.0),
         settings.paper_max_position_pct,
         settings.max_position_weight,
     )
-    target_value = summary["equity"] * target_weight
+    if target_weight <= 0 or not isfinite(account.cash) or account.cash < 0:
+        return _order(cycle_id, symbol, name, "BUY", "rejected", 0, raw_price, "目标仓位或现金无效", strategy_id), None
     current_position = account.positions.get(symbol)
+    if current_position and (_float(current_position.avg_cost, 0.0) <= 0 or current_position.quantity <= 0):
+        return _order(cycle_id, symbol, name, "BUY", "rejected", 0, raw_price, "现有持仓成本或数量无效", strategy_id), None
+    if (
+        settings.paper_disciplined_execution_enabled and current_position
+        and current_position.last_trade_date == datetime.now(BEIJING_TZ).date().isoformat()
+    ):
+        return _order(
+            cycle_id, symbol, name, "BUY", "skipped", 0, raw_price, "同一交易日不重复加仓", strategy_id,
+            metadata={"skip_kind": "same_day_add"},
+        ), None
+
+    mark_to_market(account, {symbol: raw_price})
+    summary = account_summary(account)
+    equity_before = max(_float(summary.get("equity"), 0.0), 0.0)
+    if equity_before <= 0:
+        return _order(cycle_id, symbol, name, "BUY", "rejected", 0, raw_price, "账户权益无效", strategy_id), None
+    target_value = equity_before * target_weight
     position_before_quantity = current_position.quantity if current_position else 0
     current_value = (current_position.quantity * current_position.last_price) if current_position else 0.0
     buy_value = max(0.0, target_value - current_value)
     desired_quantity = _lot_floor(buy_value / price)
-    affordable_quantity = _max_affordable_quantity(account.cash, price)
+    cash_budget = account.cash
+    if "execution_reserved_cash" in recommendation:
+        cash_budget = min(cash_budget, _float(recommendation["execution_reserved_cash"], 0.0))
+    affordable_quantity = _max_affordable_quantity(cash_budget, price)
     quantity = min(desired_quantity, affordable_quantity)
+    if "execution_quantity_cap" in recommendation:
+        quantity = min(quantity, _lot_floor(_float(recommendation["execution_quantity_cap"], 0.0)))
     if quantity <= 0:
         lot_cost = round(max(settings.paper_lot_size, 1) * price, 4)
         if buy_value < lot_cost:
@@ -227,11 +336,7 @@ def simulate_buy(
     amount = round(quantity * price, 4)
     fee = _commission(amount)
     if amount + fee > account.cash:
-        quantity = _max_affordable_quantity(account.cash - fee, price)
-        if quantity <= 0:
-            return _order(cycle_id, symbol, name, "BUY", "rejected", 0, price, "扣除费用后现金不足", strategy_id), None
-        amount = round(quantity * price, 4)
-        fee = _commission(amount)
+        return _order(cycle_id, symbol, name, "BUY", "rejected", 0, price, "扣除费用后现金不足", strategy_id), None
 
     account.cash = round(account.cash - amount - fee, 4)
     today = datetime.now(BEIJING_TZ).date().isoformat()
@@ -240,9 +345,10 @@ def simulate_buy(
         new_quantity = current_position.quantity + quantity
         current_position.avg_cost = round((old_cost + amount + fee) / new_quantity, 4)
         current_position.quantity = new_quantity
-        current_position.last_price = price
-        current_position.market_value = round(new_quantity * price, 4)
-        current_position.unrealized_pnl = round((price - current_position.avg_cost) * new_quantity, 4)
+        current_position.last_price = raw_price
+        current_position.high_watermark = max(current_position.high_watermark, raw_price)
+        current_position.market_value = round(new_quantity * raw_price, 4)
+        current_position.unrealized_pnl = round((raw_price - current_position.avg_cost) * new_quantity, 4)
         current_position.last_trade_date = today
         current_position.strategy_id = strategy_id
     else:
@@ -252,14 +358,16 @@ def simulate_buy(
             quantity=quantity,
             available_quantity=0,
             avg_cost=round((amount + fee) / quantity, 4),
-            last_price=price,
-            market_value=amount,
-            unrealized_pnl=round(amount - (amount + fee), 4),
+            last_price=raw_price,
+            market_value=round(quantity * raw_price, 4),
+            unrealized_pnl=round(quantity * raw_price - (amount + fee), 4),
             last_trade_date=today,
+            entry_date=today,
+            high_watermark=raw_price,
             strategy_id=strategy_id,
         )
 
-    post_trade_equity = max(equity_before - fee, 0.0)
+    post_trade_equity = max(equity_before - fee - quantity * (price - raw_price), 0.0)
     post_trade_quantity = position_before_quantity + quantity
     order = _order(
         cycle_id,
@@ -273,7 +381,7 @@ def simulate_buy(
         strategy_id,
         metadata={
             "executed_portfolio_weight": _ratio(amount, equity_before),
-            "post_trade_portfolio_weight": _ratio(post_trade_quantity * price, post_trade_equity),
+            "post_trade_portfolio_weight": _ratio(post_trade_quantity * raw_price, post_trade_equity),
             "target_portfolio_weight": round(target_weight, 6),
             "position_before_quantity": position_before_quantity,
             "position_after_quantity": post_trade_quantity,
@@ -288,16 +396,22 @@ def simulate_sell_all(
     cycle_id: str | None = None,
     prices: dict[str, float] | None = None,
     reason: str = "系统防守信号，模拟卖出可卖持仓",
+    symbols: set[str] | list[str] | None = None,
+    reasons: dict[str, str] | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     prices = prices or {}
+    selected_symbols = set(symbols) if symbols is not None else None
+    reason_by_symbol = reasons or {}
     orders: list[dict[str, Any]] = []
     trades: list[dict[str, Any]] = []
     rollover_t1(account)
     for symbol, position in list(account.positions.items()):
+        if selected_symbols is not None and symbol not in selected_symbols:
+            continue
         equity_before = max(_float(account_summary(account).get("equity"), 0.0), 0.0)
         position_before_quantity = position.quantity
         quantity = min(position.available_quantity, position.quantity)
-        raw_price = _float(prices.get(symbol), position.last_price)
+        raw_price = max(_float(prices.get(symbol), 0.0), 0.0)
         if quantity <= 0:
             orders.append(
                 _order(
@@ -330,8 +444,22 @@ def simulate_sell_all(
                 )
             )
             continue
+        if not isfinite(account.cash) or _float(position.avg_cost, 0.0) <= 0:
+            orders.append(_order(
+                cycle_id, symbol, position.name, "SELL", "skipped", 0, raw_price,
+                "账户现金或持仓成本无效", position.strategy_id,
+                metadata={"skip_kind": "invalid_account"},
+            ))
+            continue
         price = round(raw_price * (1 - settings.paper_slippage_pct), 4)
         amount = round(quantity * price, 4)
+        if price <= 0 or not isfinite(amount):
+            orders.append(_order(
+                cycle_id, symbol, position.name, "SELL", "skipped", 0, raw_price,
+                "执行价格或金额无效", position.strategy_id,
+                metadata={"skip_kind": "invalid_price"},
+            ))
+            continue
         fee = _commission(amount)
         tax = round(amount * settings.paper_stamp_duty_rate, 4)
         realized_pnl = round(amount - fee - tax - quantity * position.avg_cost, 4)
@@ -342,6 +470,8 @@ def simulate_sell_all(
         position.market_value = round(position.quantity * price, 4)
         position.unrealized_pnl = round((price - position.avg_cost) * position.quantity, 4)
         position.last_price = price
+        # Keep the cooldown after the position (including a fully sold lot) is removed.
+        account.last_exit_dates[symbol] = datetime.now(BEIJING_TZ).date().isoformat()
         if position.quantity <= 0:
             del account.positions[symbol]
 
@@ -353,7 +483,7 @@ def simulate_sell_all(
             "filled",
             quantity,
             price,
-            reason,
+            str(reason_by_symbol.get(symbol) or reason),
             position.strategy_id,
             metadata={
                 "executed_position_ratio": _ratio(quantity, position_before_quantity),
@@ -442,19 +572,31 @@ def _commission(amount: float) -> float:
 
 def _lot_floor(quantity: float) -> int:
     lot = max(settings.paper_lot_size, 1)
-    return int(floor(max(quantity, 0.0) / lot) * lot)
+    if not isfinite(quantity):
+        return 0
+    # Price/fee round trips can put an exact lot a few ulps below its boundary.
+    return int(floor(max(quantity, 0.0) / lot + 1e-10) * lot)
 
 
 def _max_affordable_quantity(cash: float, price: float) -> int:
-    if cash <= 0 or price <= 0:
+    if not isfinite(cash) or not isfinite(price) or cash <= 0 or price <= 0:
         return 0
-    return _lot_floor((cash - settings.paper_min_commission) / price)
+    quantity = _lot_floor(
+        min((cash - settings.paper_min_commission) / price, cash / (price * (1 + settings.paper_commission_rate)))
+    )
+    while quantity > 0:
+        amount = round(quantity * price, 4)
+        if amount + _commission(amount) <= cash:
+            break
+        quantity -= max(settings.paper_lot_size, 1)
+    return quantity
 
 
 def _float(value: Any, default: float) -> float:
     try:
-        return float(value)
-    except (TypeError, ValueError):
+        number = float(value)
+        return number if isfinite(number) else default
+    except (TypeError, ValueError, OverflowError):
         return default
 
 

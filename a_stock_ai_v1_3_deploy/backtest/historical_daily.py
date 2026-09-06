@@ -5,7 +5,7 @@ import logging
 from bisect import bisect_right
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from math import floor, sqrt
+from math import floor, isfinite, sqrt
 from pathlib import Path
 from statistics import mean, median
 from typing import Any
@@ -42,6 +42,8 @@ class DailyPosition:
     add_count: int = 0
     held_bars: int = 0
     entry_mode: str = ""
+    unsettled_date: str = ""
+    unsettled_quantity: int = 0
 
 
 def _strategy_profile(
@@ -715,7 +717,7 @@ def run_historical_daily_backtest(
         result.update(
             {
                 "run_id": run_id,
-                "status": "ok" if result["metrics"]["trade_count"] else "skipped_no_trades",
+                "status": "ok" if result["trades"] else "skipped_no_trades",
                 "lookback_days": lookback_days,
                 "holding_days": hold_days,
                 "start_date": start_date,
@@ -763,6 +765,7 @@ def run_historical_daily_backtest(
             "lookback_days": lookback_days,
             "holding_days": hold_days,
             "no_real_orders": True,
+            "execution_metadata": _execution_metadata(),
         }
 
 
@@ -865,6 +868,7 @@ def run_historical_parameter_search(
         "candidate_count": len(candidates),
         "top": candidates[:top_n],
         "no_real_orders": True,
+        "execution_metadata": _execution_metadata(),
     }
     path = settings.storage_dir / f"historical_optimization_{run_id}.json"
     output["result_path"] = str(path)
@@ -1094,26 +1098,16 @@ def _run_portfolio_backtest(
     risk_peak_equity = initial_cash
 
     for date_index, trade_date in enumerate(all_dates):
-        cash, positions, exit_trades = _process_exits(cash, positions, bars_by_date, trade_date, profile)
-        trades.extend(exit_trades)
-        current_stop_losses = sum(1 for trade in exit_trades if trade.get("exit_reason") == "stop_loss")
-        if bool(profile.get("stop_loss_cooldown_enabled")) and current_stop_losses:
-            stop_loss_indices.extend([date_index] * current_stop_losses)
-            window = max(int(profile["stop_loss_cooldown_window"]), 1)
-            stop_loss_indices = [index for index in stop_loss_indices if date_index - index < window]
-            if len(stop_loss_indices) >= int(profile["stop_loss_cooldown_count"]):
-                pause_until_index = max(
-                    pause_until_index,
-                    date_index + max(int(profile["stop_loss_cooldown_days"]), 1),
-                )
-                stop_loss_indices.clear()
-        if bool(profile.get("market_exit_enabled")) and positions:
-            regime = _market_regime(trade_date, bars_by_symbol, bars_by_date)
+        # Opening decisions cannot observe today's high, low, close or later sale proceeds.
+        equity_before_entries = _equity(cash, positions, bars_by_date, trade_date, price_field="open")
+        if bool(profile.get("market_exit_enabled")) and positions and date_index > 0:
+            signal_date = all_dates[date_index - 1]
+            regime = _market_regime(signal_date, bars_by_symbol, bars_by_date)
             if float(regime.get("score") or 0.0) < float(profile["regime_exit_score"]) or _is_bear_market_block(
                 regime,
                 profile,
             ) or _is_index_bear_block(
-                trade_date,
+                signal_date,
                 profile,
             ):
                 cash, positions, market_exit_trades = _market_exit_positions(
@@ -1124,18 +1118,7 @@ def _run_portfolio_backtest(
                     "market_risk_off",
                 )
                 trades.extend(market_exit_trades)
-
-        if bool(profile.get("quality_t_enabled")):
-            cash, positions, management_trades = _process_quality_t_management(
-                cash,
-                positions,
-                bars_by_date,
-                trade_date,
-                profile,
-            )
-            trades.extend(management_trades)
-
-        equity_before_entries = _equity(cash, positions, bars_by_date, trade_date)
+                equity_before_entries = _equity(cash, positions, bars_by_date, trade_date, price_field="open")
         risk_peak_equity = max(risk_peak_equity, equity_before_entries)
         if bool(profile.get("drawdown_cooldown_enabled")) and risk_peak_equity > 0:
             current_drawdown = 1 - equity_before_entries / risk_peak_equity
@@ -1145,13 +1128,13 @@ def _run_portfolio_backtest(
                     date_index + max(int(profile["drawdown_cooldown_days"]), 1),
                 )
                 risk_peak_equity = equity_before_entries
-        if date_index < pause_until_index:
-            curve.append({"date": trade_date, "equity": round(equity_before_entries, 4)})
-            continue
-        current_exposure = _market_value(positions, bars_by_date, trade_date)
+        current_exposure = _market_value(positions, bars_by_date, trade_date, price_field="open")
         max_exposure_value = equity_before_entries * max_total_exposure
         available_exposure = max(0.0, max_exposure_value - current_exposure)
-        for candidate in signal_by_entry_date.get(trade_date, []):
+        candidates = signal_by_entry_date.get(trade_date, []) if date_index >= pause_until_index else []
+        for candidate in candidates:
+            if len(positions) >= max_names:
+                break
             if any(position.symbol == candidate["symbol"] for position in positions):
                 continue
             if available_exposure <= 0:
@@ -1159,7 +1142,7 @@ def _run_portfolio_backtest(
             bar = bars_by_date.get(trade_date, {}).get(candidate["symbol"])
             if not bar:
                 continue
-            entry_raw = _float(bar.get("open"), 0.0) or _float(bar.get("close"), 0.0)
+            entry_raw = _valid_price(bar.get("open"))
             if entry_raw <= 0:
                 continue
             if bool(profile.get("entry_guard_enabled")):
@@ -1278,6 +1261,25 @@ def _run_portfolio_backtest(
                 }
             )
 
+        cash, positions, exit_trades = _process_exits(cash, positions, bars_by_date, trade_date, profile)
+        trades.extend(exit_trades)
+        current_stop_losses = sum(1 for trade in exit_trades if trade.get("exit_reason") == "stop_loss")
+        if bool(profile.get("stop_loss_cooldown_enabled")) and current_stop_losses:
+            stop_loss_indices.extend([date_index] * current_stop_losses)
+            window = max(int(profile["stop_loss_cooldown_window"]), 1)
+            stop_loss_indices = [index for index in stop_loss_indices if date_index - index < window]
+            if len(stop_loss_indices) >= int(profile["stop_loss_cooldown_count"]):
+                pause_until_index = max(
+                    pause_until_index,
+                    date_index + 1 + max(int(profile["stop_loss_cooldown_days"]), 1),
+                )
+                stop_loss_indices.clear()
+        if bool(profile.get("quality_t_enabled")):
+            cash, positions, management_trades = _process_quality_t_management(
+                cash, positions, bars_by_date, trade_date, profile,
+            )
+            trades.extend(management_trades)
+
         equity = _equity(cash, positions, bars_by_date, trade_date)
         curve.append({"date": trade_date, "equity": round(equity, 4)})
 
@@ -1285,7 +1287,7 @@ def _run_portfolio_backtest(
         final_date = all_dates[-1]
         cash, positions, forced_exits = _force_close_positions(cash, positions, bars_by_date, final_date)
         trades.extend(forced_exits)
-        curve[-1]["equity"] = round(cash, 4)
+        curve[-1]["equity"] = round(_equity(cash, positions, bars_by_date, final_date), 4)
 
     curve = _attach_drawdown(curve)
     closed_trades = _pair_trades(trades)
@@ -1295,10 +1297,23 @@ def _run_portfolio_backtest(
         "curve": curve,
         "trades": trades,
         "closed_trades": closed_trades,
+        "ending_cash": round(cash, 4),
+        "open_positions": [
+            {
+                "symbol": position.symbol,
+                "entry_date": position.entry_date,
+                "quantity": position.quantity,
+                "mark_price": _position_mark(position, bars_by_date, all_dates[-1]),
+                "sellable_quantity": _sellable_quantity(position, all_dates[-1]),
+            }
+            for position in positions
+        ],
+        "execution_metadata": _execution_metadata(),
         "selection_note": (
-            f"Daily approximation of the production intraday strategy with profile={profile['name']}: "
+            f"Research-only daily approximation with profile={profile['name']}: "
             "use day T close data to rank liquid, "
-            "positive-trend candidates; buy at T+1 open; enforce total exposure cap, lot size, slippage, "
+            "positive-trend candidates; buy at T+1 open; enforce total exposure and concurrent name caps, "
+            "T+1 sellability, lot size, slippage, "
             "commission, stamp duty, stop loss, take profit, trailing stop, and fixed holding window."
         ),
     }
@@ -1983,28 +1998,38 @@ def _process_exits(
         if not bar:
             remaining.append(position)
             continue
-        position.held_bars += 1
-        low = _float(bar.get("low"), 0.0)
-        high = _float(bar.get("high"), 0.0)
-        close = _float(bar.get("close"), 0.0)
+        open_price = _valid_price(bar.get("open"))
+        low = _valid_price(bar.get("low"))
+        high = _valid_price(bar.get("high"))
+        close = _valid_price(bar.get("close"))
+        prior_highest = position.highest_price
         if high > 0:
             position.highest_price = max(position.highest_price, high)
+        sellable_quantity = _sellable_quantity(position, trade_date)
+        if sellable_quantity <= 0:
+            remaining.append(position)
+            continue
+        position.held_bars += 1
+        # A daily bar cannot establish that today's high preceded today's low.
+        trailing_stop = prior_highest * (1 - position.trailing_stop_pct)
+        has_range = open_price > 0 and high >= open_price >= low > 0
         exit_price = 0.0
         reason = ""
-        if low > 0 and low <= position.stop_loss:
-            exit_price = position.stop_loss * (1 - settings.paper_slippage_pct)
+        if has_range and low <= position.stop_loss:
+            exit_price = min(open_price, position.stop_loss) * (1 - settings.paper_slippage_pct)
             reason = "stop_loss"
         elif (
-            position.runner
+            has_range
+            and position.runner
             and not position.partial_taken
             and position.partial_fraction > 0
             and high > 0
             and position.partial_take_profit > 0
             and high >= position.partial_take_profit
         ):
-            partial_quantity = _lot_floor(position.quantity * position.partial_fraction)
+            partial_quantity = min(_lot_floor(position.quantity * position.partial_fraction), sellable_quantity)
             if partial_quantity > 0 and partial_quantity < position.quantity:
-                partial_price = position.partial_take_profit * (1 - settings.paper_slippage_pct)
+                partial_price = max(open_price, position.partial_take_profit) * (1 - settings.paper_slippage_pct)
                 cash, partial_trade = _sell_position(
                     cash,
                     position,
@@ -2018,25 +2043,28 @@ def _process_exits(
                 position.partial_taken = True
                 remaining.append(position)
                 continue
-        elif high > 0 and high >= position.take_profit:
-            exit_price = position.take_profit * (1 - settings.paper_slippage_pct)
+        elif has_range and high >= position.take_profit:
+            exit_price = max(open_price, position.take_profit) * (1 - settings.paper_slippage_pct)
             reason = "take_profit"
         elif (
-            low > 0
+            has_range
             and position.trailing_stop_pct > 0
-            and position.highest_price >= position.entry_price * (1 + position.trail_activation_pct)
-            and low <= position.highest_price * (1 - position.trailing_stop_pct)
+            and prior_highest >= position.entry_price * (1 + position.trail_activation_pct)
+            and low <= trailing_stop
         ):
-            exit_price = position.highest_price * (1 - position.trailing_stop_pct) * (1 - settings.paper_slippage_pct)
+            exit_price = min(open_price, trailing_stop) * (1 - settings.paper_slippage_pct)
             reason = "trailing_stop"
-        elif position.held_bars >= position.max_holding_days:
+        elif close > 0 and position.held_bars >= position.max_holding_days:
             exit_price = close * (1 - settings.paper_slippage_pct)
             reason = "time_exit"
         if exit_price <= 0:
             remaining.append(position)
             continue
-        cash, trade = _sell_position(cash, position, trade_date, exit_price, reason)
+        cash, trade = _sell_position(cash, position, trade_date, exit_price, reason, quantity=sellable_quantity)
         trades.append(trade)
+        position.quantity -= sellable_quantity
+        if position.quantity > 0:
+            remaining.append(position)
     return cash, remaining, trades
 
 
@@ -2052,20 +2080,31 @@ def _process_quality_t_management(
     for position in positions:
         bar = bars_by_date.get(trade_date, {}).get(position.symbol)
         previous = _previous_bar(bars_by_date, position.symbol, trade_date)
-        if not bar or not previous or position.quality_tier != "A":
+        if not bar or not previous or position.quality_tier != "A" or position.entry_date >= trade_date:
             continue
-        low = _float(bar.get("low"), 0.0)
-        close = _float(bar.get("close"), 0.0)
-        prev_close = _float(previous.get("close"), 0.0)
+        open_price = _valid_price(bar.get("open"))
+        low = _valid_price(bar.get("low"))
+        high = _valid_price(bar.get("high"))
+        close = _valid_price(bar.get("close"))
+        prev_close = _valid_price(previous.get("close"))
         if low <= 0 or close <= 0 or prev_close <= 0:
             continue
 
         if bool(profile.get("t_trade_enabled")) and position.held_bars >= 1:
-            t_quantity = _lot_floor(position.quantity * float(profile["t_trade_fraction"]))
+            t_quantity = _lot_floor(min(
+                position.quantity * float(profile["t_trade_fraction"]),
+                _sellable_quantity(position, trade_date),
+            ))
             trigger_price = prev_close * (1 - float(profile["t_trade_dip_pct"]))
             rebound_price = trigger_price * (1 + float(profile["t_trade_rebound_pct"]))
-            if t_quantity > 0 and low <= trigger_price and close >= rebound_price:
-                buy_price = trigger_price * (1 + settings.paper_slippage_pct)
+            if (
+                t_quantity > 0
+                and open_price > 0
+                and high >= max(open_price, close)
+                and low <= min(open_price, trigger_price)
+                and close >= rebound_price
+            ):
+                buy_price = min(open_price, trigger_price) * (1 + settings.paper_slippage_pct)
                 sell_price = rebound_price * (1 - settings.paper_slippage_pct)
                 buy_amount = t_quantity * buy_price
                 buy_fee = _commission(buy_amount)
@@ -2075,6 +2114,7 @@ def _process_quality_t_management(
                     sell_tax = sell_amount * settings.paper_stamp_duty_rate
                     t_pnl = sell_amount - sell_fee - sell_tax - buy_amount - buy_fee
                     cash += t_pnl
+                    _record_unsettled_buy(position, trade_date, t_quantity)
                     trades.append(
                         {
                             "symbol": position.symbol,
@@ -2122,6 +2162,7 @@ def _process_quality_t_management(
                     new_quantity = position.quantity + add_quantity
                     position.entry_price = (old_cost + add_amount + add_fee) / new_quantity
                     position.quantity = new_quantity
+                    _record_unsettled_buy(position, trade_date, add_quantity)
                     position.add_count += 1
                     position.stop_loss = max(
                         position.stop_loss,
@@ -2162,18 +2203,23 @@ def _market_exit_positions(
         if not bar:
             remaining.append(position)
             continue
-        close = _float(bar.get("close"), 0.0)
-        if close <= 0:
+        open_price = _valid_price(bar.get("open"))
+        sellable_quantity = _sellable_quantity(position, trade_date)
+        if open_price <= 0 or sellable_quantity <= 0:
             remaining.append(position)
             continue
         cash, trade = _sell_position(
             cash,
             position,
             trade_date,
-            close * (1 - settings.paper_slippage_pct),
+            open_price * (1 - settings.paper_slippage_pct),
             reason,
+            quantity=sellable_quantity,
         )
         trades.append(trade)
+        position.quantity -= sellable_quantity
+        if position.quantity > 0:
+            remaining.append(position)
     return cash, remaining, trades
 
 
@@ -2184,18 +2230,41 @@ def _force_close_positions(
     trade_date: str,
 ) -> tuple[float, list[DailyPosition], list[dict[str, Any]]]:
     trades: list[dict[str, Any]] = []
+    remaining: list[DailyPosition] = []
     for position in positions:
         bar = bars_by_date.get(trade_date, {}).get(position.symbol)
-        close = _float(bar.get("close") if bar else 0.0, position.entry_price)
+        close = _valid_price(bar.get("close") if bar else None)
+        sellable_quantity = _sellable_quantity(position, trade_date)
+        if close <= 0 or sellable_quantity <= 0:
+            remaining.append(position)
+            continue
         cash, trade = _sell_position(
             cash,
             position,
             trade_date,
             close * (1 - settings.paper_slippage_pct),
             "force_close",
+            quantity=sellable_quantity,
         )
         trades.append(trade)
-    return cash, [], trades
+        position.quantity -= sellable_quantity
+        if position.quantity > 0:
+            remaining.append(position)
+    return cash, remaining, trades
+
+
+def _sellable_quantity(position: DailyPosition, trade_date: str) -> int:
+    if position.entry_date >= trade_date:
+        return 0
+    unsettled = position.unsettled_quantity if position.unsettled_date == trade_date else 0
+    return max(position.quantity - unsettled, 0)
+
+
+def _record_unsettled_buy(position: DailyPosition, trade_date: str, quantity: int) -> None:
+    if position.unsettled_date != trade_date:
+        position.unsettled_date = trade_date
+        position.unsettled_quantity = 0
+    position.unsettled_quantity += quantity
 
 
 def _sell_position(
@@ -2206,7 +2275,9 @@ def _sell_position(
     reason: str,
     quantity: int | None = None,
 ) -> tuple[float, dict[str, Any]]:
-    sell_quantity = int(quantity or position.quantity)
+    sell_quantity = position.quantity if quantity is None else int(quantity)
+    if _valid_price(exit_price) <= 0 or not 0 < sell_quantity <= _sellable_quantity(position, trade_date):
+        raise ValueError("Historical sell requires a valid price and T+1 sellable quantity")
     amount = sell_quantity * exit_price
     fee = _commission(amount)
     tax = amount * settings.paper_stamp_duty_rate
@@ -2466,12 +2537,34 @@ def _date_labels(curve: list[dict[str, Any]], width: int, height: int, margin: i
 """
 
 
+def _execution_metadata() -> dict[str, Any]:
+    return {
+        "validation_status": "research_only",
+        "production_validated": False,
+        "price_basis": "raw_unadjusted",
+        "event_order": "prior_day_signals_open_exits_open_buys_intraday_exits_close_management",
+        "missing_bar_policy": "carry_last_valid_mark_without_filling",
+        "terminal_policy": "liquidate_only_valid_close_and_settled_shares_mark_remainder",
+        "intraday_policy": "hard_stop_before_targets_prior_high_trailing_no_open_cash_recycling",
+        "unsupported_for_execution_validation": ["quality_t_intraday_ordering", "same_close_signal_add_ons"],
+        "limitations": [
+            "corporate_actions_not_modeled",
+            "limit_queue_fills_not_modeled",
+            "daily_ohlc_cannot_validate_intraday_path_or_cross_symbol_order",
+            "quality_t_and_close_add_on_execution_not_validated",
+            "point_in_time_universe_and_delisting_coverage_not_validated",
+        ],
+    }
+
+
 def _empty_result(reason: str) -> dict[str, Any]:
     return {
         "metrics": {"trade_count": 0, "reason": reason},
         "curve": [],
         "trades": [],
         "closed_trades": [],
+        "open_positions": [],
+        "execution_metadata": _execution_metadata(),
         "selection_note": "",
     }
 
@@ -2515,16 +2608,43 @@ def _normalize_bar(symbol: str, bar: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _valid_price(value: Any) -> float:
+    price = _float(value, 0.0)
+    return price if isfinite(price) and price > 0 else 0.0
+
+
+def _position_mark(
+    position: DailyPosition,
+    bars_by_date: dict[str, dict[str, dict[str, Any]]],
+    trade_date: str,
+    price_field: str = "close",
+) -> float:
+    bar = bars_by_date.get(trade_date, {}).get(position.symbol, {})
+    mark = _valid_price(bar.get(price_field))
+    if mark > 0:
+        return mark
+    # A missing open must never fall forward to the same day's close.
+    if price_field == "close":
+        mark = _valid_price(bar.get("open"))
+        if mark > 0:
+            return mark
+    for previous_date in sorted((date for date in bars_by_date if position.entry_date <= date < trade_date), reverse=True):
+        previous = bars_by_date[previous_date].get(position.symbol, {})
+        mark = _valid_price(previous.get("close")) or _valid_price(previous.get("open"))
+        if mark > 0:
+            return mark
+    return position.entry_price
+
+
 def _market_value(
     positions: list[DailyPosition],
     bars_by_date: dict[str, dict[str, dict[str, Any]]],
     trade_date: str,
+    price_field: str = "close",
 ) -> float:
     total = 0.0
     for position in positions:
-        bar = bars_by_date.get(trade_date, {}).get(position.symbol)
-        close = _float(bar.get("close") if bar else 0.0, position.entry_price)
-        total += position.quantity * close
+        total += position.quantity * _position_mark(position, bars_by_date, trade_date, price_field)
     return total
 
 
@@ -2533,8 +2653,9 @@ def _equity(
     positions: list[DailyPosition],
     bars_by_date: dict[str, dict[str, dict[str, Any]]],
     trade_date: str,
+    price_field: str = "close",
 ) -> float:
-    return cash + _market_value(positions, bars_by_date, trade_date)
+    return cash + _market_value(positions, bars_by_date, trade_date, price_field)
 
 
 def _amount_yi(bar: dict[str, Any]) -> float:

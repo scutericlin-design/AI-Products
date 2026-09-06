@@ -168,6 +168,16 @@ class Settings:
     paper_min_commission: float
     paper_stamp_duty_rate: float
     paper_lot_size: int
+    paper_disciplined_execution_enabled: bool
+    paper_policy_max_names: int
+    paper_policy_max_total_exposure: float
+    paper_policy_max_position_pct: float
+    paper_policy_min_rebalance_delta_pct: float
+    paper_policy_min_holding_days: int
+    paper_policy_hard_stop_loss_pct: float
+    paper_policy_trail_activation_pct: float
+    paper_policy_trailing_stop_pct: float
+    paper_policy_exit_panic_score: float
     primary_strategy_id: str
     hybrid_alpha_lock_parameters: bool
     multi_strategy_enabled: bool
@@ -293,6 +303,30 @@ def load_settings() -> Settings:
         paper_min_commission=max(_float_env("PAPER_MIN_COMMISSION", 5.0), 0.0),
         paper_stamp_duty_rate=min(max(_float_env("PAPER_STAMP_DUTY_RATE", 0.0005), 0.0), 0.01),
         paper_lot_size=max(_int_env("PAPER_LOT_SIZE", 100), 1),
+        paper_disciplined_execution_enabled=_bool_env("PAPER_DISCIPLINED_EXECUTION_ENABLED", True),
+        paper_policy_max_names=min(max(_int_env("PAPER_POLICY_MAX_NAMES", 4), 1), 12),
+        paper_policy_max_total_exposure=min(
+            max(_float_env("PAPER_POLICY_MAX_TOTAL_EXPOSURE", 0.72), 0.05), 0.95
+        ),
+        paper_policy_max_position_pct=min(
+            max(_float_env("PAPER_POLICY_MAX_POSITION_PCT", 0.12), 0.01), 0.5
+        ),
+        paper_policy_min_rebalance_delta_pct=min(
+            max(_float_env("PAPER_POLICY_MIN_REBALANCE_DELTA_PCT", 0.02), 0.0), 0.2
+        ),
+        paper_policy_min_holding_days=max(_int_env("PAPER_POLICY_MIN_HOLDING_DAYS", 3), 1),
+        paper_policy_hard_stop_loss_pct=min(
+            max(_float_env("PAPER_POLICY_HARD_STOP_LOSS_PCT", 0.065), 0.01), 0.3
+        ),
+        paper_policy_trail_activation_pct=min(
+            max(_float_env("PAPER_POLICY_TRAIL_ACTIVATION_PCT", 0.12), 0.01), 1.0
+        ),
+        paper_policy_trailing_stop_pct=min(
+            max(_float_env("PAPER_POLICY_TRAILING_STOP_PCT", 0.085), 0.01), 0.3
+        ),
+        paper_policy_exit_panic_score=min(
+            max(_float_env("PAPER_POLICY_EXIT_PANIC_SCORE", 64.0), 0.0), 100.0
+        ),
         primary_strategy_id=_choice_env(
             "PRIMARY_STRATEGY_ID", "hybrid_alpha", {"hybrid_alpha", "multi_strategy"}
         ),

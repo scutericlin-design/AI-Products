@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+from math import isfinite
 from typing import Any
 from uuid import uuid4
 
@@ -16,6 +17,7 @@ from portfolio.account import (
     simulate_sell_all,
 )
 from app.config import settings
+from portfolio.execution_policy import build_execution_plan
 from storage.logger import (
     get_cycle,
     get_latest_cycle_payload,
@@ -91,19 +93,23 @@ def run_paper_simulation_once(
     signal = str(final_signal.get("signal") or "HOLD").upper()
     source_cycle_id = str(cycle_id or (row or {}).get("cycle_id") or "")
 
-    if signal == "SELL":
+    execution_plan = build_execution_plan(account, final_signal, prices)
+    sell_symbols = execution_plan.get("sell_symbols")
+    if sell_symbols is None or sell_symbols:
         sell_orders, sell_trades = simulate_sell_all(
             account,
             cycle_id=source_cycle_id,
             prices=prices,
             reason=str(final_signal.get("no_recommendation_reason") or "系统防守信号，模拟卖出可卖持仓"),
+            symbols=sell_symbols,
+            reasons=execution_plan.get("sell_reasons") if isinstance(execution_plan.get("sell_reasons"), dict) else None,
         )
         skipped_orders.extend(order for order in sell_orders if order.get("status") == "skipped")
         orders.extend(order for order in sell_orders if order.get("status") != "skipped")
         trades.extend(sell_trades)
-    elif signal == "BUY":
-        for recommendation in recommendations:
-            order, trade = simulate_buy(account, recommendation, cycle_id=source_cycle_id)
+    if signal == "BUY":
+        for recommendation in list(execution_plan.get("buy_recommendations") or []):
+            order, trade = simulate_buy(account, recommendation, cycle_id=source_cycle_id, prices=prices)
             if order.get("status") == "skipped":
                 skipped_orders.append(order)
             else:
@@ -141,6 +147,7 @@ def run_paper_simulation_once(
         "paper_session_started_at": account.session_started_at,
         "session_metrics": paper_account_session_metrics(account.account_id),
         "simulation_source": simulation_source,
+        "execution_policy": execution_plan,
         "no_real_orders": True,
         **execution_context,
     }
@@ -258,31 +265,28 @@ def _latest_price_map(
     market_prices: dict[str, float] | None = None,
     required_symbols: list[str] | None = None,
 ) -> dict[str, float]:
+    # Recommendation/watchlist prices are signal-time observations, not proof
+    # of a fresh executable quote. Keep valuation fallbacks out of this map.
     prices: dict[str, float] = {}
-    for item in recommendations + watchlist:
-        symbol = str(item.get("symbol") or "")
-        price = _float(item.get("current_price") or item.get("price"), 0.0)
-        if symbol and price > 0:
-            prices[symbol] = price
+    required = {str(symbol).strip().upper() for symbol in required_symbols or [] if symbol}
+    required.update(
+        str(item["symbol"]).strip().upper()
+        for item in recommendations + watchlist if isinstance(item, dict) and item.get("symbol")
+    )
     for symbol, price in (market_prices or {}).items():
         value = _float(price, 0.0)
         if symbol and value > 0:
-            prices[str(symbol)] = value
+            prices[str(symbol).strip().upper()] = value
     try:
         from realtime.market_stream import MarketStream
 
-        missing = [
-            str(symbol)
-            for symbol in (required_symbols or [])
-            if str(symbol) and str(symbol) not in prices
-        ]
-        if market_prices is not None:
-            quotes = MarketStream().quotes_for_symbols(missing) if missing else []
-        else:
-            quotes = MarketStream().latest_quotes()
+        missing = sorted(symbol for symbol in required if symbol not in prices)
+        quotes = MarketStream().quotes_for_symbols(missing) if missing else []
         for quote in quotes:
-            if quote.price > 0:
-                prices[quote.symbol] = quote.price
+            value = _float(quote.price, 0.0)
+            symbol = str(quote.symbol).strip().upper()
+            if value > 0 and symbol in missing:
+                prices[symbol] = value
     except Exception as exc:
         logger.warning("paper simulation realtime mark-to-market failed: %s", exc)
     return prices
@@ -300,6 +304,7 @@ def _loads(value: Any) -> dict[str, Any]:
 
 def _float(value: Any, default: float) -> float:
     try:
-        return float(value)
-    except (TypeError, ValueError):
+        number = float(value)
+        return number if isfinite(number) else default
+    except (TypeError, ValueError, OverflowError):
         return default
