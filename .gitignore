@@ -1,7 +1,13 @@
 .DS_Store
 .env
 .env.*
+!/.env.example
 .venv/
 __pycache__/
 *.pyc
 deployment/dist/
+
+# Keep local databases and downloaded backtest archives off GitHub.
+/data/app.db
+/data/app.db-*
+/a_stock_ai_v1_3_deploy/qgarp_strategy/local_data/archives/
