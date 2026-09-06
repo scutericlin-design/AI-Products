@@ -134,16 +134,29 @@ class HotLeaderDataClient:
 
     def realtime_prices(self,symbols:list[str])->dict[str,float]:
         if not symbols: return {}
-        if not self._available: raise HotLeaderDataError("实时成交价需要 TuShare 中转或 Token")
+        primary: Exception | None = None
+        if self._available:
+            try:
+                frame=self._pro().realtime_quote(ts_code=",".join(symbols),fields="ts_code,price,last,close")
+                prices={}
+                for row in _records(frame):
+                    symbol=_symbol(str(row.get("ts_code") or row.get("symbol") or "")); price=_num(row.get("price") or row.get("last") or row.get("close"))
+                    if symbol and price>0:prices[symbol]=price
+                if not prices: raise HotLeaderDataError("TuShare 中转实时行情返回为空")
+                return prices
+            except Exception as exc:
+                primary = exc
+        else:
+            primary = HotLeaderDataError("实时成交价缺少 TuShare 中转或 Token")
         try:
-            frame=self._pro().realtime_quote(ts_code=",".join(symbols),fields="ts_code,price,last,close")
-            prices={}
-            for row in _records(frame):
-                symbol=_symbol(str(row.get("ts_code") or row.get("symbol") or "")); price=_num(row.get("price") or row.get("last") or row.get("close"))
-                if symbol and price>0:prices[symbol]=price
-            if not prices: raise HotLeaderDataError("TuShare 中转实时行情返回为空")
-            return prices
-        except Exception as exc: raise HotLeaderDataError(f"实时成交价不可用：{exc}") from exc
+            fallback = _fetch_sina_batch([_symbol(symbol) for symbol in symbols])
+            prices = {str(row["symbol"]): float(row["price"]) for row in fallback if float(row.get("price") or 0) > 0}
+            if prices:
+                logger.info("hot-leader realtime quote fallback=sina_timestamped rows=%s", len(prices))
+                return prices
+        except HotLeaderDataError:
+            pass
+        raise HotLeaderDataError(f"实时成交价不可用：{type(primary).__name__}") from primary
 
     def realtime_market_quotes(self, symbols: list[str]) -> dict[str, Any]:
         """Fetch a timestamped full-universe observation in bounded Sina batches.

@@ -22,7 +22,7 @@ from hot_leader_strategy.dashboard import build_hot_leader_dashboard_payload
 class HotLeaderTests(unittest.TestCase):
     def setUp(self)->None:
         self.temp=tempfile.TemporaryDirectory(); root=Path(self.temp.name)
-        self.settings=replace(load_settings(),storage_dir=root,db_path=root/"hot.sqlite",reports_dir=root/"reports",max_names=3,min_hot_themes=2,min_theme_members=3,trend_entry_min_return=.10,paper_enabled=True,push_enabled=False,dry_run=True)
+        self.settings=replace(load_settings(),storage_dir=root,db_path=root/"hot.sqlite",reports_dir=root/"reports",tushare_base_url="https://proxy.test",tushare_token="test",max_names=3,min_hot_themes=2,min_theme_members=3,trend_entry_min_return=.10,paper_enabled=True,push_enabled=False,dry_run=True)
         self.store=HotLeaderStore(self.settings.db_path)
         self.items=[Instrument(f"00000{i}.SZ",f"测试{i}","题材A" if i<=3 else "题材B","20100101") for i in range(1,7)]
         self.histories={x.symbol:_bars(x.symbol,10+i) for i,x in enumerate(self.items)}
@@ -134,6 +134,13 @@ class HotLeaderTests(unittest.TestCase):
         self.assertTrue(result["provider_timestamp_available"])
         self.assertEqual(fetch.call_count,2)
 
+    def test_candidate_quote_monitor_falls_back_to_timestamped_sina(self)->None:
+        client=HotLeaderDataClient(self.settings)
+        client._client=Mock()
+        client._client.realtime_quote.return_value=None
+        with patch("hot_leader_strategy.data_client._fetch_sina_batch",return_value=[{"symbol":"000001.SZ","price":12.34,"provider_timestamp":"2026-08-19T10:00:00+08:00"}]):
+            self.assertEqual(client.realtime_prices(["000001.SZ"]),{"000001.SZ":12.34})
+
     def test_dashboard_exposes_live_theme_time_without_writing(self)->None:
         self.store.save_live_theme_run(trade_date="20260819",status="ok",source="test",observed_at="2026-08-19T10:00:00+08:00",provider_timestamp=None,universe_count=5000,quote_count=4000,payload={"hot_themes":[{"theme":"题材A","hot":True}],"market_avg_change_pct":1.2})
         with patch("hot_leader_strategy.dashboard.load_settings",return_value=replace(self.settings,live_theme_enabled=True,live_theme_interval_minutes=5)):
@@ -141,6 +148,12 @@ class HotLeaderTests(unittest.TestCase):
         self.assertTrue(payload["read_only"])
         self.assertEqual(payload["live_theme"]["run"]["observed_at"],"2026-08-19T10:00:00+08:00")
         self.assertEqual(payload["live_theme"]["observation"]["hot_themes"][0]["theme"],"题材A")
+
+    def test_dashboard_rejects_stale_provider_timestamp(self)->None:
+        self.store.save_live_theme_run(trade_date="20260819",status="ok",source="test",observed_at=datetime.now(ZoneInfo("Asia/Shanghai")).isoformat(),provider_timestamp="2026-08-19T10:00:00+08:00",universe_count=5000,quote_count=4000,payload={})
+        with patch("hot_leader_strategy.dashboard.load_settings",return_value=replace(self.settings,live_theme_enabled=True,live_theme_interval_minutes=5)):
+            payload=build_hot_leader_dashboard_payload()
+        self.assertFalse(payload["live_theme"]["fresh"])
 
     def test_old_ledger_without_live_theme_table_reads_as_no_snapshot(self)->None:
         old_path=Path(self.temp.name)/"old.sqlite"

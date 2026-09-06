@@ -14,10 +14,11 @@ def build_hot_leader_dashboard_payload() -> dict[str, Any]:
     plan = latest.get("payload") or {}
     live_theme = store.latest_live_theme_run()
     observed_at = live_theme.get("observed_at")
+    provider_at = live_theme.get("provider_timestamp")
     fresh = False
-    if observed_at:
+    if provider_at or observed_at:
         try:
-            seen = datetime.fromisoformat(observed_at)
+            seen = datetime.fromisoformat(provider_at or observed_at)
             now = datetime.now(seen.tzinfo)
             fresh = seen.date() == now.date() and 0 <= (now - seen).total_seconds() <= settings.live_theme_interval_minutes * 180
         except (TypeError, ValueError):
