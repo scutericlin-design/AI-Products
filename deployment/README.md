@@ -40,7 +40,30 @@ http://127.0.0.1:8000/
 2. Install Docker and Docker Compose.
 3. Copy this repository to the VM.
 4. Create `.env`.
-5. Run `docker compose up -d --build`.
+5. Set the trading credentials and the personal-plan switches in `.env`, then run `docker compose --profile trading up -d --build`.
+
+## Personal five-year plan and Feishu notifications
+
+The `trading-engine` service can run the private five-year plan described in
+`/api/personal-plan`. It produces only manual trade-plan messages; it does not
+connect to a broker or submit orders.
+
+Configure these values on the server (never commit the keys):
+
+```text
+TRADING_PERSONAL_PLAN_ENABLED=true
+TRADING_DRY_RUN=false
+TRADING_PUSH_ENABLED=true
+TRADING_TUSHARE_TOKEN=...
+TRADING_FEISHU_WEBHOOK_URL=...
+```
+
+The plan blocks a new stock buy when its fundamental status or valuation data
+is missing or stale. Update the complete stock-pool document through the
+admin-only `GET`/`PUT /api/personal-plan` endpoints after each financial-report
+review and after manually placing a trade, including the account value, cash,
+and holdings. The scheduler deduplicates unchanged instructions and sends a
+single daily status message when there is no actionable change.
 6. Put Caddy and HTTPS in front of port `8000`; `docker-compose.prod.yml` already includes Caddy.
 
 ## Database Migration Path

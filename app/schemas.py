@@ -10,6 +10,16 @@ class AuthRequest(BaseModel):
     password: str = Field(min_length=8)
 
 
+class PersonalPlanUpdateIn(BaseModel):
+    """Whole-plan update for the single private cloud plan.
+
+    Keeping this as a document makes all thresholds, data timestamps, and the
+    stock pool versioned together instead of silently mixing old and new data.
+    """
+
+    plan: dict[str, Any]
+
+
 class AuthResponse(BaseModel):
     token: str
     email: EmailStr

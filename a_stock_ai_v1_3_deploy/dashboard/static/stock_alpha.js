@@ -24,7 +24,7 @@
     $('fees').textContent = `累计费用 ${money(account.fees)}`;
     $('drawdown').textContent = pct(account.max_drawdown_pct);
     $('trades').textContent = `${account.trades}笔成交`;
-    const states = {started:'已启动', closed:'休市', exchange_holiday:'交易所休市', running:'运行中', prepared:'已准备', preparing:'准备中', blocked:'执行阻断', data_degraded:'数据待核对', close_backed_up:'已收盘备份'};
+    const states = {started:'已启动', closed:'休市', exchange_holiday:'交易所休市', running:'运行中', prepared:'已准备', preparing:'准备中', blocked:'执行阻断', data_degraded:'数据待核对', close_backed_up:'已收盘备份', close_prices_pending:'等待收盘价'};
     $('health').textContent = data.worker_stale ? '心跳过期' : (states[data.health?.status] || '待核验');
     $('updated').textContent = time(data.heartbeat?.at);
     $('loadStatus').textContent = `${names[selected]} · ${time(data.fetched_at)}${account.stale_marks.length ? ' · 估值待核对：'+account.stale_marks.join('、') : ''}`;
@@ -47,6 +47,16 @@
     ];
     $('strategyInfo').innerHTML = info.map(([k,v])=>`<div><dt>${escape(k)}</dt><dd>${escape(v)}</dd></div>`).join('');
     $('evidence').innerHTML = plan.evidence.length ? plan.evidence.map((e)=>`<article><h3>${escape(e.ts_code)}</h3><p>${escape(e.thesis)}</p><p>反向证据：${escape(e.counter_evidence)}</p><small>证据编号：${escape((e.event_ids||[]).join('、'))}</small></article>`).join('') : '<p>当前账本无AI机会调整记录。</p>';
+    const governance=data.governance||{}, policy=governance.policy||{}, comparison=governance.comparison||{}, base=governance.accounts?.A_baseline||{}, enhanced=governance.accounts?.B_enhanced||{};
+    $('governanceStatus').textContent=governance.status==='review_ready'?'待人工复核':'积累证据中';
+    const governanceInfo=[
+      ['自动升级',governance.automatic_promotion?'已启用':'禁用'],
+      ['有效样本',`${Math.min(base.closed_sessions||0,enhanced.closed_sessions||0)} / ${policy.minimum_closed_sessions||'--'} 个已收盘交易日`],
+      ['增强相对收益',pct(comparison.return_gap_pct||0)],
+      ['增强回撤变化',pct(comparison.drawdown_gap_pct||0)],
+      ['当前结论',comparison.recommendation==='human_review_required'?'满足候选条件，仍需人工复核':'保持现有配置']
+    ];
+    $('governanceInfo').innerHTML=governanceInfo.map(([k,v])=>`<div><dt>${escape(k)}</dt><dd>${escape(v)}</dd></div>`).join('');
     table('blocks',account.recent_blocks.map((b)=>[b.cycle,b.symbol,b.side,b.status,b.reason]),5,'暂无执行检查记录');
     draw();
   }

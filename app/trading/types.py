@@ -14,6 +14,7 @@ class Quote:
     pct_change: float
     amount_yi: float
     volume_ratio: float | None = None
+    pe_ttm: float | None = None
     source: str = "unknown"
     timestamp: str = field(default_factory=now_beijing_iso)
     raw: dict[str, Any] = field(default_factory=dict)
@@ -53,4 +54,3 @@ class Decision:
     risk_level: str = "normal"
     risk_flags: tuple[str, ...] = ()
     raw: dict[str, Any] = field(default_factory=dict)
-

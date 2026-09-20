@@ -1,0 +1,182 @@
+[
+  {
+    "rank": 1,
+    "name": "宁德时代",
+    "ts_code": "300750.SZ",
+    "thesis": "动力与储能电池的规模制造、研发和客户认证；增长来自储能、海外及电动化场景扩展。",
+    "risk": "技术路线切换、行业降价、海外贸易壁垒；销量增长不一定带来单位盈利增长。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-07-24/1225442062.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 2,
+    "name": "国电南瑞",
+    "ts_code": "600406.SH",
+    "thesis": "电网调度、保护与自动化的可靠性和系统集成经验；电网升级带来长期需求。",
+    "risk": "上半年经营现金流同比下降78.95%，需要跟踪应收、订单和全年回款，现阶段不能据排名直接加仓。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-27/1225508099.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 3,
+    "name": "美的集团",
+    "ts_code": "000333.SZ",
+    "thesis": "家电品牌、供应链和多区域销售基础；海外自主品牌、楼宇科技及工业业务提供增量。",
+    "risk": "国内需求放缓、汇率与套保口径错配、工业业务资本回报；当前营收增长温和。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-29/1225531403.PDF",
+    "inclusion_route": "财报口径人工复核纳入；未通过原始最新扣非增速门槛"
+  },
+  {
+    "rank": 4,
+    "name": "汇川技术",
+    "ts_code": "300124.SZ",
+    "thesis": "工控产品与应用服务积累；伺服、变频、控制系统、电驱及海外拓展。",
+    "risk": "制造业资本开支周期、下游价格竞争、毛利率和营运资金；不能将机器人预期等同已实现利润。",
+    "source_url": "https://disc.static.szse.cn/disc/disk03/finalpage/2026-08-29/6064bed7-16f2-45ad-92fa-59658eedaec0.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 5,
+    "name": "福耀玻璃",
+    "ts_code": "600660.SH",
+    "thesis": "汽车玻璃工艺、客户认证及全球供货网络；高附加值玻璃提升单车产品价值。",
+    "risk": "汽车销量、能源人工成本和海外运营；汇兑对股东实际收益仍有影响，不能完全忽略。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-19/1225479532.PDF",
+    "inclusion_route": "财报口径人工复核纳入；未通过原始最新扣非增速门槛"
+  },
+  {
+    "rank": 6,
+    "name": "宏发股份",
+    "ts_code": "600885.SH",
+    "thesis": "继电器的质量控制和规模制造；新能源、汽车、电力与工控需求有多个来源。",
+    "risk": "原材料成本、客户降价、固态器件替代；最新半年度现金利润比偏低，需要观察回款。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-07-30/1225446608.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 7,
+    "name": "思源电气",
+    "ts_code": "002028.SZ",
+    "thesis": "输配电设备和客户验证积累；国内电网、海外工程、储能业务提供增长。",
+    "risk": "订单转收入和现金的时间差、海外EPC交付与回款；不能只看新订单。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-15/1225473691.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 8,
+    "name": "新产业",
+    "ts_code": "300832.SZ",
+    "thesis": "体外诊断仪器与配套试剂；设备装机形成后续试剂需求，国产替代和海外扩张。",
+    "risk": "试剂集采降价、单机试剂产出不足、竞争和医疗采购周期。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-14/1225471103.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 9,
+    "name": "东鹏饮料",
+    "ts_code": "605499.SH",
+    "thesis": "能量饮料品牌与终端渠道；全国化和新品类扩张推动重复消费。",
+    "risk": "单品集中、渠道库存和促销费用上升、食品安全；历史高增速已放缓。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-07-31/1225449594.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 10,
+    "name": "立讯精密",
+    "ts_code": "002475.SZ",
+    "thesis": "精密制造和复杂供应链管理；消费电子、通信与汽车业务扩展。",
+    "risk": "大客户集中、并购整合和营运资金；并购带来的收入增量不能都算内生增长。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-25/1225500221.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 11,
+    "name": "法拉电子",
+    "ts_code": "600563.SH",
+    "thesis": "薄膜电容的工艺与可靠性认证；电力电子、汽车和工业领域需求。",
+    "risk": "新能源下游价格压力、原料和技术替代；最新利润增长慢于收入。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-22/1225489178.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 12,
+    "name": "三花智控",
+    "ts_code": "002050.SZ",
+    "thesis": "制冷控制与热管理零部件技术；汽车电动化和节能需求支持主业。",
+    "risk": "车企降价和估值；机器人业务未兑现的利润不计入长期基础假设。",
+    "source_url": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12550185&stockid=002050",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 13,
+    "name": "华测检测",
+    "ts_code": "300012.SZ",
+    "thesis": "跨行业检测能力、资质和客户信任；质量合规检测需求分散于多行业。",
+    "risk": "公信力事件、资质丧失、实验室利用率及并购商誉；不是无风险的刚需生意。",
+    "source_url": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12497345&stockid=300012",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 14,
+    "name": "亿联网络",
+    "ts_code": "300628.SZ",
+    "thesis": "企业通信终端、渠道与产品兼容能力；会议和协作设备扩展。",
+    "risk": "海外集中、通信硬件被软件替代、渠道库存；最新现金回收需要持续核查。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-19/1225480495.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 15,
+    "name": "安克创新",
+    "ts_code": "300866.SZ",
+    "thesis": "消费电子品牌、产品开发及海外渠道；充电、智能硬件和储能品类扩展。",
+    "risk": "产品质量与召回、平台依赖、关税、库存和营销投入；高增长需要现金兑现。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-31/1225533054.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 16,
+    "name": "金山办公",
+    "ts_code": "688111.SH",
+    "thesis": "办公软件用户基础、文档工作流及订阅关系；企业协作和付费转化提供增长。",
+    "risk": "AI改变办公入口、竞争及投资收益干扰；不能用含大额投资收益的PE直接判便宜。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-20/1225482701.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 17,
+    "name": "柏楚电子",
+    "ts_code": "688188.SH",
+    "thesis": "激光加工控制的软件、算法与工艺经验；高功率、三维加工和智能焊接拓展。",
+    "risk": "应用市场相对集中、工业周期、技术替代与高毛利率回落。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-18/1225477071.PDF",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 18,
+    "name": "纽威股份",
+    "ts_code": "603699.SH",
+    "thesis": "工业阀门工艺、客户认证和工程应用经验；高端产品和海外市场拓展。",
+    "risk": "油气化工等行业资本开支周期、海外项目和质量责任；需求不是每年增长。",
+    "source_url": "https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12515699&stockid=603699",
+    "inclusion_route": "量化初筛通过"
+  },
+  {
+    "rank": 19,
+    "name": "招商银行",
+    "ts_code": "600036.SH",
+    "thesis": "零售客户、低成本存款及财富管理基础；生存韧性优先，增长定位为温和。",
+    "risk": "净息差下行、零售及房地产信用风险；需独立检查资本和资产质量，不能套用工业现金流指标。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-29/1225530235.PDF",
+    "inclusion_route": "金融业独立复核纳入；不使用非金融综合分"
+  },
+  {
+    "rank": 20,
+    "name": "紫金矿业",
+    "ts_code": "601899.SH",
+    "thesis": "多矿种资源和矿山运营能力；资源储量与产量扩张带来增长来源。",
+    "risk": "金铜价格、海外政治和安全事故、并购负债；当前高利润不能按十年固定增速外推。",
+    "source_url": "https://static.cninfo.com.cn/finalpage/2026-08-22/1225493321.PDF",
+    "inclusion_route": "量化初筛通过"
+  }
+]

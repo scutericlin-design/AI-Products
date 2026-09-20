@@ -1,0 +1,30 @@
+{
+  "checked_on": "2026-09-20",
+  "source": "Configured TuShare relay, fina_audit",
+  "period": "20251231",
+  "successful_query": "ts_code plus period=20251231; normalized end_date; no credentials stored",
+  "earlier_query_limitation": "ann_date range request returned no matching rows; period query returned all 20",
+  "results": {
+    "300750.SZ": "标准无保留意见",
+    "600406.SH": "标准无保留意见",
+    "000333.SZ": "标准无保留意见",
+    "300124.SZ": "标准无保留意见",
+    "600660.SH": "标准无保留意见",
+    "600885.SH": "标准无保留意见",
+    "002028.SZ": "标准无保留意见",
+    "300832.SZ": "标准无保留意见",
+    "605499.SH": "标准无保留意见",
+    "002475.SZ": "标准无保留意见",
+    "600563.SH": "标准无保留意见",
+    "002050.SZ": "标准无保留意见",
+    "300012.SZ": "标准无保留意见",
+    "300628.SZ": "标准无保留意见",
+    "300866.SZ": "标准无保留意见",
+    "688111.SH": "标准无保留意见",
+    "688188.SH": "标准无保留意见",
+    "603699.SH": "标准无保留意见",
+    "600036.SH": "标准无保留意见",
+    "601899.SH": "标准无保留意见"
+  },
+  "limitation": "Reported by API; not independent audit and not assurance of future survival, absence of fraud or subsequent events."
+}

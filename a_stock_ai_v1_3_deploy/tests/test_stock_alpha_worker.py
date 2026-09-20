@@ -9,9 +9,37 @@ import pandas as pd
 from stock_alpha.live import Worker, process_lock
 from stock_alpha.paper import TZ
 from stock_alpha.live_data import LiveData
+from stock_alpha.governance import evaluate as evaluate_governance
 
 
 class WorkerTests(unittest.TestCase):
+    def test_governance_collects_evidence_without_auto_promotion(self):
+        rows=[]
+        for index in range(60):
+            day=(datetime(2026, 1, 1) + timedelta(days=index)).date().isoformat()
+            rows += [{"account":"A_baseline","at":f"{day}T15:00:00+08:00","nav":1_000_000+index*1_000},
+                     {"account":"B_enhanced","at":f"{day}T15:00:00+08:00","nav":1_000_000+index*1_500},
+                     {"account":"C_ai","at":f"{day}T15:00:00+08:00","nav":1_000_000+index*1_200}]
+        result=evaluate_governance(rows)
+        self.assertTrue(result["comparison"]["evidence_passed"])
+        self.assertFalse(result["automatic_promotion"])
+        self.assertEqual(result["comparison"]["recommendation"],"human_review_required")
+
+    def test_critical_empty_response_is_not_cached_and_is_retried(self):
+        with tempfile.TemporaryDirectory() as directory:
+            data = LiveData(Path(directory), Path(directory), {"market": {"url": "https://proxy.test", "token": "test"}})
+            empty = Mock(); empty.raise_for_status.return_value = None
+            empty.json.return_value = {"code": 0, "data": {"fields": ["ts_code", "close"], "items": []}}
+            valid = Mock(); valid.raise_for_status.return_value = None
+            valid.json.return_value = {"code": 0, "data": {"fields": ["ts_code", "close"], "items": [["600519.SH", 1330.0]]}}
+            with patch.object(data.session, "post", side_effect=[empty, valid]) as post, patch("stock_alpha.live_data.time.sleep"):
+                self.assertTrue(data.query("daily", cache="20260907", trade_date="20260907").empty)
+                refreshed = data.query("daily", cache="20260907", trade_date="20260907")
+                cached = data.query("daily", cache="20260907", trade_date="20260907")
+            self.assertEqual(post.call_count, 2)
+            self.assertEqual(refreshed.iloc[0].ts_code, "600519.SH")
+            self.assertEqual(cached.iloc[0].close, 1330.0)
+
     def test_price_limits_are_symbol_scoped_and_date_checked(self):
         data = LiveData.__new__(LiveData)
         data.query = Mock(return_value=pd.DataFrame([
@@ -33,6 +61,7 @@ class WorkerTests(unittest.TestCase):
         self.worker.config = {}
         self.worker.health = Mock()
         self.worker.notify = Mock()
+        self.worker._update_governance = Mock()
 
     def test_closed_session_never_calls_provider_or_ledger(self):
         for now in (datetime(2026, 9, 6, 10, tzinfo=TZ), datetime(2026, 9, 7, 12, tzinfo=TZ)):

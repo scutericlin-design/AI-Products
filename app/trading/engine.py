@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import logging
 import traceback
+import fcntl
+from pathlib import Path
 from dataclasses import asdict
 from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import SessionLocal
 from app.models import TradingDecisionLog, TradingEngineRun, TradingPushLog
 from app.trading.data import TushareDataLayer
@@ -14,6 +17,10 @@ from app.trading.feishu import FeishuNotifier
 from app.trading.leader_tracker import LeaderTracker
 from app.trading.market_state import MarketStateEngine
 from app.trading.minimax_client import MiniMaxDecisionClient
+from app.trading.personal_plan import PersonalPlanEngine, PersonalPlanStore
+from app.trading.durable_plan import VERSION, propose
+from app.trading.durable_data import DurableData
+from app.trading.buy_alerts import publish, read_ledger
 from app.trading.risk import RiskEngine
 from app.trading.types import Decision
 from app.trading.utils import to_json, utc_now_naive
@@ -31,15 +38,28 @@ class TradingEngine:
         decision_client: MiniMaxDecisionClient | None = None,
         risk_engine: RiskEngine | None = None,
         notifier: FeishuNotifier | None = None,
+        personal_plan_engine: PersonalPlanEngine | None = None,
     ) -> None:
         self.data_layer = data_layer or TushareDataLayer()
+        self.durable_data = DurableData()
         self.market_state_engine = market_state_engine or MarketStateEngine()
         self.leader_tracker = leader_tracker or LeaderTracker()
         self.decision_client = decision_client or MiniMaxDecisionClient()
         self.risk_engine = risk_engine or RiskEngine()
         self.notifier = notifier or FeishuNotifier()
+        self.personal_plan_engine = personal_plan_engine or PersonalPlanEngine()
 
     def run_cycle(self, trigger_source: str = "scheduler") -> str:
+        # The cloud scheduler and manual preview endpoint share one advisory account.
+        # Serialize cycles across processes as well as the APScheduler instance.
+        with Path('data/personal_buy_cycle.lock').open('a') as lock:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                return 'skipped_concurrent_cycle'
+            return self._run_cycle(trigger_source)
+
+    def _run_cycle(self, trigger_source: str = "scheduler") -> str:
         cycle_id = uuid4().hex
         db = SessionLocal()
         run = TradingEngineRun(
@@ -52,12 +72,27 @@ class TradingEngine:
         db.commit()
 
         try:
-            quotes = self.data_layer.fetch_quotes()
-            market_state = self.market_state_engine.evaluate(quotes)
-            leaders = self.leader_tracker.select(quotes)
-            raw_decisions = self.decision_client.decide(market_state, leaders)
-            decisions = self.risk_engine.review(raw_decisions, market_state, leaders)
-            push_result = self.notifier.send(market_state, decisions)
+            plan = None
+            if settings.trading_personal_plan_enabled:
+                plan = PersonalPlanStore().get(db)
+                symbols = [item["symbol"] for item in plan["candidates"]]
+                quotes = (self.durable_data.fetch_quotes(plan) if plan.get("version") == VERSION
+                          else self.data_layer.fetch_quotes(symbols))
+                market_state = self.market_state_engine.evaluate(quotes)
+                leaders = []
+                if plan.get("version") == VERSION:
+                    decisions = propose(plan, quotes, read_ledger(db))
+                    push_result = publish(db, plan, decisions)
+                else:
+                    decisions = self.personal_plan_engine.decide(plan, quotes)
+                    push_result = self._push_personal_plan_if_needed(db, market_state, decisions)
+            else:
+                quotes = self.data_layer.fetch_quotes()
+                market_state = self.market_state_engine.evaluate(quotes)
+                leaders = self.leader_tracker.select(quotes)
+                raw_decisions = self.decision_client.decide(market_state, leaders)
+                decisions = self.risk_engine.review(raw_decisions, market_state, leaders)
+                push_result = self.notifier.send(market_state, decisions)
 
             self._write_decisions(db, cycle_id, decisions)
             self._write_push(db, cycle_id, push_result)
@@ -73,6 +108,7 @@ class TradingEngine:
                     "market_state": asdict(market_state),
                     "quotes": [asdict(item) for item in quotes[:20]],
                     "leaders": [asdict(item) for item in leaders],
+                    "personal_plan_version": plan.get("version") if plan else None,
                     "push": push_result,
                 }
             )
@@ -92,6 +128,11 @@ class TradingEngine:
             return cycle_id
         finally:
             db.close()
+
+    def _push_personal_plan_if_needed(self, db: Session, market_state, decisions: list[Decision]) -> dict:
+        # Legacy plan delivery stays off after the buy-only migration. This also
+        # prevents a downgraded/old plan from resurrecting daily status messages.
+        return {"channel": "feishu_personal_plan", "status": "legacy_plan_muted", "payload": {}}
 
     def _write_decisions(self, db: Session, cycle_id: str, decisions: list[Decision]) -> None:
         for decision in decisions:
@@ -115,7 +156,7 @@ class TradingEngine:
         db.add(
             TradingPushLog(
                 cycle_id=cycle_id,
-                channel=self.notifier.channel,
+                channel=str(push_result.get("channel") or self.notifier.channel),
                 status=str(push_result.get("status") or "unknown"),
                 response_code=push_result.get("response_code"),
                 response_text=push_result.get("response_text"),

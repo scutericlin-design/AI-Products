@@ -18,6 +18,7 @@ import requests
 from stock_alpha.data import write_json
 from stock_alpha.enhanced import enhanced_plan, apply_opportunities, plan_identity, VERSION
 from stock_alpha.event_ai import review
+from stock_alpha.governance import evaluate as evaluate_governance
 from stock_alpha.live_data import LiveData
 from stock_alpha.model import ModelConfig, build_targets
 from stock_alpha.paper import Ledger, ACCOUNTS, TZ
@@ -97,6 +98,7 @@ class Worker:
             self.ledger.set_state("last_ai", {**ai, "event_status": event_status})
         self.ledger.set_state("snapshot_as_of", as_of)
         self.ledger.set_state("prepared_day", today)
+        self._update_governance(now)
         self.health("prepared", as_of=as_of, rebalanced=due)
         return {"status": "prepared", "as_of": as_of, "rebalanced": due,
                 "ai": self.ledger.state("last_ai", {}).get("mode")}
@@ -105,13 +107,25 @@ class Worker:
         now = datetime.now(TZ)
         today = now.strftime("%Y%m%d")
         with process_lock(self.directory):
-            if today in self.data.calendar(now):
-                frame = self.data.query("daily", cache=today, trade_date=today, fields="ts_code,close")
-                adjustments = self.data.query("adj_factor", cache=today, trade_date=today)
-                if frame.empty or adjustments.empty:
-                    raise RuntimeError("Closing-price data not ready")
-                self.ledger.mark_close(today, frame.set_index("ts_code").close.to_dict(),
-                                       adjustments.set_index("ts_code").adj_factor.to_dict())
+            accounts = self.ledger.summary()["accounts"]
+            has_positions = any(account["positions"] for account in accounts.values())
+            close_pending = False
+            if has_positions and self.ledger.state("close_marked_date") != today:
+                # Keep the close-valuation cache separate from next-session research inputs.
+                # A provider delay must not make a paper worker unhealthy after the close.
+                try:
+                    if today not in self.data.calendar(now):
+                        raise RuntimeError("Closing-session calendar not ready")
+                    frame = self.data.query("daily", cache=f"close-{today}", trade_date=today, fields="ts_code,close")
+                    adjustments = self.data.query("adj_factor", cache=f"close-{today}", trade_date=today)
+                    if frame.empty or adjustments.empty:
+                        close_pending = True
+                    else:
+                        self.ledger.mark_close(today, frame.set_index("ts_code").close.to_dict(),
+                                               adjustments.set_index("ts_code").adj_factor.to_dict())
+                        self.ledger.set_state("close_marked_date", today)
+                except RuntimeError:
+                    close_pending = True
             import sqlite3
             folder = self.directory / "backups"
             folder.mkdir(exist_ok=True)
@@ -127,8 +141,9 @@ class Worker:
             for obsolete in sorted(folder.glob("paper_*.sqlite"))[:-14]:
                 obsolete.unlink()
             write_json(self.directory / "summary.json", self.ledger.summary())
-            self.health("close_backed_up")
-        return {"status": "close_backed_up"}
+            self._update_governance(now)
+            self.health("close_prices_pending" if close_pending else "close_backed_up", close_date=today)
+        return {"status": "close_prices_pending" if close_pending else "close_backed_up", "no_orders": True}
 
     def cycle(self, now: datetime | None = None) -> dict:
         supplied_now = now
@@ -173,6 +188,7 @@ class Worker:
                                                       factors=factors, blocked=blocked, corporate_actions=corporate)
             self.notify()
             write_json(self.directory / "summary.json", self.ledger.summary())
+            self._update_governance(execution_time)
             filled = sum(len(value.get("orders", [])) for value in output.values())
             fresh_count = sum(quote.fresh(execution_time) for quote in quotes.values())
             reasons = dict(Counter(item["reason"] for value in output.values() for item in value.get("blocked", [])))
@@ -210,6 +226,11 @@ class Worker:
                 delay = min(60, 5 * 2 ** min(row["attempts"], 4))
                 db.execute("UPDATE outbox SET attempts=attempts+1,delivered_at=?,next_attempt_at=? WHERE id=?",
                            (now.isoformat() if success else None, (now + timedelta(minutes=delay)).isoformat(), row["id"]))
+
+    def _update_governance(self, now: datetime) -> None:
+        with self.ledger.connect() as db:
+            rows = [dict(row) for row in db.execute("SELECT account,at,nav FROM cycles ORDER BY at")]
+        self.ledger.set_state("governance", evaluate_governance(rows, now))
 
     def guarded(self, method):
         try:
@@ -263,6 +284,8 @@ def main():
         scheduler.add_job(worker.heartbeat, "interval", minutes=2, id="heartbeat", max_instances=1, coalesce=True)
         scheduler.add_job(lambda: worker.guarded(worker.close_and_backup), CronTrigger(day_of_week="mon-fri", hour=17, minute=30, timezone="Asia/Shanghai"),
                           id="close_backup", max_instances=1, coalesce=True, misfire_grace_time=600)
+        scheduler.add_job(lambda: worker.guarded(worker.close_and_backup), CronTrigger(day_of_week="mon-fri", hour=18, minute=10, timezone="Asia/Shanghai"),
+                          id="close_backup_retry", max_instances=1, coalesce=True, misfire_grace_time=600)
         scheduler.start()
 
 

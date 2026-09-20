@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import sys
+import time
+from pathlib import Path
 
 from sqlalchemy import select
 
@@ -11,6 +13,13 @@ from app.trading.utils import utc_now_naive
 
 
 def main() -> int:
+    if settings.trading_personal_plan_enabled:
+        heartbeat = Path("data/personal_plan_scheduler.heartbeat")
+        if not heartbeat.exists() or time.time() - heartbeat.stat().st_mtime > max(settings.trading_loop_seconds * 3, 180):
+            print("personal plan scheduler heartbeat stale")
+            return 1
+        print("personal plan scheduler alive (see run logs for data/delivery failures)")
+        return 0
     db = SessionLocal()
     try:
         latest = db.scalar(select(TradingEngineRun).order_by(TradingEngineRun.started_at.desc()))

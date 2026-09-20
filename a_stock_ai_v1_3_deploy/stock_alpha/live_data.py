@@ -18,6 +18,9 @@ from stock_alpha.data import load_dataset, write_json
 from stock_alpha.paper import Quote, TZ
 
 
+RETRY_EMPTY_APIS = frozenset({"trade_cal", "daily", "adj_factor", "daily_basic", "stock_basic", "stk_limit"})
+
+
 class LiveData:
     def __init__(self, directory: Path, seed: Path, config: dict):
         self.directory, self.seed, self.config = directory, seed, config
@@ -35,7 +38,12 @@ class LiveData:
             path = self.directory / "requests" / f"{api}_{digest}.json"
             if path.exists():
                 value = json.loads(path.read_text())
-                return pd.DataFrame(value["data"]["items"], columns=value["data"]["fields"])
+                cached = pd.DataFrame(value["data"]["items"], columns=value["data"]["fields"])
+                if not cached.empty or api not in RETRY_EMPTY_APIS:
+                    return cached
+                # An empty daily/limit response is usually a provider-lag artifact.
+                # Do not allow it to block every later cycle for the same session.
+                path.unlink(missing_ok=True)
         market = self.config["market"]
         error = "unavailable"
         for attempt in range(2):
@@ -53,7 +61,7 @@ class LiveData:
                     raise ValueError("invalid_provider_table")
                 if len(data["items"]) >= 6000:
                     raise ValueError("possible_provider_truncation")
-                if path:
+                if path and (data["items"] or api not in RETRY_EMPTY_APIS):
                     write_json(path, {"request": request, "data": data,
                                       "received_at": datetime.now(TZ).isoformat()})
                 return pd.DataFrame(data["items"], columns=data["fields"])

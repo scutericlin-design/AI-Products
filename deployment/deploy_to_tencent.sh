@@ -101,8 +101,8 @@ ssh "${SSH_ARGS[@]}" "$SERVER_USER@$SERVER_IP" "
   else
     sudo bash deployment/server_setup_ubuntu.sh
   fi
-  docker compose -f docker-compose.prod.yml up -d --build
-  docker compose -f docker-compose.prod.yml ps
+  docker compose -f docker-compose.prod.yml --profile trading up -d --build
+  docker compose -f docker-compose.prod.yml --profile trading ps
 "
 
 echo "Done. Open http://$SERVER_IP/"

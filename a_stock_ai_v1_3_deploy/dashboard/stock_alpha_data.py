@@ -51,7 +51,7 @@ def build_stock_alpha_payload(directory: Path | None = None) -> dict:
             db.execute("PRAGMA query_only=ON")
             db.execute("BEGIN")
             stored = {r["key"]: json.loads(r["payload"]) for r in db.execute(
-                "SELECT key,payload FROM state WHERE key IN ('plans','last_ai','snapshot_as_of')")}
+                "SELECT key,payload FROM state WHERE key IN ('plans','last_ai','snapshot_as_of','governance')")}
             accounts = {}
             for account in ACCOUNTS:
                 row = db.execute("SELECT id,initial_cash,cash FROM accounts WHERE id=?", (account,)).fetchone()
@@ -82,8 +82,8 @@ def build_stock_alpha_payload(directory: Path | None = None) -> dict:
                 info["plan"]["evidence"] = [{k: item.get(k) for k in ("ts_code", "thesis", "counter_evidence", "event_ids")} for item in plan.get("ai_evidence", [])]
                 accounts[account] = info
             ai = stored.get("last_ai", {})
-            result.update(status="ok", accounts=accounts, snapshot_as_of=stored.get("snapshot_as_of"),
-                          ai={k: ai.get(k) for k in ("mode", "model")})
+        result.update(status="ok", accounts=accounts, snapshot_as_of=stored.get("snapshot_as_of"),
+                      ai={k: ai.get(k) for k in ("mode", "model")}, governance=stored.get("governance", {}))
         for name in ("health", "heartbeat"):
             try:
                 raw = json.loads((root / f"{name}.json").read_text())

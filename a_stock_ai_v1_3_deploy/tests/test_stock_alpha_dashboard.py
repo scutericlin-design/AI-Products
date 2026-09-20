@@ -40,6 +40,12 @@ class StockAlphaDashboardTests(unittest.TestCase):
         self.assertNotIn("SECRET_SENTINEL", json.dumps(payload))
         self.assertEqual(hashlib.sha256(ledger.path.read_bytes()).hexdigest(), digest)
 
+    def test_governance_state_is_projected_read_only(self):
+        ledger = self.ledger()
+        ledger.set_state("governance", {"automatic_promotion":False,"status":"collecting_evidence"})
+        data = build_stock_alpha_payload(self.root)
+        self.assertFalse(data["governance"]["automatic_promotion"])
+
     def test_account_partition_and_live_wal(self):
         ledger = self.ledger()
         with ledger.connect() as db:

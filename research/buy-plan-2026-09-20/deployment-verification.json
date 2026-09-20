@@ -1,0 +1,38 @@
+{
+  "deployed_date": "2026-09-20",
+  "version": "durable20_buy_v2",
+  "candidate_count": 20,
+  "confirmed_cash": 200000,
+  "interval_seconds": 300,
+  "unit_tests": {
+    "local_passed": 12,
+    "cloud_passed": 12
+  },
+  "actual_calendar": {
+    "cal_date": "20260920",
+    "is_open": 0,
+    "pretrade_date": "20260918"
+  },
+  "weekend_run": {
+    "status": "no_data",
+    "push_status": "no_buy_signal",
+    "sent_message_delta": 0
+  },
+  "live_provider_parse": {
+    "stocks": 20,
+    "quote_source": "TuShare relay daily_basic + Sina timestamped price",
+    "old_quotes_accepted_as_fresh": 0
+  },
+  "health": {
+    "scheduler": "alive",
+    "web_http_status": 200
+  },
+  "manual_execution_only": true,
+  "test_push_sent": false,
+  "limitations": [
+    "Financial review expires after 100 days or a new report/announcement date; must refresh research.",
+    "Account records need reconciliation within 35 days.",
+    "Failed or uncertain notifications retain budget until reconciled; no automatic resend.",
+    "No profitability backtest or drawdown guarantee."
+  ]
+}

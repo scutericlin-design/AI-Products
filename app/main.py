@@ -23,6 +23,7 @@ from app.routers import (
     feedback,
     institutional,
     knowledge,
+    personal_plan,
     portfolio,
     system_pool,
     watchlist,
@@ -49,6 +50,7 @@ app.include_router(feedback.router)
 app.include_router(institutional.router)
 app.include_router(knowledge.router)
 app.include_router(knowledge.feishu_router)
+app.include_router(personal_plan.router)
 app.include_router(portfolio.router)
 app.include_router(system_pool.router)
 app.include_router(watchlist.router)

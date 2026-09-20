@@ -1,0 +1,9 @@
+{
+  "top20_count": 20,
+  "unique_symbols": 20,
+  "quantitative_pass_in_final": 17,
+  "all_market_rows": 5558,
+  "all_final_have_valuation": true,
+  "all_final_have_five_year_profit": true,
+  "raw_archive_sha256": "d4011beb55c91c4e38ff6a6d5a6c765291b953901768ab041dd45711044a9fc3"
+}

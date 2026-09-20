@@ -57,6 +57,11 @@ class Settings(BaseSettings):
     trading_minimax_fallback_model: str | None = MINIMAX_DECISION_FALLBACK_MODEL
     trading_feishu_webhook_url: str | None = None
     trading_health_max_stale_seconds: int = 300
+    # Personal long-horizon plan. This mode only produces a manual trade plan;
+    # it never connects to, or submits orders through, a broker.
+    trading_personal_plan_enabled: bool = False
+    trading_personal_plan_push_cooldown_seconds: int = 60 * 60 * 24
+    trading_use_latest_feishu_chat: bool = False
 
     knowledge_enabled: bool = True
     knowledge_command_secret: str | None = None

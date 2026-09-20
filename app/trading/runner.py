@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+from pathlib import Path
 
 from app.config import settings
 from app.database import init_db
@@ -21,9 +22,18 @@ def start_scheduler() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
     init_db()
     engine = TradingEngine()
+
+    def run_if_market_open() -> None:
+        Path("data/personal_plan_scheduler.heartbeat").touch()
+        phase = engine.market_state_engine.current_phase()
+        if phase not in {"morning_session", "afternoon_session"}:
+            logging.getLogger(__name__).info("Skip personal-plan cycle outside continuous trading: %s", phase)
+            return
+        engine.run_cycle(trigger_source="scheduler")
+
     scheduler = BlockingScheduler(timezone=BEIJING_TZ)
     scheduler.add_job(
-        lambda: engine.run_cycle(trigger_source="scheduler"),
+        run_if_market_open,
         trigger=IntervalTrigger(seconds=max(settings.trading_loop_seconds, 5)),
         id="a_share_intraday_decision_cycle",
         max_instances=1,
@@ -31,7 +41,7 @@ def start_scheduler() -> None:
         replace_existing=True,
     )
     if settings.trading_run_on_start:
-        engine.run_cycle(trigger_source="startup")
+        run_if_market_open()
     scheduler.start()
 
 
@@ -45,4 +55,3 @@ def main() -> None:
         print(f"cycle_id={cycle_id}")
         return
     start_scheduler()
-
