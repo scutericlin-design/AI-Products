@@ -76,9 +76,21 @@ class HotLeaderTests(unittest.TestCase):
         self.assertEqual(first["push"]["status"],"disabled")
         self.assertEqual(len(self.store.recent_intraday_events()),1)
         self.assertEqual(len(self.store.latest_intraday_snapshots()),1)
+        audit=self.store.recent_execution_attempts()
+        self.assertTrue(any(row["status"]=="filled" and row["stage"]=="paper_execution" for row in audit))
 
         repeated=monitor.run_once(now+timedelta(minutes=2))
         self.assertFalse(repeated["orders"])
+
+    def test_intraday_quote_failure_is_recorded_for_a_buy_plan(self)->None:
+        settings=replace(self.settings,auto_enabled=True,intraday_enabled=True,intraday_entry_enabled=True)
+        candidate={"symbol":self.items[0].symbol,"name":self.items[0].name,"industry":self.items[0].industry,"action":"BUY","trigger_price":10.0,"target_weight":.05}
+        self.store.save_signal({"as_of":"20260818","signal":"BUY","recommendations":[candidate]})
+        result=HotLeaderIntradayMonitor(settings=settings,store=self.store,client=_FailingQuoteClient()).run_once(datetime(2026,8,19,10,0,tzinfo=ZoneInfo("Asia/Shanghai")))
+        self.assertEqual(result["status"],"blocked")
+        audit=self.store.recent_execution_attempts()
+        self.assertEqual(audit[0]["stage"],"quote")
+        self.assertEqual(audit[0]["status"],"blocked")
 
     def test_intraday_monitor_honors_t_plus_one_and_sells_next_session(self)->None:
         settings=replace(self.settings,auto_enabled=True,intraday_enabled=True,intraday_entry_enabled=True)
@@ -140,6 +152,7 @@ class HotLeaderTests(unittest.TestCase):
         client._client.realtime_quote.return_value=None
         with patch("hot_leader_strategy.data_client._fetch_sina_batch",return_value=[{"symbol":"000001.SZ","price":12.34,"provider_timestamp":"2026-08-19T10:00:00+08:00"}]):
             self.assertEqual(client.realtime_prices(["000001.SZ"]),{"000001.SZ":12.34})
+            self.assertEqual(client.realtime_quote_snapshot(["000001.SZ"])["source"],"sina:timestamped_fallback")
 
     def test_dashboard_exposes_live_theme_time_without_writing(self)->None:
         self.store.save_live_theme_run(trade_date="20260819",status="ok",source="test",observed_at="2026-08-19T10:00:00+08:00",provider_timestamp=None,universe_count=5000,quote_count=4000,payload={"hot_themes":[{"theme":"题材A","hot":True}],"market_avg_change_pct":1.2})
@@ -172,6 +185,9 @@ def _bars(symbol:str,start:float)->list[DailyBar]:
 class _QuoteClient:
     def __init__(self,prices:dict[str,float]):self.prices=prices
     def realtime_prices(self,symbols:list[str])->dict[str,float]:return {symbol:self.prices[symbol] for symbol in symbols if symbol in self.prices}
+
+class _FailingQuoteClient:
+    def realtime_prices(self,symbols:list[str])->dict[str,float]:raise RuntimeError("test quote outage")
 
 class _LiveThemeClient:
     def __init__(self,quotes):self.quotes=quotes;self.called=False

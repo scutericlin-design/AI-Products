@@ -37,6 +37,8 @@ class HotLeaderStore:
             CREATE TABLE IF NOT EXISTS hot_leader_paper_positions (account_id TEXT NOT NULL, symbol TEXT NOT NULL, name TEXT NOT NULL, industry TEXT, quantity INTEGER NOT NULL, available_quantity INTEGER NOT NULL, avg_cost REAL NOT NULL, last_price REAL NOT NULL, entry_date TEXT NOT NULL, stop_loss REAL, take_profit REAL, trailing_stop_pct REAL, high_watermark REAL, strategy_reason TEXT, updated_at TEXT NOT NULL, PRIMARY KEY(account_id, symbol));
             CREATE TABLE IF NOT EXISTS hot_leader_paper_orders (order_id TEXT PRIMARY KEY, dedupe_key TEXT UNIQUE NOT NULL, account_id TEXT NOT NULL, side TEXT NOT NULL, symbol TEXT NOT NULL, name TEXT NOT NULL, status TEXT NOT NULL, quantity INTEGER NOT NULL, price REAL NOT NULL, commission REAL NOT NULL, tax REAL NOT NULL, trigger_price REAL, target_weight REAL, stop_loss REAL, take_profit REAL, reason TEXT NOT NULL, created_at TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS hot_leader_signal_executions (signal_id TEXT PRIMARY KEY, trade_date TEXT NOT NULL, status TEXT NOT NULL, detail TEXT NOT NULL, created_at TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS hot_leader_execution_attempts (attempt_id TEXT PRIMARY KEY, dedupe_key TEXT UNIQUE NOT NULL, signal_id TEXT NOT NULL, trade_date TEXT NOT NULL, stage TEXT NOT NULL, status TEXT NOT NULL, candidate_count INTEGER NOT NULL, quote_count INTEGER NOT NULL, quote_source TEXT, detail TEXT NOT NULL, created_at TEXT NOT NULL);
+            CREATE INDEX IF NOT EXISTS idx_hot_leader_execution_attempts_time ON hot_leader_execution_attempts(created_at DESC);
             CREATE TABLE IF NOT EXISTS hot_leader_intraday_snapshots (snapshot_id TEXT PRIMARY KEY, trade_date TEXT NOT NULL, symbol TEXT NOT NULL, price REAL NOT NULL, reference_price REAL, change_pct REAL, source TEXT NOT NULL, recorded_at TEXT NOT NULL);
             CREATE INDEX IF NOT EXISTS idx_hot_leader_intraday_snapshots_symbol_time ON hot_leader_intraday_snapshots(symbol, recorded_at DESC);
             CREATE TABLE IF NOT EXISTS hot_leader_intraday_events (event_id TEXT PRIMARY KEY, dedupe_key TEXT UNIQUE NOT NULL, trade_date TEXT NOT NULL, symbol TEXT NOT NULL, event_type TEXT NOT NULL, status TEXT NOT NULL, payload_json TEXT NOT NULL, created_at TEXT NOT NULL);
@@ -107,6 +109,33 @@ class HotLeaderStore:
     def mark_signal_execution(self, signal_id: str, trade_date: str, status: str, detail: str) -> None:
         with self._connect() as db:
             db.execute("INSERT OR IGNORE INTO hot_leader_signal_executions VALUES(?,?,?,?,?)", (signal_id,trade_date,status,detail,_now()))
+
+    def record_execution_attempt(self, *, signal_id: str, trade_date: str, stage: str, status: str,
+                                 candidate_count: int, quote_count: int, quote_source: str = "",
+                                 detail: str = "") -> bool:
+        """Persist one deduplicated paper-execution outcome; never changes orders."""
+        if not signal_id or not trade_date or not stage or not status:
+            return False
+        normalized = " ".join(str(detail or "").split())[:500]
+        key = ":".join((signal_id, trade_date, stage, status, str(candidate_count), str(quote_count), quote_source, normalized))
+        with self._connect() as db:
+            cursor = db.execute(
+                "INSERT OR IGNORE INTO hot_leader_execution_attempts VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                (uuid4().hex, key, signal_id, trade_date, stage, status, max(int(candidate_count), 0),
+                 max(int(quote_count), 0), quote_source[:80], normalized, _now()),
+            )
+        return cursor.rowcount == 1
+
+    def recent_execution_attempts(self, limit: int = 30) -> list[dict[str, Any]]:
+        try:
+            return self._query(
+                "SELECT signal_id,trade_date,stage,status,candidate_count,quote_count,quote_source,detail,created_at "
+                "FROM hot_leader_execution_attempts ORDER BY created_at DESC LIMIT ?", (limit,)
+            )
+        except sqlite3.OperationalError as exc:
+            if "no such table" in str(exc).lower():
+                return []
+            raise
 
     def save_intraday_snapshots(self, trade_date: str, rows: Iterable[dict[str, Any]]) -> int:
         recorded_at = _now()

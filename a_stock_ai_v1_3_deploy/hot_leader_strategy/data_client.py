@@ -132,7 +132,8 @@ class HotLeaderDataClient:
         if not date or not ranked: raise HotLeaderDataError(f"daily_basic 未返回可用股票池 {trade_date}")
         return date,sorted(ranked,key=lambda x:x[1],reverse=True)[:limit]
 
-    def realtime_prices(self,symbols:list[str])->dict[str,float]:
+    def realtime_quote_snapshot(self, symbols: list[str]) -> dict[str, Any]:
+        """Return execution quotes with their actual provider for auditability."""
         if not symbols: return {}
         primary: Exception | None = None
         if self._available:
@@ -143,7 +144,7 @@ class HotLeaderDataClient:
                     symbol=_symbol(str(row.get("ts_code") or row.get("symbol") or "")); price=_num(row.get("price") or row.get("last") or row.get("close"))
                     if symbol and price>0:prices[symbol]=price
                 if not prices: raise HotLeaderDataError("TuShare 中转实时行情返回为空")
-                return prices
+                return {"prices": prices, "source": "tushare:realtime_quote", "provider_timestamp": None}
             except Exception as exc:
                 primary = exc
         else:
@@ -153,10 +154,16 @@ class HotLeaderDataClient:
             prices = {str(row["symbol"]): float(row["price"]) for row in fallback if float(row.get("price") or 0) > 0}
             if prices:
                 logger.info("hot-leader realtime quote fallback=sina_timestamped rows=%s", len(prices))
-                return prices
+                provider_times = [str(row.get("provider_timestamp") or "") for row in fallback if row.get("provider_timestamp")]
+                return {"prices": prices, "source": "sina:timestamped_fallback",
+                        "provider_timestamp": max(provider_times) if provider_times else None}
         except HotLeaderDataError:
             pass
         raise HotLeaderDataError(f"实时成交价不可用：{type(primary).__name__}") from primary
+
+    def realtime_prices(self, symbols: list[str]) -> dict[str, float]:
+        """Compatibility wrapper for callers that only need prices."""
+        return dict(self.realtime_quote_snapshot(symbols).get("prices") or {})
 
     def realtime_market_quotes(self, symbols: list[str]) -> dict[str, Any]:
         """Fetch a timestamped full-universe observation in bounded Sina batches.

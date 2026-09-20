@@ -35,6 +35,7 @@ def build_hot_leader_dashboard_payload() -> dict[str, Any]:
                        "observation": live_theme.get("payload") or {}},
         "account": store.paper_snapshot(ACCOUNT_ID, settings.paper_initial_cash),
         "recent_orders": store.recent_orders(),
+        "execution_attempts": store.recent_execution_attempts(),
         "backtests": store.recent_backtests(),
         "data_quality": store.recent_quality(),
     }
@@ -59,6 +60,7 @@ def _empty_payload(settings: Any, detail: str) -> dict[str, Any]:
         "live_theme": {"enabled": settings.live_theme_enabled, "interval_minutes": settings.live_theme_interval_minutes, "fresh": False, "run": {}, "observation": {}},
         "account": account,
         "recent_orders": [],
+        "execution_attempts": [],
         "backtests": [],
         "data_quality": [{"check_type": "storage", "status": "waiting", "detail": detail, "as_of": None}],
     }

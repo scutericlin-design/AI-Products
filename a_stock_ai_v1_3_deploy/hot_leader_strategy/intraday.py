@@ -53,6 +53,7 @@ class HotLeaderIntradayMonitor:
         positions = {str(row["symbol"]): row for row in account.get("positions") or []}
         latest = self.store.latest_signal()
         plan = latest.get("payload") or {}
+        signal_id = str(latest.get("signal_id") or "")
         candidates = plan.get("recommendations") or []
         actionable_plan = bool(plan and _compact_date(plan.get("as_of")) < trade_date)
 
@@ -64,6 +65,11 @@ class HotLeaderIntradayMonitor:
             }
         )
         if not symbols:
+            if signal_id:
+                self.store.record_execution_attempt(
+                    signal_id=signal_id, trade_date=trade_date, stage="watchlist", status="no_candidates",
+                    candidate_count=0, quote_count=0, detail="日线计划未含可执行候选，盘中仅保持静默。",
+                )
             return {
                 "status": "no_intraday_watchlist",
                 "no_real_orders": True,
@@ -72,9 +78,15 @@ class HotLeaderIntradayMonitor:
             }
 
         try:
-            quotes = self.client.realtime_prices(symbols)
+            quote_snapshot = self._quote_snapshot(symbols)
+            quotes = quote_snapshot["prices"]
         except Exception as exc:
             self.store.log_quality("intraday_quote", "blocked", f"盘中报价不可用：{exc}", trade_date)
+            self.store.record_execution_attempt(
+                signal_id=signal_id, trade_date=trade_date, stage="quote", status="blocked",
+                candidate_count=len(candidates), quote_count=0, quote_source="unavailable",
+                detail=f"盘中报价不可用：{type(exc).__name__}",
+            )
             return {
                 "status": "blocked",
                 "no_real_orders": True,
@@ -90,7 +102,7 @@ class HotLeaderIntradayMonitor:
                 "price": price,
                 "reference_price": references.get(symbol),
                 "change_pct": _change_pct(price, references.get(symbol)),
-                "source": "tushare:realtime_quote",
+                "source": quote_snapshot["source"],
             }
             for symbol, price in quotes.items()
             if price > 0
@@ -137,6 +149,26 @@ class HotLeaderIntradayMonitor:
             }
 
         filled = [row for row in result.get("orders") or [] if row.get("status") == "filled"]
+        if signal_id and actionable_plan:
+            if filled:
+                self.store.record_execution_attempt(
+                    signal_id=signal_id, trade_date=trade_date, stage="paper_execution", status="filled",
+                    candidate_count=len(candidates), quote_count=len(quotes), quote_source=quote_snapshot["source"],
+                    detail=f"模拟成交 {len(filled)} 笔。",
+                )
+                self.store.mark_signal_execution(signal_id, trade_date, "filled", f"quotes={len(quotes)} orders={len(filled)}")
+            elif blocked_entries:
+                self.store.record_execution_attempt(
+                    signal_id=signal_id, trade_date=trade_date, stage="entry_gate", status="blocked",
+                    candidate_count=len(candidates), quote_count=len(quotes), quote_source=quote_snapshot["source"],
+                    detail="；".join(f"{row['symbol']}：{row['reason']}" for row in blocked_entries[:8]),
+                )
+            elif candidates and not positions:
+                self.store.record_execution_attempt(
+                    signal_id=signal_id, trade_date=trade_date, stage="paper_execution", status="no_fill",
+                    candidate_count=len(candidates), quote_count=len(quotes), quote_source=quote_snapshot["source"],
+                    detail="候选已取得报价，但未生成可成交模拟订单。",
+                )
         event_rows = []
         for order in filled:
             event_type = str(order.get("side") or "").upper()
@@ -161,6 +193,8 @@ class HotLeaderIntradayMonitor:
                 "plan_as_of": plan.get("as_of"),
                 "watchlist_count": len(symbols),
                 "quote_count": len(quotes),
+                "quote_source": quote_snapshot["source"],
+                "quote_provider_timestamp": quote_snapshot.get("provider_timestamp"),
                 "snapshot_count": snapshot_count,
                 "entry_candidates": [row.get("symbol") for row in buy_candidates],
                 "entry_blocked": blocked_entries[:20],
@@ -170,6 +204,17 @@ class HotLeaderIntradayMonitor:
             }
         )
         return result
+
+    def _quote_snapshot(self, symbols: list[str]) -> dict[str, Any]:
+        """Accept legacy test clients while preserving provider metadata in production."""
+        fetch = getattr(self.client, "realtime_quote_snapshot", None)
+        if callable(fetch):
+            snapshot = fetch(symbols)
+            return {"prices": dict(snapshot.get("prices") or {}),
+                    "source": str(snapshot.get("source") or "unknown"),
+                    "provider_timestamp": snapshot.get("provider_timestamp")}
+        return {"prices": self.client.realtime_prices(symbols),
+                "source": "client:realtime_prices", "provider_timestamp": None}
 
     def _entry_allowed(self, candidate: dict[str, Any], price: float, now: datetime) -> tuple[bool, str]:
         symbol = str(candidate.get("symbol") or "")

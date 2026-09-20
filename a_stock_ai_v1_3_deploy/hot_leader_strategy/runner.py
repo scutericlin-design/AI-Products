@@ -111,18 +111,33 @@ class HotLeaderRunner:
         if self.store.signal_executed(signal_id):return {"status":"already_executed","no_real_orders":True,"signal_id":signal_id}
         symbols={str(x.get("symbol") or "") for x in plan.get("recommendations",[])}|{str(x.get("symbol") or "") for x in self.account().get("positions",[])}; symbols.discard("")
         try:
-            quotes=self.client.realtime_prices(sorted(symbols))
-        except Exception as exc:return {"status":"blocked","reason":f"开盘报价不可用，拒绝模拟成交：{exc}","no_real_orders":True}
+            quote_snapshot=self._quote_snapshot(sorted(symbols)); quotes=quote_snapshot["prices"]
+        except Exception as exc:
+            self.store.record_execution_attempt(signal_id=signal_id,trade_date=compact,stage="open_quote",status="blocked",candidate_count=len(plan.get("recommendations",[])),quote_count=0,quote_source="unavailable",detail=f"开盘报价不可用：{type(exc).__name__}")
+            return {"status":"blocked","reason":f"开盘报价不可用，拒绝模拟成交：{exc}","no_real_orders":True}
         buys={str(x.get("symbol")) for x in plan.get("recommendations",[]) if str(x.get("action") or "").upper()=="BUY"}
         missing=buys-set(quotes)
-        if missing:return {"status":"blocked","reason":f"开盘报价缺失 {','.join(sorted(missing)[:5])}，拒绝部分成交","no_real_orders":True}
-        result=HotLeaderPaperRunner(self.settings,self.store).run(plan,date,quotes); self.store.mark_signal_execution(signal_id,compact,str(result.get("status") or "ok"),f"quotes={len(quotes)} orders={len(result.get('orders') or [])}"); result["signal_id"]=signal_id; result["push"]=send_execution_report(result,self.settings); return result
+        if missing:
+            detail=f"开盘报价缺失 {','.join(sorted(missing)[:5])}，拒绝部分成交"
+            self.store.record_execution_attempt(signal_id=signal_id,trade_date=compact,stage="open_quote",status="blocked",candidate_count=len(buys),quote_count=len(quotes),quote_source=quote_snapshot["source"],detail=detail)
+            return {"status":"blocked","reason":detail,"no_real_orders":True}
+        result=HotLeaderPaperRunner(self.settings,self.store).run(plan,date,quotes); order_count=len(result.get("orders") or [])
+        status="filled" if order_count else "no_fill"
+        self.store.record_execution_attempt(signal_id=signal_id,trade_date=compact,stage="open_paper_execution",status=status,candidate_count=len(buys),quote_count=len(quotes),quote_source=quote_snapshot["source"],detail=f"开盘模拟成交 {order_count} 笔")
+        self.store.mark_signal_execution(signal_id,compact,str(result.get("status") or "ok"),f"quotes={len(quotes)} orders={order_count}"); result["signal_id"]=signal_id; result["push"]=send_execution_report(result,self.settings); return result
 
     def intraday_once(self, now: datetime | None = None) -> dict[str, Any]:
         """Run the isolated intraday confirmation and risk monitor once."""
         from hot_leader_strategy.intraday import HotLeaderIntradayMonitor
 
         return HotLeaderIntradayMonitor(settings=self.settings, store=self.store, client=self.client).run_once(now)
+
+    def _quote_snapshot(self, symbols: list[str]) -> dict[str, Any]:
+        fetch=getattr(self.client,"realtime_quote_snapshot",None)
+        if callable(fetch):
+            snapshot=fetch(symbols)
+            return {"prices":dict(snapshot.get("prices") or {}),"source":str(snapshot.get("source") or "unknown")}
+        return {"prices":self.client.realtime_prices(symbols),"source":"client:realtime_prices"}
 
     def live_theme_once(self, now: datetime | None = None) -> dict[str, Any]:
         """Persist a current-session theme observation without changing paper orders."""
